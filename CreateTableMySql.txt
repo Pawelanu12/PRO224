@@ -1,0 +1,70 @@
+CREATE TABLE TypUzytkownika (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    opis TEXT
+);
+
+CREATE TABLE Uzytkownik (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(255) NOT NULL,
+    nazwisko VARCHAR(255) NOT NULL,
+    login VARCHAR(255) NOT NULL UNIQUE,
+    haslo VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    dataUrodzenia DATETIME,
+    nrTelefonu VARCHAR(20),
+    dataDolaczeniaDoGromady DATETIME,
+    rodzicID1 BIGINT,
+    rodzicID2 BIGINT,
+    TypUzytkownikaID BIGINT NOT NULL,
+    FOREIGN KEY (rodzicID1) REFERENCES Uzytkownik(id),
+    FOREIGN KEY (rodzicID2) REFERENCES Uzytkownik(id),
+    FOREIGN KEY (TypUzytkownikaID) REFERENCES TypUzytkownika(id)
+);
+
+CREATE TABLE Skladka (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    dataWplaty DATETIME NOT NULL,
+    UzytkownikID BIGINT NOT NULL,
+    kwota FLOAT NOT NULL,
+    FOREIGN KEY (UzytkownikID) REFERENCES Uzytkownik(id)
+);
+
+CREATE TABLE Sprawnosc (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    opis TEXT,
+    opisWymagan TEXT
+);
+
+CREATE TABLE ZdobyteSprawnosci (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    UzytkownikID BIGINT NOT NULL,
+    SprawnoscID BIGINT NOT NULL,
+    dataZdobyciaSprawnosci DATETIME NOT NULL,
+    FOREIGN KEY (UzytkownikID) REFERENCES Uzytkownik(id),
+    FOREIGN KEY (SprawnoscID) REFERENCES Sprawnosc(id),
+    UNIQUE (UzytkownikID, SprawnoscID)
+);
+
+CREATE TABLE Wydarzenie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    dataWyjazdu DATETIME NOT NULL,
+    dataZakonczenia DATETIME NOT NULL,
+    opis TEXT,
+    UzytkownikID BIGINT, -- Organizator wydarzenia
+    FOREIGN KEY (UzytkownikID) REFERENCES Uzytkownik(id)
+);
+
+CREATE TABLE Uczestnictwo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    UzytkownikID BIGINT NOT NULL,
+    WydarzenieID BIGINT NOT NULL,
+    dataZakonczenia DATETIME,
+    obecny BOOLEAN NOT NULL,
+    FOREIGN KEY (UzytkownikID) REFERENCES Uzytkownik(id),
+    FOREIGN KEY (WydarzenieID) REFERENCES Wydarzenie(id)
+);
+
