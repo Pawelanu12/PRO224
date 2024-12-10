@@ -1,23 +1,12 @@
 'use client'
-import * as Yup from 'yup'
-import {ErrorMessage, Field, Form, Formik, useFormik} from "formik";
-import {v4} from "uuid";
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from "yup";
+import {v4} from "uuid";
 
-
-//  nowy={(valu)=>{
-//             //  console.log(valu)
-//           var newWydatki=[...list,valu]
-//               // console.log(newWydatki)
-//               setList(newWydatki)
-//           }}
-
-//editowanie=-1?teraz nikt nie edituje wydatek:ktos edituje wydatek(zeby nie wyswetlalo
-
-////expanse jezeli !==-1 to nie pokazuj nic bo ktos patrze na detali jakegos wydatku
-export default function AddEvent(){
-    const {addDoListy,onPokazywanieChange}=useContext(GlobalContext)
+export default function EditEvent({event}){
+    const {edit}=useContext(GlobalContext)
 
 
     return(
@@ -25,11 +14,11 @@ export default function AddEvent(){
             initialValues={{
 
 
-                opis:"",
-                 endDate:"",
-                startDate:"",
+                opis:event.opis,
+                endDate:event.endDate,
+                startDate:event.startDate,
 
-                nazwa:""
+                nazwa:event.nazwa
 
             }}
             validationSchema={Yup.object({
@@ -52,14 +41,13 @@ export default function AddEvent(){
 
 
 
-              //console.log(values)
+                //console.log(values)
                 values.startDate=(values.startDate.toString().slice(0,10)+" "+values.startDate.toString().slice(11,16))
                 values.endDate =(values.endDate.toString().slice(0,10)+" "+values.endDate.toString().slice(11,16))
-                const newValues={...values,id:v4()};
-               // console.log(newValues)
-                addDoListy(newValues,"Event")
+                const newValues={...values,id:event.id};
+                console.log(newValues)
+                //addDoListy(newValues,"Event")
                 resetForm()
-                onPokazywanieChange({target:{value:"Events"}})
             }}
 
         >

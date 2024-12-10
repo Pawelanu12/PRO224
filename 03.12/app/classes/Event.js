@@ -2,12 +2,12 @@
 
 import {FaTrash} from "react-icons/fa";
 
-import {c} from "react/compiler-runtime";
+
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Event({event}){
-    const {deleteFromList,user}=useContext(GlobalContext)
+    const {deleteFromList,user,onPokazywanieChange}=useContext(GlobalContext)
     const startDate=new Date(event.startDate)
     const endDate=new Date(event.endDate)
 
@@ -23,7 +23,8 @@ export default function Event({event}){
 
     return(
         <div>
-            {user.typUzytkownika==="Admin"&& <FaTrash onClick={()=>deleteFromList(event.id,"Event")}/>}
+            {/*<button onClick={()=>onPokazywanieChange({target:{value:"EditEvent"}})}>Edit</button>*/}
+            {user&&user.typUzytkownika==="Admin"&& <FaTrash onClick={()=>deleteFromList(event.id,"Event")}/>}
             <p style={{textAlign:"center",backgroundColor:"red"}}>{event.nazwa}</p>
             {dateStartDay===dateEndDay&&
                 (<p style={{textAlign:"center",backgroundColor:"yellow"}}>

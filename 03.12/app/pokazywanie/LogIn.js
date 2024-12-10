@@ -21,9 +21,9 @@ export default function LogIn(){
             validationSchema={Yup.object({
 
                 login: Yup.string()
-                    .required("Opis jest wymagany"),
+                    .required("Login jest wymagany"),
                 password: Yup.string()
-                    .required("Nazwa jest wymagany"),
+                    .required("Haslo jest wymagane"),
 
 
             })}
@@ -43,11 +43,11 @@ export default function LogIn(){
             {({ dirty, isValid }) => (
                 <Form>
 
-                    <Field type="text" name="login" placeholder="napisz nazwe"
+                    <Field type="text" name="login" placeholder="napisz login"
                     />
                     <ErrorMessage name="login" component="div"/>
                     <br/>
-                    <Field type="text" name="password" placeholder="napisz nazwe"
+                    <Field type="text" name="password" placeholder="napisz haslo"
                 />
                     <ErrorMessage name="password" component="div"/>
                     <br/>

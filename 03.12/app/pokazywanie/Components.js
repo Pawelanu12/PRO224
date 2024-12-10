@@ -11,6 +11,11 @@ import Sprawnosci from "@/app/weluElemntowJednejKlasy/Sprawnosci";
 import AddUser from "@/app/add/AddUser";
 import AddKwota from "@/app/add/AddKwota";
 import User from "@/app/classes/User";
+import AddGlobalInformation from "@/app/add/AddGlobalInformation";
+import AddEvent from "@/app/add/AddEvent";
+import AddSprawnosc from "@/app/add/AddSprawnosc";
+import EditHaslo from "@/app/edit/EditHaslo";
+import EditEvent from "@/app/edit/EditEvent";
 
 
 export default function Components() {
@@ -31,6 +36,13 @@ export default function Components() {
             {pokazywanie==="AddUser" &&<AddUser></AddUser>}
             {pokazywanie==="AddKwota" &&<AddKwota></AddKwota>}
             {pokazywanie==="User" &&<User></User>}
+            {pokazywanie==="AddGlobalInformation" &&<AddGlobalInformation></AddGlobalInformation>}
+            {pokazywanie==="AddEvent" &&<AddEvent></AddEvent>}
+            {pokazywanie==="AddSprawnosc" &&<AddSprawnosc></AddSprawnosc>}
+            {/*{pokazywanie==="EditHaslo" &&<EditHaslo></EditHaslo>}*/}
+            {/*{pokazywanie==="EditEvent" &&<EditEvent></EditEvent>}*/}
+
+
 
 
 

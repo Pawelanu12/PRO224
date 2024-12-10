@@ -18,9 +18,7 @@ export default function Dodawania() {
         <div>
 
             <WyberzJakieDodawaniePokazywacz></WyberzJakieDodawaniePokazywacz>
-            {pokazywanie==="AddGlobalInformation" &&<AddGlobalInformation></AddGlobalInformation>}
-            {pokazywanie==="AddEvent" &&<AddEvent></AddEvent>}
-            {pokazywanie==="AddSprawnosc" &&<AddSprawnosc></AddSprawnosc>}
+
 
 
 

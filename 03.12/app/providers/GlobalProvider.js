@@ -38,8 +38,19 @@ const logIn=(values)=>{
 
 }
     const onPokazywanieChange=(cat)=>{
-        if(cat==="User")
+        console.log(cat)
+        // console.log(cat)
+
+        if(cat==="User") {///User...33 wszystkie usery=>1user
+            console.log("qwer")
             setPokazywanie(cat)
+        }
+        else if(cat.target.value==="LogOut")
+        {
+            setUser(null)
+
+            setPokazywanie("GlobalInfo")
+        }
         else {
             // console.log(cat.target.value)
             setPokazywanie(cat.target.value)

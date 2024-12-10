@@ -9,7 +9,7 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 
 export default function AddGlobalInformation(){
-    const {addDoListy}=useContext(GlobalContext)
+    const {addDoListy,onPokazywanieChange}=useContext(GlobalContext)
 
 
     return(
@@ -35,13 +35,14 @@ export default function AddGlobalInformation(){
 
                const startDate=new Date()
                 const dataInString =startDate.getDate()+"."+startDate.getMonth()
-                    +"."+startDate.getFullYear()+" "+startDate.getHours()+"."+startDate.getMinutes()
+                    +"."+startDate.getFullYear()+" "+startDate.getHours()+"."+startDate.getMinutes()+"."+startDate.getSeconds()
 
 
                 const newValues={...values,id:v4(),date:dataInString};
                  console.log(newValues)
                 addDoListy(newValues,"GlobalInformation")
                 resetForm()
+                onPokazywanieChange({target:{value:"GlobalInfo"}})
             }}
 
         >

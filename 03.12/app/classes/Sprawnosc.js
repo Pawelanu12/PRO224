@@ -14,7 +14,7 @@ export default function Sprawnosc({sprawnosc}){
         {user.typUzytkownika==="Admin"&& <FaTrash onClick={()=>deleteFromList(sprawnosc.id,"Sprawnosc")}/>}
 
         {(user.typUzytkownika==="Zuch"||user.typUzytkownika==="Rodzic")&& <div>
-            <p>{sprawnosc.nazwa}</p>
+            <p >{sprawnosc.nazwa}</p>
             <p style={{overflowWrap:"break-word"}}>{sprawnosc.opis}</p>
         </div>}
 
