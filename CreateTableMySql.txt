@@ -4,6 +4,12 @@ CREATE TABLE TypUzytkownika (
     opis TEXT
 );
 
+CREATE TABLE Szostka (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    dataStworzenia DATETIME NOT NULL
+);
+
 CREATE TABLE Uzytkownik (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     imie VARCHAR(255) NOT NULL,
@@ -17,9 +23,11 @@ CREATE TABLE Uzytkownik (
     rodzicID1 BIGINT,
     rodzicID2 BIGINT,
     TypUzytkownikaID BIGINT NOT NULL,
+    SzostkaID BIGINT, -- Dodano kolumnę SzostkaID
     FOREIGN KEY (rodzicID1) REFERENCES Uzytkownik(id),
     FOREIGN KEY (rodzicID2) REFERENCES Uzytkownik(id),
-    FOREIGN KEY (TypUzytkownikaID) REFERENCES TypUzytkownika(id)
+    FOREIGN KEY (TypUzytkownikaID) REFERENCES TypUzytkownika(id),
+    FOREIGN KEY (SzostkaID) REFERENCES Szostka(id) ON DELETE SET NULL
 );
 
 CREATE TABLE Skladka (
@@ -67,4 +75,3 @@ CREATE TABLE Uczestnictwo (
     FOREIGN KEY (UzytkownikID) REFERENCES Uzytkownik(id),
     FOREIGN KEY (WydarzenieID) REFERENCES Wydarzenie(id)
 );
-
