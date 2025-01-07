@@ -1,9 +1,3 @@
-CREATE TABLE typ_uzytkownika (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nazwa VARCHAR(255) NOT NULL,
-    opis TEXT
-);
-
 CREATE TABLE szostka (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nazwa VARCHAR(255) NOT NULL,
@@ -22,8 +16,8 @@ CREATE TABLE uzytkownik (
     data_dolaczenia_do_gromady DATETIME,
     rodzic_id1 BIGINT,
     rodzic_id2 BIGINT,
-    typ_uzytkownika VARCHAR(255) NOT NULL, -- Zmiana na kolumnę dyskryminującą
-    szostka_id BIGINT, -- Kolumna SzostkaID zmieniona na szostka_id
+    typ_uzytkownika VARCHAR(255) NOT NULL,
+    szostka_id BIGINT, 
     FOREIGN KEY (rodzic_id1) REFERENCES uzytkownik(id),
     FOREIGN KEY (rodzic_id2) REFERENCES uzytkownik(id),
     FOREIGN KEY (szostka_id) REFERENCES szostka(id) ON DELETE SET NULL
