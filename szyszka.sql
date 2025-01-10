@@ -128,10 +128,10 @@ CREATE TABLE `uzytkownik` (
 
 INSERT INTO `uzytkownik` (`id`, `imie`, `nazwisko`, `login`, `haslo`, `email`, `data_urodzenia`, `nr_telefonu`, `data_dolaczenia_do_gromady`, `rodzic_id1`, `rodzic_id2`, `typ_uzytkownika`, `szostka_id`) VALUES
 (1, 'Kacper', 'Demczyna', 'kdemcz', '1234', 'costam@gmail.com', '2025-01-08 17:59:10.000000', '123123123', '2015-01-22 17:59:10.000000', NULL, NULL, 'Druzynowy', NULL),
-(2, 'Ojciec', 'Kowalski', 'okowal', '123123', 'oao@gmail.com', NULL, '123123123', NULL, NULL, NULL, 'rodzic', NULL),
-(3, 'Matka', 'Kowalski', 'mkowal', '123123', 'oao@gmail.com', NULL, '123123123', NULL, NULL, NULL, 'rodzic', NULL),
-(5, 'Anna', 'Nowak', 'anowak', '123', NULL, NULL, NULL, NULL, NULL, NULL, 'zuch', NULL),
-(6, 'Franek', 'Nowak', 'anowakowska', '123', NULL, NULL, NULL, '2025-01-10 12:00:00.000000', NULL, NULL, 'zuch', NULL),
+(2, 'Ojciec', 'Kowalski', 'okowal', '123123', 'oao@gmail.com', NULL, '123123123', NULL, NULL, NULL, 'Rodzic', NULL),
+(3, 'Matka', 'Kowalski', 'mkowal', '123123', 'oao@gmail.com', NULL, '123123123', NULL, NULL, NULL, 'Rodzic', NULL),
+(5, 'Anna', 'Nowak', 'anowak', '123', NULL, NULL, NULL, NULL, NULL, NULL, 'Zuch', NULL),
+(6, 'Franek', 'Nowak', 'anowakowska', '123', NULL, NULL, NULL, '2025-01-10 12:00:00.000000', NULL, NULL, 'Zuch', NULL),
 (8, 'Adam', 'Nowak', 'anowakoa', '123', NULL, NULL, NULL, NULL, NULL, NULL, 'Druzynowy', NULL),
 (9, 'Adam', 'Nowak', 'aansaasmma', '123', NULL, NULL, NULL, NULL, NULL, NULL, 'Rodzic', NULL),
 (10, 'Adam', 'Nowak', 'bnasm,asmma', '123', NULL, NULL, NULL, NULL, NULL, NULL, 'Przyboczny', NULL);
