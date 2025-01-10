@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-@DiscriminatorValue("zuch") // Wartość dyskryminacyjna w kolumnie typ_uzytkownika
+@DiscriminatorValue("Zuch") // Wartość dyskryminacyjna w kolumnie typ_uzytkownika
 public class Zuch extends Uzytkownik {
 
     @Column(name = "data_dolaczenia_do_gromady")
