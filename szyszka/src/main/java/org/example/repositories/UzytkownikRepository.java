@@ -9,16 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
-
-
-    Optional<Uzytkownik> findById(Long id);
-
-
-    Optional<Uzytkownik> findByLogin(String login);
-
-
-    Optional<Uzytkownik> findByEmail(String email);
-
-    List<Uzytkownik> findByNazwiskoContaining(String fragmentNazwiska);
-
+    List<Uzytkownik> findByNazwisko(String nazwisko);
 }

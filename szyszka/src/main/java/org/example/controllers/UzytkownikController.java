@@ -1,62 +1,66 @@
 package org.example.controllers;
 
-import org.example.DTOs.UzytkownikDTO;
+import org.example.entities.*;
 import org.example.services.UzytkownikService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/uzytkownicy")
 public class UzytkownikController {
 
-    private final UzytkownikService uzytkownikService;
-
     @Autowired
-    public UzytkownikController(UzytkownikService uzytkownikService) {
-        this.uzytkownikService = uzytkownikService;
+    private UzytkownikService uzytkownikService;
+
+    @PostMapping("/add/zuch")
+    public Zuch addZuch(@RequestBody Zuch zuch) {
+        return uzytkownikService.addZuch(zuch);
     }
 
-    // Endpoint dla wszystkich użytkowników
-    @GetMapping("/all")
-    public List<UzytkownikDTO> getAllUzytkownicy() {
-        return uzytkownikService.getAllUzytkownicy();
+    @PostMapping("/add/rodzic")
+    public Rodzic addRodzic(@RequestBody Rodzic rodzic) {
+        return uzytkownikService.addRodzic(rodzic);
+    }
+    @PostMapping("/add/druzynowy")
+    public Druzynowy addDruzynowy(@RequestBody Druzynowy druzynowy) {
+        return uzytkownikService.addDruzynowy(druzynowy);
     }
 
-    // Endpoint dla użytkownika po ID
-    @GetMapping("/{id}")
-    public ResponseEntity<UzytkownikDTO> getUzytkownikById(@PathVariable Long id) {
-        UzytkownikDTO uzytkownik = uzytkownikService.getUzytkownikById(id);
-        return uzytkownik != null ? ResponseEntity.ok(uzytkownik) : ResponseEntity.notFound().build();
+    @PostMapping("/add/przyboczny")
+    public Przyboczny addPrzyboczny(@RequestBody Przyboczny przyboczny) {
+        return uzytkownikService.addPrzyboczny(przyboczny);
     }
 
-    // Endpoint dla użytkownika po loginie
-    @GetMapping("/login/{login}")
-    public ResponseEntity<UzytkownikDTO> getUzytkownikByLogin(@PathVariable String login) {
-        UzytkownikDTO uzytkownik = uzytkownikService.getUzytkownikByLogin(login);
-        return uzytkownik != null ? ResponseEntity.ok(uzytkownik) : ResponseEntity.notFound().build();
+    @DeleteMapping("/delete/{id}")
+    public void deleteUzytkownikById(@PathVariable Long id) {
+        uzytkownikService.deleteUzytkownikById(id);
     }
 
-    // Endpoint dla użytkowników po nazwisku
-    @GetMapping("/nazwisko/{nazwisko}")
-    public List<UzytkownikDTO> findUzytkownikByLastName(@PathVariable String nazwisko) {
-        return uzytkownikService.findUzytkownikByLastName(nazwisko);
+    @GetMapping("/findall/zuchy")
+    public List<Zuch> getAllZuchy() {
+        return uzytkownikService.getAllZuchy();
     }
 
-    // Endpoint do zapisywania użytkownika
-    @PostMapping
-    public ResponseEntity<UzytkownikDTO> saveUzytkownik(@RequestBody UzytkownikDTO uzytkownikDTO) {
-        UzytkownikDTO savedUzytkownik = uzytkownikService.saveUzytkownik(uzytkownikDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUzytkownik);
+    @GetMapping("/findall/rodzice")
+    public List<Rodzic> getAllRodzice() {
+        return uzytkownikService.getAllRodzice();
     }
 
-    // Endpoint do usuwania użytkownika
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUzytkownik(@PathVariable Long id) {
-        uzytkownikService.deleteUzytkownik(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/findall/druzynowi")
+    public List<Druzynowy> getAllDruzynowi() {
+        return uzytkownikService.getAllDruzynowi();
+    }
+
+    @GetMapping("/findall/przyboczni")
+    public List<Przyboczny> getAllPrzyboczni() {
+        return uzytkownikService.getAllPrzyboczni();
+    }
+
+    @GetMapping("/findall/bysurname/{nazwisko}")
+    public List<Uzytkownik> getUzytkownicyByNazwisko(@PathVariable String nazwisko) {
+        return uzytkownikService.getUzytkownicyByNazwisko(nazwisko);
     }
 }

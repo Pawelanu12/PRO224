@@ -1,56 +1,69 @@
 package org.example.services;
 
-import org.example.DTOs.UzytkownikDTO;
-import org.example.entities.Uzytkownik;
-import org.example.mappers.UzytkownikMapper;
-import org.example.repositories.UzytkownikRepository;
+import org.example.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.example.repositories.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UzytkownikService {
 
-    private final UzytkownikRepository uzytkownikRepository;
+    @Autowired
+    private UzytkownikRepository uzytkownikRepository;
 
     @Autowired
-    public UzytkownikService(UzytkownikRepository uzytkownikRepository) {
-        this.uzytkownikRepository = uzytkownikRepository;
+    private ZuchRepository zuchRepository;
+
+    @Autowired
+    private RodzicRepository rodzicRepository;
+
+    @Autowired
+    private DruzynowyRepository druzynowyRepository;
+
+    @Autowired
+    private PrzybocznyRepository przybocznyRepository;
+
+    public Zuch addZuch(Zuch zuch) {
+        return zuchRepository.save(zuch);
     }
 
-    public List<UzytkownikDTO> getAllUzytkownicy() {
-        return uzytkownikRepository.findAll()
-                .stream()
-                .map(UzytkownikMapper::toDTO)
-                .collect(Collectors.toList());
+    public Rodzic addRodzic(Rodzic rodzic) {
+        return rodzicRepository.save(rodzic);
     }
 
-    public UzytkownikDTO getUzytkownikById(Long id) {
-        Optional<Uzytkownik> uzytkownik = uzytkownikRepository.findById(id);
-        return uzytkownik.map(UzytkownikMapper::toDTO).orElse(null);
+    public Druzynowy addDruzynowy(Druzynowy druzynowy) {
+        return druzynowyRepository.save(druzynowy);
     }
 
-    public UzytkownikDTO getUzytkownikByLogin(String login) {
-        Optional<Uzytkownik> optionalUzytkownik = uzytkownikRepository.findByLogin(login);
-        return optionalUzytkownik.map(UzytkownikMapper::toDTO).orElse(null);
-    }
-    public List<UzytkownikDTO> findUzytkownikByLastName(String nazwisko) {
-        return uzytkownikRepository.findByNazwiskoContaining(nazwisko)
-                .stream()
-                .map(UzytkownikMapper::toDTO)
-                .collect(Collectors.toList());
+    public Przyboczny addPrzyboczny(Przyboczny przyboczny) {
+        return przybocznyRepository.save(przyboczny);
     }
 
-    public UzytkownikDTO saveUzytkownik(UzytkownikDTO uzytkownikDTO) {
-        Uzytkownik uzytkownik = UzytkownikMapper.toEntity(uzytkownikDTO);
-        Uzytkownik saved = uzytkownikRepository.save(uzytkownik);
-        return UzytkownikMapper.toDTO(saved);
-    }
-
-    public void deleteUzytkownik(Long id) {
+    public void deleteUzytkownikById(Long id) {
         uzytkownikRepository.deleteById(id);
+    }
+
+    //findALL
+    public List<Zuch> getAllZuchy() {
+        return zuchRepository.findAll();
+    }
+
+    public List<Rodzic> getAllRodzice() {
+        return rodzicRepository.findAll();
+    }
+
+    public List<Druzynowy> getAllDruzynowi() {
+        return druzynowyRepository.findAll();
+    }
+
+    public List<Przyboczny> getAllPrzyboczni() {
+        return przybocznyRepository.findAll();
+    }
+
+    public List<Uzytkownik> getUzytkownicyByNazwisko(String nazwisko) {
+        return uzytkownikRepository.findByNazwisko(nazwisko);
     }
 }
