@@ -1,3 +1,4 @@
+
 // app/providers/ColorProvider.js
 "use client";
 
@@ -14,7 +15,7 @@ export const GlobalContext = createContext();
 export default function GlobalProvider({ children }) {
     const [events, setEvents] = useState(forEvent);
     const [globalInfo, setGlobalInfo] = useState(forGlobalInfo);
-    const [pokazywanie,setPokazywanie]=useState("Events")
+    const [pokazywanie,setPokazywanie]=useState("User")
     const [pokazywanieUsera,setPokazywanieUsera]=useState(1)
     const [users,setUsers]=useState(forUser)
     const [sprawnosci,setSprawnosci]=useState(forSprawnosc)
@@ -28,18 +29,23 @@ export default function GlobalProvider({ children }) {
     const zmienEdycje=(ed)=>{
         setEdit(ed)
     }
-const logIn=(values)=>{
-       const logUser= users.filter(u=>u.login===values.login&&u.haslo===values.password)
-    if(logUser.length){
-       setUser(logUser[0]);
-       setPokazywanieUsera(logUser[0].id)
-        setPokazywanie("User")
-        return true
+    const logIn=(values)=>{
+        //const logUser= users.filter(u=>u.login===values.login&&u.haslo===values.password)
+        const logUser= users.filter(u=>u.login===values.login)
+
+        if(logUser.length){
+            setUser(logUser[0]);
+            setPokazywanieUsera(logUser[0].id)
+            setPokazywanie("User")
+            return true
+        }
+        return false
+
+
     }
-    return false
-
-
-}
+    const setListUser=(users)=>{
+        setUsers(users)
+    }
     const onPokazywanieChange=(cat)=>{
         zmienEdycje(null)
         console.log(cat)
@@ -66,7 +72,7 @@ const logIn=(values)=>{
     const zmienPokazywanegoUsera=id=>{
         setPokazywanieUsera(id)
     }
-    const addDoListy=(value,type)=>{
+    const addDoListy= async (value,type)=>{
         switch (type){
             case "GlobalInformation":
                 setGlobalInfo([...globalInfo,value]);
@@ -82,6 +88,17 @@ const logIn=(values)=>{
                 break;
             case "User":
                 setUsers([...users,value]);
+                console.log(JSON.stringify(value));
+                await fetch("http://localhost:8081/api/uzytkownicy",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                    .finally(() => console.log("ee"));
                 break;
             default:
                 alert(type)
@@ -91,12 +108,12 @@ const logIn=(values)=>{
         let newValues
         switch (type){
             case "GlobalInformation":
-                 newValues=globalInfo.map(g=>g.id===value.id?value:g)
+                newValues=globalInfo.map(g=>g.id===value.id?value:g)
                 setGlobalInfo(newValues);
                 break;
             case "Event"
             :
-                 newValues=events.map(g=>g.id===value.id?value:g)
+                newValues=events.map(g=>g.id===value.id?value:g)
                 setEvents(newValues);
                 break;
             case "Kwota":
@@ -140,14 +157,14 @@ const logIn=(values)=>{
                     alert("nie można usuwać admina");
                     break;
                 }
-               const newUsers=users
+                const newUsers=users
                 console.log(newUsers)
 
-                   newUsers.map(u=>{
-                       console.log(u.dzieci)
-                       u.rodzice= u.rodzice.filter(clas=>clas!==id)
-                       u.dzieci= u.dzieci.filter(clas=>(clas!==id))
-               })
+                newUsers.map(u=>{
+                    console.log(u.dzieci)
+                    u.rodzice= u.rodzice.filter(clas=>clas!==id)
+                    u.dzieci= u.dzieci.filter(clas=>(clas!==id))
+                })
                 console.log(newUsers)
 
                 setUsers(   newUsers.filter(clas=>clas.id!==id));
@@ -159,9 +176,9 @@ const logIn=(values)=>{
 
     return (
         <GlobalContext.Provider value={{addDoListy,deleteFromList, events ,pokazywanie,onPokazywanieChange
-        ,globalInfo,pokazywanieUsera,users,zmienPokazywanegoUsera,
+            ,globalInfo,pokazywanieUsera,users,zmienPokazywanegoUsera,
             componentsDodawania,setComponentsDodawania,setPokazywanie,sprawnosci,
-            kwoty,user,setUser,logIn,zmienEdycje,edit,editFromList}}>
+            kwoty,user,setUser,logIn,zmienEdycje,edit,editFromList,setListUser}}>
             {children}
         </GlobalContext.Provider>
     );

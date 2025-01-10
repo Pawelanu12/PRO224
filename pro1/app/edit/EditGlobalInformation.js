@@ -1,4 +1,5 @@
 
+
 'use client'
 import * as Yup from 'yup'
 import {ErrorMessage, Field, Form, Formik, useFormik} from "formik";
@@ -48,8 +49,9 @@ export default function EditGlobalInformation(){
 
         >
             {({ dirty, isValid }) => (
-                <Form>
-Opis
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
+                    Opis
                     <Field as="textarea" name="opis"  placeholder="napisz opis" rows="12" cols="60"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="opis" component="div"/>

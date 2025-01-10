@@ -58,7 +58,21 @@ const passwordRegex=/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
 
                 console.log(values)
-                 const newValues={...values,id:v4(),dataDolaczeniaDoGromady:new Date()};
+                const date=new Date(values.dataUrodzenia)
+                console.log(date)
+                 // const newValues={...values,id:1,
+                 //     dataUrodzenia:date,
+                 //     // dataDolaczeniaDoGromady:new Date(),
+                 //     haslo:null,
+                 //     nrTelefonu:"2132312",typUzytkownika:"Zuch"};
+                const newValues={imie:values.imie,
+                    nazwisko:values.nazwisko,
+                    login:values.login,
+                    email:values.email,
+                    // id:100,
+                    dataUrodzenia:date,
+                    // dataDolaczeniaDoGromady:new Date(),
+                    nrTelefonu:"2132312",typUzytkownika:"Zuch"};
                console.log(newValues)
                 addDoListy(newValues,"User")
                 resetForm()
@@ -66,35 +80,36 @@ const passwordRegex=/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
         >
             {({ dirty, isValid }) => (
-                <Form>
-
-                    <Field type="text" name="imie" placeholder="napisz imie"
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
+                    Name
+                    <Field  type="text" name="imie" placeholder="napisz imie"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="imie" component="div"/>
                     <br/>
-
+                    Surname
                     <Field type="text" name="nazwisko" placeholder="napisz nazwisko"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="nazwisko" component="div"/>
                     <br/>
-
+                    Login
                     <Field type="text" name="login" placeholder="napisz login"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="login" component="div"/>
                     <br/>
-
+                    Password
                     <Field type="password" name="haslo" placeholder="napisz haslo"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="haslo" component="div"/>
                     <br/>
 
-
+                    Email
                     <Field type="text" name="email" placeholder="napisz email"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="email" component="div"/>
                     <br/>
 
-
+                    Date of birth
                     <Field type="Date" name="dataUrodzenia" placeholder="napisz date urodzenia"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="dataUrodzenia" component="div"/>
@@ -102,7 +117,7 @@ const passwordRegex=/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
 
 
-                    <button type="submit" disabled={!dirty || !isValid}
+                    <button style={{border:"1px solid black",backgroundColor:"white",padding:"10px"}} type="submit" disabled={!dirty || !isValid}
                     >Add
                     </button>
                 </Form>)}

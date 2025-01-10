@@ -1,4 +1,5 @@
 
+
 'use client'
 
 import {useContext} from "react";
@@ -7,12 +8,12 @@ import {FaTrash} from "react-icons/fa";
 
 export default function GlobalInformation({globalInfo}) {
     const {deleteFromList,user,zmienEdycje}=useContext(GlobalContext)
-   // console.log(user)
-  //  const date=new Date(globalInfo.date)
-   // const data=`${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    // console.log(user)
+    //  const date=new Date(globalInfo.date)
+    // const data=`${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
     return(
         <div style={{marginLeft: '10%',marginRight:'10%'}}>
-            {user&&user.typUzytkownika==="Admin"&& <FaTrash onClick={()=>deleteFromList(globalInfo.id,"GlobalInformation")}/>}
+            {user&&user.typUzytkownika==="Druzynowy"&& <FaTrash onClick={()=>deleteFromList(globalInfo.id,"GlobalInformation")}/>}
 
             <div style={{
                 width: '100%',

@@ -7,7 +7,16 @@ import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 
+//  nowy={(valu)=>{
+//             //  console.log(valu)
+//           var newWydatki=[...list,valu]
+//               // console.log(newWydatki)
+//               setList(newWydatki)
+//           }}
 
+//editowanie=-1?teraz nikt nie edituje wydatek:ktos edituje wydatek(zeby nie wyswetlalo
+
+////expanse jezeli !==-1 to nie pokazuj nic bo ktos patrze na detali jakegos wydatku
 export default function AddKwota(){
     const {addDoListy,user}=useContext(GlobalContext)
 
@@ -49,7 +58,8 @@ export default function AddKwota(){
 
         >
             {({ dirty, isValid }) => (
-                <Form>
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
 
                     <Field type="number" name="kwota" placeholder="napisz nazwe"
                     />

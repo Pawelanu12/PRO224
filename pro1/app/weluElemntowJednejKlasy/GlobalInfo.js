@@ -12,7 +12,7 @@ export default function GlobalInfo({globalInfo}){
         return(<div>nie zaplanowano żadnej informacji ogolnej</div>)
     return(
         <div>
-            {user&&user.typUzytkownika==="Admin"&& <button onClick={()=>onPokazywanieChange({target:{value:"AddGlobalInformation"}})}>Dodaj nowy global info</button>}
+            {user&&user.typUzytkownika==="Druzynowy"&& <button onClick={()=>onPokazywanieChange({target:{value:"AddGlobalInformation"}})}>Dodaj nowy global info</button>}
 
             <p style={{textAlign:"center",color:"red"}}>Global information</p>
             {globalInfo.map(e=>(<div key={e.id}><GlobalInformation key={e.id} globalInfo={e}></GlobalInformation><br/><br/></div>))}

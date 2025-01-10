@@ -14,18 +14,18 @@ export default function Event({event}){
     console.log(edit)
     const dateStartDay=startDate.getDate()+"."+(startDate.getMonth()+1)
         +"."+startDate.getFullYear()
-     const dateStartHoursMinustes=startDate.getHours()+"."+startDate.getMinutes()
+    const dateStartHoursMinustes=startDate.getHours()+"."+startDate.getMinutes()
 
     const dateEndDay=endDate.getDate()+"."+(endDate.getMonth()+1)
         +"."+endDate.getFullYear()
     const dateEndHoursMinustes=endDate.getHours()+"."+endDate.getMinutes()
 
-console.log(endDate.getMonth())
+    console.log(endDate.getMonth())
 
     return(
-        <div>
+        <div style={{marginLeft:"3%",marginRight:"3%"}}>
             {/*<button onClick={()=>onPokazywanieChange({target:{value:"EditEvent"}})}>Edit</button>*/}
-            {user && user.typUzytkownika === "Admin" && <FaTrash onClick={() => deleteFromList(event.id, "Event")}/>}
+            {user && user.typUzytkownika === "Druzynowy" && <FaTrash onClick={() => deleteFromList(event.id, "Event")}/>}
             <p style={{textAlign: "center", backgroundColor: "red"}}>{event.nazwa}</p>
             {dateStartDay === dateEndDay &&
                 (<p style={{textAlign: "center", backgroundColor: "yellow"}}>
@@ -37,7 +37,7 @@ console.log(endDate.getMonth())
                     Event zaczyna się {dateStartDay} w {dateStartHoursMinustes} i
                     kończy się {dateEndDay} w {dateEndHoursMinustes}</p>)}
             <p style={{textAlign: "center", backgroundColor: "lightblue", overflowWrap: "break-word"}}>{event.opis}</p>
-            {user &&(user.typUzytkownika==="Admin"||user.typUzytkownika==="Druzynowy")&& <button onClick={()=>zmienEdycje(event)}>Edit</button>}
+            {user &&(user.typUzytkownika==="Przyboczny"||user.typUzytkownika==="Druzynowy")&& <button onClick={()=>zmienEdycje(event)}>Edit</button>}
         </div>
     )
 }

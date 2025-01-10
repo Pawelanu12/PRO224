@@ -63,16 +63,19 @@ export default function AddSprawnosc(){
 
         >
             {({ dirty, isValid }) => (
-                <Form>
-
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
+                    Name
                     <Field type="text" name="nazwa" placeholder="napisz nazwe"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="nazwa" component="div"/>
                     <br/>
+                    Opis
                     <Field type="text" name="opis" placeholder="napisz opis dla wszystcych"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="opis" component="div"/>
                     <br/>
+                    Opis for admin
                     <Field type="text" name="opisWymagan" placeholder="napisz opis dla adminow "
                 />
                     <ErrorMessage style={{backgroundColor:"red"}} name="opisWymagan" component="div"/>

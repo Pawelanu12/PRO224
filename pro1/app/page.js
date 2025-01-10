@@ -1,7 +1,7 @@
 'use client'
 
 
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import Components from "./pokazywanie/Components"
 
@@ -10,7 +10,19 @@ import Dodawania from "@/app/pokazywanie/Dodawania";
 
 export default function Home() {
 
-   const {user,setComponentsDodawania,setPokazywanie}=useContext(GlobalContext)
+   const {setListUsers}=useContext(GlobalContext)
+    useEffect(()=>{
+        const getList=async () => {
+            await fetch("http://localhost:8081/api/uzytkownicy/all")
+                .then(res=>res.json())
+                .then(res=>{
+                    console.log(res)
+                    setListUsers(res)
+                })
+                .catch(err=>console.log(err))
+        }
+        getList().catch(err=>console.log(err));
+    },[])
    // console.log(pokazywanieUsera)
 
   return (

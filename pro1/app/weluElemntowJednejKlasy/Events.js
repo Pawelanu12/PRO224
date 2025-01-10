@@ -10,7 +10,7 @@ export default function Events({events}){
         return(<div>nie zaplanowano żadnego eventu</div>)
     return(
         <div>
-            {user&&user.typUzytkownika==="Admin"&& <button onClick={()=>onPokazywanieChange({target:{value:"AddEvent"}})}>Dodaj nowy event</button>}
+            {user&&user.typUzytkownika==="Druzynowy"&& <button onClick={()=>onPokazywanieChange({target:{value:"AddEvent"}})}>Dodaj nowy event</button>}
             <p style={{textAlign: "center", color: "red"}}>Events</p>
 
             {events.map(e => (<div key={e.id}><Event key={e.id} event={e}></Event><br/><br/></div>))}

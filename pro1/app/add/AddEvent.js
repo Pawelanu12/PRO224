@@ -21,7 +21,7 @@ export default function AddEvent(){
 
 
     return(
-        <Formik
+        <Formik style={{justifyContent:"center"}}
             initialValues={{
 
 
@@ -64,7 +64,8 @@ export default function AddEvent(){
 
         >
             {({ dirty, isValid }) => (
-                <Form>
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
 
                     <Field type="text" name="nazwa" placeholder="napisz nazwe"
                     />

@@ -41,7 +41,8 @@ export default function LogIn(){
 
         >
             {({ dirty, isValid }) => (
-                <Form>
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
 
                     <Field type="text" name="login" placeholder="napisz login"
                     />

@@ -1,3 +1,4 @@
+
 'use client'
 
 import {GlobalContext} from "@/app/providers/GlobalProvider";
@@ -9,7 +10,7 @@ export default function Wplata({wplata}){
     return (<div>
         <p>data:{wplata.date}</p>
         <p>kwota:{wplata.kwota}</p>
-        {(user.typUzytkownika==="Admin"||user.typUzytkownika==="Druzynowy")&& <button onClick={()=>zmienEdycje(wplata)}>Edit</button>}
+        {(user.typUzytkownika==="Druzynowy")&& <button onClick={()=>zmienEdycje(wplata)}>Edit</button>}
 
-    <br/><br/></div>)
+        <br/><br/></div>)
 }

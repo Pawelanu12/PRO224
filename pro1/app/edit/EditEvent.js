@@ -1,3 +1,4 @@
+
 'use client'
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
@@ -7,7 +8,7 @@ import {v4} from "uuid";
 
 export default function EditEvent(){
     const {edit,zmienEdycje,editFromList}=useContext(GlobalContext)
-   const  event=edit
+    const  event=edit
 
     return(
         <Formik
@@ -51,7 +52,8 @@ export default function EditEvent(){
 
         >
             {({ dirty, isValid }) => (
-                <Form>
+                <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
+                    backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
 
                     <Field type="text" name="nazwa" placeholder="napisz nazwe"
                     />
