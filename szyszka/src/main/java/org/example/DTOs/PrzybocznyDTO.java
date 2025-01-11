@@ -3,5 +3,5 @@ package org.example.DTOs;
 import lombok.Data;
 
 @Data
-public class PrzybocznyDTO {
+public class PrzybocznyDTO extends UzytkownikDTO{
 }
