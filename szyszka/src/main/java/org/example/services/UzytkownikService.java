@@ -1,6 +1,6 @@
 package org.example.services;
 
-import org.example.Exceptions.UzytkownikNotFoundException;
+import org.example.exceptions.UzytkownikNotFoundException;
 import org.example.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -25,7 +25,6 @@ public class Wydarzenie {
     @Lob
     private String opis;
 
-    @ManyToOne
-    @JoinColumn(name = "organizator_id")
-    private Uzytkownik organizator; // Organizator wydarzenia
+    @Column(name = "organizator_id")
+    private Long organizatorId;
 }
