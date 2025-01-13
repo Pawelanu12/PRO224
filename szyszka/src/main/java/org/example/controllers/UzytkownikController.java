@@ -63,4 +63,9 @@ public class UzytkownikController {
     public List<Uzytkownik> getUzytkownicyByNazwisko(@PathVariable String nazwisko) {
         return uzytkownikService.getUzytkownicyByNazwisko(nazwisko);
     }
+
+    @GetMapping("/find/byid/{id}")
+    public Optional<Uzytkownik> getUzytkownikById(@PathVariable Long id){
+        return uzytkownikService.findUzytkownikById(id);
+    }
 }

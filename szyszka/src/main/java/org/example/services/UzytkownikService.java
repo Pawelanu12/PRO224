@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.Exceptions.UzytkownikNotFoundException;
 import org.example.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,29 @@ public class UzytkownikService {
     }
 
     public void deleteUzytkownikById(Long id) {
+        if (!uzytkownikRepository.existsById(id)) {
+            throw new UzytkownikNotFoundException("Użytkownik o ID " + id + " nie istnieje.");
+        }
+
+        // Znajdź wszystkie zuchy powiązane z rodzicem
+        List<Zuch> powiazaniZuchy = zuchRepository.findByRodzicId(id);
+
+        // Usuń powiązania z rodzicem
+        for (Zuch zuch : powiazaniZuchy) {
+            if (id.equals(zuch.getRodzic1())) {
+                zuch.setRodzic1(null); // Usuń powiązanie z rodzic_id1
+            }
+            if (id.equals(zuch.getRodzic2())) {
+                zuch.setRodzic2(null); // Usuń powiązanie z rodzic_id2
+            }
+            zuchRepository.save(zuch); // Zapisz zmiany w bazie
+        }
+
+        // Usuń użytkownika
         uzytkownikRepository.deleteById(id);
     }
+
+
 
     //findALL
     public List<Zuch> getAllZuchy() {
@@ -65,5 +87,8 @@ public class UzytkownikService {
 
     public List<Uzytkownik> getUzytkownicyByNazwisko(String nazwisko) {
         return uzytkownikRepository.findByNazwisko(nazwisko);
+    }
+    public Optional<Uzytkownik> findUzytkownikById(Long id){
+        return uzytkownikRepository.findById(id);
     }
 }
