@@ -69,10 +69,10 @@ const passwordRegex=/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
                     nazwisko:values.nazwisko,
                     login:values.login,
                     email:values.email,
-                    // id:100,
+                    haslo:values.haslo,
                     dataUrodzenia:date,
-                    // dataDolaczeniaDoGromady:new Date(),
-                    nrTelefonu:"2132312",typUzytkownika:"Zuch"};
+                    dataDolaczeniaDoGromady:new Date(),
+                    nrTelefonu:"2132312"};
                console.log(newValues)
                 addDoListy(newValues,"User")
                 resetForm()

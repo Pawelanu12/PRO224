@@ -19,7 +19,10 @@ export default function GlobalProvider({ children }) {
     const [pokazywanieUsera,setPokazywanieUsera]=useState(1)
     const [users,setUsers]=useState(forUser)
     const [sprawnosci,setSprawnosci]=useState(forSprawnosc)
-    const [user,setUser]=useState(forUser[0])
+    const [user,setUser]=useState(
+    {
+        typUzytkownika:"Druzynowy"
+    })
     const [componentsDodawania,setComponentsDodawania]=useState(1)
     const [kwoty,setKwoty]=useState(forKwoty)
     const[edit,setEdit]=useState(null)
@@ -43,7 +46,7 @@ export default function GlobalProvider({ children }) {
 
 
     }
-    const setListUser=(users)=>{
+    const setListUsers=(users)=>{
         setUsers(users)
     }
     const onPokazywanieChange=(cat)=>{
@@ -89,7 +92,7 @@ export default function GlobalProvider({ children }) {
             case "User":
                 setUsers([...users,value]);
                 console.log(JSON.stringify(value));
-                await fetch("http://localhost:8081/api/uzytkownicy",
+                await fetch("http://localhost:8081/api/uzytkownicy/add/zuch",
                     {
                         method: "POST",
                         body: JSON.stringify(value),
@@ -134,7 +137,7 @@ export default function GlobalProvider({ children }) {
                 alert(type)
         }
     }
-    const deleteFromList=(id,type)=>{
+    const deleteFromList=async (id,type)=>{
         console.log(id)
         switch (type){
             case "GlobalInformation":
@@ -150,24 +153,33 @@ export default function GlobalProvider({ children }) {
                 setSprawnosci(sprawnosci.filter(clas=>clas.id!==id));
                 break;
             case "User":
-                const userDoUsuniecia=users.find(user=>user.id===id)
-                if(!userDoUsuniecia)
-                    console.log("nie ma takiego usera")
-                if(userDoUsuniecia.typUzytkownika==="Admin") {
-                    alert("nie można usuwać admina");
-                    break;
-                }
-                const newUsers=users
-                console.log(newUsers)
+                // const userDoUsuniecia=users.find(user=>user.id===id)
+                // if(!userDoUsuniecia)
+                //     console.log("nie ma takiego usera")
+                // if(userDoUsuniecia.typUzytkownika==="Admin") {
+                //     alert("nie można usuwać admina");
+                //     break;
+                // }
+                // const newUsers=users
+                // console.log(newUsers)
+                //
+                // newUsers.map(u=>{
+                //     console.log(u.dzieci)
+                //     u.rodzice= u.rodzice.filter(clas=>clas!==id)
+                //     u.dzieci= u.dzieci.filter(clas=>(clas!==id))
+                // })
+                // console.log(newUsers)
+                //
+                // setUsers(   newUsers.filter(clas=>clas.id!==id));
 
-                newUsers.map(u=>{
-                    console.log(u.dzieci)
-                    u.rodzice= u.rodzice.filter(clas=>clas!==id)
-                    u.dzieci= u.dzieci.filter(clas=>(clas!==id))
-                })
-                console.log(newUsers)
-
-                setUsers(   newUsers.filter(clas=>clas.id!==id));
+                await fetch(`http://localhost:8081/api/uzytkownicy/delete/${id}`,
+                    {
+                        method: "DELETE",
+                    })
+                    .then(()=>console.log("deleted"))
+                    //.then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                    .finally(() => console.log("ee"));
                 break;
             default:
                 alert(type)
@@ -178,7 +190,7 @@ export default function GlobalProvider({ children }) {
         <GlobalContext.Provider value={{addDoListy,deleteFromList, events ,pokazywanie,onPokazywanieChange
             ,globalInfo,pokazywanieUsera,users,zmienPokazywanegoUsera,
             componentsDodawania,setComponentsDodawania,setPokazywanie,sprawnosci,
-            kwoty,user,setUser,logIn,zmienEdycje,edit,editFromList,setListUser}}>
+            kwoty,user,setUser,logIn,zmienEdycje,edit,editFromList,setListUsers}}>
             {children}
         </GlobalContext.Provider>
     );

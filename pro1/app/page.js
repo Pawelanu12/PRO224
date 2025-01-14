@@ -13,13 +13,14 @@ export default function Home() {
    const {setListUsers}=useContext(GlobalContext)
     useEffect(()=>{
         const getList=async () => {
-            await fetch("http://localhost:8081/api/uzytkownicy/all")
+            await fetch("http://localhost:8081/api/uzytkownicy/findall/zuchy")
                 .then(res=>res.json())
                 .then(res=>{
                     console.log(res)
                     setListUsers(res)
                 })
                 .catch(err=>console.log(err))
+
         }
         getList().catch(err=>console.log(err));
     },[])
