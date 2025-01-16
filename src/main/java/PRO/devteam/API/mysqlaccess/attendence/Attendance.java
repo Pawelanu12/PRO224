@@ -1,7 +1,6 @@
 package PRO.devteam.API.mysqlaccess.attendence;
 
 import jakarta.persistence.*;
-import org.hibernate.type.descriptor.jdbc.TinyIntJdbcType;
 
 import java.math.BigInteger;
 import java.sql.Date;
@@ -23,11 +22,11 @@ public class Attendance {
     private Date dataZakonczenia;
 
     @Column (name = "obecny")
-    private TinyIntJdbcType obecny;
+    private Boolean obecny;
 
     public Attendance() {}
 
-    public Attendance(BigInteger id, BigInteger uzytownikId, BigInteger wydarzenieId, Date dataZakonczenia, TinyIntJdbcType obecny) {
+    public Attendance(BigInteger id, BigInteger uzytownikId, BigInteger wydarzenieId, Date dataZakonczenia, Boolean obecny) {
         this.id = id;
         this.uzytownikId = uzytownikId;
         this.wydarzenieId = wydarzenieId;
@@ -51,7 +50,7 @@ public class Attendance {
         return dataZakonczenia;
     }
 
-    public TinyIntJdbcType getObecny() {
+    public Boolean getObecny() {
         return obecny;
     }
 
@@ -71,7 +70,7 @@ public class Attendance {
         this.dataZakonczenia = dataZakonczenia;
     }
 
-    public void setObecny(TinyIntJdbcType obecny) {
+    public void setObecny(Boolean obecny) {
         this.obecny = obecny;
     }
 }

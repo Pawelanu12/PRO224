@@ -61,8 +61,9 @@ public class AchievementController {
         return new ResponseEntity<>(achievement, HttpStatus.CREATED);
     }
 
-    @PostMapping("/uzytkownicy/{userId}/sprawnosci")
-    public ResponseEntity<Achievement> postNewAchievementToUser(@PathVariable(value = "userId") BigInteger userId, @RequestParam(name="sprawnosc") BigInteger achievementId) {
+    //todo
+    @PostMapping("/uzytkownicy/{userId}/sprawnosci/{achievementId}")
+    public ResponseEntity<Achievement> postNewAchievementToUser(@PathVariable(value = "userId") BigInteger userId, @PathVariable(value="achievementId") BigInteger achievementId) {
         Achievement responseAchievement = userRepository.findById(userId).map(user-> {
                 Achievement achievement = achievementRepository.findById(achievementId)
                         .orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing achievement", null,"Not found achievement with id = " + achievementId ));
@@ -86,7 +87,8 @@ public class AchievementController {
         return new ResponseEntity<>(achievementRepository.save(achievement), HttpStatus.OK);
     }
 
-    @DeleteMapping("/uzytkownik/{userId}/sprawnosci/{achievementId}")
+    //TODO
+    @DeleteMapping("/uzytkownicy/{userId}/sprawnosci/{achievementId}")
     public ResponseEntity<HttpStatus> deleteAchievementFromUser(@PathVariable(value = "userId") BigInteger userId, @PathVariable(value = "achievementId") BigInteger achievementId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing user", null,"Not found a user with id = " + userId ));
@@ -98,9 +100,8 @@ public class AchievementController {
     }
 
     @DeleteMapping("/sprawnosci/{achievementId}")
-    public ResponseEntity<HttpStatus> deleteAchievement(@PathVariable("achievementId") BigInteger achievementId) {
+    public ResponseEntity<HttpStatus> deleteAchievement(@PathVariable(value = "achievementId") BigInteger achievementId) {
         achievementRepository.deleteById(achievementId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

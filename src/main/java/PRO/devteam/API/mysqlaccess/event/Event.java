@@ -22,7 +22,7 @@ public class Event {
     private String nazwa;
     @Column(name = "dataWyjazdu")
     private Date dataWyjazdu;
-    @Column(name = "datazakonczenia")
+    @Column(name = "dataZakonczenia")
     private Date dataZakonczenia;
     @Column(name = "opis")
     private String opis;

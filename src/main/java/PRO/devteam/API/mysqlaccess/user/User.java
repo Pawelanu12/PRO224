@@ -9,9 +9,9 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity ( name = "uzytkownik")
+@Entity
+@Table( name = "uzytkownik")
 public class User {
-
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -29,7 +29,7 @@ public class User {
     private String login;
     @Column(name = "haslo")
     private String haslo;
-    @Column(name = "TypUzytkownikaID")
+    @Column(name = "typUzytkownikaId")
     private BigInteger typUzytkownikaId;
     @Column(name = "email")
     private String email;

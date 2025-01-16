@@ -1,6 +1,5 @@
 package PRO.devteam.API.mysqlaccess.event;
 
-import PRO.devteam.API.mysqlaccess.attendence.AttendenceRepository;
 import PRO.devteam.API.mysqlaccess.user.User;
 import PRO.devteam.API.mysqlaccess.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,7 @@ public class EventController {
     private EventRepository eventRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private AttendenceRepository attendenceRepository;
+
 
     @GetMapping(path="/wydarzenia")
     public ResponseEntity< Iterable<Event>> getAllEvents() {
@@ -46,7 +44,7 @@ public class EventController {
         return new ResponseEntity<>(attendedEvents, HttpStatus.OK);
     }
 
-    @GetMapping(path="/wydarzenia/{eventID}/uczestnicy")
+    @GetMapping(path="/wydarzenia/{eventId}/uczestnicy")
     public ResponseEntity<Iterable<User>> getEventParticipants(@PathVariable(value = "eventId") BigInteger eventId)
     {
         if (!eventRepository.existsById(eventId)) {

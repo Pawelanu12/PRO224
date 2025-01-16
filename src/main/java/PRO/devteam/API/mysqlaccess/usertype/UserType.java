@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigInteger;
 
-@Entity (name = "typuzytkownika")
+@Entity (name = "typUzytkownika")
 public class UserType {
     @Id
     @Column(name="id")
