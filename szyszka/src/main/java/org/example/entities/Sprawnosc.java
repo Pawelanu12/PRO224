@@ -11,6 +11,34 @@ public class Sprawnosc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public void setNazwa(String nazwa) {
+        this.nazwa = nazwa;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    public void setOpisWymagan(String opisWymagan) {
+        this.opisWymagan = opisWymagan;
+    }
+
+    public String getNazwa() {
+        return nazwa;
+    }
+
+    public String getOpis() {
+        return opis;
+    }
+
+    public String getOpisWymagan() {
+        return opisWymagan;
+    }
+
     @Column(nullable = false)
     private String nazwa;
 

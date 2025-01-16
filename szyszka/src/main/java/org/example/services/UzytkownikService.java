@@ -27,6 +27,7 @@ public class UzytkownikService {
     @Autowired
     private PrzybocznyRepository przybocznyRepository;
 
+
     public Zuch addZuch(Zuch zuch) {
         return zuchRepository.save(zuch);
     }
@@ -91,4 +92,5 @@ public class UzytkownikService {
     public Optional<Uzytkownik> findUzytkownikById(Long id){
         return uzytkownikRepository.findById(id);
     }
+
 }
