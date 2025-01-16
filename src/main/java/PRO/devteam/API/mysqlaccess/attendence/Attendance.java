@@ -1,36 +1,35 @@
 package PRO.devteam.API.mysqlaccess.attendence;
 
+import PRO.devteam.API.mysqlaccess.event.Event;
+import PRO.devteam.API.mysqlaccess.user.User;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
-import java.sql.Date;
 
 @Entity (name = "uczestnictwo")
 public class Attendance {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", columnDefinition = "BIGINT")
     @GeneratedValue(strategy=GenerationType.AUTO)
     private BigInteger id;
 
-    @Column (name = "UzytkownikID")
-    private BigInteger uzytownikId;
 
-    @Column (name = "WydarzenieID")
-    private BigInteger wydarzenieId;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "uzytkownikid", columnDefinition = "BIGINT")
+    private User user;
 
-    @Column (name = "dataZakonczenia")
-    private Date dataZakonczenia;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "wydarzenieid", columnDefinition = "BIGINT")
+    private Event event;
 
-    @Column (name = "obecny")
+    @Column (name = "obecny", columnDefinition = "boolean default false")
     private Boolean obecny;
 
     public Attendance() {}
 
-    public Attendance(BigInteger id, BigInteger uzytownikId, BigInteger wydarzenieId, Date dataZakonczenia, Boolean obecny) {
-        this.id = id;
-        this.uzytownikId = uzytownikId;
-        this.wydarzenieId = wydarzenieId;
-        this.dataZakonczenia = dataZakonczenia;
+    public Attendance(User user, Event event, Boolean obecny) {
+        this.user = user;
+        this.event = event;
         this.obecny = obecny;
     }
 
@@ -38,17 +37,15 @@ public class Attendance {
         return id;
     }
 
-    public BigInteger getUzytownikId() {
-        return uzytownikId;
+    public User getUser() {
+        return user;
     }
 
-    public BigInteger getWydarzenieId() {
-        return wydarzenieId;
+    public Event getEvent() {
+        return event;
     }
 
-    public Date getDataZakonczenia() {
-        return dataZakonczenia;
-    }
+
 
     public Boolean getObecny() {
         return obecny;
@@ -58,19 +55,19 @@ public class Attendance {
         this.id = id;
     }
 
-    public void setUzytownikId(BigInteger uzytownikId) {
-        this.uzytownikId = uzytownikId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setWydarzenieId(BigInteger wydarzenieId) {
-        this.wydarzenieId = wydarzenieId;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public void setDataZakonczenia(Date dataZakonczenia) {
-        this.dataZakonczenia = dataZakonczenia;
-    }
+
 
     public void setObecny(Boolean obecny) {
         this.obecny = obecny;
     }
+
+
 }

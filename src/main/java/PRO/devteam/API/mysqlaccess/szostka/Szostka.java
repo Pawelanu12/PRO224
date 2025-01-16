@@ -8,7 +8,7 @@ import java.sql.Date;
 @Entity(name = "Szostka")
 public class Szostka {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", columnDefinition = "BIGINT")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
 
     private BigInteger id;

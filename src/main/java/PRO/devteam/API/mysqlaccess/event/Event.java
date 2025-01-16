@@ -1,22 +1,18 @@
 package PRO.devteam.API.mysqlaccess.event;
 
-import PRO.devteam.API.mysqlaccess.user.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
-import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
-@Entity(name = "Wydarzenie")
+@Entity(name = "wydarzenie")
 public class Event {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", columnDefinition = "BIGINT")
     @GeneratedValue(strategy=GenerationType.AUTO)
     private BigInteger id;
-    @Column(name = "UzytkownikID")
+    @Column(name = "uzytkownikid", columnDefinition = "BIGINT")
     private String uzytkownikId;
     @Column(name = "nazwa")
     private String nazwa;
@@ -26,15 +22,6 @@ public class Event {
     private Date dataZakonczenia;
     @Column(name = "opis")
     private String opis;
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "attendance")
-    @JsonIgnore
-    private Set<User> users = new HashSet<>();
 
     public Event() {}
     public Event(String uzytkownikId, String nazwa, Date dataWyjazdu, Date dataZakonczenia, String opis) {
@@ -67,14 +54,6 @@ public class Event {
 
     public String getOpis() {
         return opis;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     public void setId(BigInteger id) {

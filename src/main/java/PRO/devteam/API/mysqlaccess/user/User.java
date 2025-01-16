@@ -1,24 +1,20 @@
 package PRO.devteam.API.mysqlaccess.user;
 
-import PRO.devteam.API.mysqlaccess.achievement.Achievement;
-import PRO.devteam.API.mysqlaccess.event.Event;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table( name = "uzytkownik")
 public class User {
     @Id
-    @Column(name="id")
+    @Column(name="id", columnDefinition = "BIGINT")
     @GeneratedValue(strategy=GenerationType.AUTO)
     private BigInteger id;
-    @Column(name = "rodzicID1")
+    @Column(name = "rodzicId1")
     private BigInteger rodzicId1;
-    @Column(name = "rodzicID2")
+    @Column(name = "rodzicId2")
     private BigInteger rodzicId2;
 
     @Column(name = "imie")
@@ -29,7 +25,7 @@ public class User {
     private String login;
     @Column(name = "haslo")
     private String haslo;
-    @Column(name = "typUzytkownikaId")
+    @Column(name = "typUzytkownikaid")
     private BigInteger typUzytkownikaId;
     @Column(name = "email")
     private String email;
@@ -40,28 +36,9 @@ public class User {
     private String nrTelefonu;
     @Column(name = "dataDolaczeniaDoGromady")
     private Date dataDolaczeniaDoGromady;
-    @Column(name = "SzostkaID")
+    @Column(name = "szostkaid")
     private BigInteger szostkaId;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "zdobyteSprawnosci",
-            joinColumns = { @JoinColumn(name = "UzytkownikID") },
-            inverseJoinColumns = { @JoinColumn(name = "SprawnoscID") })
-    private Set<Achievement> gainedAchievements = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "uczestnictwo",
-            joinColumns = { @JoinColumn(name = "UzytkownikID") },
-            inverseJoinColumns = { @JoinColumn(name = "WydarzenieID") })
-    private Set<Event> attendance = new HashSet<>();
 
     public User() {
 
@@ -81,33 +58,6 @@ public class User {
         this.dataDolaczeniaDoGromady = dataDolaczeniaDoGromady;
         this.szostkaId = szostkaID;
     }
-
-    public void addAchievement(Achievement achievement) {
-        this.gainedAchievements.add(achievement);
-        achievement.getUsers().add(this);
-    }
-
-    public void removeAchievement(BigInteger achievementId) {
-        Achievement achievement = this.gainedAchievements.stream().filter(t -> t.getId() == achievementId).findFirst().orElse(null);
-        if (achievement != null) {
-            this.gainedAchievements.remove(achievement);
-            achievement.getUsers().remove(this);
-        }
-    }
-
-    public void addAttendence(Event event) {
-        this.attendance.add(event);
-        event.getUsers().add(this);
-    }
-
-    public void removeAttendence(BigInteger eventId) {
-        Event event = this.attendance.stream().filter(t -> t.getId() == eventId).findFirst().orElse(null);
-        if (event != null) {
-            this.attendance.remove(event);
-            event.getUsers().remove(this);
-        }
-    }
-
 
     public BigInteger getId() {
         return id;
@@ -212,4 +162,5 @@ public class User {
     public void setSzostkaId(BigInteger szostkaId) {
         this.szostkaId = szostkaId;
     }
+
 }

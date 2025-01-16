@@ -11,9 +11,6 @@ public interface UserRepository extends CrudRepository<User, BigInteger> {
    Iterable<User> findByTypUzytkownikaId(BigInteger userTypeId);
    Iterable<User> findByRodzicId1In(Collection<BigInteger> parentId);
    Iterable<User> findByRodzicId2In(Collection<BigInteger> parentId);
-   Iterable<User> findUserByGainedAchievementsId(BigInteger achievementId);
-   Iterable<User> findUserByAttendanceId(BigInteger achievementId);
-
    boolean existsUserByEmail(String email);
 
 }

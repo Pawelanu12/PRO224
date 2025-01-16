@@ -1,30 +1,34 @@
 package PRO.devteam.API.mysqlaccess.gainedAchievements;
 
+import PRO.devteam.API.mysqlaccess.achievement.Achievement;
+import PRO.devteam.API.mysqlaccess.user.User;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity (name = "ZdobyteSprawnosci")
 public class GainedAchievements {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", columnDefinition = "BIGINT")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private BigInteger id;
 
-    @Column(name="UzytkownikID")
-    private BigInteger UzytkownikID;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "uzytkownikid", columnDefinition = "BIGINT")
+    private User user;
 
-    @Column(name = "SprawnoscID")
-    private BigInteger SprawnoscID;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "sprawnoscid", columnDefinition = "BIGINT")
+    private Achievement achievement;
 
     @Column(name="dataZdobyciaSprawnosci")
     private Date dataZdobyciaSprawnosci;
 
     public GainedAchievements() {}
-    public GainedAchievements( BigInteger uzytkownikID, BigInteger sprawnoscID, Date dataZdobyciaSprawnosci) {
-        this.UzytkownikID = uzytkownikID;
-        this.SprawnoscID = sprawnoscID;
+    public GainedAchievements( User user, Achievement achievement, Date dataZdobyciaSprawnosci) {
+        this.user = user;
+        this.achievement = achievement;
         this.dataZdobyciaSprawnosci = dataZdobyciaSprawnosci;
     }
 
@@ -32,12 +36,12 @@ public class GainedAchievements {
         return id;
     }
 
-    public BigInteger getUzytkownikID() {
-        return UzytkownikID;
+    public User getUser() {
+        return user;
     }
 
-    public BigInteger getSprawnoscID() {
-        return SprawnoscID;
+    public Achievement getAchievement() {
+        return achievement;
     }
 
     public Date getDataZdobyciaSprawnosci() {
@@ -48,13 +52,15 @@ public class GainedAchievements {
         this.id = id;
     }
 
-    public void setUzytkownikID(BigInteger uzytkownikID) {
-        UzytkownikID = uzytkownikID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setSprawnoscID(BigInteger sprawnoscID) {
-        SprawnoscID = sprawnoscID;
+    public void setAchievement(Achievement achievement) {
+        this.achievement = achievement;
     }
 
-
+    public void setDataZdobyciaSprawnosci(Date dataZdobyciaSprawnosci) {
+        this.dataZdobyciaSprawnosci = dataZdobyciaSprawnosci;
+    }
 }

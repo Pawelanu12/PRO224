@@ -1,6 +1,9 @@
 package PRO.devteam.API.mysqlaccess.event;
 
-import PRO.devteam.API.mysqlaccess.user.User;
+import PRO.devteam.API.mysqlaccess.attendence.Attendance;
+import PRO.devteam.API.mysqlaccess.attendence.AttendanceRepository;
+import PRO.devteam.API.mysqlaccess.attendence.NoEvent;
+import PRO.devteam.API.mysqlaccess.attendence.NoUser;
 import PRO.devteam.API.mysqlaccess.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
@@ -20,6 +23,9 @@ public class EventController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+
 
     @GetMapping(path="/wydarzenia")
     public ResponseEntity< Iterable<Event>> getAllEvents() {
@@ -36,21 +42,21 @@ public class EventController {
     }
 
     @GetMapping(path="/uzytkownicy/{userId}/wydarzenia")
-    public ResponseEntity<Iterable<Event>> getEventsForUserId(@PathVariable(value = "userId") BigInteger userId){
+    public ResponseEntity<Iterable<NoUser>> getEventsForUserId(@PathVariable(value = "userId") BigInteger userId){
         if (!userRepository.existsById(userId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Iterable<Event> attendedEvents = eventRepository.findAttendanceByUsersId(userId);
+        Iterable<NoUser> attendedEvents = attendanceRepository.findByUserId(userId);
         return new ResponseEntity<>(attendedEvents, HttpStatus.OK);
     }
 
-    @GetMapping(path="/wydarzenia/{eventId}/uczestnicy")
-    public ResponseEntity<Iterable<User>> getEventParticipants(@PathVariable(value = "eventId") BigInteger eventId)
+   @GetMapping(path="/wydarzenia/{eventId}/uczestnicy")
+    public ResponseEntity<Iterable<NoEvent>> getEventParticipants(@PathVariable(value = "eventId") BigInteger eventId)
     {
         if (!eventRepository.existsById(eventId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Iterable<User> attendingUsers = userRepository.findUserByAttendanceId(eventId);
+        Iterable<NoEvent> attendingUsers = attendanceRepository.findByEventId(eventId);
         return new ResponseEntity<>(attendingUsers, HttpStatus.OK);
     }
 
@@ -66,16 +72,16 @@ public class EventController {
     }
 
     @PostMapping("/uzytkownicy/{userId}/wydarzenia/{eventId}")
-    public ResponseEntity<Event> postNewEventToUser(@PathVariable(value = "userId") BigInteger userId, @PathVariable(value="eventId") BigInteger eventId) {
-        Event responseEvent = userRepository.findById(userId).map(user-> {
-            Event event = eventRepository.findById(eventId)
-                    .orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing event", null,"Not found event with id = " + eventId ));
-            user.addAttendence(event);
-            userRepository.save(user);
-            return event;
-        }).orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing user", null,"Not found a user with id = " + userId ));
-
-        return new ResponseEntity<>(responseEvent, HttpStatus.ACCEPTED);
+    public ResponseEntity<Attendance> postNewEventToUser(@PathVariable(value = "userId") BigInteger userId, @PathVariable(value="eventId") BigInteger eventId, @RequestParam(required = false) Boolean present) {
+        if (!userRepository.existsById(userId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Attendance responseAttendance = attendanceRepository.save(new Attendance(
+                userRepository.findById(userId).orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing user", null,"Not found user with id = " + userId )),
+                eventRepository.findById(eventId).orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing event", null,"Not found event with id = " + eventId )),
+                present
+                ));
+        return new ResponseEntity<>(responseAttendance, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(path="/wydarzenia/{eventId}")
@@ -93,13 +99,13 @@ public class EventController {
         return new ResponseEntity<>(eventRepository.save(event), HttpStatus.OK);
     }
 
-    @DeleteMapping("/uzytkownicy/{userId}/wydarzenia/{eventId}")
+   @DeleteMapping("/uzytkownicy/{userId}/wydarzenia/{eventId}")
     public ResponseEntity<HttpStatus> deleteEventFromUser(@PathVariable(value = "userId") BigInteger userId, @PathVariable(value = "eventId") BigInteger eventId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new InvalidConfigurationPropertyValueException("missing user", null,"Not found a user with id = " + userId ));
-
-        user.removeAttendence(eventId);
-        userRepository.save(user);
+       if (!eventRepository.existsById(eventId) || !userRepository.existsById(userId)) {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+        Attendance fetchAttendance = attendanceRepository.findByUserIdAndEventId(userId, eventId);
+        attendanceRepository.deleteById(fetchAttendance.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

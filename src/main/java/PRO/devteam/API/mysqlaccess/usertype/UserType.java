@@ -7,7 +7,7 @@ import java.math.BigInteger;
 @Entity (name = "typUzytkownika")
 public class UserType {
     @Id
-    @Column(name="id")
+    @Column(name="id", columnDefinition = "BIGINT")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private BigInteger id;
 
