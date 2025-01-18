@@ -1,10 +1,12 @@
 package PRO.devteam.API.mysqlaccess.user;
 
 import PRO.devteam.API.mysqlaccess.szostka.SzostkaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,12 @@ public class UserController {
     private final BigInteger adminTag = BigInteger.valueOf(1);
     private final BigInteger zuchTag = BigInteger.valueOf(2);
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    public UserController(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @GetMapping(path="/uzytkownicy")
     public ResponseEntity< Iterable<User>> getAllUsers() {
@@ -70,22 +78,46 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PutMapping("/uzytkownicy/{userId}")
-    public ResponseEntity<User> putUser(@PathVariable("userId") BigInteger userId, @RequestBody User givenUser) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidConfigurationPropertyValueException("user not found",null,"Not found Tutorial with id = " + userId));
+//    @PutMapping("/uzytkownicy/{userId}")
+//    public ResponseEntity<User> putUser(@PathVariable("userId") BigInteger userId, @RequestBody User givenUser) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidConfigurationPropertyValueException("user not found",null,"Not found Tutorial with id = " + userId));
+//        user.setRodzicId1(givenUser.getRodzicId1());
+//        user.setRodzicId2(givenUser.getRodzicId2());
+//        user.setImie(givenUser.getImie());
+//        user.setNazwisko(givenUser.getNazwisko());
+//        user.setLogin(givenUser.getLogin());
+//        user.setHaslo(givenUser.getHaslo());
+//        user.setTypUzytkownikaId(givenUser.getTypUzytkownikaId());
+//        user.setEmail(givenUser.getEmail());
+//        user.setNrTelefonu(givenUser.getNrTelefonu());
+//        user.setDataDolaczeniaDoGromady(givenUser.getDataDolaczeniaDoGromady());
+//        user.setSzostkaId(givenUser.getSzostkaId());
+//        return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+//    }
+    @PutMapping("/normaluser/{userId}")
+    public ResponseEntity<User> updateNormalUser(@PathVariable("userId") BigInteger userId, @RequestBody User givenUser) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        user.setLogin(givenUser.getLogin());
+        user.setHaslo(bCryptPasswordEncoder.encode(givenUser.getHaslo()));
+        user.setEmail(givenUser.getEmail());
+        user.setNrTelefonu(givenUser.getNrTelefonu());
+        return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+    }
+    @PutMapping("/admin/{userId}")
+    public ResponseEntity<User> updateUserForAdmin(@PathVariable("userId") BigInteger userId, @RequestBody User givenUser) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         user.setRodzicId1(givenUser.getRodzicId1());
         user.setRodzicId2(givenUser.getRodzicId2());
         user.setImie(givenUser.getImie());
         user.setNazwisko(givenUser.getNazwisko());
-        user.setLogin(givenUser.getLogin());
-        user.setHaslo(givenUser.getHaslo());
         user.setTypUzytkownikaId(givenUser.getTypUzytkownikaId());
-        user.setEmail(givenUser.getEmail());
-        user.setNrTelefonu(givenUser.getNrTelefonu());
         user.setDataDolaczeniaDoGromady(givenUser.getDataDolaczeniaDoGromady());
         user.setSzostkaId(givenUser.getSzostkaId());
         return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
     }
+
 
     @DeleteMapping("/uzytkownicy/{userId}")
     public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("userId") BigInteger userId) {
