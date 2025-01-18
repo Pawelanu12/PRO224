@@ -9,19 +9,29 @@ import {v4} from "uuid";
 export default function EditEvent(){
     const {edit,zmienEdycje,editFromList}=useContext(GlobalContext)
     const  event=edit
-
+    console.log(event.dataZakonczenia)
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+    console.log(new Date().toLocaleDateString())
+    const formattedDate = formatter.format(new Date(event.dataZakonczenia)).replace(", ","T");
+    console.log(formattedDate);
     return(
         <Formik
             initialValues={{
 
-
+                id:event.id,
                 opis:event.opis,
-                endDate:event.endDate,
-                startDate:event.startDate,
+                dataZakonczenia:new Date(event.dataZakonczenia).toLocaleDateString(),
+                dataWyjazdu:new Date(event.dataWyjazdu).toLocaleDateString(),
 
                 nazwa:event.nazwa
-
             }}
+
             validationSchema={Yup.object({
 
                 opis: Yup.string()
@@ -32,9 +42,9 @@ export default function EditEvent(){
                     .min(3, "Nazwa musi mieć co najmniej 3 znaki")
                     .max(30, "Nazwa nie może być dłuższy niż 30 znaków")
                     .required("Nazwa jest wymagany"),
-                startDate: Yup.date().required("Data rozpoczecia jest wymagana"),
-                endDate: Yup.date().required("Data zakonczenia jest wymagana")
-                    .min(Yup.ref("startDate"),"musi byc weksze od daty rozpoczecia")
+                dataWyjazdu: Yup.date().required("Data rozpoczecia jest wymagana"),
+                dataZakonczenia: Yup.date().required("Data zakonczenia jest wymagana")
+                    .min(Yup.ref("dataWyjazdu"),"musi byc weksze od daty rozpoczecia")
 
 
             })}
@@ -46,12 +56,14 @@ export default function EditEvent(){
                 const newValues={...values,id:event.id};
                 console.log(newValues)
                 editFromList(newValues,"Event")
-                zmienEdycje(null)
-                resetForm()
+                setTimeout(()=>{zmienEdycje(null);resetForm()},10)
+
+
             }}
 
         >
             {({ dirty, isValid }) => (
+
                 <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
                     backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
 
@@ -59,14 +71,14 @@ export default function EditEvent(){
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="nazwa" component="div"/>
                     <br/>
-                    Data rozpoczecia: <Field type="datetime-local" name="startDate" placeholder="Data rozpoczecia"
+                    Data rozpoczecia: <Field type="datetime-local" name="dataWyjazdu" placeholder="Data rozpoczecia"
                 />
-                    <ErrorMessage style={{backgroundColor:"red"}} name="startDate" component="div"/>
+                    <ErrorMessage style={{backgroundColor:"red"}} name="dataWyjazdu" component="div"/>
                     <br/>
 
-                    Data zakonczenia: <Field type="datetime-local" name="endDate" placeholder="Data zakonczenia"
+                    Data zakonczenia: <Field type="datetime-local" name="dataZakonczenia" placeholder="Data zakonczenia"
                 />
-                    <ErrorMessage style={{backgroundColor:"red"}} name="endDate" component="div"/>
+                    <ErrorMessage style={{backgroundColor:"red"}} name="dataZakonczenia" component="div"/>
                     <br/>
 
                     <Field as="textarea" name="opis" placeholder="napisz opis" rows="12" cols="60"
@@ -80,5 +92,6 @@ export default function EditEvent(){
                 </Form>)}
 
         </Formik>
+
     )
 }

@@ -13,7 +13,7 @@ export default function GlobalInformation({globalInfo}) {
     // const data=`${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
     return(
         <div style={{marginLeft: '10%',marginRight:'10%'}}>
-            {user&&user.typUzytkownika==="Druzynowy"&& <FaTrash onClick={()=>deleteFromList(globalInfo.id,"GlobalInformation")}/>}
+            {user&&user.typUzytkownikaId===1&& <FaTrash onClick={()=>deleteFromList(globalInfo.id,"GlobalInformation")}/>}
 
             <div style={{
                 width: '100%',
@@ -32,7 +32,7 @@ export default function GlobalInformation({globalInfo}) {
                 backgroundColor: 'red',}}>
                 <p >{globalInfo.opis}</p>
             </div>
-            {user&&(user.typUzytkownika==="Admin"||user.typUzytkownika==="Druzynowy")&& <button onClick={()=>zmienEdycje(globalInfo)}>Edit</button>}
+            {user&&(user.typUzytkownikaId===1)&& <button onClick={()=>zmienEdycje(globalInfo)}>Edit</button>}
 
         </div>
     )

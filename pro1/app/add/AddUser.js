@@ -72,6 +72,7 @@ const passwordRegex=/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
                     haslo:values.haslo,
                     dataUrodzenia:date,
                     dataDolaczeniaDoGromady:new Date(),
+                    typUzytkownikaId:2,
                     nrTelefonu:"2132312"};
                console.log(newValues)
                 addDoListy(newValues,"User")

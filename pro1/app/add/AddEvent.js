@@ -26,8 +26,8 @@ export default function AddEvent(){
 
 
                 opis:"",
-                 endDate:"",
-                startDate:"",
+                 dataZakonczenia:"",
+               dataWyjazdu:"",
 
                 nazwa:""
 
@@ -42,9 +42,9 @@ export default function AddEvent(){
                     .min(3, "Nazwa musi mieć co najmniej 3 znaki")
                     .max(30, "Nazwa nie może być dłuższy niż 30 znaków")
                     .required("Nazwa jest wymagany"),
-                startDate: Yup.date().required("Data rozpoczecia jest wymagana"),
-                endDate: Yup.date().required("Data zakonczenia jest wymagana")
-                    .min(Yup.ref("startDate"),"musi byc weksze od daty rozpoczecia")
+                dataWyjazdu: Yup.date().required("Data rozpoczecia jest wymagana"),
+                dataZakonczenia: Yup.date().required("Data zakonczenia jest wymagana")
+                    .min(Yup.ref("dataWyjazdu"),"musi byc weksze od daty rozpoczecia")
 
 
             })}
@@ -53,13 +53,13 @@ export default function AddEvent(){
 
 
               //console.log(values)
-                values.startDate=(values.startDate.toString().slice(0,10)+" "+values.startDate.toString().slice(11,16))
-                values.endDate =(values.endDate.toString().slice(0,10)+" "+values.endDate.toString().slice(11,16))
-                const newValues={...values,id:v4()};
-               // console.log(newValues)
-                addDoListy(newValues,"Event")
-                resetForm()
-                onPokazywanieChange({target:{value:"Events"}})
+              //   values.startDate=(values.startDate.toString().slice(0,10)+" "+values.startDate.toString().slice(11,16))
+              //   values.endDate =(values.endDate.toString().slice(0,10)+" "+values.endDate.toString().slice(11,16))
+                const newValues={...values,uzytkownikId:2};
+               console.log(newValues)
+               addDoListy(newValues,"Event")
+
+                setTimeout(()=>{resetForm();onPokazywanieChange({target:{value:"Events"}})},10)
             }}
 
         >
@@ -71,14 +71,14 @@ export default function AddEvent(){
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="nazwa" component="div"/>
                     <br/>
-                    Data rozpoczecia: <Field type="datetime-local" name="startDate" placeholder="Data rozpoczecia"
+                    Data rozpoczecia: <Field type="datetime-local" name="dataWyjazdu" placeholder="Data rozpoczecia"
                 />
-                    <ErrorMessage style={{backgroundColor:"red"}} name="startDate" component="div"/>
+                    <ErrorMessage style={{backgroundColor:"red"}} name="dataWyjazdu" component="div"/>
                     <br/>
 
-                    Data zakonczenia: <Field type="datetime-local" name="endDate" placeholder="Data zakonczenia"
+                    Data zakonczenia: <Field type="datetime-local" name="dataZakonczenia" placeholder="Data zakonczenia"
                 />
-                    <ErrorMessage style={{backgroundColor:"red"}} name="endDate" component="div"/>
+                    <ErrorMessage style={{backgroundColor:"red"}} name="dataZakonczenia" component="div"/>
                     <br/>
 
                     <Field as="textarea" name="opis" placeholder="napisz opis" rows="12" cols="60"

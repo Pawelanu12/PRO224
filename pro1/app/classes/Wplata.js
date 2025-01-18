@@ -10,7 +10,7 @@ export default function Wplata({wplata}){
     return (<div>
         <p>data:{wplata.date}</p>
         <p>kwota:{wplata.kwota}</p>
-        {(user.typUzytkownika==="Druzynowy")&& <button onClick={()=>zmienEdycje(wplata)}>Edit</button>}
+        {(user.typUzytkownikaId===1)&& <button onClick={()=>zmienEdycje(wplata)}>Edit</button>}
 
         <br/><br/></div>)
 }

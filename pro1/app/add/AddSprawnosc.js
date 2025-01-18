@@ -18,7 +18,7 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 ////expanse jezeli !==-1 to nie pokazuj nic bo ktos patrze na detali jakegos wydatku
 export default function AddSprawnosc(){
-    const {addDoListy}=useContext(GlobalContext)
+    const {addDoListy,onPokazywanieChange}=useContext(GlobalContext)
 
 
     return(
@@ -55,10 +55,11 @@ export default function AddSprawnosc(){
 
 
                 //console.log(values)
-               const newValues={...values,id:v4()};
+               const newValues={...values,id:1};
                 // console.log(newValues)
                 addDoListy(newValues,"Sprawnosc")
-                resetForm()
+                setTimeout(()=>{onPokazywanieChange({target:{value:"Sprawnosci"}});resetForm();},10)
+
             }}
 
         >

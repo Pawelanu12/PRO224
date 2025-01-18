@@ -48,8 +48,8 @@ export default function EditSprawnosc(){
                 const newValues={...values,id:edit.id};
                 // console.log(newValues)
                 editFromList(newValues,"Sprawnosc")
-                zmienEdycje(null)
-                resetForm()
+                setTimeout(()=>{zmienEdycje(null);resetForm()},10)
+
             }}
 
         >

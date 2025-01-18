@@ -13,45 +13,155 @@ import forSprawnosc from "../data/forSprawnosc.json"
 export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
-    const [events, setEvents] = useState(forEvent);
+    const [events, setEvents] = useState([]);
     const [globalInfo, setGlobalInfo] = useState(forGlobalInfo);
     const [pokazywanie,setPokazywanie]=useState("User")
     const [pokazywanieUsera,setPokazywanieUsera]=useState(1)
-    const [users,setUsers]=useState(forUser)
-    const [sprawnosci,setSprawnosci]=useState(forSprawnosc)
+    const [users,setUsers]=useState([])
+    const [sprawnosci,setSprawnosci]=useState([])
     const [user,setUser]=useState(
     {
-        typUzytkownika:"Druzynowy"
+        id:53,
+        typUzytkownikaId:1
     })
-    const [componentsDodawania,setComponentsDodawania]=useState(1)
+    const [achivementUserId,setAchivementUserId]=useState(null)
     const [kwoty,setKwoty]=useState(forKwoty)
     const[edit,setEdit]=useState(null)
-
+const [loading,setLoading]=useState(false)
     //new globalInfo
-
+    const zmienLoading=(loading)=>setLoading(loading)
     const zmienEdycje=(ed)=>{
         setEdit(ed)
     }
     const logIn=(values)=>{
         //const logUser= users.filter(u=>u.login===values.login&&u.haslo===values.password)
-        const logUser= users.filter(u=>u.login===values.login)
 
-        if(logUser.length){
-            setUser(logUser[0]);
-            setPokazywanieUsera(logUser[0].id)
-            setPokazywanie("User")
-            return true
+        const zaloguj=async (values) => {
+            console.log(values)
+            const logUser = await fetch(`http://localhost:8080/login?login=${values.login}&&password=${values.password}`,
+                {
+                    method: "POST",
+                })
+                .then(res => res.json())
+                .then(r => {
+                    console.log(r);
+                    setUser(r);
+                    setPokazywanieUsera(r.id)
+                    setUsers([r])
+                    setPokazywanie("User")
+                })
+                .catch(err => {console.log(err);alert("logowanie nie udalo")})
+
         }
-        return false
-
-
+       zaloguj(values)
     }
-    const setListUsers=(users)=>{
-        setUsers(users)
+    const getFromList=(list)=>{
+        switch(list){
+            case "Events":
+                const getListEvents=async () => {
+                    zmienLoading(true)
+                    await fetch("http://localhost:8080/api/wydarzenia")
+                        .then(res=>res.json())
+                        .then(res=>{
+                            //    console.log(res)
+                            setList("Events",res)
+                        })
+                        .catch(err=>console.log(err))
+                       .finally(setLoading(false))
+                }
+                getListEvents();
+                break;
+            case "Sprawnosci":
+                const getListSprawnosci=async () => {
+                    zmienLoading(true)
+                    await fetch("http://localhost:8080/api/sprawnosci")
+                        .then(res=>res.json())
+                        .then(res=>{
+                            //  console.log(res)
+                            setList("Sprawnosci",res)
+                        })
+                        .catch(err=>{console.log(err);setSprawnosci([])})
+                        .finally(zmienLoading(false))
+                }
+                getListSprawnosci()
+                break;
+            case "Attended Events":
+                const getListAtendedEvents=async () => {
+                    await fetch(`http://localhost:8080/api/uzytkownicy/${user.id}/wydarzenia`)
+                        .then(res=>res.json())
+                        .then(res=>{
+                            console.log(res)
+                            let list=[]
+                            res.map(e=>list.push(e.event))
+                            console.log(list)
+                            setList("Events",list)
+                        })
+                        .catch(err=>{console.log(err);setList("Events",[])})
+
+                }
+                getListAtendedEvents()
+                break;
+            case "Users":
+                const getListUsers=async () => {
+                    zmienLoading(true)
+                    await fetch("http://localhost:8080/api/uzytkownicy")
+                        .then(res=>res.json())
+                        .then(res=>{
+                            // console.log(res)
+                            setList("Users",res)
+                        })
+                        .catch(err=>console.log(err))
+                        .finally(zmienLoading(false))
+                }
+                getListUsers()
+                break;
+            case "Gained Achivements" :
+                if(!achivementUserId)
+                    setAchivementUserId(user.id)
+                const getAchievedListSprawnosci=async () => {
+                    zmienLoading(true)
+                    await fetch(`http://localhost:8080/api/uzytkownicy/${achivementUserId}/sprawnosci`)
+                        .then(res=>res.json())
+                        .then(res=>{
+                 //             console.log(res)
+                            setList("Sprawnosci",res)
+                        })
+                        .catch(err=>{console.log(err);setSprawnosci([])})
+                        .finally(()=>{zmienLoading(false)})
+                }
+                getAchievedListSprawnosci()
+                break;
+        }
     }
-    const onPokazywanieChange=(cat)=>{
+    const setList=(list,data)=>{
+
+        switch(list){
+            case "User":
+                setUser(data)
+                break;
+            case "Users":
+                setUsers(data)
+                break;
+            case "Events":
+                setEvents(data)
+                break;
+            case "globalInfo":
+                setGlobalInfo(data)
+                break;
+            case "Sprawnosci":
+                setSprawnosci(data)
+                break;
+            case "User Achivement":
+                setAchivementUserId(data)
+
+                break;
+            default:
+                console.log(list)
+        }
+    }
+    const onPokazywanieChange=(cat,userId=1)=>{
         zmienEdycje(null)
-        console.log(cat)
+        // console.log(cat)
         // console.log(cat)
 
         if(cat==="User") {///User...33 wszystkie usery=>1user
@@ -76,23 +186,15 @@ export default function GlobalProvider({ children }) {
         setPokazywanieUsera(id)
     }
     const addDoListy= async (value,type)=>{
+        console.log(value)
         switch (type){
             case "GlobalInformation":
                 setGlobalInfo([...globalInfo,value]);
                 break;
             case "Event":
-                setEvents([...events,value]);
-                break;
-            case "Kwota":
-                setKwoty([...kwoty,value]);
-                break;
-            case "Sprawnosc":
-                setSprawnosci([...sprawnosci,value]);
-                break;
-            case "User":
-                setUsers([...users,value]);
-                console.log(JSON.stringify(value));
-                await fetch("http://localhost:8081/api/uzytkownicy/add/zuch",
+              //  setEvents([...events,value]);
+                await fetch("http://localhost:8080/api/wydarzenia",
+
                     {
                         method: "POST",
                         body: JSON.stringify(value),
@@ -101,37 +203,127 @@ export default function GlobalProvider({ children }) {
                     .then(res => res.json())
                     .then(r=>console.log(r))
                     .catch(err => console.log(err))
-                    .finally(() => console.log("ee"));
+                break;
+            case "Kwota":
+                console.log(value)
+                await fetch(`http://localhost:8080/api/uzytkownicy/${value.uzytkownikId}/skladki`,
+
+                    {
+                        method: "POST",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                break;
+            case "Sprawnosc":
+                await fetch("http://localhost:8080/api/sprawnosci",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                break;
+            case "newUserAttend":
+                await fetch(`http://localhost:8080/api/uzytkownicy/${user.id}/wydarzenia/${value.id}?present=false`,
+                    {
+                        method: "POST",
+                    })
+                    .then(r=>console.log("udalo"))
+                    .catch(err => console.log(err))
+                break;
+            case "newUserAchivement":
+                await fetch(`http://localhost:8080/api/uzytkownicy/${value.userId}/sprawnosci/${value.sprawnoscId}?date=${value.date}`,
+                    {
+                        method: "POST",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                    .finally(() => {
+                        onPokazywanieChange({target:{value:"Users"}})
+                        setAchivementUserId(null)
+                    });
+
+                break;
+            case "User":
+                // setUsers([...users,value]);
+                console.log(JSON.stringify(value));
+                // await fetch("http://localhost:8081/api/uzytkownicy/add/zuch",
+                await fetch("http://localhost:8080/signup",
+
+                    {
+                        method: "POST",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
                 break;
             default:
                 alert(type)
         }
     }
-    const editFromList=(value,type)=>{
+    const editFromList=async (value,type)=>{
         let newValues
         switch (type){
             case "GlobalInformation":
                 newValues=globalInfo.map(g=>g.id===value.id?value:g)
                 setGlobalInfo(newValues);
                 break;
-            case "Event"
-            :
-                newValues=events.map(g=>g.id===value.id?value:g)
-                setEvents(newValues);
+            case "Event":
+    //            console.log(value)
+                await fetch(`http://localhost:8080/api/wydarzenia/${value.id}`,
+
+                    {
+                        method: "PUT",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
                 break;
             case "Kwota":
-                newValues=kwoty.map(g=>g.id===value.id?value:g)
+                await fetch(`http://localhost:8080/api/uzytkownicy/skladki/${value.id}`,
 
-                setKwoty(newValues);
+                    {
+                        method: "PUT",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
                 break;
             case "Sprawnosc":
-                newValues=sprawnosci.map(g=>g.id===value.id?value:g)
-                setSprawnosci(newValues);
+                await fetch(`http://localhost:8080/api/sprawnosci/${value.id}`,
+                    {
+                        method: "PUT",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
                 break;
             case "User":
-                newValues=users.map(g=>g.id===value.id?value:g)
-
-                setUsers(newValues);
+                await fetch(`http://localhost:8080/api/uzytkownicy/${value.id}`,
+                    {
+                        method: "PUT",
+                        body: JSON.stringify(value),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    .then(res => res.json())
+                    .then(r=>console.log(r))
+                    .catch(err => console.log(err))
                 break;
             default:
                 alert(type)
@@ -144,42 +336,67 @@ export default function GlobalProvider({ children }) {
                 setGlobalInfo(globalInfo.filter(clas=>clas.id!==id));
                 break;
             case "Event":
-                setEvents(events.filter(clas=>clas.id!==id));
-                break;
-            case "Kwota":
-                setKwoty(kwoty.filter(clas=>clas.id!==id));
-                break;
-            case "Sprawnosc":
-                setSprawnosci(sprawnosci.filter(clas=>clas.id!==id));
-                break;
-            case "User":
-                // const userDoUsuniecia=users.find(user=>user.id===id)
-                // if(!userDoUsuniecia)
-                //     console.log("nie ma takiego usera")
-                // if(userDoUsuniecia.typUzytkownika==="Admin") {
-                //     alert("nie można usuwać admina");
-                //     break;
-                // }
-                // const newUsers=users
-                // console.log(newUsers)
-                //
-                // newUsers.map(u=>{
-                //     console.log(u.dzieci)
-                //     u.rodzice= u.rodzice.filter(clas=>clas!==id)
-                //     u.dzieci= u.dzieci.filter(clas=>(clas!==id))
-                // })
-                // console.log(newUsers)
-                //
-                // setUsers(   newUsers.filter(clas=>clas.id!==id));
+                // setEvents(events.filter(clas=>clas.id!==id));
 
-                await fetch(`http://localhost:8081/api/uzytkownicy/delete/${id}`,
+                await fetch(`http://localhost:8080/api/wydarzenia/${id}`,
                     {
                         method: "DELETE",
                     })
                     .then(()=>console.log("deleted"))
                     //.then(r=>console.log(r))
                     .catch(err => console.log(err))
-                    .finally(() => console.log("ee"));
+                    .finally(() =>getFromList("Events"));
+                break;
+                case "Kwota":
+                    await fetch(`http://localhost:8080/api/uzytkownicy/skladki/${id}`,
+                        {
+                            method: "DELETE",
+                        })
+                        .then(()=>console.log("deleted"))
+                        .catch(err => console.log(err))
+                        .finally(() =>getFromList("Platnosci"));
+                    break;
+            case "Sprawnosc":
+                await fetch(`http://localhost:8080/api/sprawnosci/${id}`,
+                    {
+                        method: "DELETE",
+                    })
+                    .then(()=>console.log("deleted"))
+                    .catch(err => console.log(err))
+                    .finally(() =>getFromList("Sprawnosci"));
+
+                break;
+            case "notAttend":
+                await fetch(`http://localhost:8080/api/uzytkownicy/${user.id}/wydarzenia/${id}`,
+                    {
+                        method: "DELETE",
+                    })
+                    .then(r=>console.log("udalo"))
+                    .catch(err => console.log(err))
+                    .finally(() =>getFromList("Events"));
+
+                break;
+            case "User":
+                await fetch(`http://localhost:8080/api/uzytkownicy/${id}`,
+                    {
+                        method: "DELETE",
+                    })
+                    .then(()=>console.log("deleted"))
+                    //.then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                    .finally(() =>getFromList("Users"));
+
+                break;
+            case "Gained Achivement":
+                await fetch(`http://localhost:8080/api/uzytkownicy/${achivementUserId}/sprawnosci/${id}`,
+                    {
+                        method: "DELETE",
+                    })
+                    .then(()=>console.log("deleted"))
+                    //.then(r=>console.log(r))
+                    .catch(err => console.log(err))
+                    .finally(() =>getFromList("Gained Achivements"));
+
                 break;
             default:
                 alert(type)
@@ -189,8 +406,8 @@ export default function GlobalProvider({ children }) {
     return (
         <GlobalContext.Provider value={{addDoListy,deleteFromList, events ,pokazywanie,onPokazywanieChange
             ,globalInfo,pokazywanieUsera,users,zmienPokazywanegoUsera,
-            componentsDodawania,setComponentsDodawania,setPokazywanie,sprawnosci,
-            kwoty,user,setUser,logIn,zmienEdycje,edit,editFromList,setListUsers}}>
+            setPokazywanie,sprawnosci,achivementUserId,
+            kwoty,user,setUser,logIn,zmienEdycje,edit,editFromList,setList,zmienLoading,loading,getFromList}}>
             {children}
         </GlobalContext.Provider>
     );

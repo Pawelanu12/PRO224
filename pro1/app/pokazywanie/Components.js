@@ -5,6 +5,7 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 import WyberzJakieComponentyPokazywacz from "@/app/pokazywanie/WyberzJakieComponentyPokazywacz";
 import GlobalInfo from "@/app/weluElemntowJednejKlasy/GlobalInfo";
 import Events from "@/app/weluElemntowJednejKlasy/Events";
+import MyEvents from "@/app/weluElemntowJednejKlasy/MyEvents";
 import Kwoty from "../weluElemntowJednejKlasy/Kwoty"
 import Users from "@/app/weluElemntowJednejKlasy/Users";
 import LogIn from "@/app/pokazywanie/LogIn";
@@ -19,6 +20,8 @@ import EditHaslo from "@/app/edit/EditHaslo";
 import EditEvent from "@/app/edit/EditEvent";
 import EditGlobalInformation from "@/app/edit/EditGlobalInformation";
 import EditSprawnosc from "@/app/edit/EditSprawnosc";
+import AddUserAchivement from "@/app/add/AddUserAchivement";
+import MySprawnosci from "@/app/weluElemntowJednejKlasy/MySprawnosci";
 
 
 export default function Components() {
@@ -32,7 +35,7 @@ export default function Components() {
             <WyberzJakieComponentyPokazywacz></WyberzJakieComponentyPokazywacz>
             {pokazywanie==="GlobalInfo" &&(!edit &&<GlobalInfo globalInfo={globalInfo}></GlobalInfo>||
                 edit&&<EditGlobalInformation></EditGlobalInformation>)}
-            {pokazywanie==="Events" &&(!edit &&<Events events={events}></Events>||edit&&<EditEvent></EditEvent>)}
+            {pokazywanie==="Events" &&(!edit &&<Events></Events>||edit&&<EditEvent></EditEvent>)}
             {pokazywanie==="Kwoty" && <Kwoty id={pokazywanieUsera}></Kwoty>}
             {pokazywanie==="Users" && <Users ></Users>}
             {pokazywanie==="LogIn" && <LogIn ></LogIn>}
@@ -43,9 +46,12 @@ export default function Components() {
             {pokazywanie==="AddGlobalInformation" &&<AddGlobalInformation></AddGlobalInformation>}
             {pokazywanie==="AddEvent" &&<AddEvent></AddEvent>}
             {pokazywanie==="AddSprawnosc" &&<AddSprawnosc></AddSprawnosc>}
+            {pokazywanie==="MyEvents" &&<MyEvents></MyEvents>}
+            {pokazywanie==="UserAchivement" &&<AddUserAchivement></AddUserAchivement>}
+            {pokazywanie==="MySprawnosci" &&<MySprawnosci></MySprawnosci>}
+
             {/*{pokazywanie==="EditHaslo" &&<EditHaslo></EditHaslo>}*/}
             {/*{pokazywanie==="EditEvent" &&<EditEvent></EditEvent>}*/}
-
 
 
 

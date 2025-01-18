@@ -24,34 +24,26 @@ export default function AddKwota(){
     return(
         <Formik
             initialValues={{
-
-                "kwota":0
-
-
-
-            }}
+                "kwota":0,
+                "nazwa":"",
+                "uzytkownikId":0
+                }}
             validationSchema={Yup.object({
-
+                nazwa:Yup.string().required("Nazwa jes wymagana"),
                 kwota: Yup.number()
                     .min(1, "Kwota nie może być mniejsza od 1")
-                    .required("nie może byc pusta")
-
-
-
-
+                    .required("nie może byc pusta"),
+                uzytkownikId:Yup.number().required("idUsera jest wymagane").
+                min(1,"id usera musi byc weksze od 0"),
             })}
             onSubmit={(values,{resetForm}) => {
 
 
 
                const nowa={
-                   date:new Date().toDateString(),
-                   id:v4(),
+                   dataWplaty:new Date(),
                    ...values,
-                   idUsera:user.id
                }
-               // const newValues={...values,id:v4()};
-                // console.log(newValues)
                 addDoListy(nowa,"Kwota")
                 resetForm()
             }}
@@ -60,10 +52,20 @@ export default function AddKwota(){
             {({ dirty, isValid }) => (
                 <Form style={{alignItems:"center",display:"flex",flexDirection:"column",
                     backgroundColor:"yellow",justifyContent:"center",border:"solid black 1px",margin:"10%"}}>
-
+                    Nazwa:
+                    <Field type="text" name="nazwa" placeholder="napisz nazwe"
+                    />
+                    <ErrorMessage style={{backgroundColor:"red"}} name="nazwa" component="div"/>
+                    <br/>
+                    Kwota:
                     <Field type="number" name="kwota" placeholder="napisz nazwe"
                     />
                     <ErrorMessage style={{backgroundColor:"red"}} name="kwota" component="div"/>
+                    <br/>
+                    Id usera do wplaty
+                    <Field type="number" name="uzytkownikId" placeholder="napisz nazwe"
+                    />
+                    <ErrorMessage style={{backgroundColor:"red"}} name="uzytkownikId" component="div"/>
                     <br/>
 
 

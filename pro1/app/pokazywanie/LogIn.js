@@ -30,12 +30,8 @@ export default function LogIn(){
             onSubmit={(values,{resetForm}) => {
 
 
-
-                //console.log(values)
-               if(logIn(values))
-                   alert("logowanie udalo")
-                else
-                    alert("logowanie nie udalo")
+console.log(values)
+              logIn(values)
                 resetForm()
             }}
 
