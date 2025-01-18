@@ -33,11 +33,16 @@ public class LoginController {
     }
 
 
+    @Autowired
+    private HttpSession session;
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestParam("login") String login,
-                                       @RequestParam("password") String password) {
+                                       @RequestParam("password") String password,
+                                       HttpSession session) {
         User user = userRepository.findByLogin(login);
         if (user != null && bCryptPasswordEncoder.matches(password, user.getHaslo())) {
+            session.setAttribute("user", user);
             return ResponseEntity.ok(user);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login or password");
