@@ -1,0 +1,82 @@
+CREATE TABLE typ_uzytkownika (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    opis TEXT
+);
+
+CREATE TABLE szostka (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_stworzenia DATETIME NOT NULL
+);
+
+CREATE TABLE uzytkownik (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(255) NOT NULL,
+    nazwisko VARCHAR(255) NOT NULL,
+    login VARCHAR(255) NOT NULL UNIQUE,
+    haslo VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    data_urodzenia DATETIME,
+    nr_telefonu VARCHAR(20),
+    data_dolaczenia_do_gromady DATETIME,
+    rodzic_id1 BIGINT,
+    rodzic_id2 BIGINT,
+    typ_uzytkownikaid BIGINT NOT NULL DEFAULT 2,
+    szostkaid BIGINT,
+    FOREIGN KEY (rodzic_id1) REFERENCES uzytkownik(id) ON DELETE SET NULL,
+    FOREIGN KEY (rodzic_id2) REFERENCES uzytkownik(id) ON DELETE SET NULL,
+    FOREIGN KEY (typ_uzytkownikaid) REFERENCES typ_uzytkownika(id) ON DELETE RESTRICT,
+    FOREIGN KEY (szostkaid) REFERENCES szostka(id) ON DELETE SET NULL
+);
+
+CREATE TABLE skladka (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_wplaty DATETIME NOT NULL,
+    uzytkownikid BIGINT NOT NULL,
+    kwota FLOAT NOT NULL,
+    FOREIGN KEY (uzytkownikid) REFERENCES uzytkownik(id) ON DELETE CASCADE
+);
+
+CREATE TABLE sprawnosc (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    opis TEXT,
+    opis_wymagan TEXT
+);
+
+CREATE TABLE zdobyte_sprawnosci (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    uzytkownikid BIGINT NOT NULL,
+    sprawnoscid BIGINT NOT NULL,
+    data_zdobycia_sprawnosci DATETIME NOT NULL,
+    FOREIGN KEY (uzytkownikid) REFERENCES uzytkownik(id) ON DELETE CASCADE,
+    FOREIGN KEY (sprawnoscid) REFERENCES sprawnosc(id) ON DELETE CASCADE,
+    UNIQUE (uzytkownikid, sprawnoscid)
+);
+
+CREATE TABLE wydarzenie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_wyjazdu DATETIME NOT NULL,
+    data_zakonczenia DATETIME NOT NULL,
+    opis TEXT,
+    uzytkownikid BIGINT,
+    FOREIGN KEY (uzytkownikid) REFERENCES uzytkownik(id) ON DELETE SET NULL
+);
+
+CREATE TABLE uczestnictwo (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uzytkownikid BIGINT NOT NULL,
+    wydarzenieid BIGINT NOT NULL,
+    data_zakonczenia DATETIME,
+    obecny BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (uzytkownikid) REFERENCES uzytkownik(id) ON DELETE CASCADE,
+    FOREIGN KEY (wydarzenieid) REFERENCES wydarzenie(id) ON DELETE CASCADE,
+    UNIQUE (uzytkownikid, wydarzenieid)
+);
+
+insert into szostka values (1, "pierwsza", "2020-01-01");
+insert into typ_uzytkownika values(1, "admin", "admin");
+insert into typ_uzytkownika values(2, "zuch", "zuch");
