@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+div{
+    background-color: black;
+    color:white;
+}
+.navbar{
+ display: flex;
+  justify-content: space-between;
+ background-color: #3A4F39;
+    height: 50px;
+}
+.navbar div button{
+  margin: 10px;
+
+  justify-content: space-between;
+  /*color:white;*/
+  background-color: #405E3F;
+}
+.navbar div{
+    background-color: #3A4F39;
+}
+.flexRow{
+    height: calc(100vh - 50px);
+ display: flex;
+ flex-direction: row;
+}
+.field{
+    color:grey;
+    background-color:white;
+    /*height:10%;*/
+    /*text-align: left;*/
+    margin-top: 5%;
+}
+.vl{
+    height:100%;
+    background-color: #007C23;
+    width:10px;
+}
+.gromada{
+    display: flex;
+    height: calc(100vh - 50px);
+    flex-direction: column;
+}
+.kontakt{
+    display: flex;
+    height: calc(100vh - 50px);
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.centrowanyText{
+    text-align: center;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size:20px
+}
