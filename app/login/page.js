@@ -3,7 +3,7 @@
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useContext, useEffect} from "react";
-import {GlobalContext} from "@/app/GlobalProvider";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
 // import {GlobalContext} from "@/app/providers/GlobalProvider";
 

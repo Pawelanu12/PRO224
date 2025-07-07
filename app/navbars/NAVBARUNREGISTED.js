@@ -1,7 +1,7 @@
 'use client'
 
 import {useContext} from "react";
-import {GlobalContext} from "@/app/GlobalProvider";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function NAVBARUNREGISTED() {
     const {router,pushClick} = useContext(GlobalContext)

@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
-div{
-    background-color: black;
+body{
+    background-color: #1A1919;
     color:white;
+
 }
 .navbar{
  display: flex;
@@ -21,7 +22,7 @@ div{
     background-color: #3A4F39;
 }
 .flexRow{
-    height: calc(100vh - 50px);
+    /*height: calc(100vh - 50px);*/
  display: flex;
  flex-direction: row;
 }
@@ -37,11 +38,6 @@ div{
     background-color: #007C23;
     width:10px;
 }
-.gromada{
-    display: flex;
-    height: calc(100vh - 50px);
-    flex-direction: column;
-}
 .kontakt{
     display: flex;
     height: calc(100vh - 50px);
@@ -53,5 +49,38 @@ div{
     text-align: center;
     margin-left: 5%;
     margin-right: 5%;
-    font-size:20px
+    font-size:20px;
+    background-color: #222822   ;
+}
+.sprawnosci{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.dialog{
+    position:fixed;
+    width:660px;
+    max-width:80%;
+    background-color:#DACA6F;
+    color:black;
+    border-radius: 5%
+}
+.dialog h1{
+    text-align: center;
+    font-weight: bold
+}
+.dialog div{
+    padding: 5px;
+    margin: 5px;
+}
+.wyszukiwarka{
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    flex-wrap: wrap ;
+}
+input{
+    margin-left:20px;
+    background-color:white;
+    color :black
 }
