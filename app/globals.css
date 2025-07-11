@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+body{
+    background-color: #1A1919;
+    color:white;
+
+}
+.navbar{
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #3A4F39;
+    height: 50px;
+}
+.navbar div button{
+  margin: 10px;
+
+  justify-content: space-between;
+  /*color:white;*/
+  background-color: #405E3F;
+}
+.navbar div{
+    background-color: #3A4F39;
+}
+.flexRow{
+    /*height: calc(100vh - 50px);*/
+    flex-wrap: wrap;
+ display: flex;
+ flex-direction: row;
+}
+.field{
+    color:grey;
+    background-color:white;
+    /*height:10%;*/
+    /*text-align: left;*/
+    margin-top: 5%;
+    min-width:80%;
+}
+.vl{
+    height:100%;
+    background-color: #007C23;
+    width:10px;
+}
+.kontakt{
+    display: flex;
+    height: calc(100vh - 50px);
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.centrowanyText{
+    text-align: center;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size:20px;
+    background-color: #222822   ;
+}
+
+.dialog{
+    position:fixed;
+    width:660px;
+    max-width:80%;
+    background-color:#DACA6F;
+    color:black;
+    border-radius: 5%
+}
+.dialog h1{
+    text-align: center;
+    font-weight: bold
+}
+.dialog div{
+    padding: 5px;
+    margin: 5px;
+}
+input{
+    /*margin: 20px;*/
+    /*margin-left:20px;*/
+    background-color:white;
+    color :black
+}
+.wydarzenie{
+    width:40%;
+    background-color: green;
+    color: black;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    min-width: 180px;
+}
+.szukanieWydarzenia{
+    position: fixed;
+    border-right: solid green 1px;
+    width: 250px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+.forma{
+
+
+    padding-top:60px;
+    min-height: calc(100vh - 50px);
+    justify-content: center;
+    display:flex;
+    align-items: center;
+
+
+}
+.forma div{
+    width:400px;
+    height: 250px;
+    background-color: #405E3F;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.forma div button{
+    width:230px;
+    background-color:#354545;
+}
