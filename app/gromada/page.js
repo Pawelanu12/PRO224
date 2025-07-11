@@ -24,15 +24,10 @@ export default function Home() {
     return (
         <div>
             <NAVBARUNREGISTED/>
-<<<<<<< HEAD
             <div className={"gromada"} style={{paddingTop:"50px"}}>
                 <div style={{height:"200px"}}>
 
                 </div>
-=======
-            <div className={"gromada"}>
-                <div style={{height:"200px"}}></div>
->>>>>>> 4dd7db782ce30e6bc8496988371a43292f819c4b
           <div className={"centrowanyText"} >
 
           <p style={{fontSize:30,backgroundColor: "#1A1919"}}>O gromadzie</p>

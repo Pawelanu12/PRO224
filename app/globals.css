@@ -6,17 +6,11 @@ body{
 
 }
 .navbar{
-<<<<<<< HEAD
     position: fixed;
     width: 100%;
     display: flex;
     justify-content: space-between;
     background-color: #3A4F39;
-=======
- display: flex;
-  justify-content: space-between;
- background-color: #3A4F39;
->>>>>>> 4dd7db782ce30e6bc8496988371a43292f819c4b
     height: 50px;
 }
 .navbar div button{
@@ -31,10 +25,7 @@ body{
 }
 .flexRow{
     /*height: calc(100vh - 50px);*/
-<<<<<<< HEAD
     flex-wrap: wrap;
-=======
->>>>>>> 4dd7db782ce30e6bc8496988371a43292f819c4b
  display: flex;
  flex-direction: row;
 }
@@ -44,10 +35,7 @@ body{
     /*height:10%;*/
     /*text-align: left;*/
     margin-top: 5%;
-<<<<<<< HEAD
     min-width:80%;
-=======
->>>>>>> 4dd7db782ce30e6bc8496988371a43292f819c4b
 }
 .vl{
     height:100%;
@@ -68,15 +56,7 @@ body{
     font-size:20px;
     background-color: #222822   ;
 }
-<<<<<<< HEAD
 
-=======
-.sprawnosci{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
->>>>>>> 4dd7db782ce30e6bc8496988371a43292f819c4b
 .dialog{
     position:fixed;
     width:660px;
@@ -93,7 +73,6 @@ body{
     padding: 5px;
     margin: 5px;
 }
-<<<<<<< HEAD
 input{
     /*margin: 20px;*/
     /*margin-left:20px;*/
@@ -142,16 +121,4 @@ input{
 .forma div button{
     width:230px;
     background-color:#354545;
-=======
-.wyszukiwarka{
-    display: flex;
-    flex-direction: row;
-    margin: 20px;
-    flex-wrap: wrap ;
-}
-input{
-    margin-left:20px;
-    background-color:white;
-    color :black
->>>>>>> 4dd7db782ce30e6bc8496988371a43292f819c4b
 }
