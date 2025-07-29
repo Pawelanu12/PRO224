@@ -1,4 +1,4 @@
-package Services;
+package api.szyszka.Services;
 
 import api.szyszka.Entities.Post;
 import api.szyszka.Repositories.PostRepository;
@@ -20,13 +20,24 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public void deletePost(Long id) {
+    public void deletePostByPostId(Long id) {
         postRepository.deleteById(id);
     }
 
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
+
+    public Post getPostById(Long id) {return postRepository.findById(id).get();}
+
+    public List<Post> getPostsByUserId(Long userId) {return postRepository.findByAutorId(userId);}
+
+    public void deletePostByUserId(Long userId) {postRepository.deleteById(userId);}
+
+//    public void modifyPostByPostId(Long id) {
+//        Post post = postRepository.findById(id).get();
+//        post.setTresc();
+//    }
 
 
 }
