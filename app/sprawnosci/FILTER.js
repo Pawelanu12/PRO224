@@ -19,7 +19,7 @@ export default function FILTER(){
     return (
         <div className={"flexRow"} style={{margin:"20px"}}>
             <h1 >Lista sprawnosci</h1>
-            <label><input type={"text"} onChange={()=>logInput()} ref={input} placeholder={'szukaj po nazwe'}/></label>
+            <label style={{paddingLeft:"10px"}}><input type={"text"} onChange={()=>logInput()} ref={input} placeholder={'szukaj po nazwe'}/></label>
         </div>
     )
 }

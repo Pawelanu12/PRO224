@@ -12,6 +12,8 @@ body{
     justify-content: space-between;
     background-color: #3A4F39;
     height: 50px;
+    z-index: 9999;
+
 }
 .navbar div button{
   margin: 10px;
@@ -109,7 +111,7 @@ input{
 
 
 }
-.forma div{
+.forma .formik{
     width:400px;
     height: 250px;
     background-color: #405E3F;
@@ -118,7 +120,25 @@ input{
     justify-content: center;
     align-items: center;
 }
-.forma div button{
+.forma .formik button{
     width:230px;
     background-color:#354545;
 }
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+
+}
+
+.carousel-inner img {
+    min-width: 50%;
+    padding: 40px;
+}
+
