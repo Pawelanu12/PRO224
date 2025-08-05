@@ -1,5 +1,7 @@
 package api.szyszka;
 
+import api.szyszka.Repositories.UzytkownikRepository;
+import api.szyszka.Services.UzytkownikService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,5 +11,4 @@ public class SzyszkaApplication {
     public static void main(String[] args) {
         SpringApplication.run(SzyszkaApplication.class, args);
     }
-
 }

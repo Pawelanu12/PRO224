@@ -29,5 +29,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<Zdjecie> zdjecia;
+
+    public void setTresc(String tresc) {
+        this.tresc = tresc;
+    }
 }
 
