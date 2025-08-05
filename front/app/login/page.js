@@ -8,7 +8,7 @@ import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
 // import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function LogIn(){
-    const {replaceClick}=useContext(GlobalContext)
+    const {replaceClick,logIn}=useContext(GlobalContext)
 
     return(
         <div style={{height:"100vh"}}>
@@ -34,7 +34,7 @@ export default function LogIn(){
 
 
                     console.log(values)
-                    // logIn(values)
+                    logIn(values)
                     resetForm()
                 }}
 

@@ -33,7 +33,7 @@ export default function Home() {
 
         const timeout=setTimeout(()=>{
 
-            updateCarousel()}, 1000);
+            updateCarousel()}, 5000);
         return()=>{
             clearTimeout(timeout);
         }

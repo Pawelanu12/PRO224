@@ -16,50 +16,37 @@
       "static/chunks/main-app.js",
       "static/chunks/app/gromada/page.js"
     ],
-    "/wydarzenia/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/wydarzenia/layout.js"
-    ],
-    "/wydarzenia/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/wydarzenia/page.js"
-    ],
-    "/wydarzenia/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/wydarzenia/[id]/page.js"
-    ],
-    "/kontakt/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/kontakt/page.js"
-    ],
-    "/sprawnosci/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/sprawnosci/layout.js"
-    ],
-    "/sprawnosci/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/sprawnosci/page.js"
-    ],
     "/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/login/page.js"
+    ],
+    "/czat/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/czat/layout.css",
+      "static/chunks/app/czat/layout.js"
+    ],
+    "/czat/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/czat/page.js"
+    ],
+    "/passwordChange/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/passwordChange/layout.css",
+      "static/chunks/app/passwordChange/layout.js"
     ],
     "/passwordChange/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/passwordChange/page.js"
     ],
-    "/rejestracja/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/rejestracja/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

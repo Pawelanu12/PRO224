@@ -1,5 +1,7 @@
 @import "tailwindcss";
-
+button{
+    cursor: pointer;
+}
 body{
     background-color: #1A1919;
     color:white;
@@ -142,3 +144,10 @@ input{
     padding: 40px;
 }
 
+.czaty{
+    margin-top: 50px;
+    position: fixed;
+    width: 40vw;
+    overflow: auto;
+    height:calc(100vh - 50px)
+}

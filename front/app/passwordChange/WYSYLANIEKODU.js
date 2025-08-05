@@ -3,12 +3,15 @@
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useContext, useState} from "react";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
+import  {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 
 export default function WYSYLANIEKODU(){
-    const {setEtap} = useContext(GlobalContext);
+    const {setEtap,setEmail,setKod} = useContext(PasswordChangeContext);
 
     const wyslij=(email)=>{
+        //wysylanie i eneracja kodu do email
+        setEmail(email);
+        setKod(123456)
         setEtap("kod");
     }
     return(

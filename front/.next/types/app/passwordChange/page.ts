@@ -1,4 +1,4 @@
-// File: D:\pro\nowa_edycja\app\passwordChange\page.js
+// File: D:\pro\PRO224\front\app\passwordChange\page.js
 import * as entry from '../../../../app/passwordChange/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

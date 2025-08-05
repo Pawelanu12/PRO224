@@ -1,10 +1,7 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/login/page": "app/login/page.js",
-  "/passwordChange/page": "app/passwordChange/page.js",
   "/gromada/page": "app/gromada/page.js",
-  "/rejestracja/page": "app/rejestracja/page.js",
-  "/kontakt/page": "app/kontakt/page.js",
-  "/sprawnosci/page": "app/sprawnosci/page.js",
-  "/wydarzenia/page": "app/wydarzenia/page.js"
+  "/login/page": "app/login/page.js",
+  "/czat/page": "app/czat/page.js",
+  "/passwordChange/page": "app/passwordChange/page.js"
 }

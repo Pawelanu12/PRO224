@@ -1,15 +1,18 @@
 'use client'
 
 import {useContext} from "react";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
+import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 
 export default function POTWERDZENIEKODU(){
-    const {setEtap} = useContext(GlobalContext);
+    const {setEtap,kod} = useContext(PasswordChangeContext);
 
-    const wyslij=(kod)=>{
-        setEtap("haslo");
+    const sprawdz=(value)=>{
+        if(value===kod)
+            setEtap("haslo");
+        else
+            alert("nieprawidlowy kod")
     }
     return(
         <Formik
@@ -29,7 +32,7 @@ export default function POTWERDZENIEKODU(){
 
 
                 console.log(values)
-                wyslij()
+                sprawdz(values.kod)
                 resetForm()
             }}
 

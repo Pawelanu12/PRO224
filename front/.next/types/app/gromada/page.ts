@@ -1,4 +1,4 @@
-// File: D:\pro\nowa_edycja\app\gromada\page.js
+// File: D:\pro\PRO224\front\app\gromada\page.js
 import * as entry from '../../../../app/gromada/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
