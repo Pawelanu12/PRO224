@@ -1,4 +1,4 @@
-./back
-./front/.next
-./front/node_modules
+back
+front/.next
+front/node_modules
 

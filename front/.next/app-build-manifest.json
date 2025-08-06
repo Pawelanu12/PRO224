@@ -6,15 +6,16 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/page": [
+    "/wydarzenia/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/css/app/wydarzenia/layout.css",
+      "static/chunks/app/wydarzenia/layout.js"
     ],
-    "/gromada/page": [
+    "/wydarzenia/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/gromada/page.js"
+      "static/chunks/app/wydarzenia/page.js"
     ],
     "/login/page": [
       "static/chunks/webpack.js",
@@ -32,16 +33,31 @@
       "static/chunks/main-app.js",
       "static/chunks/app/czat/page.js"
     ],
-    "/passwordChange/layout": [
+    "/sprawnosci/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/passwordChange/layout.css",
-      "static/chunks/app/passwordChange/layout.js"
+      "static/css/app/sprawnosci/layout.css",
+      "static/chunks/app/sprawnosci/layout.js"
     ],
-    "/passwordChange/page": [
+    "/sprawnosci/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/passwordChange/page.js"
+      "static/chunks/app/sprawnosci/page.js"
+    ],
+    "/kontakt/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/kontakt/page.js"
+    ],
+    "/gromada/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/gromada/page.js"
+    ],
+    "/wydarzenia/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/wydarzenia/[id]/page.js"
     ]
   }
 }

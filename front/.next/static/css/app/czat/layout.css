@@ -311,6 +311,14 @@ input {
   overflow: auto;
   height: calc(100vh - 50px);
 }
+.ikona {
+  width: 48px;
+  margin-left: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  height: 48px;
+}
 @property --tw-rotate-x {
   syntax: "*";
   inherits: false;
@@ -342,4 +350,3 @@ input {
     }
   }
 }
-
