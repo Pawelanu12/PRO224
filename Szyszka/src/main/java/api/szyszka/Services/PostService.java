@@ -14,9 +14,12 @@ import java.util.Optional;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
+
+    public Post createPost(Post post) {return postRepository.save(post);}
 
     public void modifyPostByPostId(Long id, String tresc) {
         Post post = postRepository.findById(id).get();
@@ -33,30 +36,44 @@ public class PostService {
         //else {new ResourceNotFoundException("Post not found ID: " + id);}
         else {throw new NoSuchElementException("Post not found by id: " + id);}
     }
-        public void deletePostsByAuthorId(Long userId) {
-            List<Post> posts = postRepository.findByAutorId(userId);
+    public void deletePostsByAuthorId(Long userId) {
+        List<Post> posts = postRepository.findByAutorId(userId);
 
-            if (!posts.isEmpty()) {
-                postRepository.deleteAll(posts);
-            }
-            //else {new ResourceNotFoundException("Post not found ID: " + id);}
-            else {throw new NoSuchElementException("Posts not found by author id: " + userId);}
+        if (!posts.isEmpty()) {
+            postRepository.deleteAll(posts);
         }
+        //else {new ResourceNotFoundException("Post not found ID: " + id);}
+        else {throw new NoSuchElementException("Posts not found by author id: " + userId);}
+    }
 
-        public Post getPostById(Long id) {return postRepository.findById(id).get();}
+    public Post getPostById(Long id) {return postRepository.findById(id).get();}
 
-        public List<Post> getPostsByUserId(Long userId) {return postRepository.findByAutorId(userId);}
+    public List<Post> getPostsByUserId(Long userId) {return postRepository.findByAutorId(userId);}
 
-        public List<Post> getAllPosts() {
-            return postRepository.findAll();
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
+
+    public void deletePostByUserId(Long userId) {postRepository.deleteById(userId);}
+
+    public void modifyPostByPostId(Long id, Post updatePpost) {
+        Optional<Post> oldPost = postRepository.findById(id);
+
+        if (oldPost.isPresent()) {
+            Post post = oldPost.get();
+            post.setTresc(updatePpost.getTresc());
+            post.setIloscPolubien(updatePpost.getIloscPolubien());
+            post.setDataStworzenia(updatePpost.getDataStworzenia());
+            post.setAutor(updatePpost.getAutor());
+            post.setKomentarze(updatePpost.getKomentarze());
+            post.setZdjecia(updatePpost.getZdjecia());
+            postRepository.save(post);
         }
-
-        public void deletePostByUserId(Long userId) {postRepository.deleteById(userId);}
-
-//    public void modifyPostByPostId(Long id) {
-//        Post post = postRepository.findById(id).get();
-//        post.setTresc();
-//    }
-
+        else {
+            throw new NoSuchElementException("Post not found by id: " + id);
+        }
 
     }
+
+
+}
