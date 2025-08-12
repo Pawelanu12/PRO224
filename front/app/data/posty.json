@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "autor": "fosf",
+    "ikona" : "/images/ikona.png",
+    "data": "2024-11-19 14:55:55",
+    "obraz": "/images/obraz_sprawnosci.png",
+    "opis": "afnisdd djsk",
+    "polubienia": 5,
+    "komentarze": 4,
+    "udostepnienia": 0
+  },
+  {
+    "id": 1,
+    "autor": "fosf",
+    "ikona" : "/images/ikona.png",
+    "data": "2025-08-12 11:55:55",
+    "obraz": "/images/obraz_sprawnosci.png",
+    "opis": "afnisdd djsk",
+    "polubienia": 5,
+    "komentarze": 4,
+    "udostepnienia": 0
+  },  {
+  "id": 1,
+  "autor": "fosf",
+  "ikona" : "/images/ikona.png",
+  "data": "2024-05-19 14:55:55",
+  "obraz": "/images/obraz_sprawnosci.png",
+  "opis": "afnisdd djsk",
+  "polubienia": 5,
+  "komentarze": 4,
+  "udostepnienia": 0
+}
+]

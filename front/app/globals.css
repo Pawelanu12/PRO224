@@ -96,14 +96,13 @@ input{
     padding: 10px;
     min-width: 180px;
 }
-.szukanieWydarzenia{
+.fiksacjaWLewejCzesciEkrana{
     position: fixed;
     border-right: solid green 1px;
     width: 250px;
     height: 100%;
     display: flex;
     flex-direction: column;
-
     align-items: center;
 }
 .forma{
@@ -173,3 +172,25 @@ input{
 
      border-bottom: 3px solid grey;
  }
+.postyBackground{
+    width: calc(0.8*(100vw - 250px));
+    max-width: 500px;
+    background-color: #4D644C;
+    /*align-items: center;*/
+    border-radius: 5%;
+    height: calc(100vh - 50px);
+    position: fixed;
+    z-index: 2;
+
+}
+.posty{
+    width: calc(0.8*(100vw - 250px));
+    max-width: 500px;
+    align-items: center;
+    z-index: 9;
+    position: absolute;
+    padding: 20px;
+/*// jesli scroluje sie calkiem*/
+    /*background-color: #3A4F39;*/
+    /*border-radius: 5%;*/
+}

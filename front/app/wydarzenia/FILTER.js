@@ -31,7 +31,7 @@ export default function FILTER() {
         setData(e.target.value)
     }
     return (
-        <div className={"szukanieWydarzenia"}>
+        <div className={"fiksacjaWLewejCzesciEkrana"}>
             <label style={{margin: "30px"}}>
                 <p style={{fontSize: 12,color:"#1A1919"}} hidden={!hidden}>nazwa wydarzenia</p>
                 <p style={{fontSize: 12}} hidden={hidden}>nazwa wydarzenia</p>
