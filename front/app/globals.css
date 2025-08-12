@@ -9,12 +9,16 @@ body{
 }
 .navbar{
     position: fixed;
-    width: 100%;
+    width: 100vw;
     display: flex;
     justify-content: space-between;
     background-color: #3A4F39;
     height: 50px;
     z-index: 9999;
+    overflow-x:auto ;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding-right:20px;
 
 }
 .navbar div button{
@@ -159,3 +163,13 @@ input{
     border-radius:50%;
     height: 48px;
 }
+
+.przyciskProfila{
+    color:grey;
+    padding:10px;
+    text-align: center;
+}
+.przyciskProfila.active{
+
+     border-bottom: 3px solid grey;
+ }

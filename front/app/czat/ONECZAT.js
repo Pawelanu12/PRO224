@@ -2,6 +2,7 @@
 
 import {useContext, useEffect} from "react";
 import {CzatContext} from "@/app/providers/CzatProvider";
+import NAPISZWIADOMOSC from "@/app/czat/NAPISZWIADOMOSC";
 
 export default function ONECZAT(){
 const {getCzat,czat,loading,pokazywanyCzatId}=useContext(CzatContext)
@@ -15,7 +16,7 @@ const {getCzat,czat,loading,pokazywanyCzatId}=useContext(CzatContext)
     console.log(pokazywanyCzatId)
    if(loading) return <p style={{paddingLeft:"40vw",paddingTop:"50px",textAlign:"center"}}>loading</p>
     return (
-       <div style={{marginLeft:"40vw",paddingTop:"50px",backgroundColor:"#4F5D4E"}}>
+       <div style={{marginLeft:"40vw",paddingTop:"50px",backgroundColor:"#4F5D4E",height:"100vh",overflow:"auto",position:"fixed"}}>
            <div style={{display:"flex",height:"80px",justifyContent:"center"}} >
                <img className={"ikona"} src={czat.ikona} alt={"ikona"}/>
                <div style={{backgroundColor:"#405E3F",margin:"20px",minWidth:"50%"}}>
@@ -40,6 +41,7 @@ const {getCzat,czat,loading,pokazywanyCzatId}=useContext(CzatContext)
                    }
                </div>)
            )}
+           <NAPISZWIADOMOSC/>
        </div>
     )
 }

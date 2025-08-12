@@ -16,7 +16,7 @@ export default function NAVBARREGISTED() {
             <button onClick={(e) => replaceClick(e, "/forum")}>forum</button>
             <button onClick={(e) => replaceClick(e, "/czat")}>czat</button>
         </div>
-        <div>
+        <div style={{ marginRight:"10px",paddingRight:"10px"}}>
             <button onClick={(e) => logOut()}>wyloguj</button>
             <button onClick={(e) => replaceClick(e, "/profil")}>moj profil</button>
         </div>
