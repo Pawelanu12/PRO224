@@ -5,7 +5,7 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 
-export default function POTWERDZENIEKODU(){
+export default function PotwierdzenieKodu(){
     const {setEtap,kod} = useContext(PasswordChangeContext);
 
     const sprawdz=(value)=>{

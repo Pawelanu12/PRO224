@@ -3,7 +3,7 @@
 import {useContext, useRef} from "react";
 import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
 
-export default function FILTER(){
+export default function Filter(){
     const {input,sprawnosci,setSprawnosciPosortowane}=useContext(SprawnoscContext)
 
     console.log(input)

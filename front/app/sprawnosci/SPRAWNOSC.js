@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState} from "react";
 
-export default function SPRAWNOSC({sprawnosc}) {
+export default function Sprawnosc({sprawnosc}) {
     const [show,setShow] = useState(false);
     const dialog=useRef(null)
     const imageSizeWithBordings=120

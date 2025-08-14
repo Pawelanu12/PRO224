@@ -1,21 +1,21 @@
 'use client'
 
-import NAVBARREGISTED from "@/app/navbars/NAVBARREGISTED";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 import {useContext, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import INFORMACJA from "@/app/profil/INFORMACJA";
+import Informacja from "@/app/profil/Informacja";
 
-export default function PROFILE(){
+export default function Profil(){
     const {user}=useContext(GlobalContext)
     const [item,setItem]=useState("Posty")
     // console.log(new Date("2025-08-07"))
     return(<div>
-        <NAVBARREGISTED/>
+        <NavbarNiezarejestrowana/>
         <div style={{padding:"20px",paddingTop:"70px"}}>
             <div style={{backgroundColor:"#3A4F39"}}>
                 <div className={"flexRow"} style={{alignItems:"flex-end"}}>
                     <img className={"ikona"} style={{margin:"10px"}} src={user.ikona} alt={"ikona"}/>
-                    <p style={{paddingBottom:"10px"}}>{user.imie+"  "+user.nazwisko}</p>
+                    <p style={{paddingBottom:"10px"}}>{user.login+" ("+user.imie+"  "+user.nazwisko+")"}</p>
                 </div>
                 <p style={{border:"solid black 1px"}}></p>
                 <div className={"flexRow"} style={{justifyContent: "space-between"}}>
@@ -37,7 +37,7 @@ export default function PROFILE(){
                 </div>
             </div>
         </div>
-        {item==="Informacje"&&<INFORMACJA/>}
+        {item==="Informacje"&&<Informacja/>}
 
     </div>)
 }

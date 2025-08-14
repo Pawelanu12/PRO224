@@ -1,12 +1,12 @@
 'use client'
 
-import FILTER from "@/app/wydarzenia/FILTER";
+import Filter from "@/app/wydarzenia/Filter";
 import {useContext, useEffect, useState} from "react";
 import {WydarzeniaContext} from "@/app/providers/WydarzeniaProvider";
-import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
-export default function WYDARZENIA(){
+export default function Wydarzenia(){
     const {wydarzenia,nazwa,typ,data}=useContext(WydarzeniaContext)
     const {router}=useContext(GlobalContext)
     const[wydarzeniaSortowane,setWydarzeniaSortowane]=useState(wydarzenia);
@@ -32,9 +32,9 @@ export default function WYDARZENIA(){
     }
     return (
         <div>
-            <NAVBARUNREGISTED/>
+            <NavbarZarejestrowana/>
         <div style={{paddingTop:"50px"}}>
-            <FILTER/>
+            <Filter/>
             <div style={{position:"fixed",left:"250px",width:"30px",borderRight:"solid green 1px",height:"100%"}}></div>
             <div style={{paddingLeft:"280px"}}  className={"flexRow"}>
                 {wydarzeniaSortowane.map((wydarzenie,i) => (

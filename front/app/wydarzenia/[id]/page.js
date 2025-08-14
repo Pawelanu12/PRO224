@@ -1,10 +1,10 @@
 'use client'
 
-import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 import {useContext, useEffect, useState} from "react";
 import {WydarzeniaContext} from "@/app/providers/WydarzeniaProvider";
 
-export default function WYDARZENIE(){
+export default function Wydarzenie(){
     const {wydarzenia} = useContext(WydarzeniaContext);
     const [wydarzenie, setWydarzenie] = useState({});
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export default function WYDARZENIE(){
     }, []);
     return(
         <div>
-                <NAVBARUNREGISTED/>
+                <NavbarZarejestrowana/>
             {loading&&<div>Loading...</div>}
             {!loading&&!wydarzenie.id &&<div>Takie wydarzenie nie znalażone</div>}
             {!loading&&wydarzenie.id &&

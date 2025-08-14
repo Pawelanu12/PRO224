@@ -5,7 +5,7 @@
 import {useContext} from "react";
 import {CzatContext} from "@/app/providers/CzatProvider";
 
-export default function CZATY(){
+export default function Czaty(){
     const {czaty,setPokazywanyCzatId}=useContext(CzatContext)
     return(
         <div style={{    paddingTop: "50px",

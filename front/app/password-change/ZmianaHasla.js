@@ -6,7 +6,7 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 
-export default function ZMIANAHASLA(){
+export default function ZmianaHasla(){
     const {router} = useContext(GlobalContext);
     const {email}=useContext(PasswordChangeContext);
     const zmien_haslo=(haslo)=> {

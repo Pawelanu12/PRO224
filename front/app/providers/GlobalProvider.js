@@ -13,6 +13,7 @@ export default function GlobalProvider({ children }) {
         ikona:"../images/ikona.png",
         imie:"Jan",
         nazwisko:"Kowlski",
+        login:"fosfr",
         data_urodzenia:"2025-08-07",
         gromada:"gromada 1",
         data_dolaczenia_do_gromady:"2025-08-07"

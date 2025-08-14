@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import {useContext, useState} from "react";
 import  {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 
-export default function WYSYLANIEKODU(){
+export default function WysylanieKodu(){
     const {setEtap,setEmail,setKod} = useContext(PasswordChangeContext);
 
     const wyslij=(email)=>{

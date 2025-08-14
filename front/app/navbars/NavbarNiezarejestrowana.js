@@ -3,7 +3,7 @@
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
-export default function NAVBARREGISTED() {
+export default function NavbarNiezarejestrowana() {
     const {replaceClick,logOut} = useContext(GlobalContext)
 
 

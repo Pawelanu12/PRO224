@@ -3,9 +3,9 @@ import Image from "next/image";
 import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {useRouter} from "next/navigation";
-import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 
-export default function Home() {
+export default function Gromada() {
   const {cat,setCat,router}=useContext(GlobalContext)
     const [currentIndex,setCurrentIndex] = useState(0);
     const carouselInner = useRef(null);
@@ -48,7 +48,7 @@ export default function Home() {
     }
     return (
         <div>
-            <NAVBARUNREGISTED/>
+            <NavbarZarejestrowana/>
             <div className={"gromada"} style={{paddingTop: "50px"}}>
                 <div className="carousel">
                     <div className="carousel-inner" ref={carouselInner}>

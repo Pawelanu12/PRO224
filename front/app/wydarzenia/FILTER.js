@@ -5,7 +5,7 @@ import {Field} from "formik";
 import {useContext, useState} from "react";
 import {WydarzeniaContext} from "@/app/providers/WydarzeniaProvider";
 
-export default function FILTER() {
+export default function Filter() {
     const [hidden, setHidden] = useState(true);
     const {setTyp,setNazwa,setData}=useContext(WydarzeniaContext)
 

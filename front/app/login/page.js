@@ -4,7 +4,7 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useContext, useEffect} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 // import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function LogIn(){
@@ -12,7 +12,7 @@ export default function LogIn(){
 
     return(
         <div style={{height:"100vh"}}>
-            <NAVBARUNREGISTED/>
+            <NavbarZarejestrowana/>
             <div style={{paddingTop:"50px",height:"100%"}}   className={"flexRow"}>
             <div style={{flex:"198",height:"100%",minWidth:"300px"}}>
 
@@ -58,7 +58,7 @@ export default function LogIn(){
                             width: "80%",
                             marginTop: "10px"}}>
                             <button onClick={(e)=>replaceClick(e,"/rejestracja")} style={{color: "white", float: "left"}}>Zarejestruj sie</button>
-                            <button onClick={(e)=>replaceClick(e,"/passwordChange")} style={{color: "white", float: "right"}}>nie pamiętasz hasla</button>
+                            <button onClick={(e)=>replaceClick(e,"/password-change")} style={{color: "white", float: "right"}}>nie pamiętasz hasla</button>
                         </div>
                         <br/>
                         <button style={{backgroundColor:"#354545",width:"80%"}} type="submit" disabled={!dirty || !isValid}

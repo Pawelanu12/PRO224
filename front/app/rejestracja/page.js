@@ -5,9 +5,9 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
-import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 
-export default function ZMIANAHASLA(){
+export default function Rejestracja(){
     const {router} = useContext(GlobalContext);
     const rejestracja=(value)=> {
         //await fetch("https://localhost:8080/createuser", {
@@ -21,7 +21,7 @@ export default function ZMIANAHASLA(){
     }
     return (
         <div>
-                <NAVBARUNREGISTED/>
+                <NavbarZarejestrowana/>
             <div className={'forma'}>
 
                 <Formik

@@ -2,24 +2,24 @@
 
 import {useContext} from "react";
 import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
-import NAVBARUNREGISTED from "@/app/navbars/NAVBARUNREGISTED";
-import SPRAWNOSC from "@/app/sprawnosci/SPRAWNOSC";
-import FILTER from "@/app/sprawnosci/FILTER";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import Sprawnosc from "@/app/sprawnosci/Sprawnosc";
+import Filter from "@/app/sprawnosci/Filter";
 
-export default function SPRAWNOSCI(){
+export default function Sprawnosci(){
     const {sprawnosciPosortowane}=useContext(SprawnoscContext)
     const typySprawnosci=["artystyczne","bajkowe","kultoroznawcze"]
 console.log(sprawnosciPosortowane)
         return(
         <div>
-            <NAVBARUNREGISTED/>
+            <NavbarZarejestrowana/>
             <div style={{paddingTop:"50px"}}>
-                <FILTER/>
+                <Filter/>
                 <h1 style={{marginLeft: "25px"}}>Sprawnosci artystyczne</h1>
                 <div className={"flexRow"}>
 
                     {sprawnosciPosortowane.filter(s => s.typ === "artystyczne").map((sprawnosc, i) => (
-                        <SPRAWNOSC key={i} sprawnosc={sprawnosc}/>
+                        <Sprawnosc key={i} sprawnosc={sprawnosc}/>
 
                     ))}
                 </div>
@@ -27,7 +27,7 @@ console.log(sprawnosciPosortowane)
                 <div className={"flexRow"}>
 
                     {sprawnosciPosortowane.filter(s => s.typ === "bajkowe").map((sprawnosc, i) => (
-                        <SPRAWNOSC key={i} sprawnosc={sprawnosc}/>
+                        <Sprawnosc key={i} sprawnosc={sprawnosc}/>
 
                     ))}
                 </div>

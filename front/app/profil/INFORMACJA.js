@@ -3,7 +3,7 @@
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
-export default function INFORMACJA() {
+export default function Informacja() {
         const {user,zdobyteSprawnosci}=useContext(GlobalContext)
     return(
         <div className={"flexRow"} style={{backgroundColor: "#3A4F39",margin:"20px"}}>

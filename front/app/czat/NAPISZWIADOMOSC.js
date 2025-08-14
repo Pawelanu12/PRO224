@@ -2,7 +2,7 @@
 import FaCevronRight, {FaChevronRight} from "react-icons/fa";
 import {useEffect, useRef} from "react";
 
-export default function NAPISZWIADOMOSC() {
+export default function NapiszWiadomosc() {
     const wiadomosc=useRef(null)
 
     const wyslij=()=>{
