@@ -22,4 +22,18 @@ public class SprawnoscService {
     public List<Sprawnosc> getAllSprawnosc() {return sprawnoscRepository.findAll();}
 
     public void deleteSprawnosc(long id) {sprawnoscRepository.deleteById(id);}
+
+    public void modifySprawnoscById(long id, Sprawnosc updateSprawnosc) {
+        Optional<Sprawnosc> oldSprawnosc = sprawnoscRepository.findById(id);
+
+        if (oldSprawnosc.isPresent()) {
+            Sprawnosc sprawnosc = oldSprawnosc.get();
+            sprawnosc.setNazwa(updateSprawnosc.getNazwa());
+            sprawnosc.setOpis(updateSprawnosc.getOpis());
+            sprawnosc.setIkona(updateSprawnosc.getIkona());
+            sprawnosc.setOpisWymagan(updateSprawnosc.getOpisWymagan());
+            sprawnoscRepository.save(sprawnosc);
+
+        }
+    }
 }

@@ -27,15 +27,15 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public void deletePostByPostId(Long id) {
-        postRepository.deleteById(id);
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent()) {
-            postRepository.deleteById(id);
-        }
-        //else {new ResourceNotFoundException("Post not found ID: " + id);}
-        else {throw new NoSuchElementException("Post not found by id: " + id);}
-    }
+//    public void deletePostByPostId(Long id) {
+//        postRepository.deleteById(id);
+//        Optional<Post> post = postRepository.findById(id);
+//        if (post.isPresent()) {
+//            postRepository.deleteById(id);
+//        }
+//        //else {new ResourceNotFoundException("Post not found ID: " + id);}
+//        else {throw new NoSuchElementException("Post not found by id: " + id);}
+//    }
     public void deletePostsByAuthorId(Long userId) {
         List<Post> posts = postRepository.findByAutorId(userId);
 
