@@ -6,6 +6,7 @@ import api.szyszka.Repositories.SprawnoscRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,9 @@ public class SprawnoscService {
             sprawnosc.setOpisWymagan(updateSprawnosc.getOpisWymagan());
             sprawnoscRepository.save(sprawnosc);
 
+        }
+        else {
+            throw new NoSuchElementException("Post not found by id: " + id);
         }
     }
 }
