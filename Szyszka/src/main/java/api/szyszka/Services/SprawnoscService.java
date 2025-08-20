@@ -37,7 +37,7 @@ public class SprawnoscService {
 
         }
         else {
-            throw new NoSuchElementException("Post not found by id: " + id);
+            throw new NoSuchElementException("Sprawnosc not found by id: " + id);
         }
     }
 }
