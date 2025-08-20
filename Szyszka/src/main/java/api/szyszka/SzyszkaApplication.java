@@ -10,5 +10,7 @@ public class SzyszkaApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SzyszkaApplication.class, args);
+        Long id = 1L;
+        //System.out.println(getSzostkaById(id));
     }
 }
