@@ -9,4 +9,6 @@ import java.util.List;
 public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
     Optional<Uzytkownik> findByLogin(String login);
     List<Uzytkownik> findBySzostkaId(Long szostkaId);
+
+    Optional<Uzytkownik> findByEmail(String email);
 }
