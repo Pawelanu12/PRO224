@@ -78,7 +78,13 @@ public class UzytkownikController {
     }
 
 
-
+    public ResponseEntity<List<UzytkownikDto>> getUsersBySzostka(@PathVariable Long szostkaId){
+        List<UzytkownikDto> users = uzytkownikService.getUsersBySzostka(szostkaId)
+                .stream()
+                .map(UzytkownikMapper::toDto)
+                .toList();
+        return ResponseEntity.ok(users);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<UzytkownikDto> updateUser(@PathVariable Long id,
                                                     @RequestBody UpdateUzytkownikRequest request) {

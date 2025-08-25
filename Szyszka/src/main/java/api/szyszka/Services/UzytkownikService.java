@@ -121,6 +121,13 @@ public class UzytkownikService {
         }
         return users;
     }
+    public List<Uzytkownik> getUsersBySzostka(Long szostkaId){
+        if (uzytkownikRepository.findBySzostkaId(szostkaId).isEmpty()){
+            throw new SzostkaNotFoundException(szostkaId);
+        }
+        List<Uzytkownik> users = uzytkownikRepository.findBySzostkaId(szostkaId);
+        return users;
+        }
 
 
 }

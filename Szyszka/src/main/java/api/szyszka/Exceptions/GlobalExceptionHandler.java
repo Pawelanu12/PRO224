@@ -42,5 +42,10 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleSzostkaNotFound(SzostkaNotFoundException ex){
+        ErrorResponse error  = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+    }
 
 }
