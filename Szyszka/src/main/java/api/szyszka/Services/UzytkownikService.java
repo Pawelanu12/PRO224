@@ -125,8 +125,7 @@ public class UzytkownikService {
         if (uzytkownikRepository.findBySzostkaId(szostkaId).isEmpty()){
             throw new SzostkaNotFoundException(szostkaId);
         }
-        List<Uzytkownik> users = uzytkownikRepository.findBySzostkaId(szostkaId);
-        return users;
+        return uzytkownikRepository.findBySzostkaId(szostkaId);
         }
 
 
