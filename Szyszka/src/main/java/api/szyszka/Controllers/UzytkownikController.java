@@ -68,6 +68,15 @@ public class UzytkownikController {
 
         return ResponseEntity.ok(parents);
     }
+    @GetMapping("/typ/{typ}")
+    public ResponseEntity<List<UzytkownikDto>> getUsersByTyp(@PathVariable String typ) {
+        List<UzytkownikDto> users = uzytkownikService.getUsersByType(typ)
+                .stream()
+                .map(UzytkownikMapper::toDto)
+                .toList();
+        return ResponseEntity.ok(users);
+    }
+
 
 
     @PutMapping("/{id}")

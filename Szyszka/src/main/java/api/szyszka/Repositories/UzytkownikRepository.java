@@ -11,4 +11,6 @@ public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
     List<Uzytkownik> findBySzostkaId(Long szostkaId);
     List<Uzytkownik> findByRodzic1IdOrRodzic2Id(Long rodzicId1, Long rodzicId2);
     Optional<Uzytkownik> findByEmail(String email);
+
+    List<Uzytkownik> findByTypUzytkownika(String userType);
 }

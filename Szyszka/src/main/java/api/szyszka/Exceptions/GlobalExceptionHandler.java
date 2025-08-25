@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleUserTypeNotFoundException(UserTypeNotFoundException ex){
+        ErrorResponse error = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
@@ -31,6 +36,7 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(DuplicateLoginException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateLogin(DuplicateLoginException ex) {
         ErrorResponse error = new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value());

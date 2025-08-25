@@ -114,5 +114,13 @@ public class UzytkownikService {
         }
         return parents;
     }
+    public List<Uzytkownik> getUsersByType(String typUzytkownika) {
+        List<Uzytkownik> users = uzytkownikRepository.findByTypUzytkownika(typUzytkownika);
+        if (users.isEmpty()) {
+            throw new UserTypeNotFoundException(typUzytkownika);
+        }
+        return users;
+    }
+
 
 }
