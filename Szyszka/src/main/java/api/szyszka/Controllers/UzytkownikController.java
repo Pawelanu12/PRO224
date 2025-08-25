@@ -77,7 +77,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(users);
     }
 
-
+    @GetMapping("/szostka/{szostkaId}")
     public ResponseEntity<List<UzytkownikDto>> getUsersBySzostka(@PathVariable Long szostkaId){
         List<UzytkownikDto> users = uzytkownikService.getUsersBySzostka(szostkaId)
                 .stream()
