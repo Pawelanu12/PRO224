@@ -6,6 +6,7 @@ import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class UzytkownikService {
     public Uzytkownik updateUser(Long id, Uzytkownik updatedUser) {
         Uzytkownik existing = getUserById(id);
 
-        // protect login uniqueness
+
         if (!existing.getLogin().equals(updatedUser.getLogin())
                 && uzytkownikRepository.findByLogin(updatedUser.getLogin()).isPresent()) {
             throw new DuplicateLoginException(updatedUser.getLogin());
@@ -82,4 +83,36 @@ public class UzytkownikService {
     public boolean existsByLogin(String login) {
         return uzytkownikRepository.findByLogin(login).isPresent();
     }
+
+    public List<Uzytkownik> getChildren(Long parentId1, Long parentId2) {
+        if (parentId1 == null && parentId2 == null) {
+            throw new IllegalArgumentException("At least one parentId must be provided.");
+        }
+        if (parentId1 != null && !uzytkownikRepository.existsById(parentId1)) {
+            throw new UserNotFoundException(parentId1);
+        }
+        if (parentId2 != null && !uzytkownikRepository.existsById(parentId2)) {
+            throw new UserNotFoundException(parentId2);
+        }
+        if (parentId1 != null && parentId2 != null) {
+            return uzytkownikRepository.findByRodzic1IdOrRodzic2Id(parentId1, parentId2);
+        } else if (parentId1 != null) {
+            return uzytkownikRepository.findByRodzic1IdOrRodzic2Id(parentId1, parentId1);
+        } else {
+            return uzytkownikRepository.findByRodzic1IdOrRodzic2Id(parentId2, parentId2);
+        }
+    }
+    public List<Uzytkownik> getParents(Long childId){
+        Uzytkownik child = uzytkownikRepository.findById(childId)
+                .orElseThrow(() -> new UserNotFoundException(childId));
+        List<Uzytkownik> parents = new ArrayList<>();
+        if(child.getRodzic1() != null){
+            parents.add(child.getRodzic1());
+        }
+        if (child.getRodzic2() != null){
+            parents.add(child.getRodzic2());
+        }
+        return parents;
+    }
+
 }

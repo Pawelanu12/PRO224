@@ -32,15 +32,12 @@ public class UzytkownikController {
                 .body(UzytkownikMapper.toDto(saved));
     }
 
-    // GET (by ID)
     @GetMapping("/{id}")
     public ResponseEntity<UzytkownikDto> getUserById(@PathVariable Long id) {
         Uzytkownik user = uzytkownikService.getUserById(id);
         return ResponseEntity.ok(UzytkownikMapper.toDto(user));
     }
 
-
-    // GET (all)
     @GetMapping
     public ResponseEntity<List<UzytkownikDto>> getAllUsers() {
         List<UzytkownikDto> users = uzytkownikService.getAllUsers()
@@ -50,8 +47,29 @@ public class UzytkownikController {
 
         return ResponseEntity.ok(users);
     }
+    @GetMapping("/children")
+    public ResponseEntity<List<UzytkownikDto>> getChildren(
+            @RequestParam(required = false) Long parentId1,
+            @RequestParam(required = false) Long parentId2) {
 
-    // UPDATE
+        List<UzytkownikDto> children = uzytkownikService.getChildren(parentId1, parentId2)
+                .stream()
+                .map(UzytkownikMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(children);
+    }
+    @GetMapping("/parents/{id}")
+    public ResponseEntity<List<UzytkownikDto>> getParents(@PathVariable Long id) {
+        List<UzytkownikDto> parents = uzytkownikService.getParents(id)
+                .stream()
+                .map(UzytkownikMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(parents);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<UzytkownikDto> updateUser(@PathVariable Long id,
                                                     @RequestBody UpdateUzytkownikRequest request) {
@@ -64,7 +82,6 @@ public class UzytkownikController {
     }
 
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         uzytkownikService.deleteUser(id);
