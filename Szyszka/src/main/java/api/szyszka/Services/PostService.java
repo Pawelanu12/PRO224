@@ -21,11 +21,11 @@ public class PostService {
 
     public Post createPost(Post post) {return postRepository.save(post);}
 
-    public void modifyPostByPostId(Long id, String tresc) {
-        Post post = postRepository.findById(id).get();
-        post.setTresc(tresc);
-        postRepository.save(post);
-    }
+//    public void modifyPostByPostId(Long id, String tresc) {
+//        Post post = postRepository.findById(id).get();
+//        post.setTresc(tresc);
+//        postRepository.save(post);
+//    }
 
 //    public void deletePostByPostId(Long id) {
 //        postRepository.deleteById(id);
@@ -54,7 +54,11 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void deletePostByUserId(Long userId) {postRepository.deleteById(userId);}
+    public void deletePostById(Long postId) {
+        if (postRepository.existsById(postId)) {
+            postRepository.deleteById(postId);
+        }
+    }
 
     public void modifyPostByPostId(Long id, Post updatePpost) {
         Optional<Post> oldPost = postRepository.findById(id);

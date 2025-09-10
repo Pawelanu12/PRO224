@@ -44,6 +44,15 @@ public class PostController {
         return ResponseEntity.ok(PostMapper.toDto(post));
     }
 
+   @GetMapping("/posts/{id}")
+   public ResponseEntity<List<PostDto>> getPostsByAuthorId(@PathVariable Long id) {
+        List<PostDto> posts = postService.getPostsByUserId(id)
+                .stream()
+                .map(PostMapper::toDto)
+                .toList();
+        return ResponseEntity.ok(posts);
+   }
+
     @GetMapping
     public ResponseEntity<List<PostDto>> getAllPosts() {
         List<PostDto> posts = postService.getAllPosts()
@@ -52,4 +61,19 @@ public class PostController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(posts);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        postService.deletePostById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePost(@PathVariable Long id, @RequestBody CreatePostRequest request) {
+        Post updatePost = PostMapper.fromCreateRequest(request);
+        postService.modifyPostByPostId(id, updatePost);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
