@@ -5,7 +5,6 @@ import api.szyszka.DTOs.PostDto;
 import api.szyszka.Entities.Post;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Services.PostService;
-import api.szyszka.Services.UzytkownikService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +21,8 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
-    private final UzytkownikService uzytkownikService;
 
-    public PostController(PostService postService, UzytkownikService uzytkownikService) {this.postService = postService;
-        this.uzytkownikService = uzytkownikService;
-    }
+    public PostController(PostService postService) {this.postService = postService;}
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody CreatePostRequest request) {
