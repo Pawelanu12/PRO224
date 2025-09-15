@@ -2,7 +2,10 @@ package api.szyszka.Mappers;
 
 import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.DTOs.PostDto;
+import api.szyszka.DTOs.UpdatePostRequest;
 import api.szyszka.Entities.Post;
+
+import java.util.ArrayList;
 
 public class PostMapper {
 
@@ -29,5 +32,21 @@ public class PostMapper {
         post.setKomentarze(request.getKomentarze());
         post.setZdjecia(request.getZdjecia());
         return post;
+    }
+
+    public static void updateEntity(Post entity, UpdatePostRequest request) {
+        if (request == null || entity == null) return;
+        entity.setDataStworzenia(request.getDataStworzenia());
+        entity.setTresc(request.getTresc());
+        entity.setIloscPolubien(request.getIloscPolubien());
+        entity.setAutor(request.getAutor());
+        //entity.setKomentarze(request.getKomentarze());
+        entity.setKomentarze(
+                request.getKomentarze() != null ? request.getKomentarze() : new ArrayList<>()
+        );
+        //entity.setZdjecia(request.getZdjecia());
+        entity.setZdjecia(
+                request.getZdjecia() != null ? request.getZdjecia() : new ArrayList<>()
+        );
     }
 }

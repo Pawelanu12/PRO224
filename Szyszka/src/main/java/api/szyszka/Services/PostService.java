@@ -3,6 +3,8 @@ package api.szyszka.Services;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import api.szyszka.Entities.Post;
+import api.szyszka.Entities.Szostka;
+import api.szyszka.Exceptions.DuplicateSzostkaException;
 import api.szyszka.Repositories.PostRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +38,16 @@ public class PostService {
 //        //else {new ResourceNotFoundException("Post not found ID: " + id);}
 //        else {throw new NoSuchElementException("Post not found by id: " + id);}
 //    }
-    public void deletePostsByAuthorId(Long userId) {
-        List<Post> posts = postRepository.findByAutorId(userId);
 
-        if (!posts.isEmpty()) {
-            postRepository.deleteAll(posts);
-        }
-        //else {new ResourceNotFoundException("Post not found ID: " + id);}
-        else {throw new NoSuchElementException("Posts not found by author id: " + userId);}
-    }
+//    public void deletePostsByAuthorId(Long userId) {
+//        List<Post> posts = postRepository.findByAutorId(userId);
+//
+//        if (!posts.isEmpty()) {
+//            postRepository.deleteAll(posts);
+//        }
+//        //else {new ResourceNotFoundException("Post not found ID: " + id);}
+//        else {throw new NoSuchElementException("Posts not found by author id: " + userId);}
+//    }
 
     public Post getPostById(Long id) {return postRepository.findById(id).get();}
 
@@ -60,23 +63,22 @@ public class PostService {
         }
     }
 
-    public void modifyPostByPostId(Long id, Post updatePpost) {
-        Optional<Post> oldPost = postRepository.findById(id);
+    public Post modifyPostByPostId(Long id, Post updatePost) {
+        Post oldPost = getPostById(id);
 
-        if (oldPost.isPresent()) {
-            Post post = oldPost.get();
-            post.setTresc(updatePpost.getTresc());
-            post.setIloscPolubien(updatePpost.getIloscPolubien());
-            post.setDataStworzenia(updatePpost.getDataStworzenia());
-            post.setAutor(updatePpost.getAutor());
-            post.setKomentarze(updatePpost.getKomentarze());
-            post.setZdjecia(updatePpost.getZdjecia());
-            postRepository.save(post);
-        }
-        else {
-            throw new NoSuchElementException("Post not found by id: " + id);
-        }
+        //if (!oldSzostka.getNazwa().equals(updateSzostka.getNazwa())
+        //        && szostkaRepository.findByNazwa(updateSzostka.getNazwa()).isPresent()) {
+        //    throw new DuplicateSzostkaException(updateSzostka.getNazwa());
+        //}
 
+        oldPost.setDataStworzenia(updatePost.getDataStworzenia());
+        oldPost.setTresc(updatePost.getTresc());
+        oldPost.setIloscPolubien(updatePost.getIloscPolubien());
+        oldPost.setAutor(updatePost.getAutor());
+        //oldPost.setKomentarze(updatePost.getKomentarze());
+        //oldPost.setZdjecia(updatePost.getZdjecia());
+
+        return postRepository.save(oldPost);
     }
 
 

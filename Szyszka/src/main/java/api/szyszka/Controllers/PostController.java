@@ -2,6 +2,7 @@ package api.szyszka.Controllers;
 
 import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.DTOs.PostDto;
+import api.szyszka.DTOs.UpdatePostRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Services.PostService;
@@ -64,11 +65,21 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+//    @DeleteMapping("/posts/{id}")
+//    public ResponseEntity<Void> deletePostsByAuthorId(@PathVariable Long id) {
+//        postService.deletePostById(id);
+//        return ResponseEntity.noContent().build();
+//    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable Long id, @RequestBody CreatePostRequest request) {
-        Post updatePost = PostMapper.fromCreateRequest(request);
-        postService.modifyPostByPostId(id, updatePost);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<PostDto> updatePost(@PathVariable Long id,
+                                              @RequestBody UpdatePostRequest request) {
+        Post oldPost = postService.getPostById(id);
+
+        PostMapper.updateEntity(oldPost, request);
+        Post update = postService.modifyPostByPostId(id, oldPost);
+
+        return ResponseEntity.ok(PostMapper.toDto(update));
     }
 
 
