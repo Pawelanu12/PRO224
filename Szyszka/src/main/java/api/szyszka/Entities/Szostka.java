@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,10 @@ public class Szostka {
 
     private LocalDateTime dataStworzenia;
 
+    //@OneToMany(mappedBy = "szostka")
+    //private List<Uzytkownik> uzytkownicy;
+
     @OneToMany(mappedBy = "szostka")
-    private List<Uzytkownik> uzytkownicy;
+    private List<Uzytkownik> uzytkownicy = new ArrayList<>();
+
 }

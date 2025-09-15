@@ -2,6 +2,8 @@ package api.szyszka.Services;
 
 import api.szyszka.Entities.Szostka;
 import api.szyszka.Entities.Uzytkownik;
+import api.szyszka.Exceptions.DuplicateLoginException;
+import api.szyszka.Exceptions.DuplicateSzostkaException;
 import api.szyszka.Repositories.SzostkaRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.stereotype.Service;
@@ -19,25 +21,25 @@ public class SzostkaService {
 
     public Szostka create(Szostka szostka) {return szostkaRepository.save(szostka);}
 
-    public Optional<Szostka> getSzostkaById(Long id) {return szostkaRepository.findById(id);}
+    public Szostka getSzostkaById(Long id) {return szostkaRepository.findById(id).get();}
 
-    public List<Szostka> getAllSprawnosc() {return szostkaRepository.findAll();}
+    public List<Szostka> getAllSzostka() {return szostkaRepository.findAll();}
 
     public void deleteSzostkaById(Long id) {szostkaRepository.deleteById(id);}
 
-    public void modifySzostkaById(Long id, Szostka updatSzostka) {
-        Optional<Szostka> oldSzostka = szostkaRepository.findById(id);
+    public Szostka modifySzostkaById(Long id, Szostka updateSzostka) {
+        Szostka oldSzostka = getSzostkaById(id);
 
-        if (oldSzostka.isPresent()) {
-            Szostka szostka = oldSzostka.get();
-            szostka.setNazwa(updatSzostka.getNazwa());
-            szostka.setDataStworzenia(updatSzostka.getDataStworzenia());
-            szostka.setUzytkownicy(updatSzostka.getUzytkownicy());
-            szostkaRepository.save(szostka);
+        if (!oldSzostka.getNazwa().equals(updateSzostka.getNazwa())
+                && szostkaRepository.findByNazwa(updateSzostka.getNazwa()).isPresent()) {
+            throw new DuplicateSzostkaException(updateSzostka.getNazwa());
         }
-        else {
-            throw new NoSuchElementException("Post not found by id: " + id);
-        }
+
+        oldSzostka.setNazwa(updateSzostka.getNazwa());
+        oldSzostka.setDataStworzenia(updateSzostka.getDataStworzenia());
+        oldSzostka.setUzytkownicy(updateSzostka.getUzytkownicy());
+
+        return szostkaRepository.save(oldSzostka);
     }
 
 //    public Optional<Szostka> getSzostkaByUzytkonik(Uzytkownik uzytkownik) {

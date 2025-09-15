@@ -1,8 +1,7 @@
 package api.szyszka.DTOs;
 
-import api.szyszka.Entities.Komentarz;
+import api.szyszka.Entities.Szostka;
 import api.szyszka.Entities.Uzytkownik;
-import api.szyszka.Entities.Zdjecie;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +14,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto {
-    private Long id;
+public class UpdateSzostkaRequest {
+    private String nazwa;
     private LocalDateTime dataStworzenia;
-    private String tresc;
-    private int iloscPolubien;
-    private Long autorId;
-    private List<Komentarz> komentarze;
-    private List<Zdjecie> zdjecia;
+    private List<Uzytkownik> uzytkonicy;
 }

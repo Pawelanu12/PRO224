@@ -13,7 +13,7 @@ public class PostMapper {
                 entity.getDataStworzenia(),
                 entity.getTresc(),
                 entity.getIloscPolubien(),
-                entity.getAutor(),
+                entity.getAutor().getId(),
                 entity.getKomentarze(),
                 entity.getZdjecia()
         );
