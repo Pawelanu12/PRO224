@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface WiadomoscRepository extends JpaRepository<Wiadomosc, Long> {
     List<Wiadomosc> findByCzatIdOrderByDataWyslaniaAsc(Long czatId);
+    List<Wiadomosc> findByCzatId(Long czatId);
 }
