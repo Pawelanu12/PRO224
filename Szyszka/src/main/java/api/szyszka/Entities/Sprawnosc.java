@@ -13,10 +13,8 @@ public class Sprawnosc {
 
     private String nazwa;
 
-    @Column(columnDefinition = "TEXT")
     private String opis;
 
-    @Column(columnDefinition = "TEXT")
     private String opisWymagan;
 
     private String ikona;
