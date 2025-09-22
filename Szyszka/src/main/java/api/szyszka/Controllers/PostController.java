@@ -23,12 +23,21 @@ public class PostController {
 
     private final PostService postService;
 
-    public PostController(PostService postService) {this.postService = postService;}
+    public PostController(PostService postService) {this.postService = postService;} //Wystarczy id użytkownika
+
+//    @PostMapping
+//    public ResponseEntity<PostDto> createPost(@RequestBody CreatePostRequest request) {
+//        Post post = PostMapper.fromCreateRequest(request);
+//        Post saved = postService.createPost(post);
+//
+//        return ResponseEntity
+//                .created(URI.create("/api/posty/" + saved.getId()))
+//                .body(PostMapper.toDto(saved));
+//    }
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody CreatePostRequest request) {
-        Post post = PostMapper.fromCreateRequest(request);
-        Post saved = postService.createPost(post);
+        Post saved = postService.createPost(request);
 
         return ResponseEntity
                 .created(URI.create("/api/posty/" + saved.getId()))

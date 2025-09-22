@@ -1,13 +1,11 @@
 package api.szyszka.Services;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.Entities.Post;
-import api.szyszka.Entities.Szostka;
-import api.szyszka.Exceptions.DuplicateSzostkaException;
+import api.szyszka.Entities.Uzytkownik;
+import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Repositories.PostRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +14,29 @@ import java.util.Optional;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UzytkownikRepository uzytkownikRepository;
 
-    public PostService(PostRepository postRepository) {
+//    public PostService(PostRepository postRepository) {
+//        this.postRepository = postRepository;
+//    }
+
+    public PostService(PostRepository postRepository, UzytkownikRepository uzytkownikRepository) {
         this.postRepository = postRepository;
+        this.uzytkownikRepository = uzytkownikRepository;
     }
 
-    public Post createPost(Post post) {return postRepository.save(post);}
+    public Post createPost(CreatePostRequest request) {
+        Post post = PostMapper.fromCreateRequest(request);
+
+        Uzytkownik autor = uzytkownikRepository.findById(request.getAutorId())
+                .orElseThrow(() -> new RuntimeException("Nie znaleziono użytkownika o id: " + request.getAutorId()));
+
+        post.setAutor(autor); // <-- KLUCZ
+
+        return postRepository.save(post);
+    }
+
+    //public Post createPost(Post post) {return postRepository.save(post);}
 
 //    public void modifyPostByPostId(Long id, String tresc) {
 //        Post post = postRepository.findById(id).get();

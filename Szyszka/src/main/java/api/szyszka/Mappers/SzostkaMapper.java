@@ -18,9 +18,12 @@ public class SzostkaMapper {
                 entity.getNazwa(),
                 entity.getDataStworzenia(),
                 //entity.getUzytkownicy()
-                entity.getUzytkownicy().stream()
-                        .map(UzytkownikShortcutMapper::mapToPublic)
-                        .collect(Collectors.toList())
+
+                entity.getUzytkownicy() != null
+                        ? entity.getUzytkownicy().stream()
+                            .map(UzytkownikShortcutMapper::mapToPublic)
+                            .collect(Collectors.toList())
+                        : new ArrayList<>()
 
         );
     }
@@ -31,9 +34,9 @@ public class SzostkaMapper {
         szostka.setNazwa(request.getNazwa());
         szostka.setDataStworzenia(request.getDataStworzenia());
         szostka.setUzytkownicy(request.getUzytkonicy());
-        szostka.setUzytkownicy(
-                request.getUzytkonicy() != null ? request.getUzytkonicy() : new ArrayList<>()
-        );
+        //szostka.setUzytkownicy(
+        //       request.getUzytkonicy() != null ? request.getUzytkonicy() : new ArrayList<>()
+        //);
         return szostka;
     }
 
@@ -41,9 +44,9 @@ public class SzostkaMapper {
         if (request == null || entity == null) return;
         entity.setNazwa(request.getNazwa());
         entity.setDataStworzenia(request.getDataStworzenia());
-        //entity.setUzytkownicy(request.getUzytkonicy());
-        entity.setUzytkownicy(
-                request.getUzytkonicy() != null ? request.getUzytkonicy() : new ArrayList<>()
-        );
+        entity.setUzytkownicy(request.getUzytkonicy());
+        //entity.setUzytkownicy(
+        //        request.getUzytkonicy() != null ? request.getUzytkonicy() : new ArrayList<>()
+        //);
     }
 }

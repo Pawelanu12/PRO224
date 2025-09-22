@@ -1,7 +1,6 @@
 package api.szyszka.DTOs;
 
 import api.szyszka.Entities.Komentarz;
-import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Zdjecie;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +22,5 @@ public class PostDto {
     private Long autorId;
     private List<Komentarz> komentarze;
     private List<Zdjecie> zdjecia;
+
 }

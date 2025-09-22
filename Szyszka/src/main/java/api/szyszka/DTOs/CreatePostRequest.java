@@ -19,7 +19,7 @@ public class CreatePostRequest {
     private LocalDateTime dataStworzenia;
     private String tresc;
     private int iloscPolubien;
-    private Uzytkownik autor;
-    private List<Komentarz> komentarze;
-    private List<Zdjecie> zdjecia;
+    private Long autorId;
+    //private List<Komentarz> komentarze;
+    //private List<Zdjecie> zdjecia;
 }

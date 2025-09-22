@@ -4,8 +4,10 @@ import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.DTOs.PostDto;
 import api.szyszka.DTOs.UpdatePostRequest;
 import api.szyszka.Entities.Post;
+import api.szyszka.Entities.Zdjecie;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PostMapper {
 
@@ -19,6 +21,12 @@ public class PostMapper {
                 entity.getAutor().getId(),
                 entity.getKomentarze(),
                 entity.getZdjecia()
+                //entity.getZdjecia().stream()
+                //        .map(entity.getZdjecia()::mapToPublic)
+                //        .collect(Collectors.toList())
+                //entity.getUzytkownicy().stream()
+                //        .map(UzytkownikShortcutMapper::mapToPublic)
+                //        .collect(Collectors.toList())
         );
     }
 
@@ -28,9 +36,9 @@ public class PostMapper {
         post.setDataStworzenia(request.getDataStworzenia());
         post.setTresc(request.getTresc());
         post.setIloscPolubien(request.getIloscPolubien());
-        post.setAutor(request.getAutor());
-        post.setKomentarze(request.getKomentarze());
-        post.setZdjecia(request.getZdjecia());
+        //post.setAutor(request.getAutor());
+        //post.setKomentarze(request.getKomentarze());
+        //post.setZdjecia(request.getZdjecia());
         return post;
     }
 
@@ -39,14 +47,14 @@ public class PostMapper {
         entity.setDataStworzenia(request.getDataStworzenia());
         entity.setTresc(request.getTresc());
         entity.setIloscPolubien(request.getIloscPolubien());
-        entity.setAutor(request.getAutor());
+        //entity.setAutor(request.getAutor());
         //entity.setKomentarze(request.getKomentarze());
-        entity.setKomentarze(
-                request.getKomentarze() != null ? request.getKomentarze() : new ArrayList<>()
-        );
+        //entity.setKomentarze(
+        //        request.getKomentarze() != null ? request.getKomentarze() : new ArrayList<>()
+        //);
         //entity.setZdjecia(request.getZdjecia());
-        entity.setZdjecia(
-                request.getZdjecia() != null ? request.getZdjecia() : new ArrayList<>()
-        );
+        //entity.setZdjecia(
+        //        request.getZdjecia() != null ? request.getZdjecia() : new ArrayList<>()
+        //);
     }
 }
