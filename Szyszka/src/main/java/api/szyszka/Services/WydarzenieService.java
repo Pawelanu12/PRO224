@@ -27,18 +27,18 @@ public class WydarzenieService {
 
     public List<Wydarzenie> getAllWydarzenia() {return wydarzenieRepository.findAll();}
 
-    public Optional<Wydarzenie> getWydarzenieById(long id) {return wydarzenieRepository.findById(id);}
+    public Wydarzenie getWydarzenieById(long id) {return wydarzenieRepository.findById(id).get();}
 
-    public Optional<Wydarzenie> getWydarzenieByNazwa(String nazwa) {
-        return wydarzenieRepository.findByNazwa(nazwa);
+    public Wydarzenie getWydarzenieByNazwa(String nazwa) {
+        return wydarzenieRepository.findByNazwa(nazwa).get();
     }
 
-    public Optional<Wydarzenie> getWydarzenieByDataWyjazdu(LocalDateTime dataWyjazdu) {
-        return wydarzenieRepository.findByDataWyjazdu(dataWyjazdu);
+    public Wydarzenie getWydarzenieByDataWyjazdu(LocalDateTime dataWyjazdu) {
+        return wydarzenieRepository.findByDataWyjazdu(dataWyjazdu).get();
     }
 
-    public Optional<Wydarzenie> getWydarzenieByDataZakonczenia(LocalDateTime dataZaonczenia) {
-        return wydarzenieRepository.findByDataZakonczenia(dataZaonczenia);
+    public Wydarzenie getWydarzenieByDataZakonczenia(LocalDateTime dataZaonczenia) {
+        return wydarzenieRepository.findByDataZakonczenia(dataZaonczenia).get();
     }
 
     public List<Wydarzenie> getWyjazduByDateRange(LocalDateTime dataPierwsza, LocalDateTime dataDruga) {
@@ -51,23 +51,40 @@ public class WydarzenieService {
 
     public void deleteWydarzenie(long id) {sprawnoscRepository.deleteById(id);}
 
-     public void modifyWydarzenie(Long id, Wydarzenie updateWydarzenie) {
-        Optional<Wydarzenie> oldWydarzenie = wydarzenieRepository.findById(id);
+     public Wydarzenie modifyWydarzenie(Long id, Wydarzenie updateWydarzenie) {
+        Wydarzenie oldWydarzenie = getWydarzenieById(id);
 
-        if (oldWydarzenie.isPresent()){
-            Wydarzenie wydarzenie = oldWydarzenie.get();
-            wydarzenie.setNazwa(updateWydarzenie.getNazwa());
-            wydarzenie.setDataWyjazdu(updateWydarzenie.getDataWyjazdu());
-            wydarzenie.setDataZakonczenia(updateWydarzenie.getDataZakonczenia());
-            wydarzenie.setOpis(updateWydarzenie.getOpis());
-            wydarzenie.setOrganizator(updateWydarzenie.getOrganizator());
-            wydarzenie.setUczestnictwa(updateWydarzenie.getUczestnictwa());
-            wydarzenie.setZdjecia(updateWydarzenie.getZdjecia());
-            wydarzenieRepository.save(wydarzenie);
-         }
-        else {
-            throw new NoSuchElementException("Wydarzenie not found by id: " + id);
+        if (!oldWydarzenie.getNazwa().equals(updateWydarzenie.getNazwa())
+                && wydarzenieRepository.existsById(id)) {
+            throw new NoSuchElementException();
         }
+
+        oldWydarzenie.setNazwa(updateWydarzenie.getNazwa());
+        oldWydarzenie.setDataWyjazdu(updateWydarzenie.getDataWyjazdu());
+        oldWydarzenie.setDataZakonczenia(updateWydarzenie.getDataZakonczenia());
+        oldWydarzenie.setOpis(updateWydarzenie.getOpis());
+        oldWydarzenie.setOrganizator(updateWydarzenie.getOrganizator());
+        oldWydarzenie.setUczestnictwa(updateWydarzenie.getUczestnictwa());
+        oldWydarzenie.setZdjecia(updateWydarzenie.getZdjecia());
+
+
+        return wydarzenieRepository.save(oldWydarzenie);
+//        Optional<Wydarzenie> oldWydarzenie = wydarzenieRepository.findById(id);
+//
+//        if (oldWydarzenie.isPresent()){
+//            Wydarzenie wydarzenie = oldWydarzenie.get();
+//            wydarzenie.setNazwa(updateWydarzenie.getNazwa());
+//            wydarzenie.setDataWyjazdu(updateWydarzenie.getDataWyjazdu());
+//            wydarzenie.setDataZakonczenia(updateWydarzenie.getDataZakonczenia());
+//            wydarzenie.setOpis(updateWydarzenie.getOpis());
+//            wydarzenie.setOrganizator(updateWydarzenie.getOrganizator());
+//            wydarzenie.setUczestnictwa(updateWydarzenie.getUczestnictwa());
+//            wydarzenie.setZdjecia(updateWydarzenie.getZdjecia());
+//            wydarzenieRepository.save(wydarzenie);
+//         }
+//        else {
+//            throw new NoSuchElementException("Wydarzenie not found by id: " + id);
+//        }
      }
 
 
