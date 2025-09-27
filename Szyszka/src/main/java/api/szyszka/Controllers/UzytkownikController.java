@@ -5,6 +5,8 @@ import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.UzytkownikMapper;
 import api.szyszka.Services.UzytkownikService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -21,6 +23,10 @@ public class UzytkownikController {
         this.uzytkownikService = uzytkownikService;
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UzytkownikDto> me(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(uzytkownikService.getCurrentUser(user.getUsername()));
+    }
     // CREATE
     @PostMapping
     public ResponseEntity<UzytkownikDto> createUser(@RequestBody CreateUzytkownikRequest request) {

@@ -1,11 +1,18 @@
 package api.szyszka.Services;
 
+import api.szyszka.DTOs.Auth.AuthResponse;
+import api.szyszka.DTOs.Auth.LoginRequest;
+import api.szyszka.DTOs.Auth.RegisterRequest;
+import api.szyszka.DTOs.UzytkownikDto;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Exceptions.*;
 import api.szyszka.Repositories.UzytkownikRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,18 +21,60 @@ import java.util.List;
 public class UzytkownikService {
 
     private final UzytkownikRepository uzytkownikRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UzytkownikService(UzytkownikRepository uzytkownikRepository) {
+    public UzytkownikService(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.uzytkownikRepository = uzytkownikRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
-
     public Uzytkownik createUser(Uzytkownik uzytkownik) {
         if (uzytkownikRepository.findByLogin(uzytkownik.getLogin()).isPresent()) {
             throw new DuplicateLoginException(uzytkownik.getLogin());
         }
         return uzytkownikRepository.save(uzytkownik);
     }
+    public void register(RegisterRequest req) {
+        if (uzytkownikRepository.findByLogin(req.getLogin()).isPresent()) {
+            throw new DuplicateLoginException("Login already used");
+        }
 
+        Uzytkownik u = new Uzytkownik();
+        u.setLogin(req.getLogin());
+        u.setHaslo(passwordEncoder.encode(req.getHaslo()));
+        u.setImie(req.getImie());
+        u.setNazwisko(req.getNazwisko());
+        u.setTypUzytkownika(req.getTypUzytkownika() != null ? req.getTypUzytkownika() : "ZUCH");
+        u.setEmail(req.getEmail());
+        u.setDataUrodzenia(req.getDataUrodzenia());
+        u.setDataDolaczeniaDoGromady(LocalDateTime.now());
+
+        uzytkownikRepository.save(u);
+    }
+    public AuthResponse login(LoginRequest req) {
+        Uzytkownik u = uzytkownikRepository.findByLogin(req.getLogin())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(req.getHaslo(), u.getHaslo())) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        String token = jwtService.generateToken(u.getLogin());
+        return new AuthResponse(token);
+    }
+
+    public UzytkownikDto getCurrentUser(String login) {
+        Uzytkownik u = uzytkownikRepository.findByLogin(login).orElseThrow();
+        UzytkownikDto dto = new UzytkownikDto();
+        dto.setLogin(u.getLogin());
+        dto.setId(u.getId());
+        dto.setImie(u.getImie());
+        dto.setNazwisko(u.getNazwisko());
+        dto.setTypUzytkownika(u.getTypUzytkownika());
+        dto.setEmail(u.getEmail());
+        return dto;
+    }
 
     public Uzytkownik getUserById(Long id) {
         return uzytkownikRepository.findById(id)
