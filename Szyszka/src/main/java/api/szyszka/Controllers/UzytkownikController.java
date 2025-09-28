@@ -5,6 +5,7 @@ import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.UzytkownikMapper;
 import api.szyszka.Services.UzytkownikService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class UzytkownikController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<UzytkownikDto> me(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(uzytkownikService.getCurrentUser(user.getUsername()));
     }
@@ -45,6 +47,7 @@ public class UzytkownikController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<UzytkownikDto>> getAllUsers() {
         List<UzytkownikDto> users = uzytkownikService.getAllUsers()
                 .stream()
@@ -54,6 +57,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(users);
     }
     @GetMapping("/children")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<UzytkownikDto>> getChildren(
             @RequestParam(required = false) Long parentId1,
             @RequestParam(required = false) Long parentId2) {
@@ -66,6 +70,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(children);
     }
     @GetMapping("/parents/{id}")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<UzytkownikDto>> getParents(@PathVariable Long id) {
         List<UzytkownikDto> parents = uzytkownikService.getParents(id)
                 .stream()
@@ -92,6 +97,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(users);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("@uzytkownikSecurity.canUpdateUser(#id, principal)")
     public ResponseEntity<UzytkownikDto> updateUser(@PathVariable Long id,
                                                     @RequestBody UpdateUzytkownikRequest request) {
         Uzytkownik existing = uzytkownikService.getUserById(id);
@@ -102,7 +108,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
     }
 
-
+    @PreAuthorize("hasRole('DRUZYNOWY')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         uzytkownikService.deleteUser(id);

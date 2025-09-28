@@ -8,6 +8,7 @@ import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Exceptions.*;
 import api.szyszka.Repositories.UzytkownikRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +24,13 @@ public class UzytkownikService {
     private final UzytkownikRepository uzytkownikRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    public UzytkownikService(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UzytkownikService(UzytkownikRepository uzytkownikRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.uzytkownikRepository = uzytkownikRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
     public Uzytkownik createUser(Uzytkownik uzytkownik) {
         if (uzytkownikRepository.findByLogin(uzytkownik.getLogin()).isPresent()) {
@@ -53,14 +56,13 @@ public class UzytkownikService {
         uzytkownikRepository.save(u);
     }
     public AuthResponse login(LoginRequest req) {
-        Uzytkownik u = uzytkownikRepository.findByLogin(req.getLogin())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
-
-        if (!passwordEncoder.matches(req.getHaslo(), u.getHaslo())) {
-            throw new IllegalArgumentException("Invalid credentials");
-        }
-
-        String token = jwtService.generateToken(u.getLogin());
+        authenticationManager.authenticate(
+                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        req.getLogin(),
+                        req.getHaslo()
+                )
+        );
+        String token = jwtService.generateToken(req.getLogin());
         return new AuthResponse(token);
     }
 
