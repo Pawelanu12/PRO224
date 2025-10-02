@@ -31,7 +31,7 @@ public class WydarzenieController {
         this.zdjecieService = zdjecieService;
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<WydarzenieDto> createWydarzenie(@RequestBody CreateWydarzenieRequest request) {
         Wydarzenie wydarzenie = WydarzenieMapper.fromCreateRequest(request);
         Wydarzenie saved = wydarzenieService.createWydarzenie(wydarzenie);
@@ -98,7 +98,7 @@ public class WydarzenieController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<WydarzenieDto> updateWydarzenie(@PathVariable Long id,
                                                           @RequestBody UpdateWydarzenieRequest request) {
         Wydarzenie oldWydarzenie = wydarzenieService.getWydarzenieById(id);

@@ -25,7 +25,7 @@ public class ZdjecieController {
         this.zdjecieService = zdjecieService;
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<ZdjecieDto> createZdjecie(@RequestBody CreateZdjecieRequest request) {
         Zdjecie saved = zdjecieService.createZdjecie(request);
 
