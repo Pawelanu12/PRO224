@@ -2,7 +2,7 @@
 
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-
+//linki do podstron w lewej czesci ekranu
 export default function Navigation(){
     const {replaceClick}=useContext(GlobalContext);
     return (<div className={"fiksacjaWLewejCzesciEkrana"}

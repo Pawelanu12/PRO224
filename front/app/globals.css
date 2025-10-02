@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/*@tailwind base;*/
+
+/*@tailwind components;*/
+/*@tailwind utilities;*/
 button{
     cursor: pointer;
 }
@@ -118,7 +122,7 @@ input{
 }
 .forma .formik{
     width:400px;
-    height: 250px;
+    height: 380px;
     background-color: #405E3F;
     display:flex;
     flex-direction: column;
@@ -128,6 +132,15 @@ input{
 .forma .formik button{
     width:230px;
     background-color:#354545;
+}
+.forma .pole_formy{
+    width:230px;
+}
+.forma p{
+    margin-top: 4px;
+}
+.forma .error{
+    color:red;
 }
 
 .carousel {
@@ -156,7 +169,7 @@ input{
 }
 .ikona{
     width:48px;
-    margin-left:40px;
+    margin-left:4px;
     margin-top:20px;
     margin-bottom:20px;
     border-radius:50%;

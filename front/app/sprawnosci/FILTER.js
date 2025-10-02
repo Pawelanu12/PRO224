@@ -4,18 +4,10 @@ import {useContext, useRef} from "react";
 import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
 
 export default function Filter(){
-    const {input,sprawnosci,setSprawnosciPosortowane}=useContext(SprawnoscContext)
+    const {input,logInput}=useContext(SprawnoscContext)
 
-    console.log(input)
-    const logInput=()=>{
-        console.log(input.current.value)
-        if(input&&input.current&&input.current.value&&input.current.value.length>0){
-            setSprawnosciPosortowane(sprawnosci.filter(s=>s.nazwa.startsWith(input.current.value)))
-        }
-        else{
-            setSprawnosciPosortowane(sprawnosci)
-        }
-    }
+
+
     return (
         <div className={"flexRow"} style={{margin:"20px"}}>
             <h1 >Lista sprawnosci</h1>

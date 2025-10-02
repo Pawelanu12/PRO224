@@ -14,12 +14,12 @@ export default function NapiszWiadomosc() {
     useEffect(() => {
 
     })
-    return(<div className={"flexRow"} style={{margin:"50px",justifyContent:"center"}}>
-        <label><input
+    return(<div className={"flexRow"} style={{marginTop:"50px",marginBottom:"50px",justifyContent:"center"}}>
+        <label style={{width:"80%",border:"solid 1px black"}}><textarea
             onKeyPress={(e)=> {
                 if (e.code === "Enter") wyslij()
             }
-        } style={{backgroundColor:"#405E3F",color:"white"}} ref={wiadomosc} placeholder={"napisz text"}/></label>
+        } style={{backgroundColor:"#405E3F",color:"white",width:"100%"}} ref={wiadomosc} placeholder={"napisz text"}/></label>
         <button  style={{paddingLeft:"10px"}} onClick={()=>wyslij()}><FaChevronRight/></button>
 
     </div>)

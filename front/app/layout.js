@@ -1,5 +1,4 @@
 'use client'
-import localFont from "next/font/local";
 import "./globals.css";
 import GlobalProvider from "@/app/providers/GlobalProvider";
 

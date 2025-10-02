@@ -4,7 +4,7 @@ import {useContext, useEffect} from "react";
 import {ForumContext} from "@/app/providers/ForumProvider";
 import Post from "@/app/forum/Post";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-
+//pokazuje wiele postow
 export default function Posty({wszystkie=true}){
     const {posty,loading,getPosty}=useContext(ForumContext)
     const {user}=useContext(GlobalContext)
@@ -12,6 +12,7 @@ export default function Posty({wszystkie=true}){
     getPosty(),[])
     if(loading)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>Loading...</p>
     if(!posty||posty.length===0)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>nie ma postów...</p>
+    console.log(posty)
     let postyPokazywane=posty
     if(!wszystkie)
         postyPokazywane=posty.filter(p=>p.autor===user.login)

@@ -1,15 +1,22 @@
 'use client'
 
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
 import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 import Sprawnosc from "@/app/sprawnosci/Sprawnosc";
 import Filter from "@/app/sprawnosci/Filter";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Sprawnosci(){
-    const {sprawnosciPosortowane}=useContext(SprawnoscContext)
+
+    const {sprawnosciPosortowane,getSprawnosci}=useContext(SprawnoscContext)
+    const {loading}=useContext(GlobalContext)
     const typySprawnosci=["artystyczne","bajkowe","kultoroznawcze"]
-console.log(sprawnosciPosortowane)
+        // console.log(sprawnosciPosortowane)
+    useEffect(()=>{
+      getSprawnosci()
+    },[])
+        if(loading) return<p>loading</p>
         return(
         <div>
             <NavbarZarejestrowana/>

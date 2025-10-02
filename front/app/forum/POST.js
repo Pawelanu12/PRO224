@@ -3,7 +3,7 @@
 import {useContext, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import Opcji from "@/app/forum/Opcji";
-
+//pokazuje jeden post
 export default function Post({post}){
 const {user}=useContext(GlobalContext)
     const [pelnyOpis,setPelnyOpis] = useState(false)

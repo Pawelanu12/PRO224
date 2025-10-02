@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d1f2aca-83f6-40de-ac3a-a93e471e0697" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/czat/NAPISZWIADOMOSC.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/NAPISZWIADOMOSC.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/czat/ONECZAT.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/ONECZAT.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/login/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/login/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/profil/INFORMACJA.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/profil/INFORMACJA.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/profil/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/profil/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/providers/SprawnoscProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/SprawnoscProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/sprawnosci/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/sprawnosci/page.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,12 +29,12 @@
     &quot;assignee&quot;: &quot;s27297&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Pawelanu12/PRO224.git&quot;,
-    &quot;accountId&quot;: &quot;87df535d-ad12-492f-a13b-d0af0bfb1668&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Pawelanu12/PRO224.git",
+    "accountId": "7d4e2195-bd33-4046-b7a8-7fbd94a219ef"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -39,7 +46,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "s27297",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/pro/PRO224",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -52,7 +62,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
       </set>
     </attachedChunks>
   </component>
@@ -67,6 +78,8 @@
       <workItem from="1754053229662" duration="33000" />
       <workItem from="1754298209340" duration="31000" />
       <workItem from="1754476130141" duration="425000" />
+      <workItem from="1755170521634" duration="20000" />
+      <workItem from="1759134450611" duration="92000" />
     </task>
     <servers />
   </component>

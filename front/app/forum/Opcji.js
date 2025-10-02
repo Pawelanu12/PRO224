@@ -2,7 +2,7 @@
 
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-
+//menu opcji ktory uzytkownik moze robic z postem
 export default function Opcji({autor}){
     const {user}=useContext(GlobalContext);
     return (

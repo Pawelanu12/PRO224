@@ -8,17 +8,7 @@ import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 
 export default function Rejestracja(){
-    const {router} = useContext(GlobalContext);
-    const rejestracja=(value)=> {
-        //await fetch("https://localhost:8080/createuser", {
-        //                         method: "POST",
-        //                         body: JSON.stringify([value.email,value.value.haslo]),
-        //                         headers: {"Content-Type": "application/json"}
-        //                     }).then(alert("haslo zmienione"))
-        //                     .router.replace("login)
-        //                     .catch(err=>alert(err))
-        router.replace("/login");
-    }
+    const {router,register} = useContext(GlobalContext);
     return (
         <div>
                 <NavbarZarejestrowana/>
@@ -28,7 +18,8 @@ export default function Rejestracja(){
                     initialValues={{
                         login:"",
                         haslo: "",
-                        powtorHasla: ""
+                        powtorHasla: "",
+                        email:""
                     }}
                     validationSchema={Yup.object({
                         login: Yup.string()
@@ -42,30 +33,41 @@ export default function Rejestracja(){
                             .min(6, "musi miec co najmniej 6 znaków")
                             .oneOf([Yup.ref("haslo")], "musi zgadzać z haslem")
                             .required("to pole jest wymagane"),
+                        email: Yup.string()
+                            .email("email musi być poprawny")
+                            .required("to pole jest wymagane"),
 
                     })}
                     onSubmit={(values, {resetForm}) => {
 
 
                         console.log(values)
-                        rejestracja(values)
-                        resetForm()
+                        register(values)
+                        // resetForm()
                     }}
 
                 >
                     {({dirty, isValid}) => (
                         <Form className={"formik"}>
-                            <Field style={{width: "230px"}} type="text" name="login" placeholder="napisz login"
+                            <p>Email</p>
+                            <Field className={"pole_formy"} type="email" name="email" placeholder="napisz email"
                             />
-                            <ErrorMessage name="login" component="div"/>
+                            <ErrorMessage className={"error"} name="email" component="div"/>
+                            {/*<br/>*/}
+                           <p> Login</p>
+                            <Field className={"pole_formy"}  type="text" name="login" placeholder="napisz login"
+                            />
+                            <ErrorMessage className={"error"} name="login" component="div"/>
+                            <p> Haslo</p>
+                            <Field className={"pole_formy"}  type="password" name="haslo" placeholder="napisz haslo"
+                            />
+                            <ErrorMessage className={"error"}  name="haslo" component="div"/>
+                            <p >Powtórz haslo</p>
 
-                            <Field style={{width: "230px",marginTop: "20px"}} type="password" name="haslo" placeholder="napisz haslo"
-                            />
-                            <ErrorMessage name="haslo" component="div"/>
-                            <Field style={{width: "230px", marginTop: "20px"}} type="password" name="powtorHasla"
+                            <Field className={"pole_formy"}  type="password" name="powtorHasla"
                                    placeholder="powtórz haslo"
                             />
-                            <ErrorMessage name="powtorHasla" component="div"/>
+                            <ErrorMessage className={"error"} name="powtorHasla" component="div"/>
                             <br/>
 
                             <button type="submit" disabled={!dirty || !isValid}

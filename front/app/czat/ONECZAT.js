@@ -3,25 +3,26 @@
 import {useContext, useEffect} from "react";
 import {CzatContext} from "@/app/providers/CzatProvider";
 import NapiszWiadomosc from "@/app/czat/NapiszWiadomosc";
-
+//pokazuje wiadomosci w czacie
 export default function OneCzat(){
 const {getCzat,czat,loading,pokazywanyCzatId}=useContext(CzatContext)
+
     useEffect(()=>{
         const getOneCzat=async()=>{
             await getCzat();
         }
         getOneCzat()
     },[pokazywanyCzatId])
-    console.log(czat)
-    console.log(pokazywanyCzatId)
+
    if(loading) return <p style={{paddingLeft:"40vw",paddingTop:"50px",textAlign:"center"}}>loading</p>
+
     return (
        <div style={{marginLeft:"40vw",paddingTop:"50px",backgroundColor:"#4F5D4E",
            height:"100vh",overflow:"auto",position:"fixed",width:"60vw"}}>
            <div style={{display:"flex",height:"80px",justifyContent:"center"}} >
                <img className={"ikona"} src={czat.ikona} alt={"ikona"}/>
                <div style={{backgroundColor:"#405E3F",margin:"20px",minWidth:"50%"}}>
-                   <p style={{textAlign:"center"}}>{czat.nazwa}</p>
+                   <p >{czat.nazwa}</p>
                </div>
            </div>
            {!czat.messages||czat.messages.length===0&&<p>to jest początek waszego czatu</p>}

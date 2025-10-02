@@ -19,13 +19,13 @@ export default function LogIn(){
             <Formik
                 initialValues={{
                     login: "",
-                    password: "",
+                    haslo: "",
                 }}
                 validationSchema={Yup.object({
 
                     login: Yup.string()
                         .required("Login jest wymagany"),
-                    password: Yup.string()
+                    haslo: Yup.string()
                         .required("Haslo jest wymagane"),
 
 
@@ -42,26 +42,34 @@ export default function LogIn(){
                 {({dirty, isValid}) => (
                     <Form style={{
                         alignItems: "center", display: "flex", flexDirection: "column",
-                        backgroundColor: "#405E3F", justifyContent: "center",  margin: "10%"
+                        backgroundColor: "#405E3F", justifyContent: "center", margin: "10%"
                     }}>
-
+                        <p>Login</p>
                         <Field className={"field"} type="text" name="login" placeholder="napisz login"
                         />
                         <ErrorMessage name="login" component="div"/>
                         <br/>
-                        <Field  className={"field"}  type="password" name="password" placeholder="napisz haslo"
+                        <p>Haslo</p>
+                        <Field className={"field"} type="password" name="haslo" placeholder="napisz haslo"
                         />
-                        <ErrorMessage name="password" component="div"/>
+                        <ErrorMessage name="haslo" component="div"/>
                         <br/>
-                        <div style={{ display: "flex",
+                        <div style={{
+                            display: "flex",
                             justifyContent: "space-between",
                             width: "80%",
-                            marginTop: "10px"}}>
-                            <button onClick={(e)=>replaceClick(e,"/rejestracja")} style={{color: "white", float: "left"}}>Zarejestruj sie</button>
-                            <button onClick={(e)=>replaceClick(e,"/password-change")} style={{color: "white", float: "right"}}>nie pamiętasz hasla</button>
+                            marginTop: "10px"
+                        }}>
+                            <button onClick={(e) => replaceClick(e, "/rejestracja")}
+                                    style={{color: "white", float: "left"}}>Zarejestruj sie
+                            </button>
+                            <button onClick={(e) => replaceClick(e, "/password-change")}
+                                    style={{color: "white", float: "right", paddingLeft: "5px"}}>nie pamiętasz hasla
+                            </button>
                         </div>
                         <br/>
-                        <button style={{backgroundColor:"#354545",width:"80%"}} type="submit" disabled={!dirty || !isValid}
+                        <button style={{backgroundColor: "#354545", width: "80%"}} type="submit"
+                                disabled={!dirty || !isValid}
                         >Log In
                         </button>
                         <br/>
@@ -69,7 +77,7 @@ export default function LogIn(){
 
 
             </Formik>
-        </div>
+            </div>
                 <div style={{flex: 1,height:"100%",borderLeft:"solid green 1px"}}>
 
                 </div>

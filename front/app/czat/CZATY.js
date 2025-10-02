@@ -4,7 +4,8 @@
 
 import {useContext} from "react";
 import {CzatContext} from "@/app/providers/CzatProvider";
-
+//pokazuje wszystkich uzytkowników i gruppy
+// do których pisales wczestniej lub jestes zarejestrowany
 export default function Czaty(){
     const {czaty,setPokazywanyCzatId}=useContext(CzatContext)
     return(

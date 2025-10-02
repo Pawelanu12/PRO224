@@ -4,6 +4,7 @@ import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 import {useContext, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import Informacja from "@/app/profil/Informacja";
+import MojePosty from "@/app/profil/MojePosty";
 
 export default function Profil(){
     const {user}=useContext(GlobalContext)
@@ -38,6 +39,6 @@ export default function Profil(){
             </div>
         </div>
         {item==="Informacje"&&<Informacja/>}
-
+        {item==="Posty"&&<MojePosty/>}
     </div>)
 }
