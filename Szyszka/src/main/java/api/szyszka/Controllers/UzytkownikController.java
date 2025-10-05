@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api/uzytkownicy")
 public class UzytkownikController {
@@ -30,6 +31,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(uzytkownikService.getCurrentUser(user.getUsername()));
     }
     // CREATE
+    @PreAuthorize("hasAnyRole('DRUZYNOWY')")
     @PostMapping
     public ResponseEntity<UzytkownikDto> createUser(@RequestBody CreateUzytkownikRequest request) {
         Uzytkownik user = UzytkownikMapper.fromCreateRequest(request);
@@ -39,7 +41,7 @@ public class UzytkownikController {
                 .created(URI.create("/api/uzytkownicy/" + saved.getId()))
                 .body(UzytkownikMapper.toDto(saved));
     }
-
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     @GetMapping("/{id}")
     public ResponseEntity<UzytkownikDto> getUserById(@PathVariable Long id) {
         Uzytkownik user = uzytkownikService.getUserById(id);
@@ -80,6 +82,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(parents);
     }
     @GetMapping("/typ/{typ}")
+    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<UzytkownikDto>> getUsersByTyp(@PathVariable String typ) {
         List<UzytkownikDto> users = uzytkownikService.getUsersByType(typ)
                 .stream()
@@ -89,6 +92,7 @@ public class UzytkownikController {
     }
 
     @GetMapping("/szostka/{szostkaId}")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<List<UzytkownikDto>> getUsersBySzostka(@PathVariable Long szostkaId){
         List<UzytkownikDto> users = uzytkownikService.getUsersBySzostka(szostkaId)
                 .stream()

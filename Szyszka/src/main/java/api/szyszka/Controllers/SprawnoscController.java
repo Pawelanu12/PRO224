@@ -16,8 +16,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
-@RequestMapping("/api/sprawnosc/")
+@RequestMapping("/api/sprawnosc")
 public class SprawnoscController {
 
     private final SzostkaService szostkaService;
