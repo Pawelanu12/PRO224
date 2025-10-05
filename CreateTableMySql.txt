@@ -1,0 +1,70 @@
+CREATE TABLE szostka (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_stworzenia DATETIME NOT NULL
+);
+
+CREATE TABLE uzytkownik (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(255) NOT NULL,
+    nazwisko VARCHAR(255) NOT NULL,
+    login VARCHAR(255) NOT NULL UNIQUE,
+    haslo VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    data_urodzenia DATETIME,
+    nr_telefonu VARCHAR(20),
+    data_dolaczenia_do_gromady DATETIME,
+    rodzic_id1 BIGINT,
+    rodzic_id2 BIGINT,
+    typ_uzytkownika VARCHAR(255) NOT NULL,
+    szostka_id BIGINT, 
+    FOREIGN KEY (rodzic_id1) REFERENCES uzytkownik(id),
+    FOREIGN KEY (rodzic_id2) REFERENCES uzytkownik(id),
+    FOREIGN KEY (szostka_id) REFERENCES szostka(id) ON DELETE SET NULL
+);
+
+CREATE TABLE skladka (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_wplaty DATETIME NOT NULL,
+    uzytkownik_id BIGINT NOT NULL,
+    kwota FLOAT NOT NULL,
+    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id)
+);
+
+CREATE TABLE sprawnosc (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    opis TEXT,
+    opis_wymagan TEXT
+);
+
+CREATE TABLE zdobyte_sprawnosci (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    uzytkownik_id BIGINT NOT NULL,
+    sprawnosc_id BIGINT NOT NULL,
+    data_zdobycia_sprawnosci DATETIME NOT NULL,
+    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id),
+    FOREIGN KEY (sprawnosc_id) REFERENCES sprawnosc(id),
+    UNIQUE (uzytkownik_id, sprawnosc_id)
+);
+
+CREATE TABLE wydarzenie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_wyjazdu DATETIME NOT NULL,
+    data_zakonczenia DATETIME NOT NULL,
+    opis TEXT,
+    organizator_id BIGINT, -- Zmiana nazwy kolumny na bardziej opisową
+    FOREIGN KEY (organizator_id) REFERENCES uzytkownik(id)
+);
+
+CREATE TABLE uczestnictwo (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    uzytkownik_id BIGINT NOT NULL,
+    wydarzenie_id BIGINT NOT NULL,
+    data_zakonczenia DATETIME,
+    obecny BOOLEAN NOT NULL,
+    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id),
+    FOREIGN KEY (wydarzenie_id) REFERENCES wydarzenie(id)
+);
