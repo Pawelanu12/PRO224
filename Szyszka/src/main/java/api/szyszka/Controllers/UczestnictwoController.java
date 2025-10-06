@@ -2,6 +2,7 @@ package api.szyszka.Controllers;
 
 import api.szyszka.DTOs.CreateUczestnictwoRequest;
 import api.szyszka.DTOs.UczestnictwoDto;
+import api.szyszka.DTOs.UpdateUzytkownikRequest;
 import api.szyszka.Entities.Uczestnictwo;
 import api.szyszka.Mappers.UczestnictwoMapper;
 import api.szyszka.Mappers.ZdjecieMapper;
@@ -51,6 +52,16 @@ public class UczestnictwoController {
     public ResponseEntity<Void> deleteUczestnictwo(@PathVariable Long id) {
         uczestnictwoService.deleteUczestnictwoById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<UczestnictwoDto> updateUczestnictwo(@PathVariable Long id,
+                                                              @RequestBody UpdateUzytkownikRequest request) {
+        Uczestnictwo oldUczestnictwo = uczestnictwoService.getUczestnictwoById(id);
+
+        UczestnictwoMapper.updateEntity(oldUczestnictwo, request);
+        Uczestnictwo update = UczestnictwoService.modifyUczesnictwoById(id, oldUczestnictwo);
+
+        return ResponseEntity.ok(UczestnictwoMapper.toDto(update));
     }
 
 }

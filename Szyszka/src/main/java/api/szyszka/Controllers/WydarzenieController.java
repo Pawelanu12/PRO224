@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/wadyrzenie")
+@RequestMapping("/api/wydarzenie")
 public class WydarzenieController {
 
     private final ZdjecieService zdjecieService;
@@ -33,8 +33,8 @@ public class WydarzenieController {
 
     @PostMapping
     public ResponseEntity<WydarzenieDto> createWydarzenie(@RequestBody CreateWydarzenieRequest request) {
-        Wydarzenie wydarzenie = WydarzenieMapper.fromCreateRequest(request);
-        Wydarzenie saved = wydarzenieService.createWydarzenie(wydarzenie);
+        //Wydarzenie wydarzenie = WydarzenieMapper.fromCreateRequest(request);
+        Wydarzenie saved = wydarzenieService.createWydarzenie(request);
 
         return ResponseEntity
                 .created(URI.create("/api/wydarzenie" + saved.getId()))

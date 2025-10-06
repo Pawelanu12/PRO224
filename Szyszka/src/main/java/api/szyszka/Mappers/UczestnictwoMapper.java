@@ -22,4 +22,9 @@ public class UczestnictwoMapper {
         uczestnictwo.setObecny(reguest.isUczestnictwo());
         return uczestnictwo;
     }
+
+    public static void updateEntity(Uczestnictwo entity, Uczestnictwo request) {
+        if (request == null || entity == null) return;
+        entity.setObecny(request.isObecny());
+    }
 }

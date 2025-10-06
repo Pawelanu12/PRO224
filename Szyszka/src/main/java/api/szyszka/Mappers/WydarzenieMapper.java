@@ -40,7 +40,7 @@ public class WydarzenieMapper {
         entity.setDataWyjazdu(request.getDataWyjazdu());
         entity.setDataZakonczenia(request.getDataZakonczenia());
         entity.setOpis(request.getOpis());
-        entity.setOrganizator(entity.getOrganizator());
+        //entity.setOrganizator(request.getOrganizator());
         entity.setUczestnictwa(request.getUczestnictwa());
         entity.setZdjecia(entity.getZdjecia());
     }

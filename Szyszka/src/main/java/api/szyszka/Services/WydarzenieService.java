@@ -1,8 +1,12 @@
 package api.szyszka.Services;
 
 
+import api.szyszka.DTOs.CreateWydarzenieRequest;
+import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wydarzenie;
+import api.szyszka.Mappers.WydarzenieMapper;
 import api.szyszka.Repositories.SprawnoscRepository;
+import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Repositories.WydarzenieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +21,24 @@ public class WydarzenieService {
 
     private final WydarzenieRepository wydarzenieRepository;
     private final SprawnoscRepository sprawnoscRepository;
+    private final UzytkownikRepository uzytkownikRepository;
 
-    public WydarzenieService(WydarzenieRepository wydarzenieRepository, SprawnoscRepository sprawnoscRepository) {
+    public WydarzenieService(WydarzenieRepository wydarzenieRepository, SprawnoscRepository sprawnoscRepository, UzytkownikRepository uzytkownikRepository) {
         this.wydarzenieRepository = wydarzenieRepository;
         this.sprawnoscRepository = sprawnoscRepository;
+        this.uzytkownikRepository = uzytkownikRepository;
     }
 
-    public Wydarzenie createWydarzenie(Wydarzenie wydarzenie) {return wydarzenieRepository.save(wydarzenie);}
+    public Wydarzenie createWydarzenie(CreateWydarzenieRequest request) {
+        Wydarzenie wydarzenie = WydarzenieMapper.fromCreateRequest(request);
+
+        Uzytkownik organizator = uzytkownikRepository.findById(request.getOrganizatorId())
+                .orElseThrow(() -> new NoSuchElementException("Organizator nie znaleziony" + request.getOrganizatorId()));
+
+        wydarzenie.setOrganizator(organizator);
+
+        return wydarzenieRepository.save(wydarzenie);
+    }
 
     public List<Wydarzenie> getAllWydarzenia() {return wydarzenieRepository.findAll();}
 
@@ -49,7 +64,7 @@ public class WydarzenieService {
         return wydarzenieRepository.findByDataZakonczeniaBetween(dataPierwsza, dataDruga);
     }
 
-    public void deleteWydarzenie(long id) {sprawnoscRepository.deleteById(id);}
+    public void deleteWydarzenie(long id) {wydarzenieRepository.deleteById(id);}
 
      public Wydarzenie modifyWydarzenie(Long id, Wydarzenie updateWydarzenie) {
         Wydarzenie oldWydarzenie = getWydarzenieById(id);

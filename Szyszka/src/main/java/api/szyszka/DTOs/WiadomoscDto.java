@@ -1,11 +1,17 @@
 package api.szyszka.DTOs;
 
-import lombok.Data;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
-@Data
+//@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class WiadomoscDto {
     private Long id;
+    private Long czatId;
     private Long nadawcaId;
     private String tresc;
     private LocalDateTime dataWyslania;
