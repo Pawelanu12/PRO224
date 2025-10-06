@@ -31,7 +31,11 @@ export default function DodajPost() {
         //dodawnie posta
         const onSubmit=(e)=>{
             e.preventDefault()
-            addPosty({'id':1,'text':text.current.value,'img':img.current.src})
+            addPosty({
+                autorId:1,
+                text:text.current.value,
+                img:img.current.src,
+            iloscPoluben:0})
         }
     return (
         <div>

@@ -6,6 +6,15 @@
 button{
     cursor: pointer;
 }
+.zarejestruj{
+    cursor: pointer;
+    float: left;
+}
+.nie_pamietasz_haslo{
+    cursor: pointer;
+    float: right;
+    padding-left: 5px
+}
 body{
     background-color: #1A1919;
     color:white;
@@ -135,6 +144,7 @@ input{
 }
 .forma .pole_formy{
     width:230px;
+    margin-bottom:20px;
 }
 .forma p{
     margin-top: 4px;

@@ -1,12 +1,12 @@
 import "../globals.css";
 import "../sprawnosci.css"
-import SprawnoscProvider from "@/app/providers/SprawnoscProvider";
+import AdminProvider from "@/app/providers/AdminProvider";
 export default function RootLayout({ children }) {
     return (
 
-        <SprawnoscProvider>
+        <AdminProvider>
             {children}
-        </SprawnoscProvider>
+        </AdminProvider>
 
     );
 }

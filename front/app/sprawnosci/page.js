@@ -16,27 +16,26 @@ export default function Sprawnosci(){
     useEffect(()=>{
       getSprawnosci()
     },[])
-        if(loading) return<p>loading</p>
+    if(loading) return<p>loading</p>
+    if(!sprawnosciPosortowane.length) return<p>nie ma sprawnosci</p>
+    const typy=Array.from(new Set(sprawnosciPosortowane.map
+    (s=>(s.typ||"underfined").toUpperCase())))
         return(
         <div>
             <NavbarZarejestrowana/>
             <div style={{paddingTop:"50px"}}>
                 <Filter/>
-                <h1 style={{marginLeft: "25px"}}>Sprawnosci artystyczne</h1>
-                <div className={"flexRow"}>
-
-                    {sprawnosciPosortowane.filter(s => s.typ === "artystyczne").map((sprawnosc, i) => (
-                        <Sprawnosc key={i} sprawnosc={sprawnosc}/>
-
-                    ))}
-                </div>
-                <h1 style={{marginLeft: "25px"}}>Sprawnosci bajkowe</h1>
-                <div className={"flexRow"}>
-
-                    {sprawnosciPosortowane.filter(s => s.typ === "bajkowe").map((sprawnosc, i) => (
-                        <Sprawnosc key={i} sprawnosc={sprawnosc}/>
-
-                    ))}
+                <div className={"Sprawnosci"}>
+                    {typy.map(typ=><div key={typ||"underfined"} className={"Sprawnosci_po_typach"}>
+                            <h1 className={"typ-sprawnosci"}>{typ}</h1>
+                        <div className={"flexRow"}>
+                            {
+                            sprawnosciPosortowane
+                            .filter(sprawnosc=>(sprawnosc.typ||"underfined").toUpperCase()===typ)
+                            .map((sprawnosc,id)=><Sprawnosc key={typ+" "+id} sprawnosc={sprawnosc}/>)
+                            }
+                        </div>
+                    </div>)}
                 </div>
             </div>
         </div>

@@ -60,12 +60,12 @@ export default function LogIn(){
                             width: "80%",
                             marginTop: "10px"
                         }}>
-                            <button onClick={(e) => replaceClick(e, "/rejestracja")}
-                                    style={{color: "white", float: "left"}}>Zarejestruj sie
-                            </button>
-                            <button onClick={(e) => replaceClick(e, "/password-change")}
-                                    style={{color: "white", float: "right", paddingLeft: "5px"}}>nie pamiętasz hasla
-                            </button>
+                            <p onClick={(e) => replaceClick(e, "/rejestracja")}
+                               className={"zarejestruj"}>Zarejestruj sie
+                            </p>
+                            <p onClick={(e) => replaceClick(e, "/password-change")}
+                                    className={"nie_pamietasz_haslo"}>nie pamiętasz hasla
+                            </p>
                         </div>
                         <br/>
                         <button style={{backgroundColor: "#354545", width: "80%"}} type="submit"

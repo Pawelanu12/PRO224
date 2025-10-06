@@ -21,11 +21,15 @@ export default function SprawnoscProvider({ children }) {
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 "Content-Type": "application/json"}
             })
-                .then(res=>res.json())
-                .then(res=> {
+                    .then(res=> res.json())
+                    .then(res=> {
                     console.log(res)
-                    setSprawnosci(res)
-                    setSprawnosciPosortowane(res)
+                        if(Array.isArray(res)){
+                            setSprawnosci(res)
+                            setSprawnosciPosortowane(res)
+                        }
+                        else
+                            console.log(res)
                 })
                 .catch(err=>console.log(err))
                 .finally(()=>setLoading(false))
@@ -43,6 +47,7 @@ export default function SprawnoscProvider({ children }) {
     }
 
     return (
-        <SprawnoscContext.Provider value={{input,getSprawnosci,sprawnosci,sprawnosciPosortowane, logInput}}>{children}</SprawnoscContext.Provider>
+        <SprawnoscContext.Provider value={{input,getSprawnosci,sprawnosci,sprawnosciPosortowane,
+            logInput}}>{children}</SprawnoscContext.Provider>
     )
 };

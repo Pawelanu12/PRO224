@@ -31,13 +31,13 @@ export default function ForumProvider({ children }) {
     }
 
     const addPosty = (body) => {
-        console.log(body)
         const add=async (body)=>{
+            console.log(body)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"POST",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     "Content-Type": "application/json"},
-                body:JSON.stringify(body)
+                body:JSON.stringify({...body})
             })
                 .then(res=>res.json())
                 .then(res=> {

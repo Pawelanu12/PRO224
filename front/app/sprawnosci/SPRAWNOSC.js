@@ -1,11 +1,13 @@
 'use client'
 
 import {useEffect, useRef, useState} from "react";
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 export default function Sprawnosc({sprawnosc}) {
     const [show,setShow] = useState(false);
     const dialog=useRef(null)
     const imageSizeWithBordings=120
+    console.log(sprawnosc);
     useEffect(() => {
 
         if (show) {
@@ -42,14 +44,14 @@ export default function Sprawnosc({sprawnosc}) {
         }
     }, [show]);
 
-
+console.log(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/ikona/${sprawnosc.ikona}`);
     return (
         <div>
             {/*<p style={{margin: "25px"}}*/}
             {/*   onMouseMove={() => setShow(true)}*/}
             {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
 
-            <img src={sprawnosc.obraz} style={{margin: "25px"}} loading={"lazy"}
+            <img  src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}  style={{margin: "25px"}} width={"50px"} height={"50px"} loading={"lazy"}
                  onMouseMove={() => setShow(true)}
                  onMouseLeave={() => setShow(false)} alt={"sprawnosc"}
 
