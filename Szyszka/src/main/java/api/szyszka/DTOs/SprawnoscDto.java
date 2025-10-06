@@ -17,4 +17,5 @@ public class SprawnoscDto {
     private String opis;
     private String opisWymagan;
     private String ikona;
+    private String ikonaUrl;
 }

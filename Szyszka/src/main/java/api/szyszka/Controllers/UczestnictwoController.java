@@ -54,14 +54,14 @@ public class UczestnictwoController {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<UczestnictwoDto> updateUczestnictwo(@PathVariable Long id,
-                                                              @RequestBody UpdateUzytkownikRequest request) {
-        Uczestnictwo oldUczestnictwo = uczestnictwoService.getUczestnictwoById(id);
-
-        UczestnictwoMapper.updateEntity(oldUczestnictwo, request);
-        Uczestnictwo update = UczestnictwoService.modifyUczesnictwoById(id, oldUczestnictwo);
-
-        return ResponseEntity.ok(UczestnictwoMapper.toDto(update));
-    }
+//    public ResponseEntity<UczestnictwoDto> updateUczestnictwo(@PathVariable Long id,
+//                                                              @RequestBody UpdateUzytkownikRequest request) {
+//        Uczestnictwo oldUczestnictwo = uczestnictwoService.getUczestnictwoById(id);
+//
+//        UczestnictwoMapper.updateEntity(oldUczestnictwo, request);
+//        Uczestnictwo update = UczestnictwoService.modifyUczesnictwoById(id, oldUczestnictwo);
+//
+//        return ResponseEntity.ok(UczestnictwoMapper.toDto(update));
+//    }
 
 }

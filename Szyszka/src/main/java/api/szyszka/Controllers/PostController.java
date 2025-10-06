@@ -7,6 +7,7 @@ import api.szyszka.Entities.Post;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Services.PostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class PostController {
 //    }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<PostDto> createPost(@RequestBody CreatePostRequest request) {
         Post saved = postService.createPost(request);
 
@@ -45,12 +47,14 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<PostDto> getPostById(@PathVariable Long id) {
         Post post = postService.getPostById(id);
         return ResponseEntity.ok(PostMapper.toDto(post));
     }
 
    @GetMapping("/posts/{id}")
+   @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
    public ResponseEntity<List<PostDto>> getPostsByAuthorId(@PathVariable Long id) {
         List<PostDto> posts = postService.getPostsByUserId(id)
                 .stream()
@@ -60,6 +64,7 @@ public class PostController {
    }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<PostDto>> getAllPosts() {
         List<PostDto> posts = postService.getAllPosts()
                 .stream()
@@ -69,6 +74,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         postService.deletePostById(id);
         return ResponseEntity.noContent().build();
