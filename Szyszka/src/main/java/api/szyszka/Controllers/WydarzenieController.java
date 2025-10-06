@@ -76,7 +76,7 @@ public class WydarzenieController {
 
     @GetMapping("/zakreswyjazdu/{data1}/{data2}")
     public  ResponseEntity<List<WydarzenieDto>> getWyjazduByDateRange(@PathVariable LocalDateTime data1, @PathVariable LocalDateTime data2) {
-         List<WydarzenieDto> wydarzenia = wydarzenieService.getWyjazduByDateRange(data1, data2)
+        List<WydarzenieDto> wydarzenia = wydarzenieService.getWyjazduByDateRange(data1, data2)
                 .stream()
                 .map(WydarzenieMapper::toDto)
                 .collect(Collectors.toList());
