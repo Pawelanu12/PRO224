@@ -10,14 +10,26 @@ public class SprawnoscMapper {
 
     public static SprawnoscDto toDto(Sprawnosc entity) {
         if (entity == null) return null;
-        return new SprawnoscDto(
+        String ikona = entity.getIkona();
+        String ikonaUrl = null;
+
+        if (ikona != null) {
+            ikonaUrl = "/uploads/" + ikona;
+
+        }
+
+        SprawnoscDto dto = new SprawnoscDto(
                 entity.getId(),
                 entity.getNazwa(),
                 entity.getOpis(),
                 entity.getOpisWymagan(),
-                entity.getIkona()
+                ikona,
+                ikonaUrl
         );
+//        dto.setIkonaUrl(ikonaUrl);
+        return dto;
     }
+
 
     public static Sprawnosc fromCreateRequest(CreateSprawnoscRequest request) {
         if (request == null) return null;
