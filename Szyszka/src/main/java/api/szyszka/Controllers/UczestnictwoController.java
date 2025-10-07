@@ -25,8 +25,8 @@ public class UczestnictwoController {
 
     @PostMapping
     public ResponseEntity<UczestnictwoDto> createUczestnictwo(@RequestBody CreateUczestnictwoRequest request) {
-        Uczestnictwo uczestnictwo = UczestnictwoMapper.fromCreateRequest(request);
-        Uczestnictwo saved = uczestnictwoService.createUczestnictwo(uczestnictwo);
+        //Uczestnictwo uczestnictwo = UczestnictwoMapper.fromCreateRequest(request);
+        Uczestnictwo saved = uczestnictwoService.createUczestnictwo(request);
 
         return ResponseEntity
                 .created(URI.create("/api/uczestnictwo/" + saved.getId()))
