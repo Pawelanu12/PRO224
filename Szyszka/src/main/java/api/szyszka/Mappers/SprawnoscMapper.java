@@ -14,7 +14,7 @@ public class SprawnoscMapper {
         String ikonaUrl = null;
 
         if (ikona != null) {
-            ikonaUrl = "/uploads/" + ikona;
+            ikonaUrl ="/uploads/" + ikona;
 
         }
 

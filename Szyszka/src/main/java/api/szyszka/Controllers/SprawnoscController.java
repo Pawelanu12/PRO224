@@ -83,12 +83,12 @@ public class SprawnoscController {
                 if (!folder.exists()) {
                     folder.mkdirs();
                 }
-
+                String time=System.currentTimeMillis()+"_";
                 String originalName = ikona.getOriginalFilename();
-                File targetFile = new File(uploadDir + originalName);
+                File targetFile = new File(uploadDir + time+originalName);
 
                 ikona.transferTo(targetFile);
-                iconFileName = originalName;
+                iconFileName =time+ originalName;
             }
         } catch (IOException e) {
             throw new RuntimeException("Błąd zapisu pliku: " + e.getMessage());
