@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"uzytkownik_id", "sprawnosc_id"})})
-public class ZdobyteSprawnosci {
+public class ZdobytaSprawnosc {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

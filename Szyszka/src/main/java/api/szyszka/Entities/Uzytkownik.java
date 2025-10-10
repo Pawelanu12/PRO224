@@ -43,7 +43,7 @@ public class Uzytkownik {
     private List<Skladka> skladki;
 
     @OneToMany(mappedBy = "uzytkownik")
-    private List<ZdobyteSprawnosci> zdobyteSprawnosci;
+    private List<ZdobytaSprawnosc> zdobyteSprawnosci;
 
     @OneToMany(mappedBy = "organizator")
     private List<Wydarzenie> wydarzenia;
