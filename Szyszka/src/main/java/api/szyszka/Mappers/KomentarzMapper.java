@@ -2,6 +2,7 @@ package api.szyszka.Mappers;
 
 import api.szyszka.DTOs.CreateKomentarzRequest;
 import api.szyszka.DTOs.KomentarzDto;
+import api.szyszka.DTOs.UpdateKomentarzRequest;
 import api.szyszka.Entities.Komentarz;
 
 public class KomentarzMapper {
@@ -24,5 +25,11 @@ public class KomentarzMapper {
         komentarz.setTresc(request.getTresc());
 
         return komentarz;
+    }
+
+    public static void updateEntity( Komentarz entity, UpdateKomentarzRequest request){
+        if(entity == null || request == null) return;
+        entity.setDataStworzenia(request.getDataStworzenia());
+        entity.setTresc(request.getTresc());
     }
 }
