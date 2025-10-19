@@ -21,7 +21,7 @@ public class KomentarzMapper {
     public static Komentarz fromCreateRequest(CreateKomentarzRequest request){
         if(request == null) return null;
         Komentarz komentarz = new Komentarz();
-        komentarz.setDataStworzenia(request.getDataStwprzenia());
+        komentarz.setDataStworzenia(request.getDataStworzenia());
         komentarz.setTresc(request.getTresc());
 
         return komentarz;

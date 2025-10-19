@@ -40,7 +40,7 @@ public class UczestnictwoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UczestnictwoDto>> getUczestnictwos() {
+    public ResponseEntity<List<UczestnictwoDto>> getUczestnictwa() {
         List<UczestnictwoDto> uczestnictwa = uczestnictwoService.getAllUczestnictwo()
                 .stream()
                 .map(UczestnictwoMapper::toDto)

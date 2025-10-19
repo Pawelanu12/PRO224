@@ -12,5 +12,5 @@ import lombok.Setter;
 public class CreateUczestnictwoRequest {
     private boolean uczestnictwo;
     private Long uzytkownikId;
-    private Long wydarzenie;
+    private Long wydarzenieId;
 }

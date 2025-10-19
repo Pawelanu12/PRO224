@@ -30,22 +30,45 @@ public class UczestnictwoService {
         this.uzytkownikRepository = uzytkownikRepository;
     }
 
-    public Uczestnictwo createUczestnictwo(CreateUczestnictwoRequest request) {
-        Uczestnictwo uczestnictwo = UczestnictwoMapper.fromCreateRequest(request);
+//    public Uczestnictwo createUczestnictwo(CreateUczestnictwoRequest request) {
+//        Uczestnictwo uczestnictwo = UczestnictwoMapper.fromCreateRequest(request);
+//
+//        if (uczestnictwoRepository.findUczestnictwoByUzytkownikId(uczestnictwo.getUzytkownik()).isPresent()) {
+//            throw new DuplicateUserUczestnictwoException(uczestnictwo.getUzytkownik());
+//        }
+//
+//        Wydarzenie wydarzenie = wydarzenieRepository.findById(request.getWydarzenie())
+//                .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione"));
+//        uczestnictwo.setWydarzenie(wydarzenie);
+//        Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
+//                .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione"));
+//
+//        uczestnictwo.setWydarzenie(wydarzenie);
+//        uczestnictwo.setUzytkownik(uzytkownik);
+//
+//        return uczestnictwoRepository.save(uczestnictwo);
+//    }
+public Uczestnictwo createUczestnictwo(CreateUczestnictwoRequest request) {
+    Uczestnictwo uczestnictwo = UczestnictwoMapper.fromCreateRequest(request);
 
-        if (uczestnictwoRepository.findUczestnictwoByUzytkownikId(uczestnictwo.getUzytkownik()).isPresent()) {
-            throw new DuplicateUserUczestnictwoException(uczestnictwo.getUzytkownik());
-        }
+    // Sprawdź, czy użytkownik już uczestniczy
+//    if (uczestnictwoRepository.findUczestnictwoByUzytkownikId(request.getUzytkownikId()).isPresent()) {
+//        throw new DuplicateUserUczestnictwoException(request.getUzytkownikId());
+//    }
 
-        Wydarzenie wydarzenie = wydarzenieRepository.findById(request.getWydarzenie())
-                .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione"));
-        uczestnictwo.setWydarzenie(wydarzenie);
-        Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
-                .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione"));
-        uczestnictwo.setUzytkownik(uzytkownik);
+    // Pobierz powiązane encje z bazy
+    Wydarzenie wydarzenie = wydarzenieRepository.findById(request.getWydarzenieId())
+            .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione"));
+    Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
+            .orElseThrow(() -> new NoSuchElementException("Użytkownik nie znaleziony"));
 
-        return uczestnictwoRepository.save(uczestnictwo);
-    }
+    // Przypisz relacje
+    uczestnictwo.setWydarzenie(wydarzenie);
+    uczestnictwo.setUzytkownik(uzytkownik);
+
+    // Zapisz encję
+    return uczestnictwoRepository.save(uczestnictwo);
+}
 
     public Uczestnictwo getUczestnictwoById(Long id) {return uczestnictwoRepository.findById(id).get();}
 

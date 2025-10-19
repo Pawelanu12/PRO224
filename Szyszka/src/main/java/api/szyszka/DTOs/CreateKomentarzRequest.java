@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 
 public class CreateKomentarzRequest {
-    private LocalDateTime dataStwprzenia;
+    private LocalDateTime dataStworzenia;
     private String tresc;
     private Long postId;
     private Long autorId;
