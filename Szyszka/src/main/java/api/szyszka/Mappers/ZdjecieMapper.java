@@ -13,9 +13,12 @@ public class ZdjecieMapper {
         return new ZdjecieDto(
                 entity.getId(),
                 entity.getSciezka(),
-                entity.getPost().getId(),
-                entity.getWydarzenie().getId(),
-                entity.getUzytkownik().getId()
+                entity.getPost() != null ? entity.getPost().getId() : null,
+                entity.getWydarzenie() != null ? entity.getWydarzenie().getId() : null,
+                entity.getUzytkownik() != null ? entity.getUzytkownik().getId() : null
+//                entity.getPost().getId(),
+//                entity.getWydarzenie().getId(),
+//                entity.getUzytkownik().getId()
         );
     }
 

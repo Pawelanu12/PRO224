@@ -21,12 +21,20 @@ public class ZdobytaSprawnoscMapper {
     public static ZdobytaSprawnosc fromCreateRequest(CreateZdobytaSprawnoscRequest request) {
         if (request == null) return null;
         ZdobytaSprawnosc zdobytaSprawnosc = new ZdobytaSprawnosc();
-        zdobytaSprawnosc.setDataZdobyciaSprawnosci(request.getDate());
+        zdobytaSprawnosc.setDataZdobyciaSprawnosci(request.getDataZdobyciaSprawnosci());
         return zdobytaSprawnosc;
     }
 
     public static void updateEntity(ZdobytaSprawnosc entity, UpdateZdobytaSprawnoscRequest request) {
         if (entity == null || request == null) return;
         entity.setDataZdobyciaSprawnosci(request.getDataZdobyciaSprawnosci());
+
+        if (request.getSprawnosc() != null) {
+            entity.setSprawnosc(request.getSprawnosc());
+        }
+
+        if (request.getUzytkownik() != null) {
+            entity.setUzytkownik(request.getUzytkownik());
+        }
     }
 }

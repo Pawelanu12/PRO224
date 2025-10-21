@@ -18,7 +18,10 @@ import java.util.stream.Collectors;
 public class ZdobytaSprawnoscController {
     private ZdobytaSprawnoscService zdobytaSprawnoscService;
 
-    public ZdobytaSprawnoscController(ZdobytaSprawnoscService zdobytaSprawnoscServiceservice) {
+//    public ZdobytaSprawnoscController(ZdobytaSprawnoscService zdobytaSprawnoscServiceservice) {
+//        this.zdobytaSprawnoscService = zdobytaSprawnoscService;
+//    }
+    public ZdobytaSprawnoscController(ZdobytaSprawnoscService zdobytaSprawnoscService) {
         this.zdobytaSprawnoscService = zdobytaSprawnoscService;
     }
 

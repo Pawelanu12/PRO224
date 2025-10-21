@@ -36,15 +36,34 @@ public class ZdjecieService {
     public Zdjecie createZdjecie(CreateZdjecieRequest request) {
         Zdjecie zdjecie = ZdjecieMapper.fromCreateRequest(request);
 
-        Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
-                .orElseThrow(() -> new NoSuchElementException("uzytkownik nie znaleziony"));
-        zdjecie.setUzytkownik(uzytkownik);
-        Post post = postRepository.findById(request.getPostId())
-                .orElseThrow(() -> new NoSuchElementException("post nie znaleziony"));
-        zdjecie.setPost(post);
-        Wydarzenie wydarzenie = wydarzenieRepository.findById(request.getWydarzenieId())
-                .orElseThrow(() -> new NoSuchElementException("wydarzenia nie znaleziono"));
-        zdjecie.setWydarzenie(wydarzenie);
+
+        if (request.getUzytkownikId() != null) {
+            Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
+                    .orElseThrow(() -> new NoSuchElementException("uzytkownik nie znaleziony"));
+            zdjecie.setUzytkownik(uzytkownik);
+        }
+
+        if (request.getPostId() != null) {
+            Post post = postRepository.findById(request.getPostId())
+                    .orElseThrow(() -> new NoSuchElementException("post nie znaleziony"));
+            zdjecie.setPost(post);
+        }
+
+        if (request.getWydarzenieId() != null) {
+            Wydarzenie wydarzenie = wydarzenieRepository.findById(request.getWydarzenieId())
+                    .orElseThrow(() -> new NoSuchElementException("wydarzenie nie znalezione"));
+            zdjecie.setWydarzenie(wydarzenie);
+        }
+
+//        Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
+//                .orElseThrow(() -> new NoSuchElementException("uzytkownik nie znaleziony"));
+//        zdjecie.setUzytkownik(uzytkownik);
+//        Post post = postRepository.findById(request.getPostId())
+//                .orElseThrow(() -> new NoSuchElementException("post nie znaleziony"));
+//        zdjecie.setPost(post);
+//        Wydarzenie wydarzenie = wydarzenieRepository.findById(request.getWydarzenieId())
+//                .orElseThrow(() -> new NoSuchElementException("wydarzenia nie znaleziono"));
+//        zdjecie.setWydarzenie(wydarzenie);
 
         return zdjecieRepository.save(zdjecie);
     }

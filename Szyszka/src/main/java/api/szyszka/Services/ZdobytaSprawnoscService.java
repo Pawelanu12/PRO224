@@ -64,8 +64,12 @@ public class ZdobytaSprawnoscService {
         }
 
         oldZdobytaSprawnosc.setDataZdobyciaSprawnosci(updateZdobytaSprawnosc.getDataZdobyciaSprawnosci());
+
         oldZdobytaSprawnosc.setUzytkownik(updateZdobytaSprawnosc.getUzytkownik());
+
         oldZdobytaSprawnosc.setSprawnosc(updateZdobytaSprawnosc.getSprawnosc());
+
+
 
         return zdobytaSprawnoscRepository.save(oldZdobytaSprawnosc);
     }

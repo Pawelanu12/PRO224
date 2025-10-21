@@ -6,7 +6,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"uzytkownik_id", "sprawnosc_id"})})
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"uzytkownik_id", "sprawnosc_id"})})
+@Table(
+        name = "zdobyte_sprawnosci",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"uzytkownik_id", "sprawnosc_id"})}
+)
 public class ZdobytaSprawnosc {
 
     @Id

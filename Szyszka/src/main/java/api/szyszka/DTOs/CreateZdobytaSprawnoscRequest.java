@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 
 public class CreateZdobytaSprawnoscRequest {
-    private LocalDateTime date;
+    private LocalDateTime dataZdobyciaSprawnosci;
     private Long uzytkownikId;
     private Long sprawnoscId;
 }
