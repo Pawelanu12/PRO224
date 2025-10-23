@@ -16,7 +16,7 @@ public class Czat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nazwa; // NULL for private chats
+    private String nazwa;
     private boolean czyGrupowy;
 
     private LocalDateTime dataUtworzenia = LocalDateTime.now();
