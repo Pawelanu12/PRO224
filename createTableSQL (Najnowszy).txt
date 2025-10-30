@@ -11,7 +11,7 @@ CREATE TABLE uzytkownik (
     nazwisko VARCHAR(255) NOT NULL,
     login VARCHAR(255) NOT NULL UNIQUE,
     haslo VARCHAR(255) NOT NULL,
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
     data_urodzenia DATETIME,
     nr_telefonu VARCHAR(20),
     data_dolaczenia_do_gromady DATETIME,
@@ -25,18 +25,9 @@ CREATE TABLE uzytkownik (
 );
 
 
-CREATE TABLE skladka (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nazwa VARCHAR(255) NOT NULL,
-    data_wplaty DATETIME NOT NULL,
-    uzytkownik_id BIGINT NOT NULL,
-    kwota DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
-);
-
 CREATE TABLE sprawnosc (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nazwa VARCHAR(255) NOT NULL,
+    nazwa VARCHAR(255) NOT NULL UNIQUE,
     opis TEXT,
     opis_wymagan TEXT,
 	ikona VARCHAR(255)
