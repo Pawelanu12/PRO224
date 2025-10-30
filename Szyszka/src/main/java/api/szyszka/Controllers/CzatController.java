@@ -25,6 +25,28 @@ public class CzatController {
     private final CzatService czatService;
     private final UzytkownikService uzytkownikService;
 
+    @PostMapping("/private")
+    public ResponseEntity<CzatDto> createPrivateChat(
+            @AuthenticationPrincipal User user,
+            @RequestParam Long participantId) {
+
+        Uzytkownik currentUser = uzytkownikService.getUserByLogin(user.getUsername());
+        Uzytkownik otherUser = uzytkownikService.getUserById(participantId);
+
+        CzatDto czat = czatService.createPrivateChat(currentUser, otherUser);
+        return ResponseEntity.ok(czat);
+    }
+
+    @PostMapping("/group")
+    public ResponseEntity<CzatDto> createGroupChat(
+            @AuthenticationPrincipal User user,
+            @RequestParam String nazwa,
+            @RequestParam List<Long> participantIds) {
+
+        Uzytkownik creator = uzytkownikService.getUserByLogin(user.getUsername());
+        CzatDto czat = czatService.createGroupChat(nazwa, creator, participantIds);
+        return ResponseEntity.ok(czat);
+    }
     @GetMapping
     public ResponseEntity<List<CzatDto>> getAllCzaty() {
         List<CzatDto> czaty = czatService.getAllCzaty()
@@ -44,12 +66,6 @@ public class CzatController {
     @GetMapping("/{id}")
     public ResponseEntity<CzatDto> getCzatById(@PathVariable Long id) {
         return ResponseEntity.ok(CzatMapper.toDto(czatService.getCzatById(id)));
-    }
-
-    @PostMapping
-    public ResponseEntity<CzatDto> createCzat(@RequestParam String nazwa,
-                                              @RequestParam boolean czyGrupowy) {
-        return ResponseEntity.ok(CzatMapper.toDto(czatService.createCzat(nazwa, czyGrupowy)));
     }
 
     @DeleteMapping("/{id}")

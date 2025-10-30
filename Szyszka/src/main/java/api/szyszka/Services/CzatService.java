@@ -1,13 +1,16 @@
 package api.szyszka.Services;
 
+import api.szyszka.DTOs.CzatDto;
 import api.szyszka.DTOs.WiadomoscDto;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Exceptions.ResourceNotFoundException;
+import api.szyszka.Mappers.CzatMapper;
 import api.szyszka.Repositories.CzatRepository;
 import api.szyszka.Repositories.CzatUzytkownikRepository;
+import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Repositories.WiadomoscRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,15 +27,70 @@ public class CzatService {
     private final CzatRepository czatRepository;
     private final CzatUzytkownikRepository czatUzytkownikRepository;
     private final WiadomoscRepository wiadomoscRepository;
+    private final UzytkownikRepository uzytkownikRepository;
 
-    // --- Chat ---
-    public Czat createCzat(String nazwa, boolean czyGrupowy) {
+    @Transactional
+    public CzatDto createPrivateChat(Uzytkownik user1, Uzytkownik user2) {
+        // Check if a private chat already exists between the users
+        List<CzatUzytkownik> existing = czatUzytkownikRepository.findAll();
+        for (CzatUzytkownik cu : existing) {
+            Czat czat = cu.getCzat();
+            if (!czat.isCzyGrupowy()) {
+                List<Long> participantIds = czat.getUczestnicy() != null
+                        ? czat.getUczestnicy().stream().map(p -> p.getUzytkownik().getId()).toList()
+                        : List.of();
+                if (participantIds.contains(user1.getId()) && participantIds.contains(user2.getId())) {
+                    return CzatMapper.toDto(czat);
+                }
+            }
+        }
+
         Czat czat = new Czat();
-        czat.setNazwa(nazwa);
-        czat.setCzyGrupowy(czyGrupowy);
+        czat.setCzyGrupowy(false);
         czat.setDataUtworzenia(LocalDateTime.now());
-        return czatRepository.save(czat);
+        czat.setNazwa(null);
+        Czat savedCzat = czatRepository.save(czat);
+
+        CzatUzytkownik cu1 = addParticipant(savedCzat, user1);
+        CzatUzytkownik cu2 = addParticipant(savedCzat, user2);
+
+        savedCzat.setUczestnicy(List.of(cu1, cu2));
+
+        return CzatMapper.toDto(savedCzat);
     }
+
+    public CzatDto createGroupChat(String nazwa, Uzytkownik creator, List<Long> participantIds) {
+        Czat czat = new Czat();
+        czat.setCzyGrupowy(true);
+        czat.setNazwa(nazwa);
+        czat.setDataUtworzenia(LocalDateTime.now());
+        Czat savedCzat = czatRepository.save(czat);
+
+        CzatUzytkownik creatorEntry = addParticipant(savedCzat, creator);
+
+        List<CzatUzytkownik> participants = participantIds.stream()
+                .filter(id -> !id.equals(creator.getId()))
+                .map(id -> uzytkownikRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException(id)))
+                .map(u -> addParticipant(savedCzat, u))
+                .toList();
+
+        participants.add(creatorEntry);
+        savedCzat.setUczestnicy(participants);
+
+        return CzatMapper.toDto(savedCzat);
+    }
+
+    public CzatUzytkownik addParticipant(Czat czat, Uzytkownik user) {
+        CzatUzytkownik cu = new CzatUzytkownik();
+        cu.setCzat(czat);
+        cu.setUzytkownik(user);
+        return czatUzytkownikRepository.save(cu);
+    }
+
+
+
+
     public List<Czat> getCzatyForUser(Uzytkownik user) {
         List<CzatUzytkownik> uczestnictwa = czatUzytkownikRepository
                 .findAll()
@@ -59,13 +117,6 @@ public class CzatService {
             throw new ResourceNotFoundException(id);
         }
         czatRepository.deleteById(id);
-    }
-
-    public CzatUzytkownik addParticipant(Czat czat, Uzytkownik uzytkownik) {
-        CzatUzytkownik participant = new CzatUzytkownik();
-        participant.setCzat(czat);
-        participant.setUzytkownik(uzytkownik);
-        return czatUzytkownikRepository.save(participant);
     }
 
     public void removeParticipant(Long czatId, Long uzytkownikId) {
