@@ -8,29 +8,23 @@ import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/post
 export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
-    const [zdobyteSprawnosci,setZdobyteSprawnosci] = useState(s.slice(0,5));
-    const [cat, setCat] = useState("qwe")
-    const [token,setToken] = useState("");
     const [loading,setLoading] = useState(true);
-    const [user, setUser] = useState({
-        ikona:"../images/ikona.png",
-        imie:"Jan",
-        nazwisko:"Kowlski",
-        login:"fosfr",
-        data_urodzenia:"2025-08-07",
-        gromada:"gromada 1",
-        data_dolaczenia_do_gromady:"2025-08-07"
-    })
+    const [user, setUser] = useState({})
+    const [edit,setEdit] = useState({})
     const router = useRouter()
     const logOut = () => {
         localStorage.clear()
         setUser({})
-        setToken("")
-        router.replace("/login")
+        if(window.location.pathname.startsWith("/profil")
+            ||window.location.pathname.startsWith("/forum")
+            ||window.location.pathname.startsWith("/admin")
+            ||window.location.pathname.startsWith("/czat"))
+            router.replace("/login")
     }
     const replaceClick=(e,href)=>{
-        e.preventDefault()
-        router.replace(href)
+        if(e)
+            e.preventDefault()
+        router.push(href)
     }
     const logIn=(values)=>{
         console.log(values)
@@ -46,17 +40,38 @@ export default function GlobalProvider({ children }) {
                 .then(r=>{
                     console.log(r)
                     if(r.token){
-                        setToken(r.token)
                         localStorage.setItem("token",r.token)
                         router.replace("/czat")
-
                     }
-                    else alert(r.message)
+
                 })
+                .then(
+                    ()=>get_me()
+                )
                 .catch(err=>console.log(err))
         }
         f(values)
         // router.replace("/czat")
+    }
+    const get_me=()=>{
+        const me=async ()=>
+        {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me`,
+                { method:"GET",
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                })
+                .then(res=>res.json())
+                .then(r=>{
+                    console.log(r);
+                    if(r.error)
+                        logOut()
+                    else
+                        setUser(r)
+
+                })
+                .catch(err=>console.log(err))
+        }
+        me()
     }
     const register=(values)=>{
         const f=async (values)=>{
@@ -86,10 +101,25 @@ export default function GlobalProvider({ children }) {
         }
         f(values)
     }
-    useEffect(()=>setToken(localStorage.getItem("token"||"")),[])
+
+    useEffect(()=>{
+        console.log("get_me")
+        console.log(window.location.pathname)
+        // if(window.location.pathname.startsWith("/profil")
+        //     ||window.location.pathname.startsWith("/forum")
+        //     ||window.location.pathname.startsWith("/admin")
+        //     ||window.location.pathname.startsWith("/czat")
+        //     ||window.location.pathname.startsWith("/sprawnosci")
+        //     ||window.location.pathname.startsWith("/wydarzenia")
+        //     ||window.location.pathname.startsWith("/kontakt")
+        // )
+        // {
+            get_me()
+        // }
+    },[])
 
     return (
-        <GlobalContext.Provider value={{cat,setCat,router,register,token,loading,setLoading,
-            replaceClick,logIn,user,setUser,logOut,zdobyteSprawnosci}}>{children}</GlobalContext.Provider>
+        <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,
+            replaceClick,logIn,user,logOut}}>{children}</GlobalContext.Provider>
     )
 };

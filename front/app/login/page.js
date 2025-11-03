@@ -4,7 +4,7 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useContext, useEffect} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 // import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function LogIn(){
@@ -12,7 +12,7 @@ export default function LogIn(){
 
     return(
         <div style={{height:"100vh"}}>
-            <NavbarZarejestrowana/>
+            <NavbarNiezarejestrowana/>
             <div style={{paddingTop:"50px",height:"100%"}}   className={"flexRow"}>
             <div style={{flex:"198",height:"100%",minWidth:"300px"}}>
 

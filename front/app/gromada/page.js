@@ -3,10 +3,33 @@ import Image from "next/image";
 import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {useRouter} from "next/navigation";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
-
+// function kub_magiczny(w1,w2,w3,w4,w5){
+//     const wierszy=[w1,w2,w3,w4,w5]
+//     const wierszy1=wierszy.map(w=>w.split(""))
+//     let czy_kub_magiczny=true
+//     for (let i=0;i<5;i++){
+//         for (let j=0;j<5;j++) {
+//             if(wierszy1[i][j]==="?"&&wierszy1[j][i]==="?"){
+//                 wierszy1[i][j]="z"
+//                 wierszy1[j][i]="z"
+//             }
+//             if(wierszy1[i][j]==="?")
+//                 wierszy1[i][j]=wierszy1[j][i];
+//             if(wierszy1[j][i]==="?")
+//                 wierszy1[j][i]=wierszy1[i][j];
+//             if(wierszy1[i][j]!==wierszy1[j][i]){
+//                 console.log("nie magiczne: "+wierszy1[i][j]+"  "+wierszy[j][i]+"  "+i+"  "+j);
+//                 czy_kub_magiczny=false
+//             }
+//         }
+//     }
+//     console.log(czy_kub_magiczny)
+//     console.log(wierszy1.map(w=>w.join("")))
+// }
 export default function Gromada() {
-  const {cat,setCat,router}=useContext(GlobalContext)
+  const {user}=useContext(GlobalContext)
     const [currentIndex,setCurrentIndex] = useState(0);
     const carouselInner = useRef(null);
     const items = [
@@ -48,7 +71,7 @@ export default function Gromada() {
     }
     return (
         <div>
-            <NavbarZarejestrowana/>
+            {user.login ? <NavbarZarejestrowana/> : <NavbarNiezarejestrowana/>}
             <div className={"gromada"} style={{paddingTop: "50px"}}>
                 <div className="carousel">
                     <div className="carousel-inner" ref={carouselInner}>

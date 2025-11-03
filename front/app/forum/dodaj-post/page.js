@@ -1,16 +1,17 @@
 'use client'
 
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useContext, useRef} from "react";
 import Navigation from "@/app/forum/Navigation";
 import {red} from "next/dist/lib/picocolors";
 import {ForumContext} from "@/app/providers/ForumProvider";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function DodajPost() {
     const {addPosty}= useContext(ForumContext);
-        // const fileInput = document.getElementById('fileInput');
+    const {user}=useContext(GlobalContext)
     const text=useRef("")
     const img =useRef(null);
     //wyswetla inny obrazek
@@ -32,14 +33,14 @@ export default function DodajPost() {
         const onSubmit=(e)=>{
             e.preventDefault()
             addPosty({
-                autorId:1,
-                text:text.current.value,
+                autorId:user.id,
+                tresc:text.current.value,
                 img:img.current.src,
-            iloscPoluben:0})
+         })
         }
     return (
         <div>
-            <NavbarZarejestrowana/>
+            <NavbarNiezarejestrowana/>
             <Navigation/>
             <div style={{paddingTop:'75px',paddingLeft:'calc(250px + 10%)',height:'100%',paddingRight:'10%'}}>
                 <div style={{backgroundColor:"#4D644C",marginLeft:"15%",width:"350px",marginRight:"15%",padding:"20px"}}>

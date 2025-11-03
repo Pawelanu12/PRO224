@@ -1,21 +1,34 @@
 'use client'
 
-import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
-import {useContext, useState} from "react";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import {useContext, useEffect, useState} from "react";
 import Informacja from "@/app/profil/Informacja";
 import MojePosty from "@/app/profil/MojePosty";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Profil(){
-    const {user}=useContext(GlobalContext)
+    const {user} = useContext(GlobalContext);
+    // useEffect(()=>{
+        // setUser({
+            // email: localStorage.getItem("uzytkownik_email"),
+            // imie: localStorage.getItem("uzytkownik_imie"),
+            // nazwisko: localStorage.getItem("uzytkownik_nazwisko"),
+            // login: localStorage.getItem("uzytkownik_login"),
+            // nrTelefonu : localStorage.getItem("uzytkownik_nr_telefonu"),
+            // typUzytkownika:  localStorage.getItem("uzytkownik_typ_uzytkownika"),
+            // dataUrodzenia:  localStorage.getItem("uzytkownik_data_urodzenia")||"",
+            // gromada:  localStorage.getItem("uzytkownik_gromada")||"",
+            // dataDolaczeniaDoGromady:  localStorage.getItem("uzytkownik_data_dolaczenia_do_gromady")||"",
+
+        // })
+    // },[])
     const [item,setItem]=useState("Posty")
-    // console.log(new Date("2025-08-07"))
     return(<div>
-        <NavbarNiezarejestrowana/>
+        <NavbarZarejestrowana/>
         <div style={{padding:"20px",paddingTop:"70px"}}>
             <div style={{backgroundColor:"#3A4F39"}}>
                 <div className={"flexRow"} style={{alignItems:"flex-end"}}>
-                    <img className={"ikona"} style={{margin:"10px"}} src={user.ikona} alt={"ikona"}/>
+                    <img className={"ikona"} style={{margin:"10px"}} src={user.ikona||"/images/ikona.png"} alt={"ikona"}/>
                     <p style={{paddingBottom:"10px"}}>{user.login+" ("+user.imie+"  "+user.nazwisko+")"}</p>
                 </div>
                 <p style={{border:"solid black 1px"}}></p>
@@ -40,5 +53,6 @@ export default function Profil(){
         </div>
         {item==="Informacje"&&<Informacja/>}
         {item==="Posty"&&<MojePosty/>}
+        {item==="Zdjecia"&&<p/>}
     </div>)
 }

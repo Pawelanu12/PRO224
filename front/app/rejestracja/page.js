@@ -5,13 +5,13 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 
 export default function Rejestracja(){
     const {router,register} = useContext(GlobalContext);
     return (
         <div>
-                <NavbarZarejestrowana/>
+                <NavbarNiezarejestrowana/>
             <div className={'forma'}>
 
                 <Formik

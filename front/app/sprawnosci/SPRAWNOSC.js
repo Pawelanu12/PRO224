@@ -1,13 +1,15 @@
 'use client'
 
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Sprawnosc({sprawnosc}) {
+    const {setEdit,replaceClick}=useContext(GlobalContext)
     const [show,setShow] = useState(false);
     const dialog=useRef(null)
     const imageSizeWithBordings=120
-    console.log(sprawnosc);
+    // console.log(sprawnosc);
     useEffect(() => {
 
         if (show) {
@@ -44,15 +46,17 @@ export default function Sprawnosc({sprawnosc}) {
         }
     }, [show]);
 
-console.log(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/ikona/${sprawnosc.ikona}`);
+// console.log(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/ikona/${sprawnosc.ikona}`);
     return (
         <div>
             {/*<p style={{margin: "25px"}}*/}
             {/*   onMouseMove={() => setShow(true)}*/}
             {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
 
-            <img  src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}  style={{margin: "25px"}} width={"50px"} height={"50px"} loading={"lazy"}
-                 onMouseMove={() => setShow(true)}
+            <img  src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}
+                  style={{margin: "25px"}} width={"50px"} height={"50px"} loading={"lazy"}
+                  onClick={(e)=>{setEdit(sprawnosc);replaceClick(e,"/admin/edit/sprawnosc")}}
+                  onMouseMove={() => setShow(true)}
                  onMouseLeave={() => setShow(false)} alt={"sprawnosc"}
 
 

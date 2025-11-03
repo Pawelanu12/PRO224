@@ -12,10 +12,11 @@ export default function Posty({wszystkie=true}){
     getPosty(),[])
     if(loading)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>Loading...</p>
     if(!posty||posty.length===0)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>nie ma postów...</p>
-    console.log(posty)
     let postyPokazywane=posty
     if(!wszystkie)
-        postyPokazywane=posty.filter(p=>p.autor===user.login)
+        postyPokazywane=posty.filter(p=>p.autorId===user.id)
+    if(!postyPokazywane||postyPokazywane.length===0)
+        return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>{"nie posiadasz postów"}</p>
     return(
         <div style={{paddingTop:"50px",paddingLeft:"250px", width:"100%",
            justifyItems:'center',height:"100vh"}}>

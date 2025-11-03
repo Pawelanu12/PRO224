@@ -1,6 +1,6 @@
 'use client'
 
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 import {useContext, useEffect, useState} from "react";
 import WysylanieKodu from "@/app/password-change/WysylanieKodu";
 import PotwierdzenieKodu from "@/app/password-change/PotwierdzenieKodu";
@@ -17,7 +17,7 @@ export default function PasswordChange() {
     },[])
 
     return <div>
-        <NavbarZarejestrowana/>
+        <NavbarNiezarejestrowana/>
         <div className={'forma'}>
             {etap==='email'&& <WysylanieKodu/>}
             {etap==='kod'&& <PotwierdzenieKodu/>}

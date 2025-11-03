@@ -1,28 +1,49 @@
 'use client'
 
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
-import {useContext, useEffect, useState} from "react";
+import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
+import React, {useContext, useEffect, useState} from "react";
 import {WydarzeniaContext} from "@/app/providers/WydarzeniaProvider";
-
-export default function Wydarzenie(){
-    const {wydarzenia} = useContext(WydarzeniaContext);
+import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
+export default function Wydarzenie({params}){
+    const {user,router}=useContext(GlobalContext)
     const [wydarzenie, setWydarzenie] = useState({});
     const [loading, setLoading] = useState(true);
+    const {id} =  React.use(params);
 
-    console.log(!wydarzenie.id)
-    // console.log(wydarzenia)
     useEffect(() => {
-        const index=window.document.URL.lastIndexOf("/");
-        const id=window.document.URL.slice(index+1);
-        console.log(id);
-        if(wydarzenia.filter(x=>x.id==id).length>0){
-            setWydarzenie(wydarzenia.filter(x=>x.id==id)[0]);
+        console.log(id)
+        // const index=window.document.URL.lastIndexOf("/");
+        // const id=window.document.URL.slice(index+1);
+        const getWydarzenie = (id) => {
+            const get=async (id)=>{
+                setLoading(true)
+                console.log(id)
+                await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
+                    method:"GET",
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        "Content-Type": "application/json"}
+                })
+                    .then(res=>res.json())
+                    .then(res=> {
+                        console.log(res)
+                        if(!res.error)
+                            setWydarzenie(res)
+                    })
+                    .catch(err=>console.log(err))
+                    .finally(()=>{setLoading(false)})
+            }
+            get(id)
+            // console.log("cat")
         }
-        setLoading(false)
+        getWydarzenie(id)
     }, []);
     return(
         <div>
-                <NavbarZarejestrowana/>
+            {user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>}
+
+
             {loading&&<div>Loading...</div>}
             {!loading&&!wydarzenie.id &&<div>Takie wydarzenie nie znalażone</div>}
             {!loading&&wydarzenie.id &&
@@ -30,7 +51,9 @@ export default function Wydarzenie(){
                     <div style={{flex:30 }}>
                         <p style={{marginTop:"15px"}}>{wydarzenie.nazwa}</p>
                         <p style={{marginTop:"15px"}}>{wydarzenie.typ}</p>
-                        <p style={{marginTop:"15px"}}>{wydarzenie.startDate}-{wydarzenie.endDate}</p>
+                        <p style={{marginTop:"15px"}}>data Wyjazdu:</p><p>{wydarzenie.dataWyjazdu}</p>
+                        <p>data Zakonczenia:</p>
+                        <p>{wydarzenie.dataZakonczenia}</p>
                         <div style={{marginTop:"15px",wordBreak:"break-word",backgroundColor:"wheat",color:"black"   }}>{wydarzenie.opis}</div>
 
                     </div>

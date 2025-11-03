@@ -8,11 +8,13 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const WydarzeniaContext = createContext();
 
 export default function WydarzeniaProvider({ children }) {
-    const [wydarzenia, setWydarzenia] = useState(w);
+    const [wydarzenia, setWydarzenia] = useState([]);
     const [nazwa, setNazwa] = useState("");
     const [data, setData] = useState("");
     const [typ, setTyp] = useState("Typ wydarzenia");
     const {setLoading}=useContext(GlobalContext);
+
+
 
     const getWydarzenia = () => {
         const get=async ()=>{
@@ -25,17 +27,18 @@ export default function WydarzeniaProvider({ children }) {
                 .then(res=>res.json())
                 .then(res=> {
                     console.log(res)
-                    setWydarzenia(res)
+                    if(Array.isArray(res))
+                        setWydarzenia(res)
                 })
                 .catch(err=>console.log(err))
-                .finally(()=>setLoading(false))
+                .finally(()=>{setLoading(false)})
         }
         get()
         // console.log("cat")
     }
 
     return (
-        <WydarzeniaContext.Provider value={{
+        <WydarzeniaContext.Provider value={{getWydarzenia,
             wydarzenia,setWydarzenia,nazwa,data,typ,setTyp,setNazwa,setData
 
         }}>

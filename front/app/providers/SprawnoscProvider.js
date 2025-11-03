@@ -8,10 +8,11 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const SprawnoscContext = createContext();
 
 export default function SprawnoscProvider({ children }) {
-    const [sprawnosci, setSprawnosci] = useState(s);
-    const [sprawnosciPosortowane, setSprawnosciPosortowane] = useState(s);
+    const [sprawnosci, setSprawnosci] = useState([]);
+    const [sprawnosciPosortowane, setSprawnosciPosortowane] = useState([]);
     const {setLoading}=useContext(GlobalContext)
     const input=useRef(null)
+    const [zdobyteSprawnosci,setZdobyteSprawnosci] = useState([]);
 
     const getSprawnosci = () => {
         const get=async ()=>{
@@ -28,8 +29,6 @@ export default function SprawnoscProvider({ children }) {
                             setSprawnosci(res)
                             setSprawnosciPosortowane(res)
                         }
-                        else
-                            console.log(res)
                 })
                 .catch(err=>console.log(err))
                 .finally(()=>setLoading(false))
@@ -37,17 +36,50 @@ export default function SprawnoscProvider({ children }) {
         get()
     }
 
-    const logInput=()=>{
-        if(input&&input.current&&input.current.value&&input.current.value.length>0){
-            setSprawnosciPosortowane(sprawnosci.filter(s=>s.nazwa.startsWith(input.current.value)))
+    const getZdobyteSprawnosci=(id)=>{
+        const getSprawnosci=async (id)=>
+        {
+        setLoading(true)
+
+            console.log(id)
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/zdobytaSprawnosc/uzytkownik/${id}`,
+                { method:"GET",
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                })
+                .then(res=>res.json())
+                .then(res=>{
+                    console.log(res);
+                    if(Array.isArray(res)){
+                        setZdobyteSprawnosci(res)
+                        setSprawnosciPosortowane(res)
+                    }
+                })
+                .catch(err=>console.log(err))
+                .finally(setLoading(false))
+        }
+        getSprawnosci(id)
+    }
+
+
+    const logInput=(zdobyte=false)=> {
+        if (!zdobyte) {
+            if (input && input.current && input.current.value && input.current.value.length > 0) {
+                setSprawnosciPosortowane(sprawnosci.filter(s => s.nazwa.startsWith(input.current.value)))
+            } else {
+                setSprawnosciPosortowane(sprawnosci)
+            }
         }
         else{
-            setSprawnosciPosortowane(sprawnosci)
+            if (input && input.current && input.current.value && input.current.value.length > 0) {
+                setSprawnosciPosortowane(zdobyteSprawnosci.filter(s => s.nazwa.startsWith(input.current.value)))
+            } else {
+                setSprawnosciPosortowane(zdobyteSprawnosci)
+            }
         }
     }
 
     return (
-        <SprawnoscContext.Provider value={{input,getSprawnosci,sprawnosci,sprawnosciPosortowane,
+        <SprawnoscContext.Provider value={{zdobyteSprawnosci,getZdobyteSprawnosci,input,getSprawnosci,sprawnosci,sprawnosciPosortowane,
             logInput}}>{children}</SprawnoscContext.Provider>
     )
 };

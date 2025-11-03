@@ -40,6 +40,7 @@ body{
   justify-content: space-between;
   /*color:white;*/
   background-color: #405E3F;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
 }
 .navbar div{
     background-color: #3A4F39;

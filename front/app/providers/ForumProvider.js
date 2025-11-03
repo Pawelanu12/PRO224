@@ -1,16 +1,17 @@
 'use client'
 
 
-import {createContext, useState} from "react";
+import {createContext, useContext, useState} from "react";
 
 import pos from "/app/data/posty.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const ForumContext = createContext();
 
 export default function ForumProvider({ children }) {
     const [posty, setPosty] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const {replaceClick}=useContext(GlobalContext);
     const getPosty = () => {
         const get=async ()=>{
             setLoading(true)
@@ -22,7 +23,8 @@ export default function ForumProvider({ children }) {
                 .then(res=>res.json())
                 .then(res=> {
                     console.log(res)
-                    setPosty(res)
+                    if(Array.isArray(res))
+                        setPosty(res)
                 })
                 .catch(err=>console.log(err))
                 .finally(()=>setLoading(false))
@@ -37,7 +39,7 @@ export default function ForumProvider({ children }) {
                 method:"POST",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     "Content-Type": "application/json"},
-                body:JSON.stringify({...body})
+                body:JSON.stringify({dataStworzenia:new Date(),...body})
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -47,9 +49,47 @@ export default function ForumProvider({ children }) {
         }
         add(body)
     }
+    const editPost = (id,body) => {
+        const edit=async (id,body)=>{
+            console.log(body)
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`,{
+                method:"PUT",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"},
+                body:JSON.stringify({...body})
+            })
+                .then(res=>res.json())
+                .then(res=> {
+                    console.log(res)
+                    if(!res.error)
+                        replaceClick("","/forum")
+                    else
+                        alert(res.error)
+                })
+                .catch(err=>console.log(err))
+        }
+        edit(id,body)
+    }
+
+    const deletePost = (id)=>{
+        const usun=async (id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`, {
+                method: "Delete",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+            })
+                .then(res=>{
+                    console.log(res)
+                    if(res.ok)
+                        replaceClick("","/forum")
+                })
+
+        }
+        usun(id)
+    }
+
     return (
         <ForumContext.Provider value={{
-            posty,loading,getPosty,addPosty
+            posty,loading,getPosty,addPosty,editPost,deletePost
         }}>{children}</ForumContext.Provider>
     )
 };
