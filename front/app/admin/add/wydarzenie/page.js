@@ -56,7 +56,7 @@ export default function AddWydarzenie(){
                     onSubmit={(values, {resetForm}) => {
 
                         console.log(values)
-                        addWydarzenie({...values,organizatorId:1})
+                        addWydarzenie({...values,organizatorId:user.id})
                         resetForm()
 
                     }}

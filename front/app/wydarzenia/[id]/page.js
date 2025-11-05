@@ -47,17 +47,18 @@ export default function Wydarzenie({params}){
             {loading&&<div>Loading...</div>}
             {!loading&&!wydarzenie.id &&<div>Takie wydarzenie nie znalażone</div>}
             {!loading&&wydarzenie.id &&
-                <div className={"flexRow"} style={{paddingTop: "50px",textAlign:"center"}}>
-                    <div style={{flex:30 }}>
-                        <p style={{marginTop:"15px"}}>{wydarzenie.nazwa}</p>
-                        <p style={{marginTop:"15px"}}>{wydarzenie.typ}</p>
-                        <p style={{marginTop:"15px"}}>data Wyjazdu:</p><p>{wydarzenie.dataWyjazdu}</p>
-                        <p>data Zakonczenia:</p>
-                        <p>{wydarzenie.dataZakonczenia}</p>
-                        <div style={{marginTop:"15px",wordBreak:"break-word",backgroundColor:"wheat",color:"black"   }}>{wydarzenie.opis}</div>
+                <div className={"wydarzenie-duze"} >
+                    <div className={"wydarzenie-duze-flex-lewy"} >
+                        <p className={"wydarzenie-duze-nazwa"} >{wydarzenie.nazwa}</p>
+                        <p className={"wydarzenie-duze-typ"} >{wydarzenie.typ}</p>
+                        <p className={"wydarzenie-duze-data-napis1"} >data Wyjazdu:</p>
+                        <p className={"wydarzenie-duze-data-wyjazdu"}>{wydarzenie.dataWyjazdu}</p>
+                        <p className={"wydarzenie-duze-data-napis2"}>data Zakonczenia:</p>
+                        <p className={"wydarzenie-duze-data-zakoncznia"}>{wydarzenie.dataZakonczenia}</p>
+                        <div className={"wydarzenie-duze-opis"} >{wydarzenie.opis}</div>
 
                     </div>
-                    <div style={{flex:70}}>Galerja zdjęć</div>
+                    <div className={"wydarzenie-duze-flex-prawy"}  >Galerja zdjęć</div>
                 </div>}
         </div>
     )

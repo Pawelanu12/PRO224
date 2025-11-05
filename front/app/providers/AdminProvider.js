@@ -67,7 +67,7 @@ export default function AdminProvider({ children }) {
                     "Content-Type": "application/json"
                 },
 
-                body:JSON.stringify({"organizator":1,...values})
+                body:JSON.stringify({...values})
             })
                 .then(res=> res.json())
                 .then(res=> {

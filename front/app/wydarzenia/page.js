@@ -6,6 +6,9 @@ import {WydarzeniaContext} from "@/app/providers/WydarzeniaProvider";
 import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import {dateToString} from "@/app/wydarzenia/dateToString";
+import Wydarzenie from "@/app/wydarzenia/[id]/page";
+import WydarzenieMale from "@/app/wydarzenia/WydarzenieMale";
 
 
 
@@ -30,33 +33,19 @@ export default function Wydarzenia(){
          sort()
     },[wydarzenia, nazwa, typ, data])
 
-    const dateToString=(data)=>{
-        return data.getHours()+':'+data.getMinutes()+' '+data.getDate()+'/'+ (data.getMonth()+1)+'/'+data.getFullYear()
-    }
 
     return (
         <div>
             {user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>}
 
 
-            <div style={{paddingTop:"50px"}}>
+            <div className={"wydarzenia"} >
             <Filter/>
-            <div style={{position:"fixed",left:"250px",width:"30px",borderRight:"solid green 1px",height:"100%"}}></div>
-            <div style={{paddingLeft:"280px"}}  className={"flexRow"}>
+            <div  className={"wydarzenia-vertical-line"} ></div>
+            <div    className={"wydarzenia-row"}>
                 {wydarzeniaSortowane.map((wydarzenie,i) => (
-                    <div className={"wydarzenie"} key={i}
-                         onClick={() => router.replace("/wydarzenia/" + wydarzenie.id)}>
-                        <p>{wydarzenie.nazwa}</p>
-                        <img style={{display: "block", margin: "0 auto"}} src="/images/event.png" loading="lazy"
-                             alt="cat"/>
-
-
-                        <p>{dateToString(new Date(wydarzenie.dataWyjazdu))}</p>
-                        <p>{dateToString(new Date(wydarzenie.dataZakonczenia))}</p>
-                    </div>))}
-                <div>
-
-                </div>
+                    <WydarzenieMale wydarzenie={wydarzenie} key={i}/>
+                   ))}
             </div>
         </div>
         </div>
