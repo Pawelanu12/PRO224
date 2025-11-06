@@ -19,7 +19,6 @@ export default function AddSprawnosc(){
 
     return (
         <div>
-            <NavbarZarejestrowana/>
 
             <div className={"forma_dodawania"} style={{backgroundColor:"green",paddingTop:"50px"}}>
                 <Formik

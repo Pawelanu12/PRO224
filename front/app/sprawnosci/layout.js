@@ -1,5 +1,5 @@
 import "../globals.css";
-import "../sprawnosci.css"
+import "./sprawnosci.css"
 import SprawnoscProvider from "@/app/providers/SprawnoscProvider";
 export default function RootLayout({ children }) {
     return (

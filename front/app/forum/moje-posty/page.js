@@ -8,7 +8,6 @@ export default function MOJEPOSTY()
 {
     return(
         <div>
-            <NavbarZarejestrowana/>
             <Navigation/>
             <Posty wszystkie={false}/>
 

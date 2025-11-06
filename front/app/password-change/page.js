@@ -17,7 +17,6 @@ export default function PasswordChange() {
     },[])
 
     return <div>
-        <NavbarNiezarejestrowana/>
         <div className={'forma'}>
             {etap==='email'&& <WysylanieKodu/>}
             {etap==='kod'&& <PotwierdzenieKodu/>}

@@ -8,7 +8,6 @@ export default function Forum(){
 
     return(
         <div>
-            <NavbarZarejestrowana/>
 <Navigation/>
             <Posty/>
         </div>

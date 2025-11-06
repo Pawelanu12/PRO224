@@ -30,7 +30,6 @@ export default function Sprawnosci(){
     console.log(user);
         return(
         <div>
-            {user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>}
 
             <div style={{paddingTop:"50px"}}>
                 <Filter/>

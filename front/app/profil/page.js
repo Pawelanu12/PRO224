@@ -24,7 +24,6 @@ export default function Profil(){
     // },[])
     const [item,setItem]=useState("Posty")
     return(<div>
-        <NavbarZarejestrowana/>
         <div style={{padding:"20px",paddingTop:"70px"}}>
             <div style={{backgroundColor:"#3A4F39"}}>
                 <div className={"flexRow"} style={{alignItems:"flex-end"}}>

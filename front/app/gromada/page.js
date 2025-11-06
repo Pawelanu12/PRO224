@@ -29,7 +29,6 @@ import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 //     console.log(wierszy1.map(w=>w.join("")))
 // }
 export default function Gromada() {
-  const {user}=useContext(GlobalContext)
     const [currentIndex,setCurrentIndex] = useState(0);
     const carouselInner = useRef(null);
     const items = [
@@ -71,7 +70,6 @@ export default function Gromada() {
     }
     return (
         <div>
-            {user.login ? <NavbarZarejestrowana/> : <NavbarNiezarejestrowana/>}
             <div className={"gromada"} style={{paddingTop: "50px"}}>
                 <div className="carousel">
                     <div className="carousel-inner" ref={carouselInner}>

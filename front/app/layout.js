@@ -1,6 +1,7 @@
 'use client'
 import "./globals.css";
 import GlobalProvider from "@/app/providers/GlobalProvider";
+import Navbar from "@/app/navbars/Navbar";
 
 
 // export const metadata = {
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body >
       <GlobalProvider>
+          <Navbar/>
         {children}
       </GlobalProvider>
       </body>

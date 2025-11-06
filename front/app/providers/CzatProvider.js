@@ -15,11 +15,18 @@ export default function CzatProvider({ children }) {
     const [czat, setCzat] = useState({});
     const {user}=useContext(GlobalContext);
     const [loading,setLoading] = useState(true);
-    const [pokazywanyCzatId,setPokazywanyCzatId] = useState(czaty[0].id);
     const getCzaty = async () => {
-        await fetch("http://localhost:8080/getCzaty")
+        await fetch("http://localhost:8080/api/czaty/my-czaty",
+            {
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+            })
             .then(res=>res.json())
-            .then(res=>setCzaty(res));
+            .then(res=> {
+                console.log(res)
+                if (res.status === 200) {
+                    setCzaty(res)
+                }
+            });
     }
     const getCzat= async()=>{
         setLoading(true)
@@ -43,16 +50,18 @@ export default function CzatProvider({ children }) {
     const dodajCzat = (values) => {
         const add=async (values)=>{
 
-            if(!values.nazwa&&values.czyGrupowy)values.nazwa=values.uzytkownicy+" "+user.login;
-            else if(!values.nazwa&&!values.czyGrupowy)values.nazwa=values.uzytkownicy+" "+user.login;
-            console.log(values)
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty`,{
+            // if(!values.nazwa&&values.czyGrupowy)values.nazwa=values.uzytkownicy+" "+user.login;
+            // else if(!values.nazwa&&!values.czyGrupowy)values.nazwa=values.uzytkownicy+" "+user.login;
+            console.log(JSON.stringify({...values}))
+            const uri=values.czyGrupowy?
+                `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/group?participantLogins=${values.participantLogins}&&nazwa=${values.nazwa}`:
+                `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/private?participantLogin=${values.participantLogin}`
+            await fetch( `${uri}`,{
                 method:"POST",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"
+                    // "Content-Type": "application/json"
                 },
-
-                body:JSON.stringify({...values})
+                // body:JSON.stringify({...values})
             })
                 .then(res=> res.json())
                 .then(res=> {
@@ -67,7 +76,7 @@ export default function CzatProvider({ children }) {
 
     return (
         <CzatContext.Provider value={{
-            czaty,getCzaty,czat,loading,getCzat,pokazywanyCzatId,setPokazywanyCzatId,dodajCzat
+            czaty,getCzaty,czat,loading,getCzat,dodajCzat
         }}>{children}</CzatContext.Provider>
     )
 };

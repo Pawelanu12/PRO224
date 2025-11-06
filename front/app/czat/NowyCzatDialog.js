@@ -2,9 +2,11 @@
 
 import {useContext, useEffect, useRef, useState} from "react";
 import {CzatContext} from "@/app/providers/CzatProvider";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function NowyCzatDialog() {
     const {dodajCzat}=useContext(CzatContext)
+    const {user}=useContext(GlobalContext)
     const dialog=useRef(null);
     const [inputUzytkownikow,setInputUzytkownikow]=useState("");
     const [nazwa,setNazwa]=useState("");
@@ -28,7 +30,9 @@ export default function NowyCzatDialog() {
                               placeholder={"napisz nazwe czatu"}></input></label>}
                 <div id="div" style={{display: "flex", justifyContent: "space-between", alignItems: 'center'}}>
                     <button onClick={() => {
-                        dodajCzat({uzytkownicy:inputUzytkownikow.trim(),nazwa:nazwa.trim(),
+                        dodajCzat({participantLogin:inputUzytkownikow.trim(),
+                            participantLogins:inputUzytkownikow&&inputUzytkownikow.trim().split(" "),
+                            nazwa:nazwa.trim()||user.login+" "+inputUzytkownikow.trim(),
                             czyGrupowy:inputUzytkownikow&&inputUzytkownikow.trim().split(" ").length>1})
                         zamknijDialog()
                     }}>dodaj

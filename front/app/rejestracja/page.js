@@ -8,10 +8,9 @@ import {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
 
 export default function Rejestracja(){
-    const {router,register} = useContext(GlobalContext);
+    const {register} = useContext(GlobalContext);
     return (
         <div>
-                <NavbarNiezarejestrowana/>
             <div className={'forma'}>
 
                 <Formik

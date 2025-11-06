@@ -60,10 +60,11 @@ const {user}=useContext(GlobalContext)
             <div className={"flexRow"}
                  style={{justifyContent: "space-around", marginTop: "10px", backgroundColor: "#3A4F39"}}>
                 <div>
-                    <button>ilosc polubeń {post.polubienia}</button>
+                    <button onClick={()=>console.log("like")}>
+                        ilosc polubeń {post.iloscPolubien}</button>
                 </div>
                 <div>
-                    <button>ilosc komentarzy {post.komentarze}</button>
+                    <button>ilosc komentarzy {post.komentarze.length}</button>
                 </div>
                 <div>
                     <button>ilosc udostepnien {post.udostepnienia}</button>

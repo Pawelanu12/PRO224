@@ -9,6 +9,7 @@ import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 import {dateToString} from "@/app/wydarzenia/dateToString";
 import Wydarzenie from "@/app/wydarzenia/[id]/page";
 import WydarzenieMale from "@/app/wydarzenia/WydarzenieMale";
+import Navbar from "@/app/navbars/Navbar";
 
 
 
@@ -36,8 +37,6 @@ export default function Wydarzenia(){
 
     return (
         <div>
-            {user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>}
-
 
             <div className={"wydarzenia"} >
             <Filter/>

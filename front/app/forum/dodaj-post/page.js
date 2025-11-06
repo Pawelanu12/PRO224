@@ -40,7 +40,6 @@ export default function DodajPost() {
         }
     return (
         <div>
-            <NavbarNiezarejestrowana/>
             <Navigation/>
             <div style={{paddingTop:'75px',paddingLeft:'calc(250px + 10%)',height:'100%',paddingRight:'10%'}}>
                 <div style={{backgroundColor:"#4D644C",marginLeft:"15%",width:"350px",marginRight:"15%",padding:"20px"}}>

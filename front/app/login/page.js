@@ -12,7 +12,6 @@ export default function LogIn(){
 
     return(
         <div style={{height:"100vh"}}>
-            <NavbarNiezarejestrowana/>
             <div style={{paddingTop:"50px",height:"100%"}}   className={"flexRow"}>
             <div style={{flex:"198",height:"100%",minWidth:"300px"}}>
 

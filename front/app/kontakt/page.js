@@ -7,10 +7,8 @@ import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Kontakt(){
-    const {user}=useContext(GlobalContext);
     return (
     <div >
-        {user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>}
     <div className={"kontakt"} style={{paddingTop:"50px"}}>
         <div style={{backgroundColor:"#3A4F39",height:"200px",width:"400px",maxHeight:"80%",overflow:"auto"}}>
             <p>Telefon +66666666666</p>

@@ -58,7 +58,6 @@ export default function EditSprawnosc(){
     }, []);
     return (
         <div>
-            <NavbarZarejestrowana/>
 
             <div className={"forma_dodawania"} style={{backgroundColor:"green",paddingTop:"50px"}}>
                <DeleteDialog id={edit.id} funkcjaDoUsunecia={deleteSprawnosci}/>

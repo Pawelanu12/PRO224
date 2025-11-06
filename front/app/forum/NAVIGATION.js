@@ -5,29 +5,23 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 //linki do podstron w lewej czesci ekranu
 export default function Navigation(){
     const {replaceClick}=useContext(GlobalContext);
-    return (<div className={"fiksacjaWLewejCzesciEkrana"}
-                 style={{justifyContent:"center",backgroundColor:"#4D644C"}}>
-        <button
-            style={{backgroundColor:"#405E3F",width:"100%",paddingTop:"5px",paddingBottom:"5px"}}
+    return (<div className={"forum-navigation"}>
+        <button className={"forum-navigation-redirection"}
             onClick={(e)=>replaceClick(e,"/forum/moje-posty")}
         >
             Moje posty</button>
         <button
             onClick={(e)=>replaceClick(e,"/forum")}
-            style={{backgroundColor:"#405E3F",width:"100%",
-                marginTop:"5px",paddingTop:"5px",paddingBottom:"5px"}}>
+            className={"forum-navigation-redirection"}>
 
         strona glówna</button>
         <button
             onClick={(e)=>replaceClick(e,"/forum/obserwowani")}
-            style={{backgroundColor:"#405E3F",width:"100%",
-                marginTop:"5px",paddingTop:"5px",paddingBottom:"5px"}}>
+            className={"forum-navigation-redirection"}>
 
         Obserwowani</button>
         <button
-            onClick={(e)=>replaceClick(e,"/forum/dodaj-post")}
-            style={{backgroundColor:"#405E3F",width:"100%",
-                marginTop:"5px",paddingTop:"5px",paddingBottom:"5px"}}>
+            className={"forum-navigation-redirection"}>
             dodaj post</button>
     </div>)
 }
