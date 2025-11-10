@@ -7,7 +7,7 @@ import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 export default function Wydarzenie({params}){
-    const {user,router}=useContext(GlobalContext)
+    const {user,replaceClick,setEdit}=useContext(GlobalContext)
     const [wydarzenie, setWydarzenie] = useState({});
     const [loading, setLoading] = useState(true);
     const {id} =  React.use(params);
@@ -49,6 +49,12 @@ export default function Wydarzenie({params}){
             {!loading&&wydarzenie.id &&
                 <div className={"wydarzenie-duze"} >
                     <div className={"wydarzenie-duze-flex-lewy"} >
+                        <button
+                            onClick={e=>{
+                                setEdit(wydarzenie)
+                                replaceClick(e,"/admin/edit/wydarzenie")
+                            }}>
+                            Edit wydarzenie</button>
                         <p className={"wydarzenie-duze-nazwa"} >{wydarzenie.nazwa}</p>
                         <p className={"wydarzenie-duze-typ"} >{wydarzenie.typ}</p>
                         <p className={"wydarzenie-duze-data-napis1"} >data Wyjazdu:</p>

@@ -13,12 +13,12 @@ import Navbar from "@/app/navbars/Navbar";
 
 
 
-
 export default function Wydarzenia(){
     const {wydarzenia,nazwa,typ,data,getWydarzenia}=useContext(WydarzeniaContext)
-    const {router,user}=useContext(GlobalContext)
+    // const {router,user}=useContext(GlobalContext)
+    const [elementWidth, setElementWidth] = useState(320);
     const[wydarzeniaSortowane,setWydarzeniaSortowane]=useState(wydarzenia);
-    // console.log(wydarzenia)
+    console.log(elementWidth)
     useEffect(  ()=>{
         getWydarzenia()
     },[])
@@ -34,19 +34,31 @@ export default function Wydarzenia(){
          sort()
     },[wydarzenia, nazwa, typ, data])
 
-
+    useEffect(() => {
+        const handleResize = () => {
+            setElementWidth((window.innerWidth-280)/Math.floor((window.innerWidth-280)/320))
+        };
+        handleResize()
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
     return (
         <div>
-
-            <div className={"wydarzenia"} >
-            <Filter/>
-            <div  className={"wydarzenia-vertical-line"} ></div>
-            <div    className={"wydarzenia-row"}>
-                {wydarzeniaSortowane.map((wydarzenie,i) => (
-                    <WydarzenieMale wydarzenie={wydarzenie} key={i}/>
-                   ))}
+            <button className={"dodaj-wydarzenie-button"}
+                    onClick={(e) => replaceClick(e, "/admin/add/wydarzenie")}>Dodaj
+                nowe wydarzenie
+            </button>
+            <div className={"wydarzenia"}>
+                <Filter/>
+                {/*<div  className={"wydarzenia-vertical-line"} ></div>*/}
+                <div className={"wydarzenia-row"}>
+                    {wydarzeniaSortowane.map((wydarzenie, i) => (
+                        <WydarzenieMale wydarzenie={wydarzenie} key={i} width={elementWidth - 20}/>
+                    ))}
+                </div>
             </div>
         </div>
-        </div>
-            )
+    )
 }

@@ -33,10 +33,7 @@ export default function Filter() {
     }
     return (
         <div className={"wydarzenia-filter-div"}>
-            <button className={"dodaj-wydarzenie-button"}
-                    onClick={(e) => replaceClick(e, "/admin/add/wydarzenie")}>Dodaj
-                nowe wydarzenie
-            </button>
+
             <label className={"wydarzenia-filter-label1"} >
                 <p className={"wydarzenia-filter-hidden-p"}  hidden={!hidden}>nazwa wydarzenia</p>
                 <p className={"wydarzenia-filter-nazwa-p"}  hidden={hidden}>nazwa wydarzenia</p>

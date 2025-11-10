@@ -79,7 +79,44 @@ export default function AdminProvider({ children }) {
         add(values)
     }
 
+    const editWydarzenie = (id,values) => {
+        console.log(id)
+        const edit=async (values)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
+                method:"PUT",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"
+
+                },
+                body:values
+            })
+                .then(res=> res.json())
+                .then(res=> {
+                    console.log(res)
+                    replaceClick("","/wydarzenia")
+                })
+                .catch(err=>console.log(err))
+        }
+        edit(values)
+    }
+
+    const deleteWydarzenie = (id)=>{
+        const usun=async (id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`, {
+                method: "Delete",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+            })
+                .then(res=>{
+                    console.log(res)
+                    if(res.ok)
+                        replaceClick("","/wydarzenia")
+                })
+
+        }
+        usun(id)
+    }
+
     return (
-        <AdminContext.Provider value={{editSprawnosci,addSprawnosci,addWydarzenie,deleteSprawnosci}}>{children}</AdminContext.Provider>
+        <AdminContext.Provider value={{deleteWydarzenie,editWydarzenie,editSprawnosci,addSprawnosci,addWydarzenie,deleteSprawnosci}}>{children}</AdminContext.Provider>
     )
 };
