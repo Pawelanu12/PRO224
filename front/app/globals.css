@@ -16,11 +16,13 @@ button{
     padding-left: 5px
 }
 body{
+    margin-top: 50px;
     background-color: #1A1919;
     color:white;
 
 }
 .navbar{
+    margin-top: -50px;
     position: fixed;
     width: 100vw;
     display: flex;
@@ -79,22 +81,7 @@ body{
     background-color: #222822   ;
 }
 
-.dialog{
-    position:fixed;
-    width:660px;
-    max-width:80%;
-    background-color:#DACA6F;
-    color:black;
-    border-radius: 5%
-}
-.dialog h1{
-    text-align: center;
-    font-weight: bold
-}
-.dialog div{
-    padding: 5px;
-    margin: 5px;
-}
+
 input{
     /*margin: 20px;*/
     /*margin-left:20px;*/

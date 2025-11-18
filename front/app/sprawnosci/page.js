@@ -7,47 +7,22 @@ import Sprawnosc from "@/app/sprawnosci/Sprawnosc";
 import Filter from "@/app/sprawnosci/Filter";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import WyswetlSprawnosci from "@/app/sprawnosci/WyswetlSprawnosci";
 
 export default function Sprawnosci(){
 
-    const {sprawnosciPosortowane,getSprawnosci}=useContext(SprawnoscContext)
     const {loading,user,replaceClick,setEdit}=useContext(GlobalContext)
-    const typySprawnosci=["artystyczne","bajkowe","kultoroznawcze"]
-        // console.log(sprawnosciPosortowane)
-    useEffect(()=>{
-      getSprawnosci()
-    },[])
-    if(loading) return <div>
-        {user.login ? <NavbarZarejestrowana/> : <NavbarNiezarejestrowana/>}
-        <p style={{paddingTop:'50px'}}>loading</p>
-    </div>
-    if (!sprawnosciPosortowane.length) return <div>
-        {user.login ? <NavbarZarejestrowana/> : <NavbarNiezarejestrowana/>}
-        <p style={{paddingTop:'50px'}}>nie ma sprawnosci</p>
-    </div>
-    const typy = Array.from(new Set(sprawnosciPosortowane.map
-    (s=>(s.typ||"underfined").toUpperCase())))
-    console.log(user);
-        return(
-        <div>
 
-            <div style={{paddingTop:"50px"}}>
+
+        return(
+
+            <div  className={"sprawnosci-page"}>
                 <Filter/>
-                <button style={{border:"2px solid white"}} onClick={(e)=>replaceClick(e,"/admin/add/sprawnosc")}>Dodaj nowa sprawnosc</button>
-                <div className={"Sprawnosci"}>
-                    {typy.map(typ=><div key={typ||"underfined"} className={"Sprawnosci_po_typach"}>
-                            <h1 className={"typ-sprawnosci"}>{typ}</h1>
-                        <div className={"flexRow"}>
-                            {
-                            sprawnosciPosortowane
-                            .filter(sprawnosc=>(sprawnosc.typ||"underfined").toUpperCase()===typ)
-                            .map((sprawnosc,id)=><Sprawnosc key={typ+" "+id} sprawnosc={sprawnosc}/>)
-                            }
-                        </div>
-                    </div>)}
-                </div>
+                <button
+                        onClick={(e)=>replaceClick
+                        (e,"/admin/add/sprawnosc")}>Dodaj nowa sprawnosc</button>
+           <WyswetlSprawnosci/>
             </div>
-        </div>
         )
 }
 //"obraz":"https://raw.githubusercontent.com/Pawelanu12/PRO224/s27297/app/data/obraz_sprawnosci.png",

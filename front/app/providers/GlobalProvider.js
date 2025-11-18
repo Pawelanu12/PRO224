@@ -104,7 +104,7 @@ export default function GlobalProvider({ children }) {
 
     useEffect(()=>{
         console.log("get_me")
-        console.log(window.location.pathname)
+        // console.log(window.location.pathname)
         // if(window.location.pathname.startsWith("/profil")
         //     ||window.location.pathname.startsWith("/forum")
         //     ||window.location.pathname.startsWith("/admin")

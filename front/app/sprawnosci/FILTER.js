@@ -9,9 +9,11 @@ export default function Filter(){
 
 
     return (
-        <div className={"flexRow"} style={{margin:"20px"}}>
-            <h1 >Lista sprawnosci</h1>
-            <label style={{paddingLeft:"10px"}}><input type={"text"} onChange={()=>logInput()} ref={input} placeholder={'szukaj po nazwe'}/></label>
+        <div className={"sprawnosci-filter"} >
+            <label className={"sprawnosci-filter-label"} >Lista sprawnosci
+                <input className={"sprawnosci-filter-input"}  type={"text"}
+                       onChange={()=>logInput()} ref={input}
+                       placeholder={'szukaj po nazwe'}/></label>
         </div>
     )
 }

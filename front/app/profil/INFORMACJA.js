@@ -13,16 +13,16 @@ export default function Informacja() {
         getZdobyteSprawnosci(user.id||1)
     }, []);
     return(
-        <div className={"flexRow"} style={{backgroundColor: "#3A4F39",margin:"20px"}}>
-            <div style={{margin: "10px", borderRight: "solid 1px black", color: "black",flex:1}}>
+        <div className={"profil-informacja"} >
+            <div className={"lewy"}>
                 <p>Informacje</p>
-                <div style={{backgroundColor: "#D9D9D9", marginRight: "10px"}}>
+                <div >
                     <p>data urodzenia: {user.dataUrodzenia}</p>
                     <p>nazwa gromady: {user.gromada}</p>
                     <p>data dolączenia do gromady: {user.dataDolaczeniaDoGromady}</p>
                 </div>
             </div>
-            <div style={{
+            <div className={"centralny"} style={{
                 margin: "10px",
                 paddingRight: 10,
                 marginLeft: 0,
@@ -44,7 +44,7 @@ export default function Informacja() {
                 </div>}
 
             </div>
-            <div style={{margin: "10px", marginRight: 0, color: "black", flex: 1}}>
+            <div className={"prawy"} style={{margin: "10px", marginRight: 0, color: "black", flex: 1}}>
                 <p>Obserwowani</p>
                 <div style={{backgroundColor: "#262020", marginRight: "10px"}}>
                     <p>data urodzenia: {user.data_urodzenia}</p>

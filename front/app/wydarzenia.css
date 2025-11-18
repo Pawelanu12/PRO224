@@ -11,10 +11,11 @@
     box-shadow: #1d201d 1px 1px 1px 1px;
     height:300px;
     margin: 30px;
+    border-radius: 10px;
 }
 
 .dodaj-wydarzenie-button{
-    margin-top: 75px;
+    /*margin-top: 75px;*/
     border: 2px solid white;
 
 }
@@ -74,13 +75,14 @@
 
 .wydarzenie-male-img{
     width:100%;
+    border-radius: 10px;
     /*height: calc(300px / 2.2);*/
 }
 .wydarzenie-male{
     min-width:300px;
     /*width:calc((100vw - 300px) / 3.2);*/
     background-color: #222522;
-
+    border-radius: 10px;
     color: black;
     text-align: center;
     margin: 10px;

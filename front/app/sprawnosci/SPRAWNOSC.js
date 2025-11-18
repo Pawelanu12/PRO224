@@ -48,13 +48,13 @@ export default function Sprawnosc({sprawnosc}) {
 
 // console.log(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/ikona/${sprawnosc.ikona}`);
     return (
-        <div>
+        <div className={"sprawnosc"}>
             {/*<p style={{margin: "25px"}}*/}
             {/*   onMouseMove={() => setShow(true)}*/}
             {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
 
-            <img  src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}
-                  style={{margin: "25px"}} width={"50px"} height={"50px"} loading={"lazy"}
+            <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}
+                  loading={"lazy"}
                   onClick={(e)=>{setEdit(sprawnosc);replaceClick(e,"/admin/edit/sprawnosc")}}
                   onMouseMove={() => setShow(true)}
                  onMouseLeave={() => setShow(false)} alt={"sprawnosc"}
@@ -63,9 +63,9 @@ export default function Sprawnosc({sprawnosc}) {
             />
             {/*<img src={sprawnosc.obraz}></img>*/}
             {show &&
-                <div className={"dialog"} ref={dialog}>
-                    <h1>{sprawnosc.nazwa}</h1>
-                    <div>
+                <div className={"sprawnosc-dialog"} ref={dialog}>
+                    <h1 className={"sprawnosc-nazwa"}>{sprawnosc.nazwa}</h1>
+                    <div className={"sprawnosc-opis"}>
                         {sprawnosc.opis}
                     </div>
 

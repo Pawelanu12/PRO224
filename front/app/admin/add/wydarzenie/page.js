@@ -56,7 +56,7 @@ export default function AddWydarzenie(){
 
                         console.log(values)
                         addWydarzenie({...values,organizatorId:user.id})
-                        resetForm()
+                        // resetForm()
 
                     }}
 

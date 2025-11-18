@@ -18,7 +18,7 @@ export default function Posty({wszystkie=true}){
     if(!postyPokazywane||postyPokazywane.length===0)
         return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>{"nie posiadasz postów"}</p>
     return(
-        <div style={{paddingTop:"50px",paddingLeft:"250px", width:"100%",
+        <div style={{paddingLeft:"250px", width:"100%",
            justifyItems:'center',height:"100vh"}}>
             <div className={"postyBackground"}>
             </div>
