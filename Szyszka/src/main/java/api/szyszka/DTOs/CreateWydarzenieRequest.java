@@ -14,13 +14,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class CreateWydarzenieRequest {
     private String nazwa;
     private LocalDateTime dataWyjazdu;
     private LocalDateTime dataZakonczenia;
     private String opis;
     private Long organizatorId;
-    private List<Uczestnictwo> uczestnictwo;
-    private List<Zdjecie> zdjecia;
+    private List<String> zdjecia;
 }

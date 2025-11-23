@@ -24,7 +24,7 @@ public class Uzytkownik {
     private LocalDateTime dataUrodzenia;
     private String nrTelefonu;
     private LocalDateTime dataDolaczeniaDoGromady;
-
+    private String zdjecie;
     @ManyToOne
     @JoinColumn(name = "rodzic_id1")
     private Uzytkownik rodzic1;
@@ -53,9 +53,6 @@ public class Uzytkownik {
 
     @OneToMany(mappedBy = "autor")
     private List<Komentarz> komentarze;
-
-    @OneToMany(mappedBy = "uzytkownik")
-    private List<Zdjecie> zdjecia;
 
     @OneToMany(mappedBy = "uzytkownik")
     private List<Uczestnictwo> uczestnictwa;

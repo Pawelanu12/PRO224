@@ -1,12 +1,15 @@
 package api.szyszka.Entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
 public class Wydarzenie {
 
     @Id
@@ -14,7 +17,9 @@ public class Wydarzenie {
     private Long id;
 
     private String nazwa;
+
     private LocalDateTime dataWyjazdu;
+
     private LocalDateTime dataZakonczenia;
 
     @Column(columnDefinition = "TEXT")
@@ -24,9 +29,9 @@ public class Wydarzenie {
     @JoinColumn(name = "organizator_id")
     private Uzytkownik organizator;
 
-    @OneToMany(mappedBy = "wydarzenie")
-    private List<Uczestnictwo> uczestnictwa;
+    @OneToMany(mappedBy = "wydarzenie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WydarzenieZdjecie> zdjecia;
 
-    @OneToMany(mappedBy = "wydarzenie")
-    private List<Zdjecie> zdjecia;
+    @OneToMany(mappedBy = "wydarzenie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Uczestnictwo> uczestnictwa;
 }

@@ -31,7 +31,6 @@ public class CzatService {
 
     @Transactional
     public CzatDto createPrivateChat(Uzytkownik user1, Uzytkownik user2) {
-        // Check if a private chat already exists between the users
         List<CzatUzytkownik> existing = czatUzytkownikRepository.findAll();
         for (CzatUzytkownik cu : existing) {
             Czat czat = cu.getCzat();

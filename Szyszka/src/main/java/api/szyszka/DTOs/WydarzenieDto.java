@@ -1,6 +1,7 @@
 package api.szyszka.DTOs;
 
 import api.szyszka.Entities.Uczestnictwo;
+import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Entities.Zdjecie;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +23,14 @@ public class WydarzenieDto {
     private String opis;
     private Long organizatorId;
     private List<Uczestnictwo> uczestnictwa;
-    private List<Zdjecie> zdjecia;
+    private List<String> zdjecia;
+    public static Wydarzenie fromCreateRequest(CreateWydarzenieRequest request) {
+        Wydarzenie w = new Wydarzenie();
+        w.setNazwa(request.getNazwa());
+        w.setDataWyjazdu(request.getDataWyjazdu());
+        w.setDataZakonczenia(request.getDataZakonczenia());
+        w.setOpis(request.getOpis());
+        return w;
+    }
+
 }
