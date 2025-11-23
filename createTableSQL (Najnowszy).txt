@@ -117,3 +117,19 @@ CREATE TABLE wiadomosc (
     FOREIGN KEY (czat_id) REFERENCES czat(id) ON DELETE CASCADE,
     FOREIGN KEY (nadawca_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
 );
+CREATE TABLE wydarzenie_zdjecie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    wydarzenie_id BIGINT NOT NULL,
+    sciezka VARCHAR(255) NOT NULL, -- np. URL / nazwa pliku
+    data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (wydarzenie_id) REFERENCES wydarzenie(id) ON DELETE CASCADE
+);
+CREATE TABLE post_zdjecie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT NOT NULL,
+    sciezka VARCHAR(255) NOT NULL,  -- np. URL / nazwa pliku
+    data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
+);
