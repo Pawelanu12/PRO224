@@ -3,6 +3,7 @@ package api.szyszka.Controllers;
 import api.szyszka.DTOs.CreateWydarzenieRequest;
 import api.szyszka.DTOs.UpdateWydarzenieRequest;
 import api.szyszka.DTOs.WydarzenieDto;
+import api.szyszka.Entities.Sprawnosc;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Mappers.WydarzenieMapper;
 import api.szyszka.Services.WydarzenieService;
@@ -16,11 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/wydarzenia")
+@RequestMapping("/api/wydarzenie")
 public class WydarzenieController {
 
     private final WydarzenieService wydarzenieService;
@@ -31,12 +35,54 @@ public class WydarzenieController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WydarzenieDto> createWydarzenie(
-            @RequestPart("wydarzenie") CreateWydarzenieRequest request,
+            @RequestParam("nazwa") String nazwa,
+            @RequestParam("opis") String opis,
+            @RequestParam("dataWyjazdu") LocalDateTime dataWyjazdu,
+            @RequestParam("dataZakonczenia") LocalDateTime dataZakonczenia,
+            @RequestParam("organizatorId") Long organizatorId,
             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+
+        List<String> zdjecia = new ArrayList<>();
+
+        try {
+            if (files != null && !files.isEmpty()) {
+
+                String uploadDir = System.getProperty("user.dir") + "/uploads/";
+                File folder = new File(uploadDir);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+
+                for (MultipartFile file : files) {
+                    if (file.isEmpty()) {
+                        continue;
+                    }
+
+                    String time = System.currentTimeMillis() + "_";
+                    String originalName = file.getOriginalFilename();
+
+                    File targetFile = new File(uploadDir + time + originalName);
+                    file.transferTo(targetFile);
+
+                    zdjecia.add(time + originalName);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Błąd zapisu pliku: " + e.getMessage(), e);
+        }
+
+        CreateWydarzenieRequest request = new CreateWydarzenieRequest();
+        request.setNazwa(nazwa);
+        request.setOpis(opis);
+        request.setDataWyjazdu(dataWyjazdu);
+        request.setDataZakonczenia(dataZakonczenia);
+        request.setOrganizatorId(organizatorId);
+        request.setZdjecia(zdjecia);
 
         Wydarzenie saved = wydarzenieService.createWydarzenieWithPhotos(request, files);
         return ResponseEntity.ok(WydarzenieMapper.toDto(saved));
     }
+
 
     @PostMapping("/{id}/zdjecia")
     public ResponseEntity<WydarzenieDto> addZdjecie(

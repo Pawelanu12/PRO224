@@ -64,7 +64,7 @@ public class PostController {
    }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
+//    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<PostDto>> getAllPosts() {
         List<PostDto> posts = postService.getAllPosts()
                 .stream()
@@ -80,7 +80,7 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-//    @DeleteMapping("/posts/{id}")
+//    @DeleteMapping("/{id}")
 //    public ResponseEntity<Void> deletePostsByAuthorId(@PathVariable Long id) {
 //        postService.deletePostById(id);
 //        return ResponseEntity.noContent().build();
