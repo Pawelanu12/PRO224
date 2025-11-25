@@ -18,7 +18,7 @@ CREATE TABLE uzytkownik (
     rodzic_id2 BIGINT,
     typ_uzytkownika VARCHAR(255) NOT NULL,
     szostka_id BIGINT,
-    avatar VARCHAR(255), -- zdjęcie użytkownika
+    zdjecie VARCHAR(255), -- zdjęcie użytkownika
 
     FOREIGN KEY (rodzic_id1) REFERENCES uzytkownik(id) ON DELETE SET NULL,
     FOREIGN KEY (rodzic_id2) REFERENCES uzytkownik(id) ON DELETE SET NULL,
