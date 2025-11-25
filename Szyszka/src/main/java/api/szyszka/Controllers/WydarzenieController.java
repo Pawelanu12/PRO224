@@ -17,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,42 +45,40 @@ public class WydarzenieController {
             @RequestParam("organizatorId") Long organizatorId,
             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
-        List<String> zdjecia = new ArrayList<>();
-
+        CreateWydarzenieRequest request = new CreateWydarzenieRequest();
         try {
             if (files != null && !files.isEmpty()) {
+                System.out.println(files.size());
 
-                String uploadDir = System.getProperty("user.dir") + "/uploads/";
+                String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
                 File folder = new File(uploadDir);
                 if (!folder.exists()) {
                     folder.mkdirs();
                 }
 
                 for (MultipartFile file : files) {
-                    if (file.isEmpty()) {
-                        continue;
-                    }
+                    if (file.isEmpty()) continue;
 
                     String time = System.currentTimeMillis() + "_";
                     String originalName = file.getOriginalFilename();
+                    String cleanName = originalName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
 
-                    File targetFile = new File(uploadDir + time + originalName);
-                    file.transferTo(targetFile);
+                    Path destination = Paths.get(uploadDir, time + cleanName);
+                    Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-                    zdjecia.add(time + originalName);
+                    request.getZdjecia().add(time + cleanName);
                 }
+
             }
         } catch (IOException e) {
             throw new RuntimeException("Błąd zapisu pliku: " + e.getMessage(), e);
         }
 
-        CreateWydarzenieRequest request = new CreateWydarzenieRequest();
         request.setNazwa(nazwa);
         request.setOpis(opis);
         request.setDataWyjazdu(dataWyjazdu);
         request.setDataZakonczenia(dataZakonczenia);
         request.setOrganizatorId(organizatorId);
-        request.setZdjecia(zdjecia);
 
         Wydarzenie saved = wydarzenieService.createWydarzenieWithPhotos(request, files);
         return ResponseEntity.ok(WydarzenieMapper.toDto(saved));

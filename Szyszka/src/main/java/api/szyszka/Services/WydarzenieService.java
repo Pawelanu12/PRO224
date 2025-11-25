@@ -61,18 +61,18 @@ public class WydarzenieService {
         wydarzenie.setOrganizator(organizator);
         wydarzenie.setZdjecia(new ArrayList<>());
 
-        wydarzenieRepository.save(wydarzenie);
+//        wydarzenieRepository.save(wydarzenie);
 
         if (files != null && !files.isEmpty()) {
 
-            List<WydarzenieZdjecie> zdjecia = new ArrayList<>();
+//            List<WydarzenieZdjecie> zdjecia = new ArrayList<>();
 
             for (MultipartFile file : files) {
                 WydarzenieZdjecie zdj = saveFileForEvent(file, wydarzenie);
-                zdjecia.add(zdj);
+                wydarzenie.getZdjecia().add(zdj);
             }
 
-            wydarzenie.setZdjecia(zdjecia);
+//            wydarzenie.setZdjecia(zdjecia);
         }
 
         return wydarzenieRepository.save(wydarzenie);

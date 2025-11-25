@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,5 +21,5 @@ public class CreateWydarzenieRequest {
     private LocalDateTime dataZakonczenia;
     private String opis;
     private Long organizatorId;
-    private List<String> zdjecia;
+    private List<String> zdjecia= new ArrayList<>();;
 }
