@@ -15,10 +15,11 @@ export default function GlobalProvider({ children }) {
     const logOut = () => {
         localStorage.clear()
         setUser({})
-        if(window.location.pathname.startsWith("/profil")
-            ||window.location.pathname.startsWith("/forum")
-            ||window.location.pathname.startsWith("/admin")
-            ||window.location.pathname.startsWith("/czat"))
+        // if(window.location.pathname.startsWith("/profil")
+        //     ||window.location.pathname.startsWith("/forum")
+        //     ||window.location.pathname.startsWith("/admin")
+        //     ||window.location.pathname.startsWith("/czat"))
+        if(!window.location.pathname.startsWith("/gromada"))
             router.replace("/login")
     }
     const replaceClick=(e,href)=>{
@@ -104,6 +105,7 @@ export default function GlobalProvider({ children }) {
 
     useEffect(()=>{
         console.log("get_me")
+        const interval=setInterval(get_me,3600000)
         // console.log(window.location.pathname)
         // if(window.location.pathname.startsWith("/profil")
         //     ||window.location.pathname.startsWith("/forum")
@@ -116,6 +118,7 @@ export default function GlobalProvider({ children }) {
         // {
             get_me()
         // }
+        return(()=>clearInterval(interval))
     },[])
 
     return (

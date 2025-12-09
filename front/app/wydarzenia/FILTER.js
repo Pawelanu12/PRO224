@@ -32,30 +32,40 @@ export default function Filter() {
         setData(e.target.value)
     }
     return (
-        <div className={"wydarzenia-filter-div"}>
+        <div>
+            <div className={"wydarzenia-filter-div"}>
 
-            <label className={"wydarzenia-filter-label1"} >
-                <p className={"wydarzenia-filter-hidden-p"}  hidden={!hidden}>nazwa wydarzenia</p>
-                <p className={"wydarzenia-filter-nazwa-p"}  hidden={hidden}>nazwa wydarzenia</p>
-                <input className={"wydarzenia-filter-nazwa-input"}
-                       type={"text"}
-                       onChange={(e) => changeNazwa(e)}
-                       placeholder={"nazwa wydarzenia..."}/></label>
+                <label className={"wydarzenia-filter-label1"}>
+                    <p className={"wydarzenia-filter-hidden-p"} hidden={!hidden}>nazwa wydarzenia</p>
+                    <p className={"wydarzenia-filter-nazwa-p"} hidden={hidden}>nazwa wydarzenia</p>
+                    <input className={"wydarzenia-filter-nazwa-input"}
+                           type={"text"}
+                           onChange={(e) => changeNazwa(e)}
+                           placeholder={"nazwa wydarzenia..."}/></label>
 
-            <label className={"wydarzenia-filter-label2"}>
-                <select onChange={(e) => changeTyp(e)}
-                        className={"wydarzenia-filter-select"}
-                        style={{backgroundColor: "#3A4F39", width: "183px", color: "black",}}>
-                    <option className={"wydarzenia-filter-option"} id={"Typ wydarzenia"}>Typ wydarzenia</option>
-                    <option className={"wydarzenia-filter-option"} id={"wycieczka"}>wycieczka</option>
-                    <option className={"wydarzenia-filter-option"} id={"podroz"}>podroz</option>
-                </select></label>
+                <label className={"wydarzenia-filter-label2"}>
+                    <select onChange={(e) => changeTyp(e)}
+                            className={"wydarzenia-filter-select"}
+                            style={{backgroundColor: "#3A4F39", width: "183px", color: "black",}}>
+                        <option className={"wydarzenia-filter-option"} id={"Typ wydarzenia"}>Typ wydarzenia</option>
+                        <option className={"wydarzenia-filter-option"} id={"wycieczka"}>wycieczka</option>
+                        <option className={"wydarzenia-filter-option"} id={"podroz"}>podroz</option>
+                    </select></label>
 
-            <label className={"wydarzenia-filter-label3"}>
-                <p className={"wydarzenia-filter-data-p"} >Wydarzenia od takiej daty</p>
-                <input className={"wydarzenia-filter-data-inpt"}
-                       onChange={(e) => changeData(e)}
-                        type="date"/></label>
+                <label className={"wydarzenia-filter-label3"}>
+                    <p className={"wydarzenia-filter-data-p"}>Wydarzenia od takiej daty</p>
+                    <input className={"wydarzenia-filter-data-inpt"}
+                           onChange={(e) => changeData(e)}
+                           type="date"/></label>
+
+
+            </div>
+            <div className={"dodaj-wydarzenie-div"}>
+                <button className={"dodaj-wydarzenie-button"}
+                        onClick={(e) => replaceClick(e, "/admin/add/wydarzenie")}>Dodaj
+                    nowe wydarzenie
+                </button>
+            </div>
         </div>
-    )
-}
+            )
+            }

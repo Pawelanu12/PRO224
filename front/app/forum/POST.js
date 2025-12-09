@@ -22,7 +22,10 @@ const {user}=useContext(GlobalContext)
     const [pelnyOpis,setPelnyOpis] = useState(false)
     const [show,setShow]=useState(false)
     return (
-        <div style={{marginBottom: "30px"}}>
+        <div style={{marginBottom: "30px",
+            backgroundColor: "#4D644C",
+            maxWidth: "500px"
+        }}>
             <div className={"flexRow"} style={{alignItems:"center"}}>
                 <div style={{flex:60}}>
                     <div className={'flexRow'}>
@@ -56,7 +59,11 @@ const {user}=useContext(GlobalContext)
                 </div>
 
             </div>
-            <img src={post.obraz} alt={"obraz"} width={"100%"}/>
+            {post.zdjecia&&<div>
+                {post.zdjecia.map((z,i)=>
+                    <img key={i} src={"http://localhost:8080/uploads/posts/"+z} alt={"cat"}/>
+                )}
+            </div>}
             <div className={"flexRow"}
                  style={{justifyContent: "space-around", marginTop: "10px", backgroundColor: "#3A4F39"}}>
                 <div>

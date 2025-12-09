@@ -23,16 +23,18 @@ export default function Informacja() {
                 </div>
             </div>
             <div className={"centralny"} style={{
-                margin: "10px",
-                paddingRight: 10,
-                marginLeft: 0,
-                borderRight: "solid 1px black",
-                color: "black",
-                flex: 1
+                // margin: "10px",
+                // paddingRight: 10,
+                // marginLeft: 0,
+                // borderRight: "solid 1px black",
+                // color: "black",
+                // flex: 1
             }}>
-                <div className={"flexRow"} style={{backgroundColor: "#D9D9D9", width: "100%",justifyContent:"space-between"}}>
+                <div className={"div1"}
+                >
                     <p>Zdobyte sprawnosci</p>
-                    <button onClick={(e)=>replaceClick(e,'/sprawnosci/zdobyte')} style={{backgroundColor: "#555353", width: "50px", height: "25px", margin: "10px"}}>Węcej
+                    <button onClick={(e)=>replaceClick(e,'/sprawnosci/zdobyte')}
+                          >Węcej
                     </button>
                 </div>
                 {zdobyteSprawnosci&&zdobyteSprawnosci.length&&<div className={"flexRow"} style={{backgroundColor: "#D9D9D9"}}>
@@ -44,7 +46,7 @@ export default function Informacja() {
                 </div>}
 
             </div>
-            <div className={"prawy"} style={{margin: "10px", marginRight: 0, color: "black", flex: 1}}>
+            <div className={"prawy"} >
                 <p>Obserwowani</p>
                 <div style={{backgroundColor: "#262020", marginRight: "10px"}}>
                     <p>data urodzenia: {user.data_urodzenia}</p>

@@ -4,6 +4,7 @@ import {useContext, useEffect} from "react";
 import {ForumContext} from "@/app/providers/ForumProvider";
 import Post from "@/app/forum/Post";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
+import DodawaniaPostu from "@/app/forum/DodawaniaPostu";
 //pokazuje wiele postow
 export default function Posty({wszystkie=true}){
     const {posty,loading,getPosty}=useContext(ForumContext)
@@ -20,11 +21,36 @@ export default function Posty({wszystkie=true}){
     return(
         <div style={{paddingLeft:"250px", width:"100%",
            justifyItems:'center',height:"100vh"}}>
-            <div className={"postyBackground"}>
-            </div>
+            {/*<div className={"postyBackground"}>*/}
+            {/*</div>*/}
             <div className={"posty"}>
-                {postyPokazywane.map((post,i)=><Post key={i} post={post}/>)}
+                <DodawaniaPostu/>
+                <br/>
+                {[...postyPokazywane].reverse().map((post,i)=><Post key={i} post={post}/>)}
             </div>
         </div>
     )
 }
+
+//    const rederRow=({index,style})=>(
+//
+//         <div style={{...style}}>
+//
+//             <Wydatek  key={listPofiltrowana[index].id}
+//                      wydatek={listPofiltrowana[index]} />
+//         </div>
+//     )
+
+
+// return (
+//     <FixedSizeList
+//         height={window.innerHeight}
+//         width={window.innerWidth-20}
+//         itemCount={listPofiltrowana.length}
+//         itemSize={200}
+//     >
+//         {rederRow}
+//     </FixedSizeList>
+// )
+
+

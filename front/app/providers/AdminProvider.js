@@ -60,14 +60,15 @@ export default function AdminProvider({ children }) {
         usun(id)
     }
     const addWydarzenie = (values) => {
-        const add=async (values)=>{
+        console.log(values)
+       const add=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie`,{
                 method:"POST",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"
+                    // "Content-Type": "application/json"
                 },
 
-                body:JSON.stringify({...values})
+                body:values
             })
                 .then(res=> res.json())
                 .then(res=> {
@@ -85,7 +86,7 @@ export default function AdminProvider({ children }) {
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
                 method:"PUT",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"
+                    // "Content-Type": "application/json"
 
                 },
                 body:values

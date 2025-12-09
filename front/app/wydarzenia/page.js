@@ -61,10 +61,7 @@ export default function Wydarzenia(){
     const wydarzeniaNaStronie=wydarzeniaSortowane.slice(page*wydarzeniaPerPage-wydarzeniaPerPage,page*wydarzeniaPerPage)
     return (
         <div>
-            <button className={"dodaj-wydarzenie-button"}
-                    onClick={(e) => replaceClick(e, "/admin/add/wydarzenie")}>Dodaj
-                nowe wydarzenie
-            </button>
+
             <div className={"wydarzenia"}>
                 <Filter/>
                 {/*<div  className={"wydarzenia-vertical-line"} ></div>*/}

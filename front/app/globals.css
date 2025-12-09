@@ -34,15 +34,26 @@ body{
     overflow-y: hidden;
     white-space: nowrap;
     padding-right:20px;
+    padding-top:5px;
 
 }
 .navbar div button{
-  margin: 10px;
-
+    margin: 5px 10px 10px;
+    height: 30px;
   justify-content: space-between;
   /*color:white;*/
   background-color: #405E3F;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+.navbar div button p{
+    display: flex;
+    flex-direction: row;
+
+    margin-left:5px;
+    margin-right:5px;
+}
+.navbar div button p img{
+    height: 30px;
 }
 .navbar div{
     background-color: #3A4F39;
@@ -193,3 +204,5 @@ input{
 .label1 {
     color:red;
 }
+
+

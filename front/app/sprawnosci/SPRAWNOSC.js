@@ -53,14 +53,26 @@ export default function Sprawnosc({sprawnosc}) {
             {/*   onMouseMove={() => setShow(true)}*/}
             {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
 
+            <div
+                onMouseMove={() => setShow(true)}
+                onMouseLeave={() => setShow(false)}
+                style={{ width:"150px",display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",  }}>
             <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}
-                  loading={"lazy"}
-                  onClick={(e)=>{setEdit(sprawnosc);replaceClick(e,"/admin/edit/sprawnosc")}}
-                  onMouseMove={() => setShow(true)}
-                 onMouseLeave={() => setShow(false)} alt={"sprawnosc"}
+                 loading={"lazy"}
+                 onClick={(e) => {
+                     setEdit(sprawnosc);
+                     replaceClick(e, "/admin/edit/sprawnosc")
+                 }}
+                alt={"sprawnosc"}
 
 
             />
+
+                <p style={{wordWrap:"break-word",textAlign:"center",overflow: "hidden",width:"100%",height:"25px",margin:0}}>{sprawnosc.nazwa}</p>
+
+            </div>
             {/*<img src={sprawnosc.obraz}></img>*/}
             {show &&
                 <div className={"sprawnosc-dialog"} ref={dialog}>

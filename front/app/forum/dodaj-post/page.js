@@ -32,6 +32,7 @@ export default function DodajPost() {
         //dodawnie posta
         const onSubmit=(e)=>{
             e.preventDefault()
+            console.log(text.current.value)
             addPosty({
                 autorId:user.id,
                 tresc:text.current.value,

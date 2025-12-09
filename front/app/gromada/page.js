@@ -70,7 +70,7 @@ export default function Gromada() {
     }
     return (
         <div>
-            <div className={"gromada"} style={{paddingTop: "50px"}}>
+            <div className={"gromada"} style={{paddingTop: "50px",}}>
                 <div className="carousel">
                     <div className="carousel-inner" ref={carouselInner}>
                         {items.map(item =>
@@ -81,7 +81,7 @@ export default function Gromada() {
 
                 </div>
 
-                <div className={"centrowanyText"}>
+                <div className={"centrowanyText"} style={{padding:"20px"}}>
 
                     <p style={{fontSize: 30, backgroundColor: "#1A1919"}}>O gromadzie</p>
                     {text && text.map((l, i) => (<p key={i}>{l.linia}</p>))}

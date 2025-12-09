@@ -38,12 +38,13 @@ export default function ForumProvider({ children }) {
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"POST",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"},
-                body:JSON.stringify({dataStworzenia:new Date(),...body})
+                    },
+                body:body
             })
                 .then(res=>res.json())
                 .then(res=> {
                     console.log(res)
+                    getPosty()
                 })
                 .catch(err=>console.log(err))
         }

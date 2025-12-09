@@ -48,15 +48,16 @@ export default function Rejestracja(){
                 >
                     {({dirty, isValid}) => (
                         <Form className={"formik"}>
+
+                           <p> Login</p>
+                            <Field className={"pole_formy"}  type="text" name="login" placeholder="napisz login"
+                            />
+                            <ErrorMessage className={"error"} name="login" component="div"/>
                             <p>Email</p>
                             <Field className={"pole_formy"} type="email" name="email" placeholder="napisz email"
                             />
                             <ErrorMessage className={"error"} name="email" component="div"/>
                             {/*<br/>*/}
-                           <p> Login</p>
-                            <Field className={"pole_formy"}  type="text" name="login" placeholder="napisz login"
-                            />
-                            <ErrorMessage className={"error"} name="login" component="div"/>
                             <p> Haslo</p>
                             <Field className={"pole_formy"}  type="password" name="haslo" placeholder="napisz haslo"
                             />

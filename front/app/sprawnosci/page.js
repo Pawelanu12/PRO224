@@ -11,7 +11,7 @@ import WyswetlSprawnosci from "@/app/sprawnosci/WyswetlSprawnosci";
 
 export default function Sprawnosci(){
 
-    const {loading,user,replaceClick,setEdit}=useContext(GlobalContext)
+    const {replaceClick}=useContext(GlobalContext)
 
 
         return(

@@ -14,7 +14,7 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 export default function AddWydarzenie(){
     const {addWydarzenie}=useContext(AdminContext)
     const {user}=useContext(GlobalContext)
-    // const [file,setFile]=useState(null)
+    const [files,setFiles]=useState(null)
 
     return (
         <div>
@@ -29,7 +29,7 @@ export default function AddWydarzenie(){
                         dataWyjazdu: "",
                         dataZakonczenia: "",
                         typ: "",
-                        // ikona:""
+                        files:""
                     }}
                     validationSchema={Yup.object({
                         nazwa: Yup.string()
@@ -53,9 +53,22 @@ export default function AddWydarzenie(){
 
                     })}
                     onSubmit={(values, {resetForm}) => {
-
+                        console.log(files)
                         console.log(values)
-                        addWydarzenie({...values,organizatorId:user.id})
+                        const formData = new FormData();
+                        if (files) {
+                            for (let i = 0; i < files.length; i++) {
+                                formData.append("files", files[i]);
+                            }
+                        }
+
+                        formData.append("nazwa", values.nazwa);
+                        formData.append("opis", values.opis);
+                        formData.append("dataWyjazdu", values.dataWyjazdu);
+                        formData.append("dataZakonczenia", values.dataZakonczenia);
+                        formData.append("organizatorId", user.id);
+
+                        addWydarzenie(formData)
                         // resetForm()
 
                     }}
@@ -79,17 +92,21 @@ export default function AddWydarzenie(){
                                     {/*</Field>*/}
                                     {/*<ErrorMessage className={"error"} name="typ" component="div"/>*/}
                                     <br/>
-                                    {/*<p>Ikona sprawnosci</p>*/}
-                                    {/*<label >Wyberz plik <input  type="file" accept="image/*" className={"pole-formy-dodawnia"}*/}
-                                    {/*                            onChange={(e)=>*/}
-                                    {/*                            {*/}
-                                    {/*                                setFile(e.target.files[0])*/}
-                                    {/*                            }}*/}
-                                    {/*                            style={{opacity:0}}*/}
-                                    {/*                            name="ikona" placeholder="wstaw ikone"*/}
-                                    {/*/>*/}
-                                    {/*</label>*/}
-                                    {/*<ErrorMessage className={"error"}  name="ikona" component="div"/>*/}
+                                    Files
+                                    <label >Wyberz plik <input  type="file" accept="image/*" multiple={true} className={"pole-formy-dodawnia"}
+                                                                onChange={(e)=>
+                                                                {
+                                                                    // handleChange(e)
+                                                                    setFiles(e.target.files)
+                                                                    console.log(e.target.files)
+                                                                    // console.log( URL.createObjectURL(e.target.files[0]))
+                                                                    //  onChange(e.target.value)
+                                                                }}
+                                                                style={{opacity:0}}
+                                                                name="ikona" placeholder="wstaw ikone"
+                                    />
+                                    </label>
+                                    <ErrorMessage className={"error"}  name="ikona" component="div"/>
                                 </div>
                                 <div className={"dodaj-sprawnosci"}>
                                     <p> Opis </p>

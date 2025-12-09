@@ -21,6 +21,7 @@ export default function Navigation(){
 
         Obserwowani</button>
         <button
+            onClick={(e)=>replaceClick(e,"/forum/dodaj-post")}
             className={"forum-navigation-redirection"}>
             dodaj post</button>
     </div>)
