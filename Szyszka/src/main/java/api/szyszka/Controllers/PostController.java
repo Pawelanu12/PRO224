@@ -27,6 +27,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,14 +51,13 @@ public class PostController {
 //                .body(PostMapper.toDto(saved));
 //    }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<PostDto> createPost(
-            @RequestParam("tresc") String tresc,
-            @RequestParam("autorId") Long autorId,
+            @RequestParam(name = "tresc") String tresc,
+            @RequestParam(name="autorId") Long autorId,
             @RequestPart(value = "files", required = false) List<MultipartFile> files
     ) {
-
         CreatePostRequest request = new CreatePostRequest();
         request.setTresc(tresc);
         request.setAutorId(autorId);
@@ -83,7 +85,7 @@ public class PostController {
             throw new RuntimeException("Błąd zapisu pliku: " + e.getMessage(), e);
         }
 
-
+        request.setDataStworzenia(LocalDateTime.now());
         Post saved = postService.createPost(request, files);
 
         return ResponseEntity
