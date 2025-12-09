@@ -58,17 +58,17 @@ public class PostService {
 
         post.setAutor(autor); // <-- KLUCZ
 
-        Post saved = postRepository.save(post);
+        return postRepository.save(post);
+//
+//        if (files != null && !files.isEmpty()) {
+//            for (MultipartFile file : files) {
+//                System.out.println(file.getOriginalFilename());
+//                PostZdjecie zdj = saveFileForPost(file, saved);
+//                saved.getZdjecia().add(zdj);
+//            }
+//        }
 
-        if (files != null && !files.isEmpty()) {
-
-            for (MultipartFile file : files) {
-                PostZdjecie zdj = saveFileForPost(file, saved);
-                saved.getZdjecia().add(zdj);
-            }
-        }
-
-        return postRepository.save(saved);
+//        return postRepository.save(saved);
     }
 
     //public Post createPost(Post post) {return postRepository.save(post);}
