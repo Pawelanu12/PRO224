@@ -1,6 +1,8 @@
 package api.szyszka.DTOs;
 
 import api.szyszka.Entities.Komentarz;
+import api.szyszka.Entities.Post;
+import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Zdjecie;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +23,11 @@ public class PostDto {
     private int iloscPolubien;
     private Long autorId;
     private List<Komentarz> komentarze;
-    private List<Zdjecie> zdjecia;
+    private List<String> zdjecia;
 
+    public static Post fromCreateRequest(CreatePostRequest request) {
+        Post p = new Post();
+        p.setTresc(request.getTresc());
+        return p;
+    }
 }

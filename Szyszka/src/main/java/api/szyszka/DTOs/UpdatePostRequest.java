@@ -21,6 +21,7 @@ public class UpdatePostRequest {
     private String tresc;
     private int iloscPolubien;
     private Uzytkownik autor;
+    private List<String> zdjecia;
     //private List<Komentarz> komentarze;
     //private List<Zdjecie> zdjecia;
 }

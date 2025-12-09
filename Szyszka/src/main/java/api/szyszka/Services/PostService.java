@@ -2,13 +2,19 @@ package api.szyszka.Services;
 
 import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.Entities.Post;
+import api.szyszka.Entities.PostZdjecie;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Repositories.PostRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
@@ -25,7 +31,26 @@ public class PostService {
         this.uzytkownikRepository = uzytkownikRepository;
     }
 
-    public Post createPost(CreatePostRequest request) {
+    private PostZdjecie saveFileForPost(MultipartFile file, Post post) {
+        try {
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path path = Paths.get("post_uploads/" + fileName);
+
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+
+            PostZdjecie zdj = new PostZdjecie();
+            zdj.setSciezka(fileName);
+            zdj.setPost(post);
+
+            return zdj;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Nie udało się zapisać pliku posta: " + e.getMessage(), e);
+        }
+    }
+
+    public Post createPost(CreatePostRequest request, List<MultipartFile> files) {
         Post post = PostMapper.fromCreateRequest(request);
 
         Uzytkownik autor = uzytkownikRepository.findById(request.getAutorId())
@@ -33,7 +58,17 @@ public class PostService {
 
         post.setAutor(autor); // <-- KLUCZ
 
-        return postRepository.save(post);
+        Post saved = postRepository.save(post);
+
+        if (files != null && !files.isEmpty()) {
+
+            for (MultipartFile file : files) {
+                PostZdjecie zdj = saveFileForPost(file, saved);
+                saved.getZdjecia().add(zdj);
+            }
+        }
+
+        return postRepository.save(saved);
     }
 
     //public Post createPost(Post post) {return postRepository.save(post);}

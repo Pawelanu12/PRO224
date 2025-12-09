@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,7 @@ public class CreatePostRequest {
     private String tresc;
     private int iloscPolubien;
     private Long autorId;
+    private List<String> zdjecia=  new ArrayList<>();;
     //private List<Komentarz> komentarze;
     //private List<Zdjecie> zdjecia;
 }

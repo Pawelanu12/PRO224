@@ -4,15 +4,27 @@ import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.DTOs.PostDto;
 import api.szyszka.DTOs.UpdatePostRequest;
 import api.szyszka.Entities.Post;
+import api.szyszka.Entities.PostZdjecie;
 import api.szyszka.Entities.Zdjecie;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PostMapper {
 
     public static PostDto toDto(Post entity) {
         if (entity == null) return null;
+
+        List<String> zdjeciaUrl = null;
+
+        if (entity.getZdjecia() != null) {
+            zdjeciaUrl = entity.getZdjecia()
+                    .stream()
+                    .map(postZdj -> postZdj.getSciezka())
+                    .toList();
+        }
+
         return new PostDto(
                 entity.getId(),
                 entity.getDataStworzenia(),
@@ -20,7 +32,7 @@ public class PostMapper {
                 entity.getIloscPolubien(),
                 entity.getAutor().getId(),
                 entity.getKomentarze(),
-                entity.getZdjecia()
+                zdjeciaUrl
                 //entity.getZdjecia().stream()
                 //        .map(entity.getZdjecia()::mapToPublic)
                 //        .collect(Collectors.toList())
@@ -39,6 +51,19 @@ public class PostMapper {
         //post.setAutor(request.getAutor());
         //post.setKomentarze(request.getKomentarze());
         //post.setZdjecia(request.getZdjecia());
+        if (request.getZdjecia() != null) {
+            List<PostZdjecie> zdjecia = new ArrayList<>();
+
+            for (String sciezka : request.getZdjecia()) {
+                PostZdjecie z = new PostZdjecie();
+                z.setSciezka(sciezka);
+                z.setPost(post);       // <-- analogia 1:1 do wydarzeń
+                zdjecia.add(z);
+            }
+
+            post.setZdjecia(zdjecia);
+        }
+
         return post;
     }
 
@@ -56,5 +81,17 @@ public class PostMapper {
         //entity.setZdjecia(
         //        request.getZdjecia() != null ? request.getZdjecia() : new ArrayList<>()
         //);
+        if (request.getZdjecia() != null) {
+            List<PostZdjecie> zdjecia = new ArrayList<>();
+
+            for (String sciezka : request.getZdjecia()) {
+                PostZdjecie z = new PostZdjecie();
+                z.setSciezka(sciezka);
+                z.setPost(entity);     // <-- powiązanie
+                zdjecia.add(z);
+            }
+
+            entity.setZdjecia(zdjecia);
+        }
     }
 }
