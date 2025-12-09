@@ -51,7 +51,7 @@ public class PostController {
 //                .body(PostMapper.toDto(saved));
 //    }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<PostDto> createPost(
             @RequestParam(name = "tresc") String tresc,
@@ -64,7 +64,8 @@ public class PostController {
 
         try {
             if (files != null && !files.isEmpty()) {
-                String uploadDir = System.getProperty("user.dir") + File.separator + "post_uploads";
+                System.out.println(files.size());
+                String uploadDir = System.getProperty("user.dir") + File.separator + "uploads/posts";
                 File folder = new File(uploadDir);
                 if (!folder.exists()) folder.mkdirs();
 
