@@ -9,8 +9,8 @@ export default function NavbarNiezarejestrowana() {
 
 
     return <div className={"navbar"}>
-        <div>
-            <button onClick={(e) => replaceClick(e, "/gromada")} style={{marginTop: "-50px"}}>
+        <div style={{display:"flex", flexDirection:"row"}}>
+            <button onClick={(e) => replaceClick(e, "/gromada")} >
                 <img src={"/images/navbar/logo.png"} style={{height: "30px"}} alt={""}/>
             </button>
             <button onClick={(e) => replaceClick(e, "/sprawnosci")}>

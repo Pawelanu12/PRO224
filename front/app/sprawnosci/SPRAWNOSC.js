@@ -9,6 +9,7 @@ export default function Sprawnosc({sprawnosc}) {
     const [show,setShow] = useState(false);
     const dialog=useRef(null)
     const imageSizeWithBordings=120
+    const [style,setStyle]=useState({})
     // console.log(sprawnosc);
     useEffect(() => {
 
@@ -54,11 +55,11 @@ export default function Sprawnosc({sprawnosc}) {
             {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
 
             <div
-                onMouseMove={() => setShow(true)}
-                onMouseLeave={() => setShow(false)}
+                onMouseMove={() => {setShow(true);setStyle({"backgroundColor":"red"})}}
+                onMouseLeave={() =>{ setShow(false);setStyle({})}}
                 style={{ width:"150px",display: "flex",
                     flexDirection: "column",
-                    alignItems: "center",  }}>
+                    alignItems: "center",...style  }}>
             <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}
                  loading={"lazy"}
                  onClick={(e) => {

@@ -5,36 +5,38 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ForumContext} from "@/app/providers/ForumProvider";
-import {FaImage, FaImages} from "react-icons/fa";
+import {FaImage, FaImages, FaSign, FaSignInAlt} from "react-icons/fa";
 import {FaX} from "react-icons/fa6";
 
 export default function LoginForm() {
-    const {replaceClick,logIn}=useContext(GlobalContext)
+    const {replaceClick,logIn,dialog}=useContext(GlobalContext)
 
-    const dialog=useRef(null);
 
 
     return(
         <div >
 
-                <button style={{color: "red",
-                    backgroundColor: "#336250",
-                    padding: "10px",
-                    margin:"5px",
-                    borderRadius:"30px"
+                <button style={{
+                    // color: "red",
+                    // backgroundColor: "#336250",
+                    paddingRight: "10px",
+                    display:"flex",
+                    // margin:"5px",
+                    // borderRadius:"30px"
                 }} onClick={() => {
                     dialog.current.showModal();
                     document.body.style.overflow = "hidden";
                     console.log(dialog.current.div)
-                }}>login
+                }}>
+                   <div style={{padding:"7px", backgroundColor:"#405E3F"}}> <FaSignInAlt style={{fontSize:"15px"}}/> </div>login
                 </button>
             <dialog
                 ref={dialog}
                 style={{
                     left: "20vw",
-                    top: "20vh",
+                    top: "10vh",
                     width: "60vw",
-                    height: "60vh",
+                    height: "80vh",
                     border: "none",
                     borderRadius: "10px",
                 }}
@@ -91,10 +93,10 @@ export default function LoginForm() {
                                 width: "80%",
                                 marginTop: "10px"
                             }}>
-                                <p onClick={(e) => replaceClick(e, "/rejestracja")}
+                                <p onClick={(e) => {replaceClick(e, "/rejestracja");dialog.current.close()}}
                                    className={"zarejestruj"}>Zarejestruj sie
                                 </p>
-                                <p onClick={(e) => replaceClick(e, "/password-change")}
+                                <p onClick={(e) =>{ replaceClick(e, "/password-change");dialog.current.close()}}
                                    className={"nie_pamietasz_haslo"}>nie pamiętasz hasla
                                 </p>
                             </div>

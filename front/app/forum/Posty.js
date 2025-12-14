@@ -5,6 +5,10 @@ import {ForumContext} from "@/app/providers/ForumProvider";
 import Post from "@/app/forum/Post";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import DodawaniaPostu from "@/app/forum/DodawaniaPostu";
+import { Virtuoso } from "react-virtuoso";
+
+
+
 //pokazuje wiele postow
 export default function Posty({wszystkie=true}){
     const {posty,loading,getPosty}=useContext(ForumContext)
@@ -18,15 +22,38 @@ export default function Posty({wszystkie=true}){
         postyPokazywane=posty.filter(p=>p.autorId===user.id)
     if(!postyPokazywane||postyPokazywane.length===0)
         return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>{"nie posiadasz postów"}</p>
+
+    const reversed=[...postyPokazywane].reverse();
+    //
+    //    // const renderRow=({index,style})=>(
+    //    //  <div style={{...style}}>
+    //    //
+    //    //      <Post
+    //    //             post={reversed[index]} />
+    //    //  </div>
+    // )
+
+
+
+
     return(
         <div style={{paddingLeft:"250px", width:"100%",
            justifyItems:'center',height:"100vh"}}>
             {/*<div className={"postyBackground"}>*/}
             {/*</div>*/}
             <div className={"posty"}>
-                <DodawaniaPostu/>
-                <br/>
-                {[...postyPokazywane].reverse().map((post,i)=><Post key={i} post={post}/>)}
+                {/*<DodawaniaPostu/>*/}
+                {/*<br/>*/}
+
+                <Virtuoso
+                    components={{
+                        Header: () => <DodawaniaPostu/>
+                    }}
+                    style={{ height: "600px",borderRadius:"10px" }}
+                    totalCount={reversed.length}
+                    itemContent={(i) => <Post post={reversed[i]} />}
+                />
+                {/*{[...postyPokazywane].reverse().map((post,i)=><Post key={i} post={post}/>)}*/}
             </div>
         </div>
     )

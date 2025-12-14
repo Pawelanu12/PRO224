@@ -1,6 +1,6 @@
 'use client'
 
-import {useContext, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import Opcji from "@/app/forum/Opcji";
 //pokazuje jeden post
@@ -21,6 +21,23 @@ export default function Post({post}){
 const {user}=useContext(GlobalContext)
     const [pelnyOpis,setPelnyOpis] = useState(false)
     const [show,setShow]=useState(false)
+
+    const [index, setIndex] = useState(0);
+
+    const next = () => {
+        setIndex((prev) => (prev + 1) % images.length);
+    };
+
+    const prev = () => {
+        setIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+        const images=post.zdjecia.map((z,i)=>{
+            return  {"key":i, "src":"http://localhost:8080/uploads/posts/"+z, "alt":"cat","id":i}
+        })
+        console.log(images)
+
+
     return (
         <div style={{marginBottom: "30px",
             backgroundColor: "#4D644C",
@@ -32,7 +49,7 @@ const {user}=useContext(GlobalContext)
                         <img src={post.ikona} alt="ikona" className={'ikona'} style={{margin: 0}}/>
                         <div>
                             <div className={"flexRow"}>
-                                <p>autor:{post.autor}</p>
+                                <p>autor:{post.autorId}</p>
                                 {post.autorId!==user.id&&<button style={{paddingLeft: "20px", color: "#88D79D"}}>Obserwuj</button>}
                             </div>
                             <p>{compare_dates(post.dataStworzenia)}</p>
@@ -40,8 +57,9 @@ const {user}=useContext(GlobalContext)
                     </div>
 
                     <p style={
-                        pelnyOpis?{wordBreak:"break-word",height:"auto"}:
+                        pelnyOpis?{wordBreak:"break-word",height:"auto",marginLeft:"10px"}:
                             {
+                            marginLeft:"10px",
                             wordBreak:"break-word",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -59,24 +77,69 @@ const {user}=useContext(GlobalContext)
                 </div>
 
             </div>
-            {post.zdjecia&&<div>
-                {post.zdjecia.map((z,i)=>
-                    <img key={i} src={"http://localhost:8080/uploads/posts/"+z} alt={"cat"}/>
-                )}
+            {images &&images.length&& <div style={{
+                position: "relative",
+                width: "100%",
+                height: "300px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+                borderRadius: "10px"
+            }}>
+                <img
+                    src={images[index].src}
+                    alt={images[index].alt}
+                    style={{width: "100%", height: "100%", objectFit: "contain"}}
+                />
+                <button
+                    onClick={prev}
+                    style={{
+                        position: "absolute",
+                        left: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "rgba(0,0,0,0.4)",
+                        color: "white",
+                        border: "none",
+                        padding: "10px",
+                        cursor: "pointer"
+                    }}
+                >
+                    ◀
+                </button>
+
+                {/* RIGHT ARROW */}
+                <button
+                    onClick={next}
+                    style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "rgba(0,0,0,0.4)",
+                        color: "white",
+                        border: "none",
+                        padding: "10px",
+                        cursor: "pointer"
+                    }}
+                >
+                    ▶
+                </button>
             </div>}
-            <div className={"flexRow"}
-                 style={{justifyContent: "space-around", marginTop: "10px", backgroundColor: "#3A4F39"}}>
-                <div>
-                    <button onClick={()=>console.log("like")}>
-                        ilosc polubeń {post.iloscPolubien}</button>
-                </div>
-                <div>
-                    <button>ilosc komentarzy {post.komentarze.length}</button>
-                </div>
-                <div>
-                    <button>ilosc udostepnien {post.udostepnienia}</button>
+                <div className={"flexRow"}
+                     style={{justifyContent: "space-around", marginTop: "10px", backgroundColor: "#3A4F39"}}>
+                    <div>
+                        <button onClick={() => console.log("like")}>
+                            ilosc polubeń {post.iloscPolubien}</button>
+                    </div>
+                    <div>
+                        <button>ilosc komentarzy {post.komentarze.length}</button>
+                    </div>
+                    <div>
+                        <button>ilosc udostepnien {post.udostepnienia}</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
-}
+                )
+            }

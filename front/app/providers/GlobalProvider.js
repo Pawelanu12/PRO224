@@ -1,7 +1,7 @@
 'use client'
 
 
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import s from "@/app/data/sprawnosci.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
@@ -12,15 +12,13 @@ export default function GlobalProvider({ children }) {
     const [user, setUser] = useState({})
     const [edit,setEdit] = useState({})
     const router = useRouter()
+    const dialog=useRef(null);
+
     const logOut = () => {
         localStorage.clear()
         setUser({})
-        // if(window.location.pathname.startsWith("/profil")
-        //     ||window.location.pathname.startsWith("/forum")
-        //     ||window.location.pathname.startsWith("/admin")
-        //     ||window.location.pathname.startsWith("/czat"))
-        if(!window.location.pathname.startsWith("/gromada"))
-            router.replace("/login")
+        if(dialog&&dialog.current)
+            dialog.current.showModal();
     }
     const replaceClick=(e,href)=>{
         if(e)
@@ -42,7 +40,7 @@ export default function GlobalProvider({ children }) {
                     console.log(r)
                     if(r.token){
                         localStorage.setItem("token",r.token)
-                        router.replace("/czat")
+                        // router.replace("/czat")
                     }
 
                 })
@@ -123,6 +121,6 @@ export default function GlobalProvider({ children }) {
 
     return (
         <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,
-            replaceClick,logIn,user,logOut}}>{children}</GlobalContext.Provider>
+            replaceClick,logIn,user,logOut,dialog}}>{children}</GlobalContext.Provider>
     )
 };

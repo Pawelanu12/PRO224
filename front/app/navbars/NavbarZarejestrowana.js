@@ -2,14 +2,16 @@
 
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
+import {FaSignInAlt, FaSignOutAlt} from "react-icons/fa";
+import {FaMessage} from "react-icons/fa6";
 
 export default function NavbarZarejestrowana() {
     const {replaceClick,logOut} = useContext(GlobalContext)
 
 
     return <div className={"navbar"}>
-        <div>
-            <button onClick={(e) => replaceClick(e, "/gromada")} style={{marginTop: "-50px"}}>
+        <div style={{display: "flex", flexDirection: "row", alignItems: "center"}} >
+            <button onClick={(e) => replaceClick(e, "/gromada")}>
                 <img src={"/images/navbar/logo.png"} style={{height: "30px"}} alt={""}/>
             </button>
             <button onClick={(e) => replaceClick(e, "/sprawnosci")}>
@@ -31,14 +33,24 @@ export default function NavbarZarejestrowana() {
                     forum</p></button>
             <button onClick={(e) => replaceClick(e, "/czat")}>
                 <p>
-                    <img src={"/images/navbar/czat_logo.png"} alt={""}/>
+                    <FaMessage style={{marginRight: "10px",marginTop:"5px"}}/>
                     czat</p></button>
         </div>
-        <div>
-            <button onClick={(e) => logOut()}>
-                <p>wyloguj</p></button>
-            <button onClick={(e) => replaceClick(e, "/profil")}>
-            <p>moj profil</p></button>
+        <div style={{display: "flex", justifyContent: "end"}}>
+            <button onClick={(e) => logOut()} style={{
+                display: "flex",
+                alignItems: "center",
+            }}>
+                <p>
+
+                    <FaSignOutAlt style={{marginRight: "10px",marginTop:"5px"}}/>
+                    log out</p></button>
+
+            <button onClick={(e) => replaceClick(e, "/profil")}
+            style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <p>
+
+                    mój profil</p></button>
+        </div>
     </div>
-</div>
 }
