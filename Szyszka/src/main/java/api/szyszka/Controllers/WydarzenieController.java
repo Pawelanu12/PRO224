@@ -115,7 +115,7 @@ public class WydarzenieController {
         return ResponseEntity.ok(WydarzenieMapper.toDto(w));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WydarzenieDto> updateWydarzenie(
             @PathVariable Long id,
             @RequestBody UpdateWydarzenieRequest request) {
