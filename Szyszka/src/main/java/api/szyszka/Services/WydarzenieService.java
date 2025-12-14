@@ -9,6 +9,7 @@ import api.szyszka.Mappers.WydarzenieMapper;
 import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Repositories.WydarzenieRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -119,19 +121,64 @@ public class WydarzenieService {
         wydarzenieRepository.deleteById(id);
     }
 
+    @Transactional
     public Wydarzenie modifyWydarzenie(Long id, UpdateWydarzenieRequest request) {
-        Wydarzenie oldWydarzenie = getWydarzenieById(id);
 
-        oldWydarzenie.setNazwa(request.getNazwa());
-        oldWydarzenie.setDataWyjazdu(request.getDataWyjazdu());
-        oldWydarzenie.setDataZakonczenia(request.getDataZakonczenia());
-        oldWydarzenie.setOpis(request.getOpis());
+        Wydarzenie wydarzenie = getWydarzenieById(id);
 
-        return wydarzenieRepository.save(oldWydarzenie);
+// EDYCJA TREŚCI
+        wydarzenie.setNazwa(request.getNazwa());
+
+        if (request.getDataWyjazdu() != null) {
+            wydarzenie.setDataWyjazdu(
+                    request.getDataWyjazdu().atStartOfDay()
+            );
+        }
+        if (request.getDataZakonczenia() != null) {
+            wydarzenie.setDataZakonczenia(
+                    request.getDataZakonczenia().atTime(LocalTime.MAX)
+            );
+        }
+        wydarzenie.setOpis(request.getOpis());
+
+        //ZABEZPIECZENIE LISTY ZDJĘĆ
+        if (wydarzenie.getZdjecia() == null) {
+            wydarzenie.setZdjecia(new ArrayList<>());
+        }
+
+        //USUWANIE ZDJĘĆ
+        if (request.getZdjeciaDoUsuniecia() != null) {
+            wydarzenie.getZdjecia().removeIf(zdjecie -> {
+                if (request.getZdjeciaDoUsuniecia().contains(zdjecie.getId())) {
+                    usunPlikZDisku(zdjecie.getSciezka());
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        //DODAWANIE NOWYCH ZDJĘĆ
+        if (request.getNoweZdjecia() != null) {
+            for (MultipartFile file : request.getNoweZdjecia()) {
+                WydarzenieZdjecie zdjecie = saveFileForEvent(file, wydarzenie);
+                wydarzenie.getZdjecia().add(zdjecie);
+            }
+        }
+
+        return wydarzenieRepository.save(wydarzenie);
     }
+
+
     public Wydarzenie getWydarzenieByNazwa(String nazwa) {
         return wydarzenieRepository.findByNazwa(nazwa)
                 .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione o nazwie: " + nazwa));
+    }
+    private void usunPlikZDisku(String sciezka) {
+        try {
+            Files.deleteIfExists(Paths.get("uploads", sciezka));
+        } catch (IOException e) {
+            throw new RuntimeException("Nie udało się usunąć pliku: " + sciezka, e);
+        }
     }
 
 

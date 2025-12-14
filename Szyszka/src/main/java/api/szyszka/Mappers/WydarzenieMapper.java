@@ -6,6 +6,7 @@ import api.szyszka.DTOs.WydarzenieDto;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Entities.WydarzenieZdjecie;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class WydarzenieMapper {
         );
     }
 
+    // =======================
+    // CREATE REQUEST -> ENTITY
+    // =======================
     public static Wydarzenie fromCreateRequest(CreateWydarzenieRequest request) {
         if (request == null) return null;
 
@@ -41,27 +45,26 @@ public class WydarzenieMapper {
         wydarzenie.setDataWyjazdu(request.getDataWyjazdu());
         wydarzenie.setDataZakonczenia(request.getDataZakonczenia());
         wydarzenie.setOpis(request.getOpis());
+
         return wydarzenie;
     }
-
     public static void updateEntity(Wydarzenie entity, UpdateWydarzenieRequest request) {
         if (entity == null || request == null) return;
 
         entity.setNazwa(request.getNazwa());
-        entity.setDataWyjazdu(request.getDataWyjazdu());
-        entity.setDataZakonczenia(request.getDataZakonczenia());
-        entity.setOpis(request.getOpis());
 
-        // Zamiana List<String> na List<WydarzenieZdjecie>
-        if (request.getZdjecia() != null) {
-            List<WydarzenieZdjecie> zdjecia = new ArrayList<>();
-            for (String sciezka : request.getZdjecia()) {
-                WydarzenieZdjecie zdj = new WydarzenieZdjecie();
-                zdj.setSciezka(sciezka);
-                zdj.setWydarzenie(entity);
-                zdjecia.add(zdj);
-            }
-            entity.setZdjecia(zdjecia);
+        if (request.getDataWyjazdu() != null) {
+            entity.setDataWyjazdu(
+                    request.getDataWyjazdu().atStartOfDay()
+            );
         }
+
+        if (request.getDataZakonczenia() != null) {
+            entity.setDataZakonczenia(
+                    request.getDataZakonczenia().atTime(LocalTime.MAX)
+            );
+        }
+
+        entity.setOpis(request.getOpis());
     }
 }
