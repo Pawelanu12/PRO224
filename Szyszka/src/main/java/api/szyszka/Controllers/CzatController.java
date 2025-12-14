@@ -28,10 +28,10 @@ public class CzatController {
     @PostMapping("/private")
     public ResponseEntity<CzatDto> createPrivateChat(
             @AuthenticationPrincipal User user,
-            @RequestParam Long participantId) {
-
+            @RequestParam("participantLogin") String participantLogin) {
+        System.out.println(participantLogin);
         Uzytkownik currentUser = uzytkownikService.getUserByLogin(user.getUsername());
-        Uzytkownik otherUser = uzytkownikService.getUserById(participantId);
+        Uzytkownik otherUser = uzytkownikService.getUserByLogin(participantLogin);
 
         CzatDto czat = czatService.createPrivateChat(currentUser, otherUser);
         return ResponseEntity.ok(czat);
@@ -41,10 +41,10 @@ public class CzatController {
     public ResponseEntity<CzatDto> createGroupChat(
             @AuthenticationPrincipal User user,
             @RequestParam String nazwa,
-            @RequestParam List<Long> participantIds) {
+            @RequestParam List<String> participantLogins) {
 
         Uzytkownik creator = uzytkownikService.getUserByLogin(user.getUsername());
-        CzatDto czat = czatService.createGroupChat(nazwa, creator, participantIds);
+        CzatDto czat = czatService.createGroupChat(nazwa, creator, participantLogins);
         return ResponseEntity.ok(czat);
     }
     @GetMapping

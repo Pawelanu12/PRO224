@@ -16,13 +16,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/zdobytaSprawnosc")
 public class ZdobytaSprawnoscController {
-    private ZdobytaSprawnoscService zdobytaSprawnoscService;
+    private final ZdobytaSprawnoscService zdobytaSprawnoscService;
 
-//    public ZdobytaSprawnoscController(ZdobytaSprawnoscService zdobytaSprawnoscServiceservice) {
-//        this.zdobytaSprawnoscService = zdobytaSprawnoscService;
-//    }
-    public ZdobytaSprawnoscController(ZdobytaSprawnoscService zdobytaSprawnoscService) {
-        this.zdobytaSprawnoscService = zdobytaSprawnoscService;
+    public ZdobytaSprawnoscController(ZdobytaSprawnoscService zdobytaSprawnoscServiceservice) {
+        this.zdobytaSprawnoscService = zdobytaSprawnoscServiceservice;
     }
 
     @PostMapping
@@ -51,6 +48,7 @@ public class ZdobytaSprawnoscController {
 
     @GetMapping("/uzytkownik/{id}")
     public ResponseEntity<List<ZdobytaSprawnoscDto>> getAllByUzytkownikId(@PathVariable Long id) {
+        System.out.println(id);
         List<ZdobytaSprawnoscDto> zdobyteSprawnosci = zdobytaSprawnoscService.getAllZdobytaSprawnoscByUzytkownikId(id)
                 .stream()
                 .map(ZdobytaSprawnoscMapper::toDto)

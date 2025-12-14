@@ -58,7 +58,7 @@ public class CzatService {
         return CzatMapper.toDto(savedCzat);
     }
 
-    public CzatDto createGroupChat(String nazwa, Uzytkownik creator, List<Long> participantIds) {
+    public CzatDto createGroupChat(String nazwa, Uzytkownik creator, List<String> participantLogins) {
         Czat czat = new Czat();
         czat.setCzyGrupowy(true);
         czat.setNazwa(nazwa);
@@ -67,11 +67,11 @@ public class CzatService {
 
         CzatUzytkownik creatorEntry = addParticipant(savedCzat, creator);
 
-        List<CzatUzytkownik> participants = participantIds.stream()
-                .filter(id -> !id.equals(creator.getId()))
-                .map(id -> uzytkownikRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException(id)))
-                .map(u -> addParticipant(savedCzat, u))
+        List<CzatUzytkownik> participants = participantLogins.stream()
+                .filter(login -> !login.equals(creator.getLogin()))
+                .map(login -> uzytkownikRepository.findByLogin(login)
+                        .orElse( null))
+                .map(uzytkownik -> addParticipant(savedCzat, uzytkownik))
                 .toList();
 
         participants.add(creatorEntry);
@@ -81,10 +81,13 @@ public class CzatService {
     }
 
     public CzatUzytkownik addParticipant(Czat czat, Uzytkownik user) {
-        CzatUzytkownik cu = new CzatUzytkownik();
-        cu.setCzat(czat);
-        cu.setUzytkownik(user);
-        return czatUzytkownikRepository.save(cu);
+        if(user!=null) {
+            CzatUzytkownik cu = new CzatUzytkownik();
+            cu.setCzat(czat);
+            cu.setUzytkownik(user);
+            return czatUzytkownikRepository.save(cu);
+        }
+        return null;
     }
 
 

@@ -3,6 +3,7 @@ package api.szyszka.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,16 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Komentarz> komentarze;
 
-    @OneToMany(mappedBy = "post")
-    private List<Zdjecie> zdjecia;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostZdjecie> zdjecia;
+
+    //@ElementCollection
+    //@CollectionTable(name = "post_zdjecia", joinColumns = @JoinColumn(name = "post_id"))
+    //@Column(name = "sciezka")
+    //private List<String> zdjecia = new ArrayList<>();
+
+    //@OneToMany(mappedBy = "post")
+    //private List<Zdjecie> zdjecia;
 
 }
 
