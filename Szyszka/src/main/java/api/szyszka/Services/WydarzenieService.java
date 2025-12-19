@@ -131,12 +131,12 @@ public class WydarzenieService {
 
         if (request.getDataWyjazdu() != null) {
             wydarzenie.setDataWyjazdu(
-                    request.getDataWyjazdu().atStartOfDay()
+                    request.getDataWyjazdu()
             );
         }
         if (request.getDataZakonczenia() != null) {
             wydarzenie.setDataZakonczenia(
-                    request.getDataZakonczenia().atTime(LocalTime.MAX)
+                    request.getDataZakonczenia()
             );
         }
         wydarzenie.setOpis(request.getOpis());

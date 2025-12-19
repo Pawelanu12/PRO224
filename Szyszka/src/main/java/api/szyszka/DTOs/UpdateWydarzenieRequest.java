@@ -1,5 +1,6 @@
 package api.szyszka.DTOs;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,10 +10,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UpdateWydarzenieRequest {
+@AllArgsConstructor
+public class    UpdateWydarzenieRequest {
     private String nazwa;
-    private LocalDate dataWyjazdu;
-    private LocalDate dataZakonczenia;
+    private LocalDateTime dataWyjazdu;
+    private LocalDateTime dataZakonczenia;
     private String opis;
     private List<MultipartFile> noweZdjecia;
     private List<Long> zdjeciaDoUsuniecia;

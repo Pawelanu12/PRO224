@@ -55,13 +55,13 @@ public class WydarzenieMapper {
 
         if (request.getDataWyjazdu() != null) {
             entity.setDataWyjazdu(
-                    request.getDataWyjazdu().atStartOfDay()
+                    request.getDataWyjazdu()
             );
         }
 
         if (request.getDataZakonczenia() != null) {
             entity.setDataZakonczenia(
-                    request.getDataZakonczenia().atTime(LocalTime.MAX)
+                    request.getDataZakonczenia()
             );
         }
 
