@@ -16,7 +16,7 @@ export default function WyswetlSprawnosci(){
     // console.log(sprawnosciPosortowane)
     useEffect(()=>{
         getSprawnosci()
-    },[])
+    },[user])
 
     if(loading) return <div>
         <p >loading</p>

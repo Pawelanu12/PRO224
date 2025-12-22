@@ -28,8 +28,8 @@ export default function NavbarNiezarejestrowana() {
 
         </div>
         <div>
-            <LoginForm />
-            {/*<button  onClick={(e) => replaceClick(e, "/login")}><p>login</p></button>*/}
+            {/*<LoginForm />*/}
+            <button  onClick={(e) => replaceClick(e, "/login")}><p>login</p></button>
         </div>
     </div>
 }

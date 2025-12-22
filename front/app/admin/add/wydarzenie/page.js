@@ -14,12 +14,12 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 export default function AddWydarzenie(){
     const {addWydarzenie}=useContext(AdminContext)
     const {user}=useContext(GlobalContext)
-    const [files,setFiles]=useState(null)
+    const [files,setFiles]=useState([])
 
     return (
         <div>
 
-            <div className={"forma_dodawania"} style={{backgroundColor: "green",paddingTop: "50px"}}>
+            <div className={"forma_dodawania"} style={{backgroundColor: "green", paddingTop: "50px"}}>
                 <Formik
 
                     initialValues={{
@@ -29,7 +29,7 @@ export default function AddWydarzenie(){
                         dataWyjazdu: "",
                         dataZakonczenia: "",
                         typ: "",
-                        files:""
+                        files: ""
                     }}
                     validationSchema={Yup.object({
                         nazwa: Yup.string()
@@ -93,20 +93,20 @@ export default function AddWydarzenie(){
                                     {/*<ErrorMessage className={"error"} name="typ" component="div"/>*/}
                                     <br/>
                                     Files
-                                    <label >Wyberz plik <input  type="file" accept="image/*" multiple={true} className={"pole-formy-dodawnia"}
-                                                                onChange={(e)=>
-                                                                {
-                                                                    // handleChange(e)
-                                                                    setFiles(e.target.files)
-                                                                    console.log(e.target.files)
-                                                                    // console.log( URL.createObjectURL(e.target.files[0]))
-                                                                    //  onChange(e.target.value)
-                                                                }}
-                                                                style={{opacity:0}}
-                                                                name="ikona" placeholder="wstaw ikone"
+                                    <label>Wyberz plik <input type="file" accept="image/*" multiple={true}
+                                                              className={"pole-formy-dodawnia"}
+                                                              onChange={(e) => {
+                                                                  // handleChange(e)
+                                                                  setFiles(prev => [...prev, ...Array.from(e.target.files)]);
+                                                                  console.log(e.target.files)
+                                                                  // console.log( URL.createObjectURL(e.target.files[0]))
+                                                                  //  onChange(e.target.value)
+                                                              }}
+                                                              style={{opacity: 0}}
+                                                              name="ikona" placeholder="wstaw ikone"
                                     />
                                     </label>
-                                    <ErrorMessage className={"error"}  name="ikona" component="div"/>
+                                    <ErrorMessage className={"error"} name="ikona" component="div"/>
                                 </div>
                                 <div className={"dodaj-sprawnosci"}>
                                     <p> Opis </p>
@@ -137,9 +137,16 @@ export default function AddWydarzenie(){
 
                 </Formik>
             </div>
+            <div
+                style={{display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"}}>
+                {files&&files.length>0&&files.map((file, i) => (
+                    <div style={{margin: "10px", width: "20vw"}} key={i}>
+                        <img key={i} src={URL.createObjectURL(file)} alt={file.name}/>
+                    </div>
+                ))}</div>
         </div>
-            )
-            }
-            // <PoleWDodawaniu nazwaPola={"typSprawnosci"} state={typSprawnosci} setState={setTypeSprawnosci}/>
+    )
+}
+// <PoleWDodawaniu nazwaPola={"typSprawnosci"} state={typSprawnosci} setState={setTypeSprawnosci}/>
 
 

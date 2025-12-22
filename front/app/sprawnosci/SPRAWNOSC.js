@@ -55,13 +55,13 @@ export default function Sprawnosc({sprawnosc}) {
             {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
 
             <div
-                onMouseMove={() => {setShow(true);setStyle({"backgroundColor":"red"})}}
+                onMouseMove={() => {setShow(true);setStyle({"backgroundColor":"#3A3939"})}}
                 onMouseLeave={() =>{ setShow(false);setStyle({})}}
                 style={{ width:"150px",display: "flex",
                     flexDirection: "column",
                     alignItems: "center",...style  }}>
-            <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/${sprawnosc.ikona}`}
-                 loading={"lazy"}
+            <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/sprawnosci/${sprawnosc.ikona}`}
+                 // loading={"lazy"}
                  onClick={(e) => {
                      setEdit(sprawnosc);
                      replaceClick(e, "/admin/edit/sprawnosc")
@@ -71,7 +71,9 @@ export default function Sprawnosc({sprawnosc}) {
 
             />
 
-                <p style={{wordWrap:"break-word",textAlign:"center",overflow: "hidden",width:"100%",height:"25px",margin:0}}>{sprawnosc.nazwa}</p>
+                <p style={{wordWrap:"break-word",textAlign:"center",overflow: "hidden",
+                    width:"100%",height:"50px",margin:0}}>
+                    {sprawnosc.nazwa}</p>
 
             </div>
             {/*<img src={sprawnosc.obraz}></img>*/}

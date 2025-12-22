@@ -8,7 +8,7 @@ export default function MOJEPOSTY()
 {
     return(
         <div>
-            <Navigation/>
+            {/*<Navigation/>*/}
             <Posty wszystkie={false}/>
 
         </div>

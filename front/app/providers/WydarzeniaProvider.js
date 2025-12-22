@@ -5,6 +5,9 @@ import {createContext, useContext, useRef, useState} from "react";
 import w from "@/app/data/wydarzenia.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
+import {
+    validateGoogleFontFunctionCall
+} from "next/dist/compiled/@next/font/dist/google/validate-google-font-function-call";
 export const WydarzeniaContext = createContext();
 
 export default function WydarzeniaProvider({ children }) {
@@ -37,8 +40,31 @@ export default function WydarzeniaProvider({ children }) {
         // console.log("cat")
     }
 
+    const dodajUczestnictwo = (wydarzenieId,uzytkownikId) => {
+        console.log(wydarzenieId)
+        console.log(uzytkownikId)
+        const add=async ()=>{
+            setLoading(true)
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uczestnictwo`,{
+                method:"POST",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"},
+                body:JSON.stringify(
+                    {uzytkownikId:uzytkownikId,wydarzenieId:wydarzenieId,uczestnictwo:false})
+
+            })
+                .then(res=>res.json())
+                .then(res=> {
+                 console.log(res)
+                })
+                .catch(err=>console.log(err))
+        }
+        add()
+        // console.log("cat")
+    }
+
     return (
-        <WydarzeniaContext.Provider value={{getWydarzenia,
+        <WydarzeniaContext.Provider value={{getWydarzenia,dodajUczestnictwo,
             wydarzenia,setWydarzenia,nazwa,data,typ,setTyp,setNazwa,setData
 
         }}>

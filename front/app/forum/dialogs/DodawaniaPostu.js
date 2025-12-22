@@ -49,6 +49,7 @@ export default function DodawaniaPostu() {
                     backgroundColor: "#4D644C",
                     display:"flex",
                     flexDirection:"row",
+                    marginBottom: "30px",
                 }}>
 
                 <img src={"/images/ikona.png"} alt={"logo"} style={{

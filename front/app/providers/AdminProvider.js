@@ -65,7 +65,6 @@ export default function AdminProvider({ children }) {
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie`,{
                 method:"POST",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    // "Content-Type": "application/json"
                 },
 
                 body:values
@@ -82,6 +81,7 @@ export default function AdminProvider({ children }) {
 
     const editWydarzenie = (id,values) => {
         console.log(id)
+        console.log(values)
         const edit=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
                 method:"PUT",

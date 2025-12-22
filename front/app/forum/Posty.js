@@ -4,7 +4,7 @@ import {useContext, useEffect} from "react";
 import {ForumContext} from "@/app/providers/ForumProvider";
 import Post from "@/app/forum/Post";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import DodawaniaPostu from "@/app/forum/DodawaniaPostu";
+import DodawaniaPostu from "@/app/forum/dialogs/DodawaniaPostu";
 import { Virtuoso } from "react-virtuoso";
 
 
@@ -14,14 +14,14 @@ export default function Posty({wszystkie=true}){
     const {posty,loading,getPosty}=useContext(ForumContext)
     const {user}=useContext(GlobalContext)
     useEffect(()=>
-    getPosty(),[])
+    getPosty(),[user])
     if(loading)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>Loading...</p>
     if(!posty||posty.length===0)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>nie ma postów...</p>
     let postyPokazywane=posty
     if(!wszystkie)
-        postyPokazywane=posty.filter(p=>p.autorId===user.id)
-    if(!postyPokazywane||postyPokazywane.length===0)
-        return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>{"nie posiadasz postów"}</p>
+        postyPokazywane=posty.filter(p=>p.autorLogin===user.login)
+    // if(!postyPokazywane||postyPokazywane.length===0)
+    //     return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>{"nie posiadasz postów"}</p>
 
     const reversed=[...postyPokazywane].reverse();
     //
@@ -49,6 +49,7 @@ export default function Posty({wszystkie=true}){
                     components={{
                         Header: () => <DodawaniaPostu/>
                     }}
+                    useWindowScroll
                     style={{ height: "600px",borderRadius:"10px" }}
                     totalCount={reversed.length}
                     itemContent={(i) => <Post post={reversed[i]} />}

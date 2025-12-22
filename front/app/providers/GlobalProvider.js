@@ -17,8 +17,10 @@ export default function GlobalProvider({ children }) {
     const logOut = () => {
         localStorage.clear()
         setUser({})
-        if(dialog&&dialog.current)
-            dialog.current.showModal();
+        router.push("/login")
+
+        // if(dialog&&dialog.current)
+        //     dialog.current.showModal();
     }
     const replaceClick=(e,href)=>{
         if(e)
@@ -40,7 +42,8 @@ export default function GlobalProvider({ children }) {
                     console.log(r)
                     if(r.token){
                         localStorage.setItem("token",r.token)
-                        // router.replace("/czat")
+                        console.log(window.history)
+                        router.push("/forum")
                     }
 
                 })
@@ -121,6 +124,6 @@ export default function GlobalProvider({ children }) {
 
     return (
         <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,
-            replaceClick,logIn,user,logOut,dialog}}>{children}</GlobalContext.Provider>
+            replaceClick,logIn,user,logOut}}>{children}</GlobalContext.Provider>
     )
 };
