@@ -3,7 +3,6 @@ package api.szyszka.Controllers;
 import api.szyszka.DTOs.CreateWiadomoscRequest;
 import api.szyszka.DTOs.UpdateWiadomoscRequest;
 import api.szyszka.DTOs.WiadomoscDto;
-import api.szyszka.DTOs.ZdjecieDto;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Mappers.WiadomoscMapper;
 import api.szyszka.Services.WiadomoscService;

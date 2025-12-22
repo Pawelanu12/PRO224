@@ -1,6 +1,7 @@
 package api.szyszka.Mappers;
 
 import api.szyszka.DTOs.CzatDto;
+import api.szyszka.DTOs.CzatSummaryDto;
 import api.szyszka.DTOs.WiadomoscDto;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
@@ -37,4 +38,17 @@ public class CzatMapper {
                 wiadomosciDtos
         );
     }
+    public static CzatSummaryDto toSummaryDto(Czat czat) {
+        return new CzatSummaryDto(
+                czat.getId(),
+                czat.getNazwa(),
+                czat.isCzyGrupowy(),
+                czat.getDataUtworzenia(),
+                czat.getUczestnicy()
+                        .stream()
+                        .map(u -> u.getUzytkownik().getId())
+                        .toList()
+        );
+    }
+
 }
