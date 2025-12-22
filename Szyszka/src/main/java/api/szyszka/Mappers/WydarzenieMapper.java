@@ -1,6 +1,7 @@
 package api.szyszka.Mappers;
 
 import api.szyszka.DTOs.CreateWydarzenieRequest;
+import api.szyszka.DTOs.UczestnictwoDto;
 import api.szyszka.DTOs.UpdateWydarzenieRequest;
 import api.szyszka.DTOs.WydarzenieDto;
 import api.szyszka.Entities.Wydarzenie;
@@ -29,7 +30,7 @@ public class WydarzenieMapper {
                 entity.getDataZakonczenia(),
                 entity.getOpis(),
                 entity.getOrganizator() != null ? entity.getOrganizator().getId() : null,
-                entity.getUczestnictwa(),
+                entity.getUczestnictwa().stream().map(UczestnictwoMapper::toDto).toList(),
                 zdjeciaSciezki
         );
     }

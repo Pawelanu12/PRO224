@@ -38,9 +38,9 @@ public class Uzytkownik {
     @ManyToOne
     @JoinColumn(name = "szostka_id")
     private Szostka szostka;
-
-    @OneToMany(mappedBy = "uzytkownik")
-    private List<Skladka> skladki;
+//
+//    @OneToMany(mappedBy = "uzytkownik")
+//    private List<Skladka> skladki;
 
     @OneToMany(mappedBy = "uzytkownik")
     private List<ZdobytaSprawnosc> zdobyteSprawnosci;
