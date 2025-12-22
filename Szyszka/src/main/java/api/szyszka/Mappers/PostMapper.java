@@ -30,7 +30,7 @@ public class PostMapper {
                 entity.getDataStworzenia(),
                 entity.getTresc(),
                 entity.getIloscPolubien(),
-                entity.getAutor().getId(),
+                entity.getAutor().getLogin(),
                 entity.getKomentarze(),
                 zdjeciaUrl
                 //entity.getZdjecia().stream()

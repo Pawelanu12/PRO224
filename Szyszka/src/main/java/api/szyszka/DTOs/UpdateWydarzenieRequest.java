@@ -17,5 +17,5 @@ public class    UpdateWydarzenieRequest {
     private LocalDateTime dataZakonczenia;
     private String opis;
     private List<MultipartFile> noweZdjecia;
-    private List<Long> zdjeciaDoUsuniecia;
+    private List<String> zdjeciaDoUsuniecia;//po nazwie
 }

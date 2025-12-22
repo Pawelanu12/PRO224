@@ -36,7 +36,7 @@ public class WydarzenieService {
     private WydarzenieZdjecie saveFileForEvent(MultipartFile file, Wydarzenie wydarzenie) {
         try {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path path = Paths.get("uploads/" + fileName);
+            Path path = Paths.get("uploads/wydarzenia/" + fileName);
 
             Files.createDirectories(path.getParent());
             Files.write(path, file.getBytes());
@@ -148,8 +148,10 @@ public class WydarzenieService {
 
         //USUWANIE ZDJĘĆ
         if (request.getZdjeciaDoUsuniecia() != null) {
+            System.out.println(request.getZdjeciaDoUsuniecia().get(0));
             wydarzenie.getZdjecia().removeIf(zdjecie -> {
-                if (request.getZdjeciaDoUsuniecia().contains(zdjecie.getId())) {
+                System.out.println(zdjecie.getSciezka());
+                if (request.getZdjeciaDoUsuniecia().contains(zdjecie.getSciezka())) {
                     usunPlikZDisku(zdjecie.getSciezka());
                     return true;
                 }
@@ -174,8 +176,9 @@ public class WydarzenieService {
                 .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione o nazwie: " + nazwa));
     }
     private void usunPlikZDisku(String sciezka) {
+        System.out.println(sciezka);
         try {
-            Files.deleteIfExists(Paths.get("uploads", sciezka));
+            Files.deleteIfExists(Paths.get("uploads/wydarzenia/", sciezka));
         } catch (IOException e) {
             throw new RuntimeException("Nie udało się usunąć pliku: " + sciezka, e);
         }

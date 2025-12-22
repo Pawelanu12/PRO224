@@ -21,7 +21,7 @@ public class PostDto {
     private LocalDateTime dataStworzenia;
     private String tresc;
     private int iloscPolubien;
-    private Long autorId;
+    private String autorLogin;
     private List<Komentarz> komentarze;
     private List<String> zdjecia;
 

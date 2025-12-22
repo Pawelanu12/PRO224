@@ -50,7 +50,7 @@ public class WydarzenieController {
             if (files != null && !files.isEmpty()) {
                 System.out.println(files.size());
 
-                String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+                String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator +"wydarzenia";
                 File folder = new File(uploadDir);
                 if (!folder.exists()) {
                     folder.mkdirs();
