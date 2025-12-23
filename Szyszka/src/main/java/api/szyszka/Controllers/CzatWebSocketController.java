@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-public class CzatWebSocketController {
+public class    CzatWebSocketController {
 
     private final CzatService czatService;
     private final UzytkownikRepository uzytkownikRepository;
