@@ -16,7 +16,6 @@ export default function Posty({wszystkie=true}){
     useEffect(()=>
     getPosty(),[user])
     if(loading)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>Loading...</p>
-    if(!posty||posty.length===0)return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>nie ma postów...</p>
     let postyPokazywane=posty
     if(!wszystkie)
         postyPokazywane=posty.filter(p=>p.autorLogin===user.login)

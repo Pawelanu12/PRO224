@@ -86,11 +86,26 @@ export default function ForumProvider({ children }) {
 
         }
         usun(id)
-    }
+        }
+    const changeLike=(id,uzytkownikId)=>{
+        const change=async (id,uzytkownikId)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}/like?uzytkownikId=${uzytkownikId}`,{
+                method:"PUT",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,}
+            })
+                .then(res=>res.json())
+                .then(res=> {
+                    console.log(res)
+                    setPosty(prev=>prev.map(p=>p.id===id?res:p))
+                })
+                .catch(err=>console.log(err))
 
+        }
+        change(id,uzytkownikId)
+    }
     return (
         <ForumContext.Provider value={{
-            posty,loading,getPosty,addPosty,editPost,deletePost
+            posty,loading,getPosty,addPosty,editPost,deletePost,changeLike
         }}>{children}</ForumContext.Provider>
     )
 };

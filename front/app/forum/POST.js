@@ -4,6 +4,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import Opcji from "@/app/forum/Opcji";
 import PostDialog from "@/app/forum/dialogs/PostDialog";
+import {ForumContext} from "@/app/providers/ForumProvider";
 //pokazuje jeden post
 const compare_dates=(data_posta)=> {
     const date1 = new Date(data_posta);
@@ -19,6 +20,7 @@ const compare_dates=(data_posta)=> {
 }
 
 export default function Post({post}){
+    const {changeLike} = useContext(ForumContext);
 const {user}=useContext(GlobalContext)
     const [pelnyOpis,setPelnyOpis] = useState(false)
     const [show,setShow]=useState(false)
@@ -131,8 +133,8 @@ const {user}=useContext(GlobalContext)
                 <div className={"flexRow"}
                      style={{justifyContent: "space-around", marginTop: "10px", backgroundColor: "#3A4F39"}}>
                     <div>
-                        <button onClick={() => console.log("like")}>
-                            ilosc polubeń {post.iloscPolubien}</button>
+                        <button onClick={(e) =>{e.preventDefault(); changeLike(post.id,user.id)}}>
+                            ilosc polubeń {post.polubienia.length}</button>
                     </div>
                     <div>
                         <PostDialog post={post} compare_dates={compare_dates} />

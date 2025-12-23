@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.8",
     "@tanstack/react-virtual": "^3.13.13",
     "formik": "^2.4.6",
     "next": "15.3.0",
