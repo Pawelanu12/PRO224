@@ -29,7 +29,7 @@ public class PostMapper {
                 entity.getId(),
                 entity.getDataStworzenia(),
                 entity.getTresc(),
-                entity.getIloscPolubien(),
+                entity.getPolubienia().stream().map(p->p.getUzytkownik().getId()).toList(),
                 entity.getAutor().getLogin(),
                 entity.getKomentarze(),
                 zdjeciaUrl
@@ -47,7 +47,7 @@ public class PostMapper {
         Post post = new Post();
         post.setDataStworzenia(request.getDataStworzenia());
         post.setTresc(request.getTresc());
-        post.setIloscPolubien(request.getIloscPolubien());
+        post.setPolubienia(new ArrayList<>());
         //post.setAutor(request.getAutor());
         //post.setKomentarze(request.getKomentarze());
         //post.setZdjecia(request.getZdjecia());
@@ -71,7 +71,6 @@ public class PostMapper {
         if (request == null || entity == null) return;
         entity.setDataStworzenia(request.getDataStworzenia());
         entity.setTresc(request.getTresc());
-        entity.setIloscPolubien(request.getIloscPolubien());
         //entity.setAutor(request.getAutor());
         //entity.setKomentarze(request.getKomentarze());
         //entity.setKomentarze(

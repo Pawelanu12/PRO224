@@ -171,5 +171,17 @@ public class PostController {
         return ResponseEntity.ok(PostMapper.toDto(update));
     }
 
+    @PutMapping("/{id}/like")
+    public ResponseEntity<PostDto> changeLike(@PathVariable Long id,
+                                              @RequestParam Long uzytkownikId) {
+        Post update = postService.changeLike(id,uzytkownikId);
+        return ResponseEntity.ok(PostMapper.toDto(update));
+//        PostMapper.updateEntity(oldPost, request);
+//        Post update = postService.modifyPostByPostId(id, oldPost);
+//
+//        return ResponseEntity.ok(PostMapper.toDto(update));
+
+    }
+
 
 }

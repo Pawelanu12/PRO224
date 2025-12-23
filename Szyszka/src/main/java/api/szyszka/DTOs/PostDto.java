@@ -20,7 +20,7 @@ public class PostDto {
     private Long id;
     private LocalDateTime dataStworzenia;
     private String tresc;
-    private int iloscPolubien;
+    private List<Long> polubienia;
     private String autorLogin;
     private List<Komentarz> komentarze;
     private List<String> zdjecia;

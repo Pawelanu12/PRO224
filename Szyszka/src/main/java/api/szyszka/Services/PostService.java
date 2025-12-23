@@ -3,6 +3,7 @@ package api.szyszka.Services;
 import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Entities.PostZdjecie;
+import api.szyszka.Entities.Post_polubienia;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Repositories.PostRepository;
@@ -113,12 +114,36 @@ public class PostService {
 
         oldPost.setDataStworzenia(updatePost.getDataStworzenia());
         oldPost.setTresc(updatePost.getTresc());
-        oldPost.setIloscPolubien(updatePost.getIloscPolubien());
+        oldPost.setPolubienia(updatePost.getPolubienia());
         oldPost.setAutor(updatePost.getAutor());
         //oldPost.setKomentarze(updatePost.getKomentarze());
         //oldPost.setZdjecia(updatePost.getZdjecia());
 
         return postRepository.save(oldPost);
+    }
+
+
+    public Post changeLike(Long postId, Long uzytkownikId) {
+
+        Post post = getPostById(postId);
+        Uzytkownik uzytkownik = uzytkownikRepository.findById(uzytkownikId)
+                .orElseThrow(() -> new RuntimeException("Nie znaleziono użytkownika"));
+
+        Optional<Post_polubienia> existingLike = post.getPolubienia().stream()
+                .filter(p -> p.getUzytkownik() != null)
+                .filter(p -> Objects.equals(p.getUzytkownik().getId(), uzytkownikId))
+                .findFirst();
+
+        if (existingLike.isPresent()) {
+            post.getPolubienia().remove(existingLike.get());
+        } else {
+            Post_polubienia like = new Post_polubienia();
+            like.setPost(post);
+            like.setUzytkownik(uzytkownik);
+            post.getPolubienia().add(like);
+        }
+
+        return postRepository.save(post);
     }
 
 

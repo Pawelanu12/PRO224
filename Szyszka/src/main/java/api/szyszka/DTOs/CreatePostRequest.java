@@ -19,7 +19,7 @@ import java.util.List;
 public class CreatePostRequest {
     private LocalDateTime dataStworzenia;
     private String tresc;
-    private int iloscPolubien;
+//    private List<Long> polubenia;
     private Long autorId;
     private List<String> zdjecia=  new ArrayList<>();;
     //private List<Komentarz> komentarze;

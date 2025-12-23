@@ -19,7 +19,6 @@ public class UpdatePostRequest {
     private Long id;
     private LocalDateTime dataStworzenia;
     private String tresc;
-    private int iloscPolubien;
     private Uzytkownik autor;
     private List<String> zdjecia;
     //private List<Komentarz> komentarze;

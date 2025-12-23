@@ -73,8 +73,16 @@ CREATE TABLE post (
     tresc TEXT NOT NULL,
     ilosc_polubien INT DEFAULT 0,
     zdjecie VARCHAR(255), -- zdjęcie posta
-
+    
     FOREIGN KEY (autor_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_polubienia (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT NOT NULL,
+    uzytkownik_id BIGINT NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
 );
 
 CREATE TABLE komentarz (

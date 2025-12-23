@@ -19,7 +19,8 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String tresc;
 
-    private int iloscPolubien;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post_polubienia> polubienia;
 
     @ManyToOne
     @JoinColumn(name = "autor_id", nullable = false)
