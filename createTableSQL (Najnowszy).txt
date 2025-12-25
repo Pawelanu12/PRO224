@@ -109,7 +109,8 @@ CREATE TABLE czat_uzytkownik (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     czat_id BIGINT NOT NULL,
     uzytkownik_id BIGINT NOT NULL,
-
+    last_read_message_id BIGINT,
+    nieprzeczytane_wiadomosci INT NOT NULL DEFAULT 0,
     FOREIGN KEY (czat_id) REFERENCES czat(id) ON DELETE CASCADE,
     FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
     UNIQUE (czat_id, uzytkownik_id)

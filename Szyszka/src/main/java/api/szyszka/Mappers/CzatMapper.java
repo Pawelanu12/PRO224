@@ -38,7 +38,8 @@ public class CzatMapper {
                 wiadomosciDtos
         );
     }
-    public static CzatSummaryDto toSummaryDto(Czat czat) {
+    public static CzatSummaryDto toSummaryDto(CzatUzytkownik czatUzytkownik) {
+        Czat czat = czatUzytkownik.getCzat();
         return new CzatSummaryDto(
                 czat.getId(),
                 czat.getNazwa(),
@@ -47,7 +48,9 @@ public class CzatMapper {
                 czat.getUczestnicy()
                         .stream()
                         .map(u -> u.getUzytkownik().getLogin())
-                        .toList()
+                        .toList(),
+                czatUzytkownik.getNieprzeczytaneWiadomosci(),
+                WiadomoscMapper.toDto(czatUzytkownik.getWiadomosc())
         );
     }
 

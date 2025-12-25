@@ -18,4 +18,6 @@ public class CzatSummaryDto {
     private boolean czyGrupowy;
     private LocalDateTime dataUtworzenia;
     private List<String> uczestnicyIds;
+    private Integer nieprzeczytane_wiadomosci;
+    private WiadomoscDto wiadomosc;
 }

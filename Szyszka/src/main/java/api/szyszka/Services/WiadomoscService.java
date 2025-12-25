@@ -1,34 +1,41 @@
 package api.szyszka.Services;
 
 import api.szyszka.DTOs.CreateWiadomoscRequest;
-import api.szyszka.Entities.Czat;
-import api.szyszka.Entities.Uzytkownik;
-import api.szyszka.Entities.Wiadomosc;
-import api.szyszka.Entities.Zdjecie;
+import api.szyszka.DTOs.CzatUpdateDto;
+import api.szyszka.DTOs.WiadomoscDto;
+import api.szyszka.Entities.*;
 import api.szyszka.Mappers.WiadomoscMapper;
-import api.szyszka.Repositories.CzatRepository;
-import api.szyszka.Repositories.UzytkownikRepository;
-import api.szyszka.Repositories.WiadomoscRepository;
-import api.szyszka.Repositories.ZdjecieRepository;
+import api.szyszka.Repositories.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@RequiredArgsConstructor
 @Service
+@Transactional
+
 public class WiadomoscService {
     private final WiadomoscRepository wiadomoscRepository;
     private final CzatRepository czatRepository;
     private final UzytkownikRepository uzytkownikRepository;
     private final ZdjecieRepository zdjecieRepository;
+    private final CzatUzytkownikRepository czatUzytkownikRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public WiadomoscService(WiadomoscRepository wiadomoscRepository, CzatRepository czatRepository,
-                            UzytkownikRepository uzytkownikRepository, ZdjecieRepository zdjecieRepository) {
-        this.wiadomoscRepository = wiadomoscRepository;
-        this.czatRepository = czatRepository;
-        this.uzytkownikRepository = uzytkownikRepository;
-        this.zdjecieRepository = zdjecieRepository;
-    }
+
+
+//    public WiadomoscService(WiadomoscRepository wiadomoscRepository, CzatRepository czatRepository,
+//                            UzytkownikRepository uzytkownikRepository, ZdjecieRepository zdjecieRepository) {
+//        this.wiadomoscRepository = wiadomoscRepository;
+//        this.czatRepository = czatRepository;
+//        this.uzytkownikRepository = uzytkownikRepository;
+//        this.zdjecieRepository = zdjecieRepository;
+//    }
 
     public Wiadomosc createWiadomosc(CreateWiadomoscRequest request) {
         Wiadomosc wiadomosc = WiadomoscMapper.fromCreateRequest(request);
@@ -39,10 +46,50 @@ public class WiadomoscService {
         Uzytkownik uzytkownik = uzytkownikRepository.findById(request.getUzytkownikId())
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         wiadomosc.setNadawca(uzytkownik);
+        Wiadomosc savedWiadomosc= wiadomoscRepository.save(wiadomosc);
 
-        return wiadomoscRepository.save(wiadomosc);
+        handleMessage(request,wiadomosc);
+        return savedWiadomosc;
     }
 
+    public void handleMessage(CreateWiadomoscRequest request,Wiadomosc wiadomosc){
+        WiadomoscDto dto= WiadomoscMapper
+                .toDto(wiadomosc);
+        List<CzatUzytkownik> uczestnicy =
+                czatUzytkownikRepository.findAllByCzatId(request.getCzatId());
+
+        for (CzatUzytkownik cu : uczestnicy) {
+
+            if (!cu.getUzytkownik().getId().equals(wiadomosc.getNadawca().getId())) {
+             czatUzytkownikRepository.incrementUnread(cu.getId(),wiadomosc);
+            }
+            if (cu.getUzytkownik().getId().equals(wiadomosc.getNadawca().getId())) {
+                cu.setWiadomosc(wiadomosc);
+                czatUzytkownikRepository.save(cu);
+            }
+            System.out.println( cu.getUzytkownik().getId().toString()+
+                    "/queue/chat-updates");
+//            messagingTemplate.convertAndSendToUser(
+//                    cu.getUzytkownik().getId().toString(),
+//                    "/queue/chat-updates",
+//                    new CzatUpdateDto(request.getCzatId(), cu.getNieprzeczytaneWiadomosci(), dto)
+//            );
+            messagingTemplate.convertAndSend(
+                    "/topic/uzytkownik/"+cu.getUzytkownik().getId().toString(),
+                    new CzatUpdateDto(request.getCzatId(), cu.getNieprzeczytaneWiadomosci(), dto)
+            );
+        }
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + request.getCzatId(),
+                dto
+        );
+    }
+//    public void incrementUnread(CzatUzytkownik czatUzytkownik,Wiadomosc wiadomosc){
+//        System.out.println("incrementUnread");
+//        czatUzytkownik.setWiadomosc(wiadomosc);
+//        czatUzytkownik.setNieprzeczytaneWiadomosci(czatUzytkownik.getNieprzeczytaneWiadomosci()+1);
+////        czatUzytkownikRepository.save(czatUzytkownik);
+//    }
     public Wiadomosc getWiadomoscById(long id) {
         return wiadomoscRepository.findById(id).get();
     }

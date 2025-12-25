@@ -1,5 +1,6 @@
 package api.szyszka.Entities;
 
+import api.szyszka.DTOs.WiadomoscDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,4 +19,9 @@ public class CzatUzytkownik {
     @ManyToOne
     @JoinColumn(name = "uzytkownik_id", nullable = false)
     private Uzytkownik uzytkownik;
+    @Column(name = "nieprzeczytane_wiadomosci", nullable = false)
+    private Integer nieprzeczytaneWiadomosci;
+    @ManyToOne
+    @JoinColumn(name = "last_read_message_id", nullable = true)
+    private Wiadomosc wiadomosc;
 }

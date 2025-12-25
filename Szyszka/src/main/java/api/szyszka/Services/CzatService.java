@@ -57,7 +57,9 @@ public class CzatService {
         Czat savedCzat = czatRepository.save(czat);
 
         CzatUzytkownik cu1 = addParticipant(savedCzat, user1);
+        cu1.setNieprzeczytaneWiadomosci(0);
         CzatUzytkownik cu2 = addParticipant(savedCzat, user2);
+        cu2.setNieprzeczytaneWiadomosci(0);
 
         savedCzat.setUczestnicy(List.of(cu1, cu2));
 
@@ -101,16 +103,14 @@ public class CzatService {
 
 
 
-    public List<Czat> getCzatyForUser(Uzytkownik user) {
+    public List<CzatUzytkownik> getCzatyForUser(Uzytkownik user) {
         List<CzatUzytkownik> uczestnictwa = czatUzytkownikRepository
                 .findAll()
                 .stream()
                 .filter(p -> p.getUzytkownik().getId().equals(user.getId()))
                 .toList();
 
-        return uczestnictwa.stream()
-                .map(CzatUzytkownik::getCzat)
-                .toList();
+        return uczestnictwa;
     }
 
     public Czat getCzatById(Long id) {
