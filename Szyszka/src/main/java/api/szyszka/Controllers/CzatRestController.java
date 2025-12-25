@@ -1,5 +1,6 @@
 package api.szyszka.Controllers;
 
+import api.szyszka.DTOs.CreatePrivateChatRequest;
 import api.szyszka.DTOs.CzatDto;
 import api.szyszka.DTOs.CzatSummaryDto;
 import api.szyszka.Entities.Czat;
@@ -7,11 +8,13 @@ import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.CzatMapper;
 import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Services.CzatService;
+import api.szyszka.Services.UzytkownikService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +48,13 @@ public class CzatRestController {
         if (czat == null) {
             return ResponseEntity.status(404).body(null);
         }
+        return ResponseEntity.ok(CzatMapper.toDto(czat));
+    }
+    @PostMapping()
+    public ResponseEntity<CzatDto>createCzat(@RequestBody CreatePrivateChatRequest czatDto, Principal principal) {
+        System.out.println("cat");
+        System.out.println(principal);
+      Czat czat=czatService.createPrivateChat(czatDto.getUser1Id(),czatDto.getUser2Id());
         return ResponseEntity.ok(CzatMapper.toDto(czat));
     }
 }

@@ -15,5 +15,5 @@ public class CreateWiadomoscRequest {
     private long czatId;
     private long uzytkownikId;
     private String tresc;
-    private LocalDateTime dataWiadomosc;
+
 }

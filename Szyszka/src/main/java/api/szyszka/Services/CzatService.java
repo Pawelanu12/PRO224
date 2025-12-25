@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,19 +31,24 @@ public class CzatService {
     private final UzytkownikRepository uzytkownikRepository;
 
     @Transactional
-    public CzatDto createPrivateChat(Uzytkownik user1, Uzytkownik user2) {
-        List<CzatUzytkownik> existing = czatUzytkownikRepository.findAll();
-        for (CzatUzytkownik cu : existing) {
-            Czat czat = cu.getCzat();
-            if (!czat.isCzyGrupowy()) {
-                List<Long> participantIds = czat.getUczestnicy() != null
-                        ? czat.getUczestnicy().stream().map(p -> p.getUzytkownik().getId()).toList()
-                        : List.of();
-                if (participantIds.contains(user1.getId()) && participantIds.contains(user2.getId())) {
-                    return CzatMapper.toDto(czat);
-                }
-            }
-        }
+    public Czat createPrivateChat(Long user1Id, Long user2Id) {
+        Optional<Uzytkownik>  u1= uzytkownikRepository.findById(user1Id);
+        Optional<Uzytkownik>  u2= uzytkownikRepository.findById(user2Id);
+        if(u1.isPresent()&&u2.isPresent()){
+            Uzytkownik user1=u1.get();
+            Uzytkownik user2=u2.get();
+//        List<CzatUzytkownik> existing = czatUzytkownikRepository.findAll();
+//        for (CzatUzytkownik cu : existing) {
+//            Czat czat = cu.getCzat();
+//            if (!czat.isCzyGrupowy()) {
+//                List<Long> participantIds = czat.getUczestnicy() != null
+//                        ? czat.getUczestnicy().stream().map(p -> p.getUzytkownik().getId()).toList()
+//                        : List.of();
+//                if (participantIds.contains(user1.getId()) && participantIds.contains(user2.getId())) {
+//                    return CzatMapper.toDto(czat);
+//                }
+//            }
+//        }
 
         Czat czat = new Czat();
         czat.setCzyGrupowy(false);
@@ -55,7 +61,9 @@ public class CzatService {
 
         savedCzat.setUczestnicy(List.of(cu1, cu2));
 
-        return CzatMapper.toDto(savedCzat);
+        return savedCzat;
+        }
+        return null;
     }
 
     public CzatDto createGroupChat(String nazwa, Uzytkownik creator, List<String> participantLogins) {

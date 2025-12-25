@@ -23,7 +23,7 @@ public class CzatMapper {
                 .map(w -> new WiadomoscDto(
                         w.getId(),
                         w.getCzat().getId(),
-                        w.getNadawca().getId(),
+                        w.getNadawca().getLogin(),
                         w.getTresc(),
                         w.getDataWyslania()
                 ))
@@ -46,7 +46,7 @@ public class CzatMapper {
                 czat.getDataUtworzenia(),
                 czat.getUczestnicy()
                         .stream()
-                        .map(u -> u.getUzytkownik().getId())
+                        .map(u -> u.getUzytkownik().getLogin())
                         .toList()
         );
     }

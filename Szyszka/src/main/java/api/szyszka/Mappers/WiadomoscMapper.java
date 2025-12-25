@@ -7,6 +7,8 @@ import api.szyszka.DTOs.WiadomoscDto;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Entities.Zdjecie;
 
+import java.time.LocalDateTime;
+
 public class WiadomoscMapper {
 
     public static WiadomoscDto toDto(Wiadomosc wiadomosc) {
@@ -14,7 +16,7 @@ public class WiadomoscMapper {
         return new WiadomoscDto(
                 wiadomosc.getId(),
                 wiadomosc.getCzat().getId(),
-                wiadomosc.getNadawca().getId(),
+                wiadomosc.getNadawca().getLogin(),
                 wiadomosc.getTresc(),
                 wiadomosc.getDataWyslania()
         );
@@ -24,7 +26,7 @@ public class WiadomoscMapper {
         if (entity == null) return null;
         Wiadomosc wiadomosc = new Wiadomosc();
         wiadomosc.setTresc(entity.getTresc());
-        wiadomosc.setDataWyslania(entity.getDataWiadomosc());
+        wiadomosc.setDataWyslania(LocalDateTime.now());
         return wiadomosc;
     }
 

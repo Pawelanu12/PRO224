@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class WiadomoscDto {
     private Long id;
     private Long czatId;
-    private Long nadawcaId;
+    private String nadawca;
     private String tresc;
     private LocalDateTime dataWyslania;
 }
