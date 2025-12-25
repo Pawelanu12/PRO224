@@ -101,7 +101,7 @@ export default function CzatProvider({ children }) {
         add(values)
     }
     return (
-        <CzatContext.Provider value={{
+        <CzatContext.Provider value={{setCzat,setCzaty,
             czaty,getCzaty,czat,loading,dodajCzatPrywatny
         }}>{children}</CzatContext.Provider>
     )

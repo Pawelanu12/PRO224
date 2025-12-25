@@ -8,7 +8,6 @@ import CzatWithWebSocket from "@/app/czat/websocket/CzatWithWebSocket";
 //pokazuje wiadomosci w czacie
 
 const getNazwa=(c,login)=>{
-    console.log(c)
     if(c.nazwa)
         return c.nazwa;
     if(c.uczestnicyIds)
@@ -24,7 +23,6 @@ export default function OneCzat(){
     //     }
     //     getOneCzat()
     // },[])
-    console.log(czat)
    if(loading) return <p style={{paddingLeft:"40vw",textAlign:"center"}}>loading</p>
     if(!czat)return <p style={{paddingLeft:"40vw",textAlign:"center"}}>czat nie znależony</p>
     return (

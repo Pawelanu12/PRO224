@@ -23,8 +23,8 @@ export default function CzatWithWebSocket({id}){
                 new SockJS(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/ws`),
 
             onConnect: () => {
-                stompClient.subscribe(`/topic/public/${id}`, (msg) => {
-                    console.log(msg)
+                stompClient.subscribe(`/topic/chat/${id}`, (msg) => {
+                    // console.log(msg)
                     setMessages((prev) => [...prev, JSON.parse(msg.body)]);
                 });
             },

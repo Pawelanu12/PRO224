@@ -76,6 +76,7 @@ export default function GlobalProvider({ children }) {
         me()
     }
     const register=(values)=>{
+        alert(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/register`)
         const f=async (values)=>{
            const val={
                login:values.login,
@@ -93,13 +94,13 @@ export default function GlobalProvider({ children }) {
                 })
                 .then(res=>res.json())
                 .then(r=>{
-                    console.log(r)
+                    alert(r)
                     if(r.message==="User registered successfully"){
                         router.replace("/login")
                     }
                     else alert(r.message)
                 })
-                .catch(err=>console.log(err))
+                .catch(err=>alert(err))
         }
         f(values)
     }

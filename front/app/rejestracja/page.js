@@ -39,15 +39,17 @@ export default function Rejestracja(){
                     })}
                     onSubmit={(values, {resetForm}) => {
 
-
+                        alert("SUBMIT");
                         console.log(values)
                         register(values)
                         // resetForm()
+                        alert(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/register`)
+
                     }}
 
                 >
                     {({dirty, isValid}) => (
-                        <Form className={"formik"}>
+                        <Form className={"formik"} autoComplete="off">
 
                            <p> Login</p>
                             <Field className={"pole_formy"}  type="text" name="login" placeholder="napisz login"
@@ -70,11 +72,16 @@ export default function Rejestracja(){
                             <ErrorMessage className={"error"} name="powtorHasla" component="div"/>
                             <br/>
 
-                            <button type="submit" disabled={!dirty || !isValid}
+                            <button type="submit" disabled={!isValid}
+                                    onClick={(e)=>{
+                                        // e.preventDefault()
+                                    }}
                             >zarejestruj sie
                             </button>
                             <br/>
+                            {JSON.stringify({ dirty, isValid })}
                         </Form>)}
+
 
 
                 </Formik>
