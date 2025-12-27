@@ -11,6 +11,7 @@ import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.nio.file.Files;
@@ -59,17 +60,17 @@ public class PostService {
 
         post.setAutor(autor); // <-- KLUCZ
 
-        return postRepository.save(post);
-//
-//        if (files != null && !files.isEmpty()) {
-//            for (MultipartFile file : files) {
-//                System.out.println(file.getOriginalFilename());
-//                PostZdjecie zdj = saveFileForPost(file, saved);
-//                saved.getZdjecia().add(zdj);
-//            }
-//        }
+//        return postRepository.save(post);
 
-//        return postRepository.save(saved);
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                //System.out.println(file.getOriginalFilename());
+                PostZdjecie zdj = saveFileForPost(file, post);
+                post.getZdjecia().add(zdj);
+            }
+        }
+
+        return postRepository.save(post);
     }
 
     //public Post createPost(Post post) {return postRepository.save(post);}
@@ -98,10 +99,23 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    //public void deletePostById(Long postId) {
+    //    if (postRepository.existsById(postId)) {
+    //        postRepository.deleteById(postId);
+    //    }
+    //}
+
     public void deletePostById(Long postId) {
-        if (postRepository.existsById(postId)) {
-            postRepository.deleteById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post doesn't exist"));
+
+        if (!post.getZdjecia().isEmpty()) {
+            for (PostZdjecie zdj : post.getZdjecia()) {
+                removeFileFromDisk(zdj.getSciezka());
+            }
         }
+
+        postRepository.delete(post);
     }
 
     public Post modifyPostByPostId(Long id, Post updatePost) {
@@ -146,5 +160,11 @@ public class PostService {
         return postRepository.save(post);
     }
 
-
+    private void removeFileFromDisk(String path) {
+        try {
+            Files.deleteIfExists(Paths.get("post_uploads/", path));
+        } catch (IOException e) {
+            throw new RuntimeException("Nie udało się usunąć pliku: " + path, e);
+        }
+    }
 }

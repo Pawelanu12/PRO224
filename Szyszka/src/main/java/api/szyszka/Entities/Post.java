@@ -30,7 +30,7 @@ public class Post {
     private List<Komentarz> komentarze;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostZdjecie> zdjecia;
+    private List<PostZdjecie> zdjecia  = new ArrayList<>();
 
     //@ElementCollection
     //@CollectionTable(name = "post_zdjecia", joinColumns = @JoinColumn(name = "post_id"))
