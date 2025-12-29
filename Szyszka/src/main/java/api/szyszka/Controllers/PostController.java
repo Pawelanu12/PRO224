@@ -97,7 +97,7 @@ public class PostController {
     @GetMapping("/zdjecia/{fileName}")
     public ResponseEntity<Resource> getPostsByFilename(@PathVariable String filename) {
         try {
-            String uploadDir = System.getProperty("user.dir") + "/post_uploads/";
+            String uploadDir = System.getProperty("user.dir") + "/uploads/posts/";
             File file = new File(uploadDir + filename);
 
             if (!file.exists()) {
@@ -170,6 +170,49 @@ public class PostController {
 
         return ResponseEntity.ok(PostMapper.toDto(update));
     }
+
+    @PostMapping("/{id}/zdjecie")
+    public ResponseEntity<PostDto> addPicture(@PathVariable Long id,
+                                           @RequestParam("file") MultipartFile file)
+    {
+        Post post = postService.addPictureToPost(id, file);
+        return ResponseEntity.ok(PostMapper.toDto(post));
+    }
+
+    @DeleteMapping("/{id}/zdjecie/{fileName}")
+    public ResponseEntity<Void> deletePicture(
+            @PathVariable Long id,
+            @PathVariable String fileName)
+    {
+        postService.deletePictureFromPost(id, fileName);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/zdjecie/{fileName}")
+    public ResponseEntity<Resource> getPicture(@PathVariable String fileName) {
+
+        try {
+            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator + "posts";
+            File file = new File(uploadDir, fileName);
+
+            if (!file.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Resource resource = new FileSystemResource(file);
+            String contentType = Files.probeContentType(file.toPath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+        }
 
     @PutMapping("/{id}/like")
     public ResponseEntity<PostDto> changeLike(@PathVariable Long id,

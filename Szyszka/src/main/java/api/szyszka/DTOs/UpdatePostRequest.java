@@ -17,10 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdatePostRequest {
     private Long id;
-    private LocalDateTime dataStworzenia;
+    //private LocalDateTime dataStworzenia;
     private String tresc;
-    private Uzytkownik autor;
-    private List<String> zdjecia;
+    //private Uzytkownik autor;
+    //private List<String> zdjecia;
     //private List<Komentarz> komentarze;
     //private List<Zdjecie> zdjecia;
 }

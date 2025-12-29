@@ -69,7 +69,7 @@ public class PostMapper {
 
     public static void updateEntity(Post entity, UpdatePostRequest request) {
         if (request == null || entity == null) return;
-        entity.setDataStworzenia(request.getDataStworzenia());
+        //entity.setDataStworzenia(request.getDataStworzenia());
         entity.setTresc(request.getTresc());
         //entity.setAutor(request.getAutor());
         //entity.setKomentarze(request.getKomentarze());
@@ -80,17 +80,17 @@ public class PostMapper {
         //entity.setZdjecia(
         //        request.getZdjecia() != null ? request.getZdjecia() : new ArrayList<>()
         //);
-        if (request.getZdjecia() != null) {
-            List<PostZdjecie> zdjecia = new ArrayList<>();
+//        if (request.getZdjecia() != null) {
+//            List<PostZdjecie> zdjecia = new ArrayList<>();
+//
+//            for (String sciezka : request.getZdjecia()) {
+//                PostZdjecie z = new PostZdjecie();
+//                z.setSciezka(sciezka);
+//                z.setPost(entity);     // <-- powiązanie
+//                zdjecia.add(z);
+//            }
 
-            for (String sciezka : request.getZdjecia()) {
-                PostZdjecie z = new PostZdjecie();
-                z.setSciezka(sciezka);
-                z.setPost(entity);     // <-- powiązanie
-                zdjecia.add(z);
-            }
-
-            entity.setZdjecia(zdjecia);
-        }
+            //entity.setZdjecia(zdjecia);
+        //}
     }
 }

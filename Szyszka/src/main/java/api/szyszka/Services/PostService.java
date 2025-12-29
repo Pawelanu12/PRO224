@@ -9,6 +9,7 @@ import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Repositories.PostRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class PostService {
     private PostZdjecie saveFileForPost(MultipartFile file, Post post) {
         try {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path path = Paths.get("post_uploads/" + fileName);
+            Path path = Paths.get("uploads/posts/" + fileName);
 
             Files.createDirectories(path.getParent());
             Files.write(path, file.getBytes());
@@ -118,6 +119,30 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Transactional
+    public Post addPictureToPost(Long id, MultipartFile file) {
+        Post post = getPostById(id);
+
+        PostZdjecie zdj = saveFileForPost(file, post);
+        post.getZdjecia().add(zdj);
+
+        return postRepository.save(post);
+    }
+
+    @Transactional
+    public void deletePictureFromPost(Long id, String fileName) {
+        Post post = getPostById(id);
+
+        post.getZdjecia().removeIf(zdj -> {
+            if (zdj.getSciezka().equals(fileName)) {
+                removeFileFromDisk(zdj.getSciezka());
+                return true;
+            }
+        return false;
+        });
+    }
+
+    @Transactional
     public Post modifyPostByPostId(Long id, Post updatePost) {
         Post oldPost = getPostById(id);
 
@@ -126,12 +151,13 @@ public class PostService {
         //    throw new DuplicateSzostkaException(updateSzostka.getNazwa());
         //}
 
-        oldPost.setDataStworzenia(updatePost.getDataStworzenia());
+        //oldPost.setDataStworzenia(updatePost.getDataStworzenia());
         oldPost.setTresc(updatePost.getTresc());
-        oldPost.setPolubienia(updatePost.getPolubienia());
-        oldPost.setAutor(updatePost.getAutor());
+        //oldPost.setAutor(updatePost.getAutor());
         //oldPost.setKomentarze(updatePost.getKomentarze());
         //oldPost.setZdjecia(updatePost.getZdjecia());
+
+
 
         return postRepository.save(oldPost);
     }
@@ -162,9 +188,10 @@ public class PostService {
 
     private void removeFileFromDisk(String path) {
         try {
-            Files.deleteIfExists(Paths.get("post_uploads/", path));
+            Files.deleteIfExists(Paths.get("uploads/posts/", path));
         } catch (IOException e) {
             throw new RuntimeException("Nie udało się usunąć pliku: " + path, e);
         }
     }
+
 }
