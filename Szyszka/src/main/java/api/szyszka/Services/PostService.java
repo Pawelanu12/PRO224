@@ -1,6 +1,7 @@
 package api.szyszka.Services;
 
 import api.szyszka.DTOs.CreatePostRequest;
+import api.szyszka.DTOs.UpdatePostRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Entities.PostZdjecie;
 import api.szyszka.Entities.Post_polubienia;
@@ -143,8 +144,29 @@ public class PostService {
     }
 
     @Transactional
-    public Post modifyPostByPostId(Long id, Post updatePost) {
-        Post oldPost = getPostById(id);
+    public Post modifyPostByPostId(Long id,
+                                   UpdatePostRequest request
+                                   ) {
+        Post post = getPostById(id);
+
+        post.setTresc(request.getTresc());
+
+        if (request.getPicturesToBeRemoved() != null) {
+            post.getZdjecia().removeIf(zdj -> {
+                if (request.getPicturesToBeRemoved().contains(zdj.getSciezka())) {
+                    removeFileFromDisk(zdj.getSciezka());
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        if (request.getNewPictures() != null) {
+            for (MultipartFile file : request.getNewPictures()) {
+                PostZdjecie zdj = saveFileForPost(file, post);
+                post.getZdjecia().add(zdj);
+            }
+        }
 
         //if (!oldSzostka.getNazwa().equals(updateSzostka.getNazwa())
         //        && szostkaRepository.findByNazwa(updateSzostka.getNazwa()).isPresent()) {
@@ -152,14 +174,13 @@ public class PostService {
         //}
 
         //oldPost.setDataStworzenia(updatePost.getDataStworzenia());
-        oldPost.setTresc(updatePost.getTresc());
         //oldPost.setAutor(updatePost.getAutor());
         //oldPost.setKomentarze(updatePost.getKomentarze());
         //oldPost.setZdjecia(updatePost.getZdjecia());
 
 
 
-        return postRepository.save(oldPost);
+        return postRepository.save(post);
     }
 
 
