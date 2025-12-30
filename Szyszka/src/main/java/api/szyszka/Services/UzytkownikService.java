@@ -6,7 +6,9 @@ package api.szyszka.Services;
 import api.szyszka.DTOs.Auth.AuthResponse;
 import api.szyszka.DTOs.Auth.LoginRequest;
 import api.szyszka.DTOs.Auth.RegisterRequest;
+import api.szyszka.DTOs.GoogleUserData;
 import api.szyszka.DTOs.UzytkownikDto;
+import api.szyszka.Entities.AuthProvider;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Exceptions.*;
 import api.szyszka.Repositories.UzytkownikRepository;
@@ -182,5 +184,44 @@ public class UzytkownikService {
         return uzytkownikRepository.findBySzostkaId(szostkaId);
         }
 
+    public AuthResponse loginWithGoogle(GoogleUserData googleUser) {
+
+        //Czy użytkownik już istnieje po googleId
+        var userOpt = uzytkownikRepository.findByGoogleId(googleUser.getGoogleId());
+        if (userOpt.isPresent()) {
+            String token = jwtService.generateToken(userOpt.get().getLogin());
+            return new AuthResponse(token);
+        }
+
+        // Czy istnieje konto nie google z tym samym email
+        if (googleUser.getEmail() != null) {
+            var byEmail = uzytkownikRepository.findByEmail(googleUser.getEmail());
+            if (byEmail.isPresent()) {
+                Uzytkownik u = byEmail.get();
+                u.setGoogleId(googleUser.getGoogleId());
+                u.setAuthProvider(AuthProvider.GOOGLE);
+                uzytkownikRepository.save(u);
+
+                String token = jwtService.generateToken(u.getLogin());
+                return new AuthResponse(token);
+            }
+        }
+
+        // 3. NOWY UŻYTKOWNIK (rejestracja przez Google)
+        Uzytkownik u = new Uzytkownik();
+        u.setLogin(googleUser.getEmail()); // login = email
+        u.setEmail(googleUser.getEmail());
+        u.setImie(googleUser.getImie());
+        u.setNazwisko(googleUser.getNazwisko());
+        u.setGoogleId(googleUser.getGoogleId());
+        u.setAuthProvider(AuthProvider.GOOGLE);
+        u.setTypUzytkownika("ZUCH");
+        u.setDataDolaczeniaDoGromady(LocalDateTime.now());
+
+        uzytkownikRepository.save(u);
+
+        String token = jwtService.generateToken(u.getLogin());
+        return new AuthResponse(token);
+    }
 
 }

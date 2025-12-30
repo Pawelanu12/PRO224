@@ -9,7 +9,7 @@ CREATE TABLE uzytkownik (
     imie VARCHAR(255) NOT NULL,
     nazwisko VARCHAR(255) NOT NULL,
     login VARCHAR(255) NOT NULL UNIQUE,
-    haslo VARCHAR(255) NOT NULL,
+    haslo VARCHAR(255) NULL,
     email VARCHAR(255) UNIQUE,
     data_urodzenia DATETIME,
     nr_telefonu VARCHAR(20),
@@ -19,6 +19,8 @@ CREATE TABLE uzytkownik (
     typ_uzytkownika VARCHAR(255) NOT NULL,
     szostka_id BIGINT,
     zdjecie VARCHAR(255), -- zdjęcie użytkownika
+	google_id VARCHAR(255) UNIQUE,
+	auth_provider VARCHAR(20) DEFAULT 'LOCAL',
 
     FOREIGN KEY (rodzic_id1) REFERENCES uzytkownik(id) ON DELETE SET NULL,
     FOREIGN KEY (rodzic_id2) REFERENCES uzytkownik(id) ON DELETE SET NULL,
@@ -142,3 +144,14 @@ CREATE TABLE post_zdjecie (
 
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
+CREATE TABLE post_udostepnienie (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    uzytkownik_id BIGINT NOT NULL,
+    post_id BIGINT NOT NULL,
+
+    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+
+    UNIQUE (uzytkownik_id, post_id)
+);
+

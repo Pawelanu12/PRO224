@@ -38,9 +38,13 @@ public class Uzytkownik {
     @ManyToOne
     @JoinColumn(name = "szostka_id")
     private Szostka szostka;
-//
-//    @OneToMany(mappedBy = "uzytkownik")
-//    private List<Skladka> skladki;
+
+    @Column(unique = true)
+    private String googleId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AuthProvider authProvider = AuthProvider.LOCAL;
 
     @OneToMany(mappedBy = "uzytkownik")
     private List<ZdobytaSprawnosc> zdobyteSprawnosci;
