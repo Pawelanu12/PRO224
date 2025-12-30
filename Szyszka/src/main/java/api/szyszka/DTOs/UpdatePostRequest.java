@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,4 +24,6 @@ public class UpdatePostRequest {
     //private List<String> zdjecia;
     //private List<Komentarz> komentarze;
     //private List<Zdjecie> zdjecia;
+    private List<MultipartFile> newPictures;
+    private List<String> picturesToBeRemoved;
 }

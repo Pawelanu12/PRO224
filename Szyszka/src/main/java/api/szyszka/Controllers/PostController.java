@@ -160,13 +160,15 @@ public class PostController {
 //        return ResponseEntity.noContent().build();
 //    }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostDto> updatePost(@PathVariable Long id,
-                                              @RequestBody UpdatePostRequest request) {
-        Post oldPost = postService.getPostById(id);
+                                              @ModelAttribute UpdatePostRequest request,
+                                              @RequestPart(value = "newPictures", required = false) List<MultipartFile> newPictures
+    ) {
+        //Post oldPost = postService.getPostById(id);
 
-        PostMapper.updateEntity(oldPost, request);
-        Post update = postService.modifyPostByPostId(id, oldPost);
+        //PostMapper.updateEntity(oldPost, request);
+        Post update = postService.modifyPostByPostId(id, request);
 
         return ResponseEntity.ok(PostMapper.toDto(update));
     }
