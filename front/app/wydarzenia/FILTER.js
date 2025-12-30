@@ -1,7 +1,6 @@
 'use client'
 
-
-import {Field} from "formik";
+import "../globals.css";
 import {useContext, useState} from "react";
 import {WydarzeniaContext} from "@/app/providers/WydarzeniaProvider";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
@@ -32,36 +31,37 @@ export default function Filter() {
         setData(e.target.value)
     }
     return (
-        <div>
-            <div className={"wydarzenia-filter-div"}>
+        <div >
+            <div className={"w-48 flex flex-col bg-[#1d201d] shadow-lg h-72 rounded-xl m-8"}>
 
-                <label className={"wydarzenia-filter-label1"}>
-                    <p className={"wydarzenia-filter-hidden-p"} hidden={!hidden}>nazwa wydarzenia</p>
-                    <p className={"wydarzenia-filter-nazwa-p"} hidden={hidden}>nazwa wydarzenia</p>
-                    <input className={"wydarzenia-filter-nazwa-input"}
+                <label className={"w-full mt-1"}>
+                    <p className={"text-[#1d201d] text-[16px]"} hidden={!hidden}>nazwa wydarzenia</p>
+                    <p className={"text-[16px]"} hidden={hidden}>nazwa wydarzenia</p>
+                    <input className={"text-white bg-[#1A1919] appearance-none"}
                            type={"text"}
                            onChange={(e) => changeNazwa(e)}
                            placeholder={"nazwa wydarzenia..."}/></label>
 
-                <label className={"wydarzenia-filter-label2"}>
+                <label className={"flex flex-col mt-6"}>
                     <select onChange={(e) => changeTyp(e)}
-                            className={"wydarzenia-filter-select"}
-                            style={{backgroundColor: "#3A4F39", width: "183px", color: "black",}}>
-                        <option className={"wydarzenia-filter-option"} id={"Typ wydarzenia"}>Typ wydarzenia</option>
-                        <option className={"wydarzenia-filter-option"} id={"wycieczka"}>wycieczka</option>
-                        <option className={"wydarzenia-filter-option"} id={"podroz"}>podroz</option>
+                            className={"bg-[#3A4F39] w-44 text-black mt-6"}
+                            // style={{backgroundColor: "#3A4F39", width: "183px", color: "black",}}
+                    >
+                        <option  id={"Typ wydarzenia"}>Typ wydarzenia</option>
+                        <option  id={"wycieczka"}>wycieczka</option>
+                        <option  id={"podroz"}>podroz</option>
                     </select></label>
 
-                <label className={"wydarzenia-filter-label3"}>
-                    <p className={"wydarzenia-filter-data-p"}>Wydarzenia od takiej daty</p>
-                    <input className={"wydarzenia-filter-data-inpt"}
+                <label className={"mt-4"}>
+                    <p>Wydarzenia od takiej daty</p>
+                    <input
                            onChange={(e) => changeData(e)}
                            type="date"/></label>
 
 
             </div>
-            <div className={"dodaj-wydarzenie-div"}>
-                <button className={"dodaj-wydarzenie-button"}
+            <div className={"mt-12 flex flex-col justify-center"}>
+                <button className={"border-[2px] border-solid border-black"}
                         onClick={(e) => replaceClick(e, "/admin/add/wydarzenie")}>Dodaj
                     nowe wydarzenie
                 </button>

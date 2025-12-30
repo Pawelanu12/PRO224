@@ -48,37 +48,37 @@ export default function Wydarzenie({params}){
             {loading&&<div>Loading...</div>}
             {!loading&&!wydarzenie.id &&<div>Takie wydarzenie nie znalażone</div>}
             {!loading&&wydarzenie.id &&
-                <div className={"wydarzenie-duze"} >
-                    <div className={"wydarzenie-duze-flex-lewy"}>
+                <div className={"pt-12 text-center flex flex-row flex-wrap"} >
+                    <div className={"flex-30"}>
 
-                        <p className={"wydarzenie-duze-nazwa"}>{wydarzenie.nazwa}</p>
-                        <p className={"wydarzenie-duze-typ"}>{wydarzenie.typ}</p>
-                        <p className={"wydarzenie-duze-data-napis1"}>data Wyjazdu:</p>
-                        <p className={"wydarzenie-duze-data-wyjazdu"}>{wydarzenie.dataWyjazdu}</p>
-                        <p className={"wydarzenie-duze-data-napis2"}>data Zakonczenia:</p>
-                        <p className={"wydarzenie-duze-data-zakoncznia"}>{wydarzenie.dataZakonczenia}</p>
-                        <div className={"wydarzenie-duze-opis"}>{wydarzenie.opis}</div>
-                        <button style={{border:"solid 1px white",marginTop:"10px"}}
+                        <p className={"mt-4"}>{wydarzenie.nazwa}</p>
+                        <p className={"mt-4"}>{wydarzenie.typ}</p>
+                        <p className={"mt-4"}>data Wyjazdu:</p>
+                        <p >{wydarzenie.dataWyjazdu}</p>
+                        <p >data Zakonczenia:</p>
+                        <p >{wydarzenie.dataZakonczenia}</p>
+                        <div className={"mt-4 bg-wheat text-black break-normal"}>{wydarzenie.opis}</div>
+                        <button className={"border border-solid border-white mt-2"}
                                 onClick={()=>dodajUczestnictwo(id,user.id)}>
                             Uczęstniczaj w wydarzeniu
                         </button>
                         <br/>
-                        <button style={{border:"solid 1px white",marginTop: "50px"}}
-                                onClick={e => {
+                        <button className={"border border-solid border-white mt-12"}
+                                         onClick={e => {
                                     setEdit(wydarzenie)
                                     replaceClick(e, "/admin/edit/wydarzenie")
                                 }}>
                             Edit wydarzenie
                         </button>
                     </div>
-                    <div className={"wydarzenie-duze-flex-prawy"}>Galerja zdjęć
-                        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                    <div className={"flex-70"}>Galerja zdjęć
+                        <div className={"flex flex-row flex-wrap"}>
                             {wydarzenie.zdjecia.length > 0 && wydarzenie.zdjecia.map((z, i) => (
                                 <div key={i}>
-                                    <img className={"wydarzenie-male-img"}
+                                    <img className={"rounding-2 p-4 max-w-72"}
                                          src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/wydarzenia/${z}`} loading="lazy"
                                          alt={z}
-                                        style={{"width":"300px",padding:"20px"}}
+
                                     />
                                 </div>
                             ))}

@@ -62,10 +62,10 @@ export default function Wydarzenia(){
     return (
         <div>
 
-            <div className={"wydarzenia"}>
+            <div className={"flex flex-row"}>
                 <Filter/>
                 {/*<div  className={"wydarzenia-vertical-line"} ></div>*/}
-                <div className={"wydarzenia-row"}>
+                <div className={"flex flex-row flex-wrap"}>
                     {wydarzeniaNaStronie.map((wydarzenie, i) => (
                         <WydarzenieMale wydarzenie={wydarzenie} key={i} width={elementWidth - 20}/>
                     ))}
