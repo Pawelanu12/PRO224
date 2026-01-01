@@ -9,10 +9,30 @@ import {FaImage, FaImages} from "react-icons/fa";
 import {FaX} from "react-icons/fa6";
 import Opcji from "@/app/forum/Opcji";
 import PisanieKomentarza from "@/app/forum/dialogs/PisanieKomentarza";
+import {Virtuoso} from "react-virtuoso";
+import Wiadomosc from "@/app/czat/websocket/Wiadomosc";
+import Koment from "@/app/forum/Koment";
+import Post from "@/app/forum/Post";
+import PostInformacja from "@/app/forum/PostInformacja";
+import DodawaniaPostu from "@/app/forum/dialogs/DodawaniaPostu";
 
-export default function PostDialog({post,compare_dates}) {
+const compare_dates=(data_posta)=> {
+    const date1 = new Date(data_posta);
+    const date2 = new Date();
+    const millis=date2.getTime()-date1.getTime();
+    const dni=millis/(1000*60*60*24)|0;
+    const godziny=millis/(1000*60*60)|0;
+    if(dni>=1)
+        return dni+ ' dni temu'
+    if(dni===0&&godziny>0)
+        return godziny+ ' godzin temu'
+    return "mniej niż godzina temu"
+}
+
+export default function PostDialog({post}) {
     const {user}=useContext(GlobalContext);
-
+    const [comments, setComments] = useState(post.komentarze);
+    const {changeLike,setPosty}=useContext(ForumContext);
     const dialog=useRef(null);
     const [pelnyOpis,setPelnyOpis] = useState(false)
     const [show,setShow]=useState(false)
@@ -58,158 +78,78 @@ export default function PostDialog({post,compare_dates}) {
                 ref={dialog}
                 style={{
                     left: "20vw",
-                    top: "20vh",
-                    width: "60vw",
-                    height: "60vh",
+                    top: "80px",
+                    width: "500px",
+                    height: "500px",
                     border: "none",
                     borderRadius: "10px",
                 }}
                 onClose={() => {
+                    setPosty(prev=>prev.map(p=>p.id===post.id? {...post,komentarze:comments}:p))
                     document.body.style.overflow = "auto";
                 }}
                 onCancel={(e) => {
+                    setPosty(prev=>prev.map(p=>p.id===post.id? {...post,komentarze:comments}:p))
                     document.body.style.overflow = "auto";
                 }}
             >
 
-                <div style={{width: "60vw", height: "7vh"}}>
-                    <p style={{textAlign:"center"}}>Post {post.autor}</p>
-                    <button style={{
-                        position: "absolute",
-                        backgroundColor: "grey",
-                        padding: "10px",
-                        marginTop: "10px",
-                        borderRadius: "30px",
-                        right: "10px",
-                        top:"0px"
-                    }}
+                <div className={"w-[500px] h-12"} >
+                    <p className={"text-center"}>Post {post.autor}</p>
+                    <button className="absolute right-4 top-2 bg-gray-500 p-2 rounded-full"
+
                             onClick={() => {
                                 dialog.current.close()
                             }}>
                         <FaX/>
                     </button>
                 </div>
-                <div style={{width: "60vw", height: "53vh",overflowY: "scroll"}}>
 
-                    <div>
 
-                        <div style={{alignItems: "center"}}>
-                            <div style={{flex: 60}}>
-                                <div className={'flexRow'}>
-                                    <img src={post.ikona} alt="ikona" className={'ikona'} style={{margin: 0}}/>
-                                    <div>
-                                        <div className={"flexRow"}>
-                                            <p>autor:{post.autorId}</p>
-                                            {post.autorId !== user.id &&
-                                                <button
-                                                    style={{paddingLeft: "20px", color: "#88D79D"}}>Obserwuj</button>}
-                                        </div>
-                                        <p>{compare_dates(post.dataStworzenia)}</p>
-                                    </div>
 
-                                </div>
+                <Virtuoso
+                    components={{
+                        Header: () => <div>
+                            <PostInformacja post={post}/>
+                            {/* Akcje: like, komentarze, udostępnienia */}
 
+                        <div className={"flexRow"}
+                            style={{justifyContent: "space-around", backgroundColor: "#3A4F39"}}>
+                            <div>
+                                <button onClick={(e) =>{e.preventDefault(); changeLike(post.id,user.id)}}>
+                                    ilosc polubeń {post.polubienia.length}</button>
                             </div>
-                            <p style={
-                                pelnyOpis ? {wordBreak: "break-word", height: "auto", marginLeft: "10px"} :
-                                    {
-                                        marginLeft: "10px",
-                                        wordBreak: "break-word",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        display: "-webkit-box",
-                                        WebkitLineClamp: 3,       // ile linii pokazać
-                                        WebkitBoxOrient: "vertical"
-                                    }}
-                            >{post.tresc}</p>
-                            <button style={{color: "grey"}}
-                                    onClick={() => setPelnyOpis(!pelnyOpis)}>
-                                {pelnyOpis ? "pokaż mniej" : "pokaż węcej"}</button>
-                        </div>
-                        <div style={{flex: 20, textAlign: "right"}}>
-                            {/*{show && <Opcji autor={post.autorId} post={post}/>}*/}
-                            {/*<button onClick={() => setShow(!show)} style={{fontSize: "50px"}}> . . .</button>*/}
-                        </div>
-
-                    </div>
-                    {images.length>0&& <div style={{
-                        position: "relative",
-                        width: "100%",
-                        height: "300px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        overflow: "hidden",
-                        borderRadius: "10px"
-                    }}>
-                        <img
-                            src={images[index].src}
-                            alt={images[index].alt}
-                            style={{width: "100%", height: "100%", objectFit: "contain",borderRadius:"20px"}}
-                        />
-                        {images.length>1&&<div><button
-                            onClick={prev}
-                            style={{
-                                position: "absolute",
-                                left: "10px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                background: "rgba(0,0,0,0.4)",
-                                color: "white",
-                                border: "none",
-                                padding: "10px",
-                                cursor: "pointer"
-                            }}
-                        >
-                            ◀
-                        </button>
-
-                        {/* RIGHT ARROW */}
-                        <button
-                            onClick={next}
-                            style={{
-                                position: "absolute",
-                                right: "10px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                background: "rgba(0,0,0,0.4)",
-                                color: "white",
-                                border: "none",
-                                padding: "10px",
-                                cursor: "pointer"
-                            }}
-                        >
-                            ▶
-                        </button>
-                       </div>}
-                    </div>}
-                    <div className={"flexRow"}
-                         style={{
-                             justifyContent: "space-around",
-                             marginTop: "10px",
-                             marginBottom: "75px",
-                             backgroundColor: "#3A4F39"
-                         }}>
-                        <div>
-                            <button onClick={() => console.log("like")}>
-                                ilosc polubeń {post.iloscPolubien}</button>
-                        </div>
-                        <div>
-                            <button onClick={() => {
-                                dialog.current.close()
-                            }}>ilosc komentarzy {post.komentarze.length}</button>
-                        </div>
-                        <div>
-                            <button>ilosc udostepnien {post.udostepnienia}</button>
+                            <div>
+                                <button >
+                                    Ilość komentarzy {comments.length}</button>
+                            </div>
+                            <div>
+                                <button>ilosc udostepnien {post.udostepnienia}</button>
+                            </div>
                         </div>
                     </div>
-                    {post.komentarze.length > 0 && <div>
-                        {post.komentarze.map((k, i) => (<div key={i}>koment</div>))}
-                    </div>}
-                </div>
-                <PisanieKomentarza/>
+                    }}
+                    data={comments}
+                    style={{ height: 'calc(100% - 115px)' }}
+                    followOutput="auto"
+                    itemContent={(index, koment) =>
+                       (
+                            <Koment koment={koment}/>
+                        )
+                    }
+                />
+                <PisanieKomentarza id={post.id} add={setComments}/>
             </dialog>
 
         </div>
     )
 }
+
+
+
+
+
+
+
+
+

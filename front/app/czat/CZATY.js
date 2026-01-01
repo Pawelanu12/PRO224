@@ -54,29 +54,52 @@ export default function Czaty(){
 
         return () => stompClient.deactivate();
     }, [user]);
-    if(!czaty)return <div>nie ma czatow</div>
 
-    return(
-        <div style={{
-            position: "fixed",
-            width: "40vw",
-            overflow: "auto",
-            height:"100vh"
-        }}>
+    if (!czaty) return <div>Nie ma czatów</div>
 
-            <div style={{display:"flex",height:"80px",backgroundColor:"#4D644C"}}>
-                <NowyCzatDialog/></div>
-            {czaty.map((c,id)=>
-                <div onClick={()=>setCzat(c)} style={{display:"flex",height:"80px",backgroundColor:"#4D644C"}} key={id}>
-                <img className={"ikona"} src={c.obraz} alt={"ikona"}/>
-                <div  style={{backgroundColor:"#405E3F",margin:"20px",width:"100%"}}>
-                   <p style={{textAlign:"center"}}>{getNazwa(c,user.login)}</p>
-                    {c.wiadomosc&&<p>{c.wiadomosc.tresc}</p>}
+    return (
+        <div className="fixed left-0 top-0 h-screen w-[30vw] overflow-y-auto bg-[#4D644C]">
+
+            {/* Header */}
+            <div className="h-20 flex mt-12 items-center px-4">
+                <NowyCzatDialog />
+            </div>
+
+            {/* Lista czatów */}
+            {czaty.map(c => (
+                <div
+                    key={c.id}
+                    onClick={() => setCzat(c)}
+                    className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-[#405E3F]"
+                >
+                    {/* Avatar */}
+                    <img
+                        src={c.obraz}
+                        alt="avatar"
+                        className="w-12 h-12 rounded-full object-cover"
+                    />
+
+                    {/* Środek */}
+                    <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-white truncate">
+                            {getNazwa(c, user.login)}
+                        </p>
+
+                        {c.wiadomosc && (
+                            <p className="text-sm text-gray-300 line-clamp-1">
+                                {c.wiadomosc.tresc}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Badge */}
+                    {c.nieprzeczytane_wiadomosci > 0 && (
+                        <div className="min-w-[24px] h-6 px-2 text-xs flex items-center justify-center rounded-full bg-red-600 text-white">
+                            {c.nieprzeczytane_wiadomosci}
+                        </div>
+                    )}
                 </div>
-                <div style={{borderRadius:"100%", width:"25px",height:"25px",
-                    textAlign:"center",borderColor:"red",borderWidth:"2px"}}>
-                    {c.nieprzeczytane_wiadomosci}</div>
-            </div>)}
+            ))}
         </div>
     )
 }

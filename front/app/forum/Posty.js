@@ -19,18 +19,8 @@ export default function Posty({wszystkie=true}){
     let postyPokazywane=posty
     if(!wszystkie)
         postyPokazywane=posty.filter(p=>p.autorLogin===user.login)
-    // if(!postyPokazywane||postyPokazywane.length===0)
-    //     return <p style={{paddingTop:"75px",paddingLeft:"300px",textAlign:"center"}}>{"nie posiadasz postów"}</p>
 
     const reversed=[...postyPokazywane].reverse();
-    //
-    //    // const renderRow=({index,style})=>(
-    //    //  <div style={{...style}}>
-    //    //
-    //    //      <Post
-    //    //             post={reversed[index]} />
-    //    //  </div>
-    // )
 
 
 
@@ -38,11 +28,7 @@ export default function Posty({wszystkie=true}){
     return(
         <div style={{paddingLeft:"250px", width:"100%",
            justifyItems:'center',height:"100vh"}}>
-            {/*<div className={"postyBackground"}>*/}
-            {/*</div>*/}
             <div className={"posty"}>
-                {/*<DodawaniaPostu/>*/}
-                {/*<br/>*/}
 
                 <Virtuoso
                     components={{
@@ -53,31 +39,7 @@ export default function Posty({wszystkie=true}){
                     totalCount={reversed.length}
                     itemContent={(i) => <Post post={reversed[i]} />}
                 />
-                {/*{[...postyPokazywane].reverse().map((post,i)=><Post key={i} post={post}/>)}*/}
             </div>
         </div>
     )
 }
-
-//    const rederRow=({index,style})=>(
-//
-//         <div style={{...style}}>
-//
-//             <Wydatek  key={listPofiltrowana[index].id}
-//                      wydatek={listPofiltrowana[index]} />
-//         </div>
-//     )
-
-
-// return (
-//     <FixedSizeList
-//         height={window.innerHeight}
-//         width={window.innerWidth-20}
-//         itemCount={listPofiltrowana.length}
-//         itemSize={200}
-//     >
-//         {rederRow}
-//     </FixedSizeList>
-// )
-
-

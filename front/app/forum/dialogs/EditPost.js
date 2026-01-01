@@ -11,9 +11,9 @@ import {FaX} from "react-icons/fa6";
 export default function EditPost({post}) {
     const {user}=useContext(GlobalContext);
     const {editPost,deletePost}=useContext(ForumContext)
-
-    const [oldfiles,setOldFiles]=useState(post.zdjecia.map((z,i)=>{return {"index":i,"src":z}}));
+    const [oldfiles,setOldFiles] = useState([]);
     const [files,setFiles]=useState([]);
+    const [picturesToBeRemoved,setPicturesToBeRemoved] = useState([])
     const [isTresc,setIsTresc]=useState(true);
     const tresc=useRef("");
     const dialog=useRef(null);
@@ -21,17 +21,22 @@ export default function EditPost({post}) {
     const edit=()=>{
         console.log(files)
         console.log(user)
+        console.log(picturesToBeRemoved)
         const formData = new FormData();
         if (files) {
             for (let i = 0; i < files.length; i++) {
-                formData.append("files", files[i]);
+                formData.append("newPictures", files[i]);
             }
         }
-
+        if (picturesToBeRemoved) {
+            for (let i = 0; i < picturesToBeRemoved.length; i++) {
+                formData.append("picturesToBeRemoved", picturesToBeRemoved[i]);
+            }
+        }
         formData.append("tresc", tresc.current.value);
-        formData.append("autorId", user.id);
+        // formData.append("autorId", user.id);
 
-        editPost(formData)
+        editPost(post.id,formData)
         dialog.current.close()
     }
     const onChange=(e)=>{
@@ -106,45 +111,57 @@ export default function EditPost({post}) {
                                 style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                                 <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
 
-                                {oldfiles.map((img, i) => (
-                                    <div style={{margin: "10px", width: "20vw"}} key={i}>
-                                        <button style={{
-                                            backgroundColor: "grey",
-                                            padding: "10px",
-                                            marginRight: "10px",
-                                            borderRadius: "30px",
-                                            position: "relative"
-                                        }}
-                                                onClick={() => {
-                                                    setOldFiles(oldfiles.filter((v) => v.index !== img.index))
-                                                }}>
-                                            <FaX/>
-                                        </button>
-                                        <img style={{
-                                            marginTop: "-50px",
-                                        }} key={i} src={"http://localhost:8080/uploads/posts/" + img.src}
-                                             alt={img.src}/>
+                                    {post.zdjecia.filter(z=>!picturesToBeRemoved.includes(z)).map((img, i) => (
+                                        <div style={{margin: "10px", width: "20vw"}} key={i}>
+                                            <button style={{
+                                                backgroundColor: "grey",
+                                                padding: "10px",
+                                                marginRight: "10px",
+                                                borderRadius: "30px",
+                                                position: "relative"
+                                            }}
+                                                    onClick={() => {
+                                                        setPicturesToBeRemoved(prev=>[...prev,img])
+                                                        // setOldFiles(oldfiles.filter((v) => v.index !== img.index))
+                                                    }}>
+                                                <FaX/>
+                                            </button>
+                                            <img style={{
+                                                marginTop: "-50px",
+                                            }} key={i} src={"http://localhost:8080/uploads/posts/" + img}
+                                                 alt={img}/>
 
-                                    </div>
-                                ))}
+                                        </div>
+                                    ))}
                                 </div>
 
 
                                 {files.length > 0 &&
                                     <div>
-                                        <div style={{ flexBasis: "100%",
-                                            height: 0}}/>
-                                        <button style={{backgroundColor: "red"}} onClick={() => setFiles([])}>wyczysc
-                                            pliki
-                                        </button>
-                                    </div>}
-                                <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                                        <p style={{textAlign:"center",backgroundColor:"red"}}>Nowe pliki</p><br/>
+                                        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                                            {files.map((file, i) => (
+                                                <div style={{margin: "10px", width: "20vw",}} key={i}>
+                                                    <button style={{
+                                                        backgroundColor: "grey",
+                                                        padding: "10px",
+                                                        marginRight: "10px",
+                                                        borderRadius: "30px",
+                                                        position: "relative"
+                                                    }}
+                                                            onClick={() => {
+                                                                setFiles(prev=>prev.filter((v) => v !== file))
+                                                            }}>
+                                                        <FaX/>
+                                                    </button>
+                                                    <img style={{marginTop: "-50px"}} key={i}
+                                                         src={URL.createObjectURL(file)} alt={file.name}/>
 
-                                {files.map((file, i) => (
-                                    <div style={{margin: "10px", width: "20vw"}} key={i}>
-                                        <img key={i} src={URL.createObjectURL(file)} alt={file.name}/>
-                                    </div>
-                                ))}</div></div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>}
+                            </div>
                         </div>}
                 </div>
                 <div style={{margin: "2vw", width: "56vw", height: "10vh"}}>

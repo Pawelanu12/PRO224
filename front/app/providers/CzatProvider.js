@@ -34,28 +34,27 @@ export default function CzatProvider({ children }) {
                 })
                 .catch(err=>console.log(err))
         }
-        if(user && user.id)
             pobierz()
     }
-    // const getCzat= async()=>{
-    //     setLoading(true)
-    //     // console.log(loading)
-    //     const nazwa=czaty.filter(item => item.id === pokazywanyCzatId)[0].nazwa
-    //     const ikona=czaty.filter(item => item.id === pokazywanyCzatId)[0].obraz
-    //     let messages
-    //     if(pokazywanyCzatId!==1) {
-    //          messages=c;
-    //     }
-    //     else {
-    //         messages=c2;
-    //     }
-    //     setCzat({nazwa:nazwa,ikona:ikona,messages:messages})
-    //     // await fetch(`http://localhost:8080/getCzat/${pokazywanyCzatId}`,{
-    //     //     method:"GET",
-    //     //
-    //     // })
-    //     setTimeout(()=>setLoading(false),1000);
-    // }
+
+    const getCzat=(id)=>{
+        const pobierz=async (id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${id}`,{
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"},
+            })
+                .then(res=>res.json())
+                .then(res=> {
+                    console.log(res)
+
+                        setCzat(res)
+
+                })
+                .catch(err=>console.log(err))
+        }
+            pobierz(id)
+    }
+
     // const dodajCzat = (values) => {
     //     const add=async (values)=>{
     //
@@ -101,7 +100,7 @@ export default function CzatProvider({ children }) {
         add(values)
     }
     return (
-        <CzatContext.Provider value={{setCzat,setCzaty,
+        <CzatContext.Provider value={{setCzat,setCzaty,getCzat,
             czaty,getCzaty,czat,loading,dodajCzatPrywatny
         }}>{children}</CzatContext.Provider>
     )

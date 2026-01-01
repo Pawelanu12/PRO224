@@ -60,7 +60,7 @@ export default function Sprawnosc({sprawnosc}) {
                 style={{ width:"150px",display: "flex",
                     flexDirection: "column",
                     alignItems: "center",...style  }}>
-            <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/sprawnosci/${sprawnosc.ikona}`}
+            <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}${sprawnosc.ikonaUrl}`}
                  // loading={"lazy"}
                  onClick={(e) => {
                      setEdit(sprawnosc);

@@ -6,6 +6,7 @@ import {createContext, useContext, useState} from "react";
 import pos from "/app/data/posty.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
+import {bool} from "yup";
 export const ForumContext = createContext();
 
 export default function ForumProvider({ children }) {
@@ -52,12 +53,11 @@ export default function ForumProvider({ children }) {
     }
     const editPost = (id,body) => {
         const edit=async (id,body)=>{
-            console.log(body)
+            console.log(id)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`,{
                 method:"PUT",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"},
-                body:JSON.stringify({...body})
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
+                body:body
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -68,6 +68,7 @@ export default function ForumProvider({ children }) {
                         alert(res.error)
                 })
                 .catch(err=>console.log(err))
+                .finally(()=>getPosty())
         }
         edit(id,body)
     }
@@ -103,9 +104,27 @@ export default function ForumProvider({ children }) {
         }
         change(id,uzytkownikId)
     }
+
+    const writeComment=(body)=>{
+        const send=async (body)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz`,{
+                method:"POST",
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    "Content-Type": "application/json"},
+                body:JSON.stringify(body)
+            })
+                .then(res=>res.json())
+                .then(res=> {
+                    console.log(res)
+                })
+                .catch(err=>console.log(err))
+                // .finally(()=>getPosty())
+        }
+        send(body)
+    }
     return (
-        <ForumContext.Provider value={{
-            posty,loading,getPosty,addPosty,editPost,deletePost,changeLike
+        <ForumContext.Provider value={{setPosty,
+            writeComment,posty,loading,getPosty,addPosty,editPost,deletePost,changeLike
         }}>{children}</ForumContext.Provider>
     )
 };
