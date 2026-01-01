@@ -60,15 +60,14 @@ public class UzytkownikService {
 
         uzytkownikRepository.save(u);
     }
-    public AuthResponse login(LoginRequest req) {
+    public String login(LoginRequest req) {
         authenticationManager.authenticate(
                 new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                         req.getLogin(),
                         req.getHaslo()
                 )
         );
-        String token = jwtService.generateToken(req.getLogin());
-        return new AuthResponse(token);
+       return jwtService.generateToken(req.getLogin());
     }
 
     public UzytkownikDto getCurrentUser(String login) {

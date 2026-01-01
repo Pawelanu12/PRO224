@@ -7,9 +7,15 @@ import api.szyszka.DTOs.Auth.RegisterRequest;
 import api.szyszka.DTOs.GoogleUserData;
 import api.szyszka.Security.GoogleTokenVerifier;
 import api.szyszka.Services.UzytkownikService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
 
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -26,8 +32,23 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) {
-        return ResponseEntity.ok(userService.login(req));
+    public ResponseEntity<?> login(
+            @RequestBody LoginRequest req,
+            HttpServletResponse response
+    ) {
+        String token = userService.login(req);
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(Duration.ofMinutes(15))
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/google")
