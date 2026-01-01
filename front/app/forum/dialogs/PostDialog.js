@@ -16,18 +16,6 @@ import Post from "@/app/forum/Post";
 import PostInformacja from "@/app/forum/PostInformacja";
 import DodawaniaPostu from "@/app/forum/dialogs/DodawaniaPostu";
 
-const compare_dates=(data_posta)=> {
-    const date1 = new Date(data_posta);
-    const date2 = new Date();
-    const millis=date2.getTime()-date1.getTime();
-    const dni=millis/(1000*60*60*24)|0;
-    const godziny=millis/(1000*60*60)|0;
-    if(dni>=1)
-        return dni+ ' dni temu'
-    if(dni===0&&godziny>0)
-        return godziny+ ' godzin temu'
-    return "mniej niż godzina temu"
-}
 
 export default function PostDialog({post}) {
     const {user}=useContext(GlobalContext);
@@ -47,6 +35,7 @@ if(!post) return null;
                     e.preventDefault();
                     dialog.current.showModal()
                     setComments(post.komentarze)
+                    document.body.style.overflow = "hidden";
                 }}>
                     ilosc komentarzy {post.komentarze.length}</button>
             </div>
