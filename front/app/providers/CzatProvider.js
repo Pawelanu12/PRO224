@@ -19,8 +19,10 @@ export default function CzatProvider({ children }) {
         console.log(values)
         const pobierz=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/my-czaty?userId=${user.id}`,{
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                headers: {
                     "Content-Type": "application/json"},
+                credentials: "include",
+
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -40,8 +42,9 @@ export default function CzatProvider({ children }) {
     const getCzat=(id)=>{
         const pobierz=async (id)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${id}`,{
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"},
+                headers: {"Content-Type": "application/json"},
+                credentials: "include",
+
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -87,8 +90,8 @@ export default function CzatProvider({ children }) {
         const add=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty`,{
                 method:"Post",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"},
+                headers: {"Content-Type": "application/json"},
+                credentials: "include",
                 body:JSON.stringify({...values})
             })
                 .then(res=>res.json())

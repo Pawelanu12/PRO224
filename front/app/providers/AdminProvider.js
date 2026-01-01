@@ -13,8 +13,7 @@ export default function AdminProvider({ children }) {
         const add=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc`,{
                 method:"POST",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    },
+                credentials: "include",
                 body:values
             })
                 .then(res=> res.json())
@@ -31,8 +30,7 @@ export default function AdminProvider({ children }) {
         const edit=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/${id}`,{
                 method:"PUT",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
+                credentials: "include",
                 body:values
             })
                 .then(res=> res.json())
@@ -48,7 +46,7 @@ export default function AdminProvider({ children }) {
         const usun=async (id)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/${id}`, {
                 method: "Delete",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                credentials: "include"
             })
                 .then(res=>{
                     console.log(res)
@@ -64,8 +62,7 @@ export default function AdminProvider({ children }) {
        const add=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie`,{
                 method:"POST",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
+                credentials: "include",
 
                 body:values
             })
@@ -85,10 +82,7 @@ export default function AdminProvider({ children }) {
         const edit=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
                 method:"PUT",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    // "Content-Type": "application/json"
-
-                },
+                credentials: "include",
                 body:values
             })
                 .then(res=> res.json())
@@ -105,7 +99,7 @@ export default function AdminProvider({ children }) {
         const usun=async (id)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`, {
                 method: "Delete",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                credentials: "include"
             })
                 .then(res=>{
                     console.log(res)

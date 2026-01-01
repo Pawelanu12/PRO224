@@ -20,8 +20,7 @@ export default function ForumProvider({ children }) {
             setLoading(true)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"GET",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"}
+                credentials:"include"
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -41,8 +40,7 @@ export default function ForumProvider({ children }) {
             console.log(body)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"POST",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    },
+                credentials: "include",
                 body:body
             })
                 .then(res=>res.json())
@@ -59,7 +57,7 @@ export default function ForumProvider({ children }) {
             console.log(id)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`,{
                 method:"PUT",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
+                credentials: "include",
                 body:body
             })
                 .then(res=>res.json())
@@ -80,7 +78,8 @@ export default function ForumProvider({ children }) {
         const usun=async (id)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`, {
                 method: "Delete",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                credentials: "include",
+
             })
                 .catch((err)=>console.log(err))
                 .finally(()=>getPosty())
@@ -92,7 +91,7 @@ export default function ForumProvider({ children }) {
         const change=async (id,uzytkownikId)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}/like?uzytkownikId=${uzytkownikId}`,{
                 method:"PUT",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,}
+                credentials: "include",
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -109,8 +108,9 @@ export default function ForumProvider({ children }) {
         const send=async (body)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz`,{
                 method:"POST",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"},
+                headers: {"Content-Type": "application/json"},
+                credentials: "include",
+
                 body:JSON.stringify(body)
             })
                 .then(res=>res.json())

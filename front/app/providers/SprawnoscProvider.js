@@ -19,8 +19,8 @@ export default function SprawnoscProvider({ children }) {
             setLoading(true)
                 await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc`,{
                 method:"GET",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                "Content-Type": "application/json"}
+                credentials: "include",
+                headers: {"Content-Type": "application/json"}
             })
                     .then(res=> res.json())
                     .then(res=> {
@@ -44,7 +44,7 @@ export default function SprawnoscProvider({ children }) {
             console.log(id)
             fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/zdobytaSprawnosc/uzytkownik/${id}`,
                 { method:"GET",
-                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                    credentials: "include",
                 })
                 .then(res=>res.json())
                 .then(res=>{

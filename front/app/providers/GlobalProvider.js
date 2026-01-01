@@ -15,9 +15,9 @@ export default function GlobalProvider({ children }) {
     const dialog=useRef(null);
 
     const logOut = () => {
-        localStorage.clear()
+
         setUser({})
-        router.push("/login")
+        router.replace("/login")
 
         // if(dialog&&dialog.current)
         //     dialog.current.showModal();
@@ -34,21 +34,14 @@ export default function GlobalProvider({ children }) {
                 {
                     method:"POST",
                     headers:{'Content-type':"application/json"},
+                    credentials: "include",
                     body:JSON.stringify(
                         values)
                 })
-                .then(res=>res.json())
-                .then(r=>{
-                    console.log(r)
-                    if(r.token){
-                        localStorage.setItem("token",r.token)
-                        console.log(window.history)
-                        router.push("/forum")
-                    }
-
-                })
-                .then(
-                    ()=>get_me()
+                .then(()=>{
+                    replaceClick(null, "/forum")
+                    get_me()
+        }
                 )
                 .catch(err=>console.log(err))
         }
@@ -60,7 +53,7 @@ export default function GlobalProvider({ children }) {
         {
             fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me`,
                 { method:"GET",
-                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                    credentials: "include"
                 })
                 .then(res=>res.json())
                 .then(r=>{
@@ -107,17 +100,8 @@ export default function GlobalProvider({ children }) {
 
     useEffect(()=>{
         console.log("get_me")
-        const interval=setInterval(get_me,3600000)
-        // console.log(window.location.pathname)
-        // if(window.location.pathname.startsWith("/profil")
-        //     ||window.location.pathname.startsWith("/forum")
-        //     ||window.location.pathname.startsWith("/admin")
-        //     ||window.location.pathname.startsWith("/czat")
-        //     ||window.location.pathname.startsWith("/sprawnosci")
-        //     ||window.location.pathname.startsWith("/wydarzenia")
-        //     ||window.location.pathname.startsWith("/kontakt")
-        // )
-        // {
+        // const interval=setInterval(get_me,3600000)
+
             get_me()
         // }
         return(()=>clearInterval(interval))

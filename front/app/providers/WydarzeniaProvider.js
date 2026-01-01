@@ -24,8 +24,8 @@ export default function WydarzeniaProvider({ children }) {
             setLoading(true)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie`,{
                 method:"GET",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"}
+                credentials: "include",
+                headers: {"Content-Type": "application/json"}
             })
                 .then(res=>res.json())
                 .then(res=> {
@@ -47,8 +47,8 @@ export default function WydarzeniaProvider({ children }) {
             setLoading(true)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uczestnictwo`,{
                 method:"POST",
-                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    "Content-Type": "application/json"},
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
                 body:JSON.stringify(
                     {uzytkownikId:uzytkownikId,wydarzenieId:wydarzenieId,uczestnictwo:false})
 
