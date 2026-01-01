@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePostRequest {
-    private Long id;
+//    private Long id;
     //private LocalDateTime dataStworzenia;
     private String tresc;
     //private Uzytkownik autor;

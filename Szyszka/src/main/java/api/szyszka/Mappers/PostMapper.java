@@ -31,7 +31,7 @@ public class PostMapper {
                 entity.getTresc(),
                 entity.getPolubienia().stream().map(p->p.getUzytkownik().getId()).toList(),
                 entity.getAutor().getLogin(),
-                entity.getKomentarze(),
+                entity.getKomentarze().stream().map(KomentarzMapper::toDto).toList(),
                 zdjeciaUrl
                 //entity.getZdjecia().stream()
                 //        .map(entity.getZdjecia()::mapToPublic)

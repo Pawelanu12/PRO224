@@ -22,7 +22,7 @@ public class PostDto {
     private String tresc;
     private List<Long> polubienia;
     private String autorLogin;
-    private List<Komentarz> komentarze;
+    private List<KomentarzDto> komentarze;
     private List<String> zdjecia;
 
     public static Post fromCreateRequest(CreatePostRequest request) {
