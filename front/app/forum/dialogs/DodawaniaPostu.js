@@ -1,144 +1,137 @@
-'use state'
+'use client'
 
-import {useContext, useRef, useState} from "react";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import * as Yup from "yup";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
-import {ForumContext} from "@/app/providers/ForumProvider";
-import {FaImage, FaImages} from "react-icons/fa";
-import {FaX} from "react-icons/fa6";
+import { useContext, useRef, useState } from "react";
+import { GlobalContext } from "@/app/providers/GlobalProvider";
+import { ForumContext } from "@/app/providers/ForumProvider";
+import { FaImages } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
 export default function DodawaniaPostu() {
-    const {user}=useContext(GlobalContext);
-    const {addPosty}=useContext(ForumContext);
-    const [files,setFiles]=useState([]);
-    const [isTresc,setIsTresc]=useState(false);
-    const tresc=useRef(null);
-    const dialog=useRef(null);
+    const { user } = useContext(GlobalContext);
+    const { addPosty } = useContext(ForumContext);
 
-    const dodajPost=()=>{
-        console.log(files)
-        console.log(user)
+    const [files, setFiles] = useState([]);
+    const [isTresc, setIsTresc] = useState(false);
+    const tresc = useRef(null);
+    const dialog = useRef(null);
+
+    const dodajPost = () => {
         const formData = new FormData();
-        if (files) {
-            for (let i = 0; i < files.length; i++) {
-                formData.append("files", files[i]);
-            }
-        }
-
+        files.forEach((f) => formData.append("files", f));
         formData.append("tresc", tresc.current.value);
         formData.append("autorId", user.id);
 
-        addPosty(formData)
-        dialog.current.close()
-    }
-    const onChange=(e)=>{
-        if (isTresc && e.target.value.length === 0) {
-            setIsTresc(false);
-        } else if (!isTresc && e.target.value.length > 0) {
-            setIsTresc(true);
-        }
-        tresc.current.style.height="auto"
-        tresc.current.style.height=tresc.current.scrollHeight+"px";
+        addPosty(formData);
+        dialog.current.close();
+        document.body.style.overflow = "auto";
+    };
 
-    }
-    return(
-        <div >
-            <div
-                style={{
-                    backgroundColor: "#4D644C",
-                    display:"flex",
-                    flexDirection:"row",
-                    marginBottom: "30px",
-                }}>
+    const onChange = (e) => {
+        setIsTresc(e.target.value.length > 0);
+        tresc.current.style.height = "auto";
+        tresc.current.style.height = tresc.current.scrollHeight + "px";
+    };
 
-                <img src={"/images/ikona.png"} alt={"logo"} style={{
-                    marginRight:"20px",height:"54px"
-
-                }}/>
-                <button style={{color: "red", zIndex: 13,
-                    backgroundColor: "#336250",
-                    padding: "10px",
-                    margin:"5px",
-                    borderRadius:"30px"
-                }} onClick={() => {
-                    dialog.current.showModal();
-                    document.body.style.overflow = "hidden";
-                    console.log(dialog.current.div)
-                }}>chcesz dodać post?
+    return (
+        <div className="mb-8">
+            {/* Nagłówek i przycisk */}
+            <div className="bg-[#4D644C] flex items-center px-4 py-3 mb-8 rounded-md">
+                <img src="/images/ikona.png" alt="logo" className="h-14 mr-5" />
+                <button
+                    className="text-red-600 z-20 px-4 py-2 rounded-full bg-[#336250] hover:bg-[#2b5140]"
+                    onClick={() => {
+                        dialog.current.showModal();
+                        document.body.style.overflow = "hidden";
+                    }}
+                >
+                    Chcesz dodać post?
                 </button>
             </div>
 
+            {/* Dialog */}
             <dialog
                 ref={dialog}
-                style={{
-                    left: "20vw",
-                    top: "20vh",
-                    width: "60vw",
-                    height: "60vh",
-                    border: "none",
-                    borderRadius: "10px",
-                }}
-                onClose={() => {
-                    document.body.style.overflow = "auto";
-                }}
-                onCancel={(e) => {
-                    document.body.style.overflow = "auto";
-                }}
+                className="fixed left-[20vw] top-[80px]
+             h-[500px] w-[500px]"
+                onClose={() => (document.body.style.overflow = "auto")}
+                onCancel={() => (document.body.style.overflow = "auto")}
             >
-                <div style={{height: "7vh", marginTop: "1vh",display:"flex",alignItems:"center",
-                    flexDirection:"row",justifyContent:"space-between"}}>
-                    <p></p>
-                    <p style={{textAlign: "center"}}>
-                    Utworz post</p>
-                    <button style={{backgroundColor:"grey",padding:"10px",marginRight:"10px",borderRadius:"30px"}}
-                    onClick={() => {dialog.current.close()}}>
-                    <FaX />
-                    </button>
+                {/* Wewnętrzny div */}
+                <div className="bg-white rounded-lg w-[500px] h-[500px] max-w-3xl flex flex-col">
+                    {/* Header */}
+                    <div className="flex justify-between items-center p-4 border-b">
+                        <div></div>
+                        <p className="text-lg font-semibold text-center flex-1">Utwórz post</p>
+                        <button
+                            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400"
+                            onClick={() => {
+                                dialog.current.close();
+                                document.body.style.overflow = "auto";
+                            }}
+                        >
+                            <FaX />
+                        </button>
+                    </div>
+
+                    {/* Treść i pliki */}
+                    <div className="flex-1 p-4 overflow-y-auto space-y-4">
+            <textarea
+                ref={tresc}
+                placeholder="Treść posta"
+                className="w-full resize-none border-none outline-none p-2 rounded-md shadow-sm"
+                rows={1}
+                onChange={onChange}
+            />
+
+                        {/* Lista nowych plików */}
+                        {files.length > 0 && (
+                            <div>
+                                <div className="flex flex-wrap gap-4 justify-center mt-2">
+                                    {files.map((file, i) => (
+                                        <div key={i} className="relative w-40 flex items-center">
+                                            <img
+                                                src={URL.createObjectURL(file)}
+                                                alt={file.name}
+                                                className="w-full h-32 object-cover rounded-md"
+                                            />
+                                            <button
+                                                className="absolute top-0 right-0 bg-gray-400 p-1 rounded-full hover:bg-gray-500"
+                                                onClick={() => setFiles((prev) => prev.filter((v) => v !== file))}
+                                            >
+                                                <FaX />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Dodawanie plików i przycisk opublikuj */}
+                    <div className="px-4 py-2 border-t space-y-2">
+                        <label className="flex justify-between items-center cursor-pointer">
+                            <span>Dodaj do posta</span>
+                            <FaImages className="text-2xl" />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                className="hidden"
+                                onChange={(e) => setFiles((prev) => [...prev, ...Array.from(e.target.files)])}
+                            />
+                        </label>
+
+                        <button
+                            className={`w-full py-2 rounded-md text-white ${
+                                isTresc ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 pointer-events-none"
+                            }`}
+                            onClick={dodajPost}
+                        >
+                            Opublikuj
+                        </button>
+                    </div>
                 </div>
-                <div style={{margin: "2vh 2vw 2vh 2vw", width: "56vw", height: "30vh", overflowY: "scroll"}}>
-                    <textarea
-                        placeholder={"treść posta"}
-                        style={{width: "100%", overflow: "hidden", resize: "none", border: "none", outline: "none"}}
-                        rows={1} ref={tresc}
-                        onChange={(e) => onChange(e)}/>
-                    {files.length > 0 &&
-                        <div>
-                            <button style={{backgroundColor: "red"}} onClick={() => setFiles([])}>wyczysc pliki</button>
-                            <div
-                                style={{display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"}}>
-                                {files.map((file, i) => (
-                                    <div style={{margin: "10px", width: "20vw"}} key={i}>
-                                        <img key={i} src={URL.createObjectURL(file)} alt={file.name}/>
-                                    </div>
-                                ))}</div>
-                        </div>}
-                </div>
-                <div style={{margin: "2vw", width: "56vw", height: "10vh"}}>
-                    <label>
-                        <div style={{display: "flex", justifyContent: "space-between"}}><p>Dodaj do posta </p>
-
-                            <FaImages fontSize={"30px"}/></div>
-
-                        <input type="file" accept="image/*" multiple={true}
-                               className={"pole-formy-dodawnia"}
-                               onChange={(e) => {
-                                   setFiles(prev => [...prev, ...Array.from(e.target.files)]);
-
-                               }}
-                               style={{opacity: 0}}
-                               name="ikona" placeholder="wstaw ikone"
-                        />
-                    </label>
-                    <button style={isTresc ? {width: "100%", backgroundColor: "blue"}
-                        : {width: "100%", backgroundColor: "grey", pointerEvents: "none"}}
-
-                            onClick={() => dodajPost()}>Opublikuj
-                    </button>
-                </div>
-
             </dialog>
-
         </div>
-    )
+    );
 }

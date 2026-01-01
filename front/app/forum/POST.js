@@ -20,41 +20,20 @@ const compare_dates=(data_posta)=> {
     return "mniej niż godzina temu"
 }
 
-export default function Post({post}){
-    const {changeLike} = useContext(ForumContext);
+export default function Post({post,setShow}){
+    const {changeLike,setPostForDialog} = useContext(ForumContext);
 const {user}=useContext(GlobalContext)
-    const [pelnyOpis,setPelnyOpis] = useState(false)
-    const [show,setShow]=useState(false)
 
-    const [index, setIndex] = useState(0);
-
-    const next = () => {
-        setIndex((prev) => (prev + 1) % images.length);
-    };
-
-    const prev = () => {
-        setIndex((prev) => (prev - 1 + images.length) % images.length);
-    };
-
-        const images=post.zdjecia.map((z,i)=>{
-            return  {"key":i, "src":"http://localhost:8080/uploads/posts/"+z, "alt":z,"id":i}
-        })
-
-    // console.log(images.length)
     return (
-        <div style={{marginBottom: "30px",
-            backgroundColor: "#4D644C",
-            maxWidth: "500px"
-        }}>
-          <PostInformacja post={post} />
-                <div className={"flexRow"}
-                     style={{justifyContent: "space-around", marginTop: "10px", backgroundColor: "#3A4F39"}}>
+        <div className={"mb-8 bg-[#4D644C] max-w-[500px] rounded-lg min-w-[250px]"}>
+            <PostInformacja post={post} />
+                <div className={"flex flex-row flex-wrap justify-around mt-2 bg-[#3A4F39] rounded-lg"}>
                     <div>
                         <button onClick={(e) =>{e.preventDefault(); changeLike(post.id,user.id)}}>
                             ilosc polubeń {post.polubienia.length}</button>
                     </div>
                     <div>
-                        <PostDialog post={post}/>
+                       <PostDialog post={post}/>
                     </div>
                     <div>
                         <button>ilosc udostepnien {post.udostepnienia}</button>

@@ -1,6 +1,6 @@
 'use state'
 
-import {useContext, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
@@ -31,117 +31,85 @@ const compare_dates=(data_posta)=> {
 
 export default function PostDialog({post}) {
     const {user}=useContext(GlobalContext);
-    const [comments, setComments] = useState(post.komentarze);
     const {changeLike,setPosty}=useContext(ForumContext);
+
+    const [comments, setComments] = useState([]);
     const dialog=useRef(null);
-    const [pelnyOpis,setPelnyOpis] = useState(false)
-    const [show,setShow]=useState(false)
-
-    const [index, setIndex] = useState(0);
-
-
-    const next = () => {
-        setIndex((prev) => (prev + 1) % images.length);
-    };
-
-    const prev = () => {
-        setIndex((prev) => (prev - 1 + images.length) % images.length);
-    };
-
-    const images=post.zdjecia.map((z,i)=>{
-        return  {"key":i, "src":"http://localhost:8080/uploads/posts/"+z, "alt":"cat","id":i}
-    })
 
 
 
+
+if(!post) return null;
     return(
-        <div >
-            <div
-                style={{
-                    backgroundColor: "#4D644C",
+        <div>
+            <div>
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    dialog.current.showModal()
+                    setComments(post.komentarze)
                 }}>
-
-                <button style={{
-                    // backgroundColor: "#336250",
-                    // padding: "10px",
-                    // margin:"5px",
-                    // borderRadius:"30px"
-                    backgroundColor: "#3A4F39"
-                }} onClick={() => {
-                    dialog.current.showModal();
-                    document.body.style.overflow = "hidden";
-                }}>ilosc komentarzy {post.komentarze.length}</button>
-
+                    ilosc komentarzy {post.komentarze.length}</button>
             </div>
-
-            <dialog
-                ref={dialog}
-                style={{
-                    left: "20vw",
-                    top: "80px",
-                    width: "500px",
-                    height: "500px",
-                    border: "none",
-                    borderRadius: "10px",
-                }}
-                onClose={() => {
-                    setPosty(prev=>prev.map(p=>p.id===post.id? {...post,komentarze:comments}:p))
+    <dialog
+        ref={dialog}
+        className="fixed left-[20vw] top-[80px]
+             h-[500px] w-[500px]
+             "
+        onClose={() => {
+            // setShow(false)
+            setPosty(prev => prev.map(p => p.id === post.id ? {...post, komentarze: comments} : p))
                     document.body.style.overflow = "auto";
                 }}
                 onCancel={(e) => {
-                    setPosty(prev=>prev.map(p=>p.id===post.id? {...post,komentarze:comments}:p))
+                    setPosty(prev => prev.map(p => p.id === post.id ? {...post, komentarze: comments} : p))
                     document.body.style.overflow = "auto";
                 }}
             >
+                <div className={"flex flex-col h-[500px] w-[500px]"}>
+                    <div className="relative h-12 flex-shrink-0">
+                        <p className="text-center">Post {post.autor}</p>
 
-                <div className={"w-[500px] h-12"} >
-                    <p className={"text-center"}>Post {post.autor}</p>
-                    <button className="absolute right-4 top-2 bg-gray-500 p-2 rounded-full"
-
-                            onClick={() => {
-                                dialog.current.close()
-                            }}>
-                        <FaX/>
-                    </button>
-                </div>
-
-
-
-                <Virtuoso
-                    components={{
-                        Header: () => <div>
-                            <PostInformacja post={post}/>
-                            {/* Akcje: like, komentarze, udostępnienia */}
-
-                        <div className={"flexRow"}
-                            style={{justifyContent: "space-around", backgroundColor: "#3A4F39"}}>
-                            <div>
-                                <button onClick={(e) =>{e.preventDefault(); changeLike(post.id,user.id)}}>
-                                    ilosc polubeń {post.polubienia.length}</button>
-                            </div>
-                            <div>
-                                <button >
-                                    Ilość komentarzy {comments.length}</button>
-                            </div>
-                            <div>
-                                <button>ilosc udostepnien {post.udostepnienia}</button>
-                            </div>
-                        </div>
+                        <button
+                            className="absolute right-4 top-2 rounded-full bg-gray-500 p-2"
+                            onClick={() => dialog.current.close()}
+                        >
+                            <FaX/>
+                        </button>
                     </div>
-                    }}
-                    data={comments}
-                    style={{ height: 'calc(100% - 115px)' }}
-                    followOutput="auto"
-                    itemContent={(index, koment) =>
-                       (
-                            <Koment koment={koment}/>
-                        )
-                    }
-                />
-                <PisanieKomentarza id={post.id} add={setComments}/>
-            </dialog>
 
+
+                    <div className="flex-1 overflow-hidden">
+                        <Virtuoso
+                            data={comments}
+                            followOutput="auto"
+                            className="h-full"
+                            components={{
+                                Header: () => (
+                                    <div className={" bg-[#4D644C]"}>
+                                        <PostInformacja post={post}/>
+                                        <div className="mt-2 flex flex-wrap justify-around bg-[#3A4F39]">
+                                            <button onClick={() => changeLike(post.id, user.id)}>
+                                                ilość polubień {post.polubienia.length}
+                                            </button>
+                                            <button>Ilość komentarzy {comments.length}</button>
+                                            <button>udostępnienia {post.udostepnienia}</button>
+                                        </div>
+                                    </div>
+                                ),
+                            }}
+                            itemContent={(index, koment) => <Koment koment={koment}/>}
+                        />
+                    </div>
+
+                    <PisanieKomentarza
+                        id={post.id}
+                        add={setComments}
+                        className="flex-shrink-0"
+                    />
+                </div>
+            </dialog>
         </div>
+
     )
 }
 

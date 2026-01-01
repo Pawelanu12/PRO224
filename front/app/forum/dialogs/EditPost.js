@@ -1,194 +1,165 @@
-'use state'
+'use client'
 
-import {useContext, useRef, useState} from "react";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import * as Yup from "yup";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
-import {ForumContext} from "@/app/providers/ForumProvider";
-import {FaImage, FaImages} from "react-icons/fa";
-import {FaX} from "react-icons/fa6";
+import { useContext, useRef, useState } from "react";
+import { GlobalContext } from "@/app/providers/GlobalProvider";
+import { ForumContext } from "@/app/providers/ForumProvider";
+import { FaImages } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
-export default function EditPost({post}) {
-    const {user}=useContext(GlobalContext);
-    const {editPost,deletePost}=useContext(ForumContext)
-    const [oldfiles,setOldFiles] = useState([]);
-    const [files,setFiles]=useState([]);
-    const [picturesToBeRemoved,setPicturesToBeRemoved] = useState([])
-    const [isTresc,setIsTresc]=useState(true);
-    const tresc=useRef("");
-    const dialog=useRef(null);
+export default function EditPost({ post }) {
+    const { user } = useContext(GlobalContext);
+    const { editPost } = useContext(ForumContext);
 
-    const edit=()=>{
-        console.log(files)
-        console.log(user)
-        console.log(picturesToBeRemoved)
+    const [oldFiles, setOldFiles] = useState([]);
+    const [files, setFiles] = useState([]);
+    const [picturesToBeRemoved, setPicturesToBeRemoved] = useState([]);
+    const [isTresc, setIsTresc] = useState(true);
+
+    const tresc = useRef("");
+    const dialog = useRef(null);
+
+    const edit = () => {
         const formData = new FormData();
-        if (files) {
-            for (let i = 0; i < files.length; i++) {
-                formData.append("newPictures", files[i]);
-            }
-        }
-        if (picturesToBeRemoved) {
-            for (let i = 0; i < picturesToBeRemoved.length; i++) {
-                formData.append("picturesToBeRemoved", picturesToBeRemoved[i]);
-            }
-        }
+        files.forEach((f) => formData.append("newPictures", f));
+        picturesToBeRemoved.forEach((p) => formData.append("picturesToBeRemoved", p));
         formData.append("tresc", tresc.current.value);
-        // formData.append("autorId", user.id);
 
-        editPost(post.id,formData)
-        dialog.current.close()
-    }
-    const onChange=(e)=>{
-        if (isTresc && e.target.value.length === 0) {
-            setIsTresc(false);
-        } else if (!isTresc && e.target.value.length > 0) {
-            setIsTresc(true);
-        }
-        tresc.current.style.height="auto"
-        tresc.current.style.height=tresc.current.scrollHeight+"px";
+        editPost(post.id, formData);
+        dialog.current.close();
+        document.body.style.overflow = "auto";
+    };
 
-    }
-    return(
-        <div >
-            <div>
-                <button style={{color: "red", zIndex: 13,
-                    // backgroundColor: "#336250",
-                    // padding: "10px",
-                    // margin:"5px",
-                    // borderRadius:"30px"
-                }} onClick={() => {
+    const onChange = (e) => {
+        setIsTresc(e.target.value.length > 0);
+        tresc.current.style.height = "auto";
+        tresc.current.style.height = tresc.current.scrollHeight + "px";
+    };
+
+    return (
+        <div>
+            {/* Przycisk otwierający dialog */}
+            <button
+                className="text-red-600 z-20 px-4 py-2 rounded-lg border border-red-600 hover:bg-red-100"
+                onClick={() => {
                     dialog.current.showModal();
                     document.body.style.overflow = "hidden";
-                    console.log(dialog.current.div)
-                    console.log(post)
-                    tresc.current.value=post.tresc
-                    tresc.current.style.height="auto"
-                    tresc.current.style.height=tresc.current.scrollHeight+"px";
-                    setOldFiles(post.zdjecia.map((z,i)=>{return {"index":i,"src":z}}))
-                    console.log(oldfiles)
-                }}>edituj post
-                </button>
-            </div>
-
-            <dialog
-                ref={dialog}
-                style={{
-                    left: "20vw",
-                    top: "20vh",
-                    width: "60vw",
-                    height: "60vh",
-                    border: "none",
-                    borderRadius: "10px",
-                }}
-                onClose={() => {
-                    document.body.style.overflow = "auto";
-                }}
-                onCancel={(e) => {
-                    document.body.style.overflow = "auto";
+                    tresc.current.value = post.tresc;
+                    tresc.current.style.height = "auto";
+                    tresc.current.style.height = tresc.current.scrollHeight + "px";
+                    setOldFiles(post.zdjecia.map((z, i) => ({ index: i, src: z })));
                 }}
             >
-                <div style={{height: "7vh", marginTop: "1vh",display:"flex",alignItems:"center",
-                    flexDirection:"row",justifyContent:"space-between"}}>
-                    <p></p>
-                    <p style={{textAlign: "center"}}>
-                        Edituj post</p>
-                    <button style={{backgroundColor:"grey",padding:"10px",marginRight:"10px",borderRadius:"30px"}}
-                            onClick={() => {dialog.current.close()}}>
-                        <FaX />
-                    </button>
-                </div>
-                <div style={{margin: "2vh 2vw 2vh 2vw", width: "56vw", height: "30vh", overflowY: "scroll"}}>
-                    <textarea
-                        // defaultValue={post.tresc}
-                        placeholder={"treść posta"}
-                        style={{width: "100%", overflow: "hidden", resize: "none", border: "none", outline: "none"}}
-                        rows={1} ref={tresc}
-                        onChange={(e) => onChange(e)}/>
-                    {(files.length > 0||oldfiles.length>0) &&
-                        <div>
-                            <div
-                                style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                                <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+                Edytuj post
+            </button>
 
-                                    {post.zdjecia.filter(z=>!picturesToBeRemoved.includes(z)).map((img, i) => (
-                                        <div style={{margin: "10px", width: "20vw"}} key={i}>
-                                            <button style={{
-                                                backgroundColor: "grey",
-                                                padding: "10px",
-                                                marginRight: "10px",
-                                                borderRadius: "30px",
-                                                position: "relative"
-                                            }}
-                                                    onClick={() => {
-                                                        setPicturesToBeRemoved(prev=>[...prev,img])
-                                                        // setOldFiles(oldfiles.filter((v) => v.index !== img.index))
-                                                    }}>
-                                                <FaX/>
+            {/* Dialog */}
+            <dialog
+                ref={dialog}
+                className="fixed left-[20vw] top-[80px]
+             h-[500px] w-[500px]"
+                onClose={() => (document.body.style.overflow = "auto")}
+                onCancel={() => (document.body.style.overflow = "auto")}
+            >
+                {/* Wewnętrzny div z flexami */}
+                <div className="bg-white rounded-lg w-[500px] h-[500px] flex flex-col">
+                    {/* Header */}
+                    <div className="flex justify-between items-center p-4 border-b">
+                        <div></div>
+                        <p className="text-lg font-semibold">Edytuj post</p>
+                        <button
+                            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400"
+                            onClick={() => {
+                                dialog.current.close();
+                                document.body.style.overflow = "auto";
+                            }}
+                        >
+                            <FaX />
+                        </button>
+                    </div>
+
+                    {/* Treść i zdjęcia */}
+                    <div className="flex-1 p-4 overflow-y-auto space-y-4">
+            <textarea
+                ref={tresc}
+                placeholder="Treść posta"
+                className="w-full resize-none border-none outline-none p-2 rounded-md shadow-sm"
+                rows={1}
+                onChange={onChange}
+            />
+
+                        {/* Stare zdjęcia */}
+                        {oldFiles.length > 0 && (
+                            <div className="flex flex-wrap gap-4 justify-center">
+                                {post.zdjecia
+                                    .filter((z) => !picturesToBeRemoved.includes(z))
+                                    .map((img, i) => (
+                                        <div key={i} className="relative w-40 flex items-center">
+                                            <img
+                                                src={"http://localhost:8080/uploads/posts/" + img}
+                                                alt={img}
+                                                className="w-full h-32 object-cover rounded-md"
+                                            />
+                                            <button
+                                                className="absolute top-0 right-0 bg-gray-400 p-1 rounded-full hover:bg-gray-500"
+                                                onClick={() => setPicturesToBeRemoved((prev) => [...prev, img])}
+                                            >
+                                                <FaX />
                                             </button>
-                                            <img style={{
-                                                marginTop: "-50px",
-                                            }} key={i} src={"http://localhost:8080/uploads/posts/" + img}
-                                                 alt={img}/>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
 
+                        {/* Nowe pliki */}
+                        {files.length > 0 && (
+                            <div>
+                                <p className="text-center text-red-500 font-semibold">Nowe pliki</p>
+                                <div className="flex flex-wrap gap-4 justify-center mt-2">
+                                    {files.map((file, i) => (
+                                        <div key={i} className="relative w-40 flex items-center">
+                                            <img
+                                                src={URL.createObjectURL(file)}
+                                                alt={file.name}
+                                                className="w-full h-32 object-cover rounded-md"
+                                            />
+                                            <button
+                                                className="absolute top-0 right-0 bg-gray-400 p-1 rounded-full hover:bg-gray-500"
+                                                onClick={() => setFiles((prev) => prev.filter((v) => v !== file))}
+                                            >
+                                                <FaX />
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
-
-
-                                {files.length > 0 &&
-                                    <div>
-                                        <p style={{textAlign:"center",backgroundColor:"red"}}>Nowe pliki</p><br/>
-                                        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-                                            {files.map((file, i) => (
-                                                <div style={{margin: "10px", width: "20vw",}} key={i}>
-                                                    <button style={{
-                                                        backgroundColor: "grey",
-                                                        padding: "10px",
-                                                        marginRight: "10px",
-                                                        borderRadius: "30px",
-                                                        position: "relative"
-                                                    }}
-                                                            onClick={() => {
-                                                                setFiles(prev=>prev.filter((v) => v !== file))
-                                                            }}>
-                                                        <FaX/>
-                                                    </button>
-                                                    <img style={{marginTop: "-50px"}} key={i}
-                                                         src={URL.createObjectURL(file)} alt={file.name}/>
-
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>}
                             </div>
-                        </div>}
+                        )}
+                    </div>
+
+                    {/* Dodawanie nowych zdjęć i przycisk */}
+                    <div className="px-4 py-2 border-t space-y-2">
+                        <label className="flex justify-between items-center cursor-pointer">
+                            <span>Dodaj do posta</span>
+                            <FaImages className="text-2xl" />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                className="hidden"
+                                onChange={(e) => setFiles((prev) => [...prev, ...Array.from(e.target.files)])}
+                            />
+                        </label>
+
+                        <button
+                            className={`w-full py-2 rounded-md text-white ${
+                                isTresc ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 pointer-events-none"
+                            }`}
+                            onClick={edit}
+                        >
+                            Edytuj
+                        </button>
+                    </div>
                 </div>
-                <div style={{margin: "2vw", width: "56vw", height: "10vh"}}>
-                    <label>
-                        <div style={{display: "flex", justifyContent: "space-between"}}><p>Dodaj do posta </p>
-
-                            <FaImages fontSize={"30px"}/></div>
-
-                        <input type="file" accept="image/*" multiple={true}
-                               className={"pole-formy-dodawnia"}
-                               onChange={(e) => {
-                                   setFiles(prev => [...prev, ...Array.from(e.target.files)]);
-
-                               }}
-                               style={{opacity: 0}}
-                               name="ikona" placeholder="wstaw ikone"
-                        />
-                    </label>
-                    <button style={isTresc ? {width: "100%", backgroundColor: "blue"}
-                        : {width: "100%", backgroundColor: "grey", pointerEvents: "none"}}
-
-                            onClick={() => edit()}>Edituj
-                    </button>
-                </div>
-
             </dialog>
-
         </div>
-    )
+    );
 }

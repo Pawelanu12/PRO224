@@ -13,6 +13,8 @@ export default function ForumProvider({ children }) {
     const [posty, setPosty] = useState([]);
     const [loading, setLoading] = useState(false);
     const {replaceClick}=useContext(GlobalContext);
+
+    const [postForDialog,setPostForDialog] = useState(null);
     const getPosty = () => {
         const get=async ()=>{
             setLoading(true)
@@ -32,6 +34,7 @@ export default function ForumProvider({ children }) {
         }
         get()
     }
+
 
     const addPosty = (body) => {
         const add=async (body)=>{
@@ -79,11 +82,8 @@ export default function ForumProvider({ children }) {
                 method: "Delete",
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
             })
-                .then(res=>{
-                    console.log(res)
-                    if(res.ok)
-                        replaceClick("","/forum")
-                })
+                .catch((err)=>console.log(err))
+                .finally(()=>getPosty())
 
         }
         usun(id)
@@ -123,7 +123,7 @@ export default function ForumProvider({ children }) {
         send(body)
     }
     return (
-        <ForumContext.Provider value={{setPosty,
+        <ForumContext.Provider value={{setPosty,postForDialog,setPostForDialog,
             writeComment,posty,loading,getPosty,addPosty,editPost,deletePost,changeLike
         }}>{children}</ForumContext.Provider>
     )

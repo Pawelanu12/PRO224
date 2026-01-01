@@ -23,8 +23,8 @@ export default function PisanieKomentarza({id,add}){
         setMessage("")
     }
     return (
-        <div className="sticky bottom-0 flex gap-2 border-t
-            border-gray-700 bg-gray-800 p-3">
+        <div className="flex gap-2 border-t border-gray-700 bg-gray-800 p-3 ">
+
                 <textarea
                     className="max-h-[120px] flex-1 resize-none rounded-lg
                     bg-gray-700 px-4 py-2 text-sm text-white placeholder-gray-400

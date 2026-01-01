@@ -11,7 +11,7 @@ export default function NavbarNiezarejestrowana() {
     return <div className={"navbar"}>
         <div style={{display:"flex", flexDirection:"row"}}>
             <button onClick={(e) => replaceClick(e, "/gromada")} >
-                <img src={"/images/navbar/logo.png"} style={{height: "30px"}} alt={""}/>
+                <img src={"/images/navbar/logo.png"} style={{height: "30px",width:"30px"}} alt={""}/>
             </button>
             <button onClick={(e) => replaceClick(e, "/sprawnosci")}>
                 <p>
