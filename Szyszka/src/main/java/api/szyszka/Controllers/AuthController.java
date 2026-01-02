@@ -31,6 +31,18 @@ public class AuthController {
         return ResponseEntity.ok().body("{\"message\":\"User registered successfully\"}");
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("accessToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody LoginRequest req,
@@ -45,19 +57,26 @@ public class AuthController {
                 .sameSite("None")
                 .maxAge(Duration.ofMinutes(60))
                 .build();
-
+        System.out.println(cookie);
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/google")
-    public ResponseEntity<AuthResponse> googleLogin(@RequestBody GoogleAuthRequest request) {
-
+    public ResponseEntity<?>  googleLogin(@RequestBody GoogleAuthRequest request, HttpServletResponse response) {
         GoogleUserData googleUser = googleTokenVerifier.verify(request.getIdToken());
-        AuthResponse response = userService.loginWithGoogle(googleUser);
+        String token = userService.loginWithGoogle(googleUser);
+//        System.out.println(token);
 
-        return ResponseEntity.ok(response);
+        Cookie servletCookie = new Cookie("accessToken", token);
+        servletCookie.setHttpOnly(true);
+        servletCookie.setSecure(false); // dev
+        servletCookie.setPath("/");
+        servletCookie.setMaxAge(60 * 60); // 1 godzina
+        response.addCookie(servletCookie);
+
+        return ResponseEntity.ok().build();
     }
 }
 

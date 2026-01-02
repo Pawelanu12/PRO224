@@ -183,13 +183,12 @@ public class UzytkownikService {
         return uzytkownikRepository.findBySzostkaId(szostkaId);
         }
 
-    public AuthResponse loginWithGoogle(GoogleUserData googleUser) {
+    public String loginWithGoogle(GoogleUserData googleUser) {
 
         //Czy użytkownik już istnieje po googleId
         var userOpt = uzytkownikRepository.findByGoogleId(googleUser.getGoogleId());
         if (userOpt.isPresent()) {
-            String token = jwtService.generateToken(userOpt.get().getLogin());
-            return new AuthResponse(token);
+            return jwtService.generateToken(userOpt.get().getLogin());
         }
 
         // Czy istnieje konto nie google z tym samym email
@@ -201,8 +200,8 @@ public class UzytkownikService {
                 u.setAuthProvider(AuthProvider.GOOGLE);
                 uzytkownikRepository.save(u);
 
-                String token = jwtService.generateToken(u.getLogin());
-                return new AuthResponse(token);
+                return jwtService.generateToken(u.getLogin());
+//                return new AuthResponse(token);
             }
         }
 
@@ -219,8 +218,7 @@ public class UzytkownikService {
 
         uzytkownikRepository.save(u);
 
-        String token = jwtService.generateToken(u.getLogin());
-        return new AuthResponse(token);
+        return jwtService.generateToken(u.getLogin());
     }
 
 }
