@@ -5,6 +5,7 @@ import api.szyszka.DTOs.CzatSummaryDto;
 import api.szyszka.DTOs.WiadomoscDto;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
+import api.szyszka.Entities.Uzytkownik;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,20 +15,25 @@ public class CzatMapper {
     public static CzatDto toDto(Czat entity) {
         if (entity == null) return null;
 
-        List<Long> uczestnicyIds = entity.getUczestnicy().stream()
-                .map(CzatUzytkownik::getUzytkownik)
-                .map(u -> u.getId())
-                .collect(Collectors.toList());
+        // Lista ID uczestników
+        List<Long> uczestnicyIds = entity.getUczestnicy() == null ? List.of() :
+                entity.getUczestnicy().stream()
+                        .map(CzatUzytkownik::getUzytkownik)
+                        .filter(u -> u != null)
+                        .map(Uzytkownik::getId)
+                        .collect(Collectors.toList());
 
-        List<WiadomoscDto> wiadomosciDtos = entity.getWiadomosci().stream()
-                .map(w -> new WiadomoscDto(
-                        w.getId(),
-                        w.getCzat().getId(),
-                        w.getNadawca().getLogin(),
-                        w.getTresc(),
-                        w.getDataWyslania()
-                ))
-                .collect(Collectors.toList());
+        // Lista wiadomości
+        List<WiadomoscDto> wiadomosciDtos = entity.getWiadomosci() == null ? List.of() :
+                entity.getWiadomosci().stream()
+                        .map(w -> new WiadomoscDto(
+                                w.getId(),
+                                w.getCzat() != null ? w.getCzat().getId() : null,
+                                w.getNadawca() != null ? w.getNadawca().getLogin() : null,
+                                w.getTresc(),
+                                w.getDataWyslania()
+                        ))
+                        .collect(Collectors.toList());
 
         return new CzatDto(
                 entity.getId(),
@@ -38,19 +44,37 @@ public class CzatMapper {
                 wiadomosciDtos
         );
     }
+
+
     public static CzatSummaryDto toSummaryDto(CzatUzytkownik czatUzytkownik) {
+        if (czatUzytkownik == null || czatUzytkownik.getCzat() == null) return null;
+
         Czat czat = czatUzytkownik.getCzat();
+
+        List<String> uczestnicyLogins = czat.getUczestnicy() == null ? List.of() :
+                czat.getUczestnicy().stream()
+                        .map(CzatUzytkownik::getUzytkownik)
+                        .filter(u -> u != null)
+                        .map(Uzytkownik::getLogin)
+                        .collect(Collectors.toList());
+
+        WiadomoscDto ostatniaWiadomosc = czatUzytkownik.getLastReadMessage() == null ? null :
+                new WiadomoscDto(
+                        czatUzytkownik.getLastReadMessage().getId(),
+                        czat.getId(),
+                        czatUzytkownik.getLastReadMessage().getNadawca() != null ? czatUzytkownik.getLastReadMessage().getNadawca().getLogin() : null,
+                        czatUzytkownik.getLastReadMessage().getTresc(),
+                        czatUzytkownik.getLastReadMessage().getDataWyslania()
+                );
+
         return new CzatSummaryDto(
                 czat.getId(),
                 czat.getNazwa(),
                 czat.isCzyGrupowy(),
                 czat.getDataUtworzenia(),
-                czat.getUczestnicy()
-                        .stream()
-                        .map(u -> u.getUzytkownik().getLogin())
-                        .toList(),
+                uczestnicyLogins,
                 czatUzytkownik.getNieprzeczytaneWiadomosci(),
-                WiadomoscMapper.toDto(czatUzytkownik.getWiadomosc())
+                ostatniaWiadomosc
         );
     }
 

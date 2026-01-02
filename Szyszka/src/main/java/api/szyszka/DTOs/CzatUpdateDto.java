@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class CzatUpdateDto {
-    private Long czat_id;
-    private int nieprzeczytane_wiadomosci;
+    private Long czatId;
+    private int nieprzeczytaneWiadomosci;
     private WiadomoscDto wiadomosc;
 }
