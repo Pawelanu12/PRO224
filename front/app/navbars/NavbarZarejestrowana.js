@@ -9,6 +9,8 @@ export default function NavbarZarejestrowana() {
     const { replaceClick, logOut } = useContext(GlobalContext);
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+
+
     // Sprawdzanie wysokości okna
     useEffect(() => {
         const checkWidth = () => {
@@ -112,7 +114,7 @@ export default function NavbarZarejestrowana() {
                 {rightButtons.map((btn, idx) => (
                     <button
                         key={idx}
-                        onClick={(e) => btn.action ? btn.action() : replaceClick(e, btn.path)}
+                        onClick={(e) => btn.action ? btn.action(e) : replaceClick(e, btn.path)}
                         className="flex items-center justify-center bg-[#405E3F] shadow-md px-2 py-1"
                     >
                         {btn.icon && <span className="h-8 w-8 flex items-center justify-center">{btn.icon}</span>}

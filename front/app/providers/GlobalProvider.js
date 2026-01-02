@@ -5,6 +5,7 @@ import {createContext, useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import s from "@/app/data/sprawnosci.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
+import {signOut} from "next-auth/react";
 export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
@@ -12,16 +13,22 @@ export default function GlobalProvider({ children }) {
     const [user, setUser] = useState({})
     const [edit,setEdit] = useState({})
     const router = useRouter()
-    const dialog=useRef(null);
 
-    const logOut = () => {
+    const logOut = async (e) => {
+        console.log(user)
+        // 1️⃣ Logout z NextAuth (Google)
+        signOut({ redirect: false });
+        console.log(user)
 
-        setUser({})
-        router.replace("/login")
-
-        // if(dialog&&dialog.current)
-        //     dialog.current.showModal();
-    }
+        // 2️⃣ Logout z własnego backendu
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+        });
+        // 3️⃣ Wyczyść stan w frontendzie
+        setUser({});
+        replaceClick(e,"/login")
+    };
     const replaceClick=(e,href)=>{
         if(e)
             e.preventDefault()
@@ -39,7 +46,6 @@ export default function GlobalProvider({ children }) {
                         values)
                 })
                 .then(()=>{
-                    replaceClick(null, "/forum")
                     get_me()
         }
                 )
@@ -60,8 +66,10 @@ export default function GlobalProvider({ children }) {
                     console.log(r);
                     if(r.error)
                         logOut()
-                    else
+                    else{
                         setUser(r)
+                        replaceClick(null, "/forum")
+                    }
 
                 })
                 .catch(err=>console.log(err))
@@ -97,6 +105,23 @@ export default function GlobalProvider({ children }) {
         }
         f(values)
     }
+    const googleLogin = async (idToken) => {
+        try {
+            await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/google`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",   // kluczowe
+                body: JSON.stringify({ idToken })
+            })
+                .then(()=>{ get_me();  // fetch user info z cookie
+                    replaceClick("/forum");});
+
+
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
 
     useEffect(()=>{
         console.log("get_me")
@@ -104,11 +129,11 @@ export default function GlobalProvider({ children }) {
 
             get_me()
         // }
-        return(()=>clearInterval(interval))
+        // return(()=>clearInterval(interval))
     },[])
 
     return (
-        <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,
-            replaceClick,logIn,user,logOut}}>{children}</GlobalContext.Provider>
+        <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,get_me,
+            replaceClick,logIn,user,logOut,googleLogin}}>{children}</GlobalContext.Provider>
     )
 };

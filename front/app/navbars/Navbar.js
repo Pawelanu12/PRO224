@@ -8,6 +8,6 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 export default function  Navbar() {
     const {user}=useContext(GlobalContext)
 
-    return user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>
+    return user&&user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>
 
 }
