@@ -11,8 +11,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateGroupChatRequest {
-    private String nazwa;
-    private Long creatorId;
-    private List<Long> participantIds;
+public class UpdateCzatParticipantsRequest {
+    private List<Long> userIds;
 }

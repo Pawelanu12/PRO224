@@ -7,6 +7,7 @@ import api.szyszka.Entities.CzatUzytkownik;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Exceptions.ResourceNotFoundException;
+import api.szyszka.Exceptions.UserNotFoundException;
 import api.szyszka.Mappers.CzatMapper;
 import api.szyszka.Repositories.CzatRepository;
 import api.szyszka.Repositories.CzatUzytkownikRepository;
@@ -68,37 +69,54 @@ public class CzatService {
         return null;
     }
 
-    public CzatDto createGroupChat(String nazwa, Uzytkownik creator, List<String> participantLogins) {
+    public Czat createGroupChat(String nazwa, Uzytkownik creator, List<Long> participantIds) {
         Czat czat = new Czat();
         czat.setCzyGrupowy(true);
         czat.setNazwa(nazwa);
         czat.setDataUtworzenia(LocalDateTime.now());
-        Czat savedCzat = czatRepository.save(czat);
 
-        CzatUzytkownik creatorEntry = addParticipant(savedCzat, creator);
+        Czat saved = czatRepository.save(czat);
 
-        List<CzatUzytkownik> participants = participantLogins.stream()
-                .filter(login -> !login.equals(creator.getLogin()))
-                .map(login -> uzytkownikRepository.findByLogin(login)
-                        .orElse( null))
-                .map(uzytkownik -> addParticipant(savedCzat, uzytkownik))
-                .toList();
+        CzatUzytkownik creatorEntry = new CzatUzytkownik();
+        creatorEntry.setCzat(saved);
+        creatorEntry.setUzytkownik(creator);
+        creatorEntry.setNieprzeczytaneWiadomosci(0);
+        czatUzytkownikRepository.save(creatorEntry);
+        saved.getUczestnicy().add(creatorEntry);
 
-        participants.add(creatorEntry);
-        savedCzat.setUczestnicy(participants);
+        for (Long id : participantIds) {
+            Uzytkownik user = uzytkownikRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found: " + id));
 
-        return CzatMapper.toDto(savedCzat);
+            CzatUzytkownik cu = new CzatUzytkownik();
+            cu.setCzat(saved);
+            cu.setUzytkownik(user);
+            cu.setNieprzeczytaneWiadomosci(0);
+            czatUzytkownikRepository.save(cu);
+            saved.getUczestnicy().add(cu);
+        }
+
+        return saved;
     }
 
+
     public CzatUzytkownik addParticipant(Czat czat, Uzytkownik user) {
-        if(user!=null) {
+        if (user != null) {
             CzatUzytkownik cu = new CzatUzytkownik();
             cu.setCzat(czat);
             cu.setUzytkownik(user);
-            return czatUzytkownikRepository.save(cu);
+            cu.setNieprzeczytaneWiadomosci(0);
+            cu.setLastReadMessage(null);
+            CzatUzytkownik saved = czatUzytkownikRepository.save(cu);
+
+            if (czat.getUczestnicy() != null) {
+                czat.getUczestnicy().add(saved);
+            }
+            return saved;
         }
         return null;
     }
+
 
 
 
@@ -142,16 +160,79 @@ public class CzatService {
         return czatUzytkownikRepository.findByCzatId(czatId);
     }
 
-    public Wiadomosc sendMessage(Czat czat, Uzytkownik nadawca, String tresc) {
+    @Transactional
+    public Wiadomosc sendMessage(Long czatId, Long nadawcaId, String tresc) {
+        Czat czat = getCzatById(czatId);
+        Uzytkownik nadawca = uzytkownikRepository.findById(nadawcaId)
+                .orElseThrow(() -> new ResourceNotFoundException(nadawcaId));
+
         Wiadomosc wiadomosc = new Wiadomosc();
         wiadomosc.setCzat(czat);
         wiadomosc.setNadawca(nadawca);
         wiadomosc.setTresc(tresc);
         wiadomosc.setDataWyslania(LocalDateTime.now());
-        return wiadomoscRepository.save(wiadomosc);
+
+        Wiadomosc saved = wiadomoscRepository.save(wiadomosc);
+
+        czatUzytkownikRepository.findByCzatId(czatId).forEach(cu -> {
+            if (!cu.getUzytkownik().getId().equals(nadawcaId)) {
+                cu.setNieprzeczytaneWiadomosci(cu.getNieprzeczytaneWiadomosci() + 1);
+                cu.setLastReadMessage(saved);
+            }
+        });
+
+        return saved;
     }
+
 
     public List<Wiadomosc> getMessages(Long czatId) {
         return wiadomoscRepository.findByCzatIdOrderByDataWyslaniaAsc(czatId);
     }
+
+    @Transactional
+    public Czat updateCzatName(Long czatId, String nazwa) {
+        Czat czat = czatRepository.findById(czatId)
+                .orElseThrow(() -> new ResourceNotFoundException(czatId));
+
+        if (!czat.isCzyGrupowy()) {
+            throw new IllegalStateException("Nie można zmienić nazwy czatu prywatnego");
+        }
+
+        czat.setNazwa(nazwa);
+        return czatRepository.save(czat);
+    }
+
+
+    @Transactional
+    public CzatUzytkownik addParticipantById(Long czatId, Long uzytkownikId) {
+        Czat czat = czatRepository.findById(czatId)
+                .orElseThrow(() -> new ResourceNotFoundException(czatId));
+
+        Uzytkownik user = uzytkownikRepository.findById(uzytkownikId)
+                .orElseThrow(() -> new UserNotFoundException(uzytkownikId));
+
+        boolean alreadyParticipant = czatUzytkownikRepository.findByCzatId(czatId).stream()
+                .anyMatch(cu -> cu.getUzytkownik().getId().equals(uzytkownikId));
+
+        if (alreadyParticipant) {
+            throw new IllegalStateException("Uzytkownik jest już uczestnikiem czatu");
+        }
+
+        // Dodanie uczestnika
+        CzatUzytkownik czatUzytkownik = new CzatUzytkownik();
+        czatUzytkownik.setCzat(czat);
+        czatUzytkownik.setUzytkownik(user);
+        czatUzytkownik.setNieprzeczytaneWiadomosci(0);
+        czatUzytkownik.setLastReadMessage(null);
+
+        CzatUzytkownik saved = czatUzytkownikRepository.save(czatUzytkownik);
+        if (czat.getUczestnicy() != null) {
+            czat.getUczestnicy().add(saved);
+        }
+
+        return saved;
+    }
+
+
+
 }

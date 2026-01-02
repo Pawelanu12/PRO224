@@ -52,30 +52,25 @@ public class WiadomoscService {
         return savedWiadomosc;
     }
 
-    public void handleMessage(CreateWiadomoscRequest request,Wiadomosc wiadomosc){
-        WiadomoscDto dto= WiadomoscMapper
-                .toDto(wiadomosc);
-        List<CzatUzytkownik> uczestnicy =
-                czatUzytkownikRepository.findAllByCzatId(request.getCzatId());
+    public void handleMessage(CreateWiadomoscRequest request, Wiadomosc wiadomosc) {
+        WiadomoscDto dto = WiadomoscMapper.toDto(wiadomosc);
+        List<CzatUzytkownik> uczestnicy = czatUzytkownikRepository.findAllByCzatId(request.getCzatId());
 
         for (CzatUzytkownik cu : uczestnicy) {
+            Long userId = cu.getUzytkownik().getId();
+            Long nadawcaId = wiadomosc.getNadawca().getId();
 
-            if (!cu.getUzytkownik().getId().equals(wiadomosc.getNadawca().getId())) {
-             czatUzytkownikRepository.incrementUnread(cu.getId(),wiadomosc);
+            if (!userId.equals(nadawcaId)) {
+                cu.setNieprzeczytaneWiadomosci(cu.getNieprzeczytaneWiadomosci() + 1);
+                cu.setLastReadMessage(wiadomosc);
+            } else {
+                cu.setLastReadMessage(wiadomosc);
             }
-            if (cu.getUzytkownik().getId().equals(wiadomosc.getNadawca().getId())) {
-                cu.setWiadomosc(wiadomosc);
-                czatUzytkownikRepository.save(cu);
-            }
-            System.out.println( cu.getUzytkownik().getId().toString()+
-                    "/queue/chat-updates");
-//            messagingTemplate.convertAndSendToUser(
-//                    cu.getUzytkownik().getId().toString(),
-//                    "/queue/chat-updates",
-//                    new CzatUpdateDto(request.getCzatId(), cu.getNieprzeczytaneWiadomosci(), dto)
-//            );
+
+            czatUzytkownikRepository.save(cu);
+
             messagingTemplate.convertAndSend(
-                    "/topic/uzytkownik/"+cu.getUzytkownik().getId().toString(),
+                    "/topic/uzytkownik/" + userId,
                     new CzatUpdateDto(request.getCzatId(), cu.getNieprzeczytaneWiadomosci(), dto)
             );
         }
@@ -84,7 +79,8 @@ public class WiadomoscService {
                 dto
         );
     }
-//    public void incrementUnread(CzatUzytkownik czatUzytkownik,Wiadomosc wiadomosc){
+
+    //    public void incrementUnread(CzatUzytkownik czatUzytkownik,Wiadomosc wiadomosc){
 //        System.out.println("incrementUnread");
 //        czatUzytkownik.setWiadomosc(wiadomosc);
 //        czatUzytkownik.setNieprzeczytaneWiadomosci(czatUzytkownik.getNieprzeczytaneWiadomosci()+1);
