@@ -64,13 +64,13 @@ public class PostService {
 
 //        return postRepository.save(post);
 
-        if (files != null && !files.isEmpty()) {
-            for (MultipartFile file : files) {
-                //System.out.println(file.getOriginalFilename());
-                PostZdjecie zdj = saveFileForPost(file, post);
-                post.getZdjecia().add(zdj);
-            }
-        }
+//        if (files != null && !files.isEmpty()) {
+//            for (MultipartFile file : files) {
+//                //System.out.println(file.getOriginalFilename());
+//                PostZdjecie zdj = saveFileForPost(file, post);
+//                post.getZdjecia().add(zdj);
+//            }
+//        }
 
         return postRepository.save(post);
     }

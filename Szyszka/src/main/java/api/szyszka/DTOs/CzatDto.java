@@ -16,5 +16,6 @@ public class CzatDto {
     private boolean czyGrupowy;
     private LocalDateTime dataUtworzenia;
     private List<Long> uczestnicyIds;
+    private List<String> uczestnicyLogins;
     private List<WiadomoscDto> wiadomosci;
 }

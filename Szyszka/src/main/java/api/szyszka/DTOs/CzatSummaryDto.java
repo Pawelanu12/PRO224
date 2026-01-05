@@ -17,7 +17,7 @@ public class CzatSummaryDto {
     private String nazwa;
     private boolean czyGrupowy;
     private LocalDateTime dataUtworzenia;
-    private List<String> uczestnicyIds;
+    private List<String> uczestnicyLogins;
     private Integer nieprzeczytaneWiadomosci;
     private WiadomoscDto lastReadMessage;
 }

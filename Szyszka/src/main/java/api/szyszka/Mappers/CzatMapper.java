@@ -23,6 +23,14 @@ public class CzatMapper {
                         .map(Uzytkownik::getId)
                         .collect(Collectors.toList());
 
+        List<String> uczestnicyLogins = entity.getUczestnicy() == null ? List.of() :
+                entity.getUczestnicy().stream()
+                        .map(CzatUzytkownik::getUzytkownik)
+                        .filter(u -> u != null)
+                        .map(Uzytkownik::getLogin)
+                        .collect(Collectors.toList());
+
+
         // Lista wiadomości
         List<WiadomoscDto> wiadomosciDtos = entity.getWiadomosci() == null ? List.of() :
                 entity.getWiadomosci().stream()
@@ -41,6 +49,7 @@ public class CzatMapper {
                 entity.isCzyGrupowy(),
                 entity.getDataUtworzenia(),
                 uczestnicyIds,
+                uczestnicyLogins,
                 wiadomosciDtos
         );
     }
