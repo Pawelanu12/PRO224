@@ -139,34 +139,27 @@ public class PostService {
                 removeFileFromDisk(zdj.getSciezka());
                 return true;
             }
-        return false;
+            return false;
         });
     }
 
     @Transactional
     public Post modifyPostByPostId(Long id,
                                    UpdatePostRequest request
-                                   ) {
+    ) {
         Post post = getPostById(id);
 
         post.setTresc(request.getTresc());
 
-        if (!post.getZdjecia().isEmpty()) {
-            for (PostZdjecie zdj : post.getZdjecia()) {
-                removeFileFromDisk(zdj.getSciezka());
-            }
-            post.getZdjecia().clear();
+        if (request.getPicturesToBeRemoved() != null) {
+            post.getZdjecia().removeIf(zdj -> {
+                if (request.getPicturesToBeRemoved().contains(zdj.getSciezka())) {
+                    removeFileFromDisk(zdj.getSciezka());
+                    return true;
+                }
+                return false;
+            });
         }
-
-//        if (request.getPicturesToBeRemoved() != null) {
-//            post.getZdjecia().removeIf(zdj -> {
-//                if (request.getPicturesToBeRemoved().contains(zdj.getSciezka())) {
-//                    removeFileFromDisk(zdj.getSciezka());
-//                    return true;
-//                }
-//                return false;
-//            });
-//        }
 
         if (request.getNewPictures() != null) {
             for (MultipartFile file : request.getNewPictures()) {
