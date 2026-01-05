@@ -3,30 +3,24 @@
 
 import {createContext, useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
-import s from "@/app/data/sprawnosci.json"
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {signOut} from "next-auth/react";
 export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
     const [loading,setLoading] = useState(true);
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState(null)
     const [edit,setEdit] = useState({})
     const router = useRouter()
 
     const logOut = async (e) => {
         console.log(user)
-        // 1️⃣ Logout z NextAuth (Google)
         signOut({ redirect: false });
-        console.log(user)
 
-        // 2️⃣ Logout z własnego backendu
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/logout`, {
             method: "POST",
             credentials: "include",
         });
-        // 3️⃣ Wyczyść stan w frontendzie
-        setUser({});
+        setUser(null);
         replaceClick(e,"/login")
     };
     const replaceClick=(e,href)=>{
@@ -47,8 +41,10 @@ export default function GlobalProvider({ children }) {
                 })
                 .then(()=>{
                     get_me()
-        }
+                }
                 )
+                .then(()=>{router.replace("/forum")})
+
                 .catch(err=>console.log(err))
         }
         f(values)
@@ -57,22 +53,24 @@ export default function GlobalProvider({ children }) {
     const get_me=()=>{
         const me=async ()=>
         {
-            fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me`,
-                { method:"GET",
-                    credentials: "include"
-                })
-                .then(res=>res.json())
-                .then(r=>{
-                    console.log(r);
-                    if(r.error)
-                        logOut()
-                    else{
-                        setUser(r)
-                        replaceClick(null, "/forum")
-                    }
+            try {
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me`,
+                    { credentials: "include" }
+                );
 
-                })
-                .catch(err=>console.log(err))
+                if (!res.ok) {
+                    setUser(null);
+                    setLoading(false)
+                } else {
+                    const data = await res.json();
+                    setUser(data);
+                    setLoading(false)
+                }
+            } catch {
+                setUser(null);
+                setLoading(false)
+            }
         }
         me()
     }
@@ -105,7 +103,7 @@ export default function GlobalProvider({ children }) {
         }
         f(values)
     }
-    const googleLogin = async (idToken) => {
+    const googleLogin = async (idToken,expires) => {
         try {
             await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/google`, {
                 method: "POST",
@@ -113,8 +111,9 @@ export default function GlobalProvider({ children }) {
                 credentials: "include",   // kluczowe
                 body: JSON.stringify({ idToken })
             })
-                .then(()=>{ get_me();  // fetch user info z cookie
-                    replaceClick("/forum");});
+                .then(()=>{
+                    get_me()  // fetch user info z cookie
+                });
 
 
         } catch (err) {
@@ -124,13 +123,17 @@ export default function GlobalProvider({ children }) {
 
 
     useEffect(()=>{
-        console.log("get_me")
-        // const interval=setInterval(get_me,3600000)
-
+        const init= async ()=>{
             get_me()
-        // }
-        // return(()=>clearInterval(interval))
+
+        }
+        init()
     },[])
+    useEffect(() => {
+     console.log(loading)
+        if(loading)return
+        if(!user)router.replace("/login")
+    }, [user,loading]);
 
     return (
         <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,get_me,

@@ -16,7 +16,7 @@ export default function Sprawnosci(){
 
         return(
 
-            <div  className={"sprawnosci-page"}>
+            <div  className={" border-[2px] border-solid border-white;"}>
                 <Filter/>
                 <button
                         onClick={(e)=>replaceClick

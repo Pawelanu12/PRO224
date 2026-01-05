@@ -83,13 +83,6 @@ body{
     text-align: center;
     align-items: center;
 }
-.centrowanyText{
-    text-align: center;
-    margin-left: 5%;
-    margin-right: 5%;
-    font-size:20px;
-    background-color: #222822   ;
-}
 
 
 input{
@@ -132,23 +125,6 @@ input{
 }
 .forma .error{
     color:red;
-}
-
-.carousel {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-.carousel-inner {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-
-}
-
-.carousel-inner img {
-    min-width: 50%;
-    padding: 40px;
 }
 
 .czaty{

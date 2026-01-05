@@ -14,10 +14,12 @@ export default function CzatProvider({ children }) {
     const [czaty, setCzaty] = useState([]);
     const [czat, setCzat] = useState({});
     const {user}=useContext(GlobalContext);
+    const [czatId, setCzatId] = useState( null);
     const [loading,setLoading] = useState(false);
-    const getCzaty=(values)=>{
-        console.log(values)
-        const pobierz=async (values)=>{
+    const getCzaty=()=>{
+        if(!user||!user.id)return
+        console.log()
+        const pobierz=async ()=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/my-czaty?userId=${user.id}`,{
                 headers: {
                     "Content-Type": "application/json"},
@@ -29,9 +31,9 @@ export default function CzatProvider({ children }) {
                     console.log(res)
                     if(Array.isArray(res)) {
                         setCzaty(res)
-                        // if(!czat&&czaty.length>0){
-                            setCzat(res[0])
-                        // }
+                        if(res.length>0){
+                            setCzatId(res[0].id)
+                        }
                     }
                 })
                 .catch(err=>console.log(err))
@@ -85,10 +87,11 @@ export default function CzatProvider({ children }) {
     //     add(values)
     // }
 
-    const dodajCzatPrywatny=(values)=>{
+    const dodajCzat=(values,isGrupowy)=>{
     console.log(values)
-        const add=async (values)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty`,{
+        console.log(isGrupowy)
+        const add=async (values,isGrupowy)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty${isGrupowy}`,{
                 method:"Post",
                 headers: {"Content-Type": "application/json"},
                 credentials: "include",
@@ -96,15 +99,43 @@ export default function CzatProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
+
                     console.log(res)
                 })
+                .then(()=>getCzaty())
                 .catch(err=>console.log(err))
         }
-        add(values)
+        add(values,isGrupowy)
     }
+    const removeFromCzat=(czatId,userId)=>{
+        const removeFromCzat=async (czatId,userId)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/participants/${userId}`,{
+                method:"DELETE",
+                credentials: "include",
+            })
+                .then(()=>getCzaty())
+                .catch(err=>console.log(err))
+        }
+        removeFromCzat(czatId,userId)
+    }
+
+    const addUserToCzat=(czatId,userId)=>{
+        const removeFromCzat=async (czatId,userId)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/participants/${userId}`,{
+                method:"POST",
+                credentials: "include",
+            })
+                .then(()=>getCzaty())
+                .catch(err=>console.log(err))
+        }
+        removeFromCzat(czatId,userId)
+    }
+
+
     return (
-        <CzatContext.Provider value={{setCzat,setCzaty,getCzat,
-            czaty,getCzaty,czat,loading,dodajCzatPrywatny
+        <CzatContext.Provider value={{setCzat,setCzaty,getCzat,addUserToCzat,
+            czaty,getCzaty,czat,loading,dodajCzat,czatId,setCzatId,
+            removeFromCzat
         }}>{children}</CzatContext.Provider>
     )
 };

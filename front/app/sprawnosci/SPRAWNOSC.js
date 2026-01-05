@@ -1,90 +1,95 @@
 'use client'
 
-import {useContext, useEffect, useRef, useState} from "react";
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
+import { useContext, useState } from "react";
+import { GlobalContext } from "@/app/providers/GlobalProvider";
 
-export default function Sprawnosc({sprawnosc}) {
-    const {setEdit,replaceClick}=useContext(GlobalContext)
-    const [show,setShow] = useState(false);
-    const dialog=useRef(null)
-    const imageSizeWithBordings=120
-    const [style,setStyle]=useState({})
-    // console.log(sprawnosc);
-    useEffect(() => {
+export default function Sprawnosc({ sprawnosc }) {
+    const { setEdit, replaceClick } = useContext(GlobalContext);
+    const [show, setShow] = useState(false);
 
-        if (show) {
-            const scrollY = window.scrollY;
-            const x = window.innerWidth;
-            const y = window.innerHeight;
-
-            // console.log("right-bottom corner:", x, y,"right-bottom div",
-            //     dialog.current.offsetLeft+dialog.current.offsetWidth,
-            //     dialog.current.offsetTop+dialog.current.offsetHeight
-            //     );
-
-            if( dialog.current.offsetLeft+dialog.current.offsetWidth>x) {
-                dialog.current.style.right = 20+"px"
-            }
-            const transformY=dialog.current.offsetHeight
-                +imageSizeWithBordings+scrollY
-            if( dialog.current.offsetTop+dialog.current.offsetHeight>y+scrollY &&
-                dialog.current.offsetTop-transformY>0) {
-                dialog.current.style.top = (dialog.current.offsetTop-transformY)+"px";
-            }
-            else if(dialog.current.offsetTop+dialog.current.offsetHeight<=y+scrollY ){
-                dialog.current.style.top = dialog.current.offsetTop-scrollY+"px";
-            }
-            else{
-                dialog.current.style.position = "absolute";
-                // dialog.current.style.top = dialog.current.offsetTop+75  +"px";
-
-                // dialog.current.style.left=0
-                // dialog.current.style.height =y- dialog.current.offsetTop+scrollY+"px";
-                // console.log( dialog.current.style.height)
-                // dialog.current.style.overflow ="auto";
-            }
-        }
-    }, [show]);
-
-// console.log(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc/ikona/${sprawnosc.ikona}`);
     return (
-        <div className={"sprawnosc"}>
-            {/*<p style={{margin: "25px"}}*/}
-            {/*   onMouseMove={() => setShow(true)}*/}
-            {/*   onMouseLeave={() => setShow(false)}>sadas</p>*/}
+        <>
+            {/* KARTA SPRAWNOŚCI */}
+            <div className="relative m-6">
+                <div
+                    onClick={() => setShow(true)}
+                    className="
+            w-[150px]
+            flex flex-col items-center
+            rounded-lg
+            cursor-pointer
+            transition-colors duration-200
+            hover:bg-[#3A3939]
+          "
+                >
+                    <img
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}${sprawnosc.ikonaUrl}`}
+                        alt="sprawnosc"
+                        className="w-full h-[100px] rounded-lg object-contain"
+                        // onClick={(e) => {
+                        //     e.stopPropagation();
+                        //     setEdit(sprawnosc);
+                        //     replaceClick(e, "/admin/edit/sprawnosc");
+                        // }}
+                    />
 
-            <div
-                onMouseMove={() => {setShow(true);setStyle({"backgroundColor":"#3A3939"})}}
-                onMouseLeave={() =>{ setShow(false);setStyle({})}}
-                style={{ width:"150px",display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",...style  }}>
-            <img className={"sprawnosc-img"} src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}${sprawnosc.ikonaUrl}`}
-                 // loading={"lazy"}
-                 onClick={(e) => {
-                     setEdit(sprawnosc);
-                     replaceClick(e, "/admin/edit/sprawnosc")
-                 }}
-                alt={"sprawnosc"}
-
-
-            />
-
-                <p style={{wordWrap:"break-word",textAlign:"center",overflow: "hidden",
-                    width:"100%",height:"50px",margin:0}}>
-                    {sprawnosc.nazwa}</p>
-
+                    <p
+                        className="
+              mt-1
+              h-[50px]
+              w-full
+              text-center
+              text-sm
+              text-white
+              break-words
+              overflow-hidden
+            "
+                    >
+                        {sprawnosc.nazwa}
+                    </p>
+                </div>
             </div>
-            {/*<img src={sprawnosc.obraz}></img>*/}
-            {show &&
-                <div className={"sprawnosc-dialog"} ref={dialog}>
-                    <h1 className={"sprawnosc-nazwa"}>{sprawnosc.nazwa}</h1>
-                    <div className={"sprawnosc-opis"}>
-                        {sprawnosc.opis}
-                    </div>
 
-                </div>}
-        </div>
-    )
+            {/* MODAL */}
+            {show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    {/* BACKDROP */}
+                    <div
+                        className="absolute inset-0 bg-black/40"
+                        onClick={() => setShow(false)}
+                    />
+
+                    {/* OKNO */}
+                    <div
+                        className="
+              relative
+              w-[660px]
+              max-w-[90%]
+              rounded-xl
+              bg-[#DACA6F]
+              p-6
+              text-black
+              shadow-2xl
+            "
+                    >
+                        {/* CLOSE */}
+                        <button
+                            onClick={() => setShow(false)}
+                            className="absolute right-4 top-4 text-xl hover:text-red-600"
+                        >
+                            ✕
+                        </button>
+
+                        <h1 className="mb-4 text-center text-xl font-bold">
+                            {sprawnosc.nazwa}
+                        </h1>
+
+                        <div className="text-sm whitespace-pre-wrap">
+                            {sprawnosc.opis}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 }

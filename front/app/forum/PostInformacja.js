@@ -30,7 +30,7 @@ export default function PostInformacja({ post }) {
 
     const next = () => setIndex((prev) => (prev + 1) % images.length);
     const prev = () => setIndex((prev) => (prev - 1 + images.length) % images.length);
-
+if(!user)return <div>jesteś nie zalogowany</div>
     return (
         <div className="max-w-[500px] p-4 min-w-[250px]">
             {/* HEADER */}

@@ -22,8 +22,8 @@ export default function Wiadomosc({ wiadomosc, wiadomosc2 }) {
             <div className="flex min-w-0 flex-col">
 
                 {showHeader && (
-                    <div className="mb-1 flex items-center gap-2 text-sm">
-            <span className="font-semibold">
+                    <div className="mb-1 flex items-center gap-2 text-sm w-full">
+            <span className="font-semibold line-clamp-1">
               {wiadomosc.nadawca}
             </span>
             <span className="text-xs text-gray-400">

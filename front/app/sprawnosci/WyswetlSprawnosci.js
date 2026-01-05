@@ -1,48 +1,68 @@
 'use client'
 
-import {useContext, useEffect} from "react";
-import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
-import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
+import { useContext, useEffect } from "react";
+import { SprawnoscContext } from "@/app/providers/SprawnoscProvider";
 import Sprawnosc from "@/app/sprawnosci/Sprawnosc";
-import Filter from "@/app/sprawnosci/Filter";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import { GlobalContext } from "@/app/providers/GlobalProvider";
 
-export default function WyswetlSprawnosci(){
+export default function WyswietlSprawnosci() {
+    const { sprawnosciPosortowane, getSprawnosci } =
+        useContext(SprawnoscContext);
+    const { loading, user } = useContext(GlobalContext);
 
-    const {sprawnosciPosortowane,getSprawnosci}=useContext(SprawnoscContext)
-    const {loading,user,replaceClick,setEdit}=useContext(GlobalContext)
-    const typySprawnosci=["artystyczne","bajkowe","kultoroznawcze"]
-    // console.log(sprawnosciPosortowane)
-    useEffect(()=>{
-        getSprawnosci()
-    },[user])
+    useEffect(() => {
+        getSprawnosci();
+    }, [user]);
 
-    if(loading) return <div>
-        <p >loading</p>
-    </div>
-    if (!sprawnosciPosortowane.length) return <div>
-        <p>nie ma sprawnosci</p>
-    </div>
+    if (loading) {
+        return (
+            <div className="flex justify-center pt-20 text-white">
+                loading...
+            </div>
+        );
+    }
 
-    const typy = Array.from(new Set(sprawnosciPosortowane.map
-    (s=>(s.typ||"underfined").toUpperCase())))
-    console.log(user);
-    return(
+    if (!sprawnosciPosortowane.length) {
+        return (
+            <div className="flex justify-center pt-20 text-white">
+                nie ma sprawności
+            </div>
+        );
+    }
 
-            <div className={"Sprawnosci"}>
-                {typy.map(typ=><div key={typ||"underfined"} className={"Sprawnosci_po_typach"}>
-                    <h1 className={"typ-sprawnosci"}>{typ}</h1>
-                    <div className={"sprawnosci-po-typach"}>
-                        {
-                            sprawnosciPosortowane
-                                .filter(sprawnosc=>(sprawnosc.typ||"underfined").toUpperCase()===typ)
-                                .map((sprawnosc,id)=><Sprawnosc key={typ+" "+id} sprawnosc={sprawnosc}/>)
-                        }
+    const typy = Array.from(
+        new Set(
+            sprawnosciPosortowane.map(
+                (s) => (s.typ || "undefined").toUpperCase()
+            )
+        )
+    );
+
+    return (
+        <div className="flex flex-col">
+            {typy.map((typ) => (
+                <div key={typ} className="mb-10">
+                    {/* TYTUŁ TYPU */}
+                    <h1 className="ml-6 mt-6 text-2xl font-bold text-white">
+                        {typ}
+                    </h1>
+
+                    {/* LISTA SPRAWNOŚCI */}
+                    <div className="mt-4 ml-6 flex flex-wrap gap-6">
+                        {sprawnosciPosortowane
+                            .filter(
+                                (sprawnosc) =>
+                                    (sprawnosc.typ || "undefined").toUpperCase() ===
+                                    typ
+                            )
+                            .map((sprawnosc, id) => (
+                                <div key={typ + id}>
+                                    <Sprawnosc sprawnosc={sprawnosc} />
+                                </div>
+                            ))}
                     </div>
-                </div>)}
+                </div>
+            ))}
         </div>
-    )
+    );
 }
-//"obraz":"https://raw.githubusercontent.com/Pawelanu12/PRO224/s27297/app/data/obraz_sprawnosci.png",
-

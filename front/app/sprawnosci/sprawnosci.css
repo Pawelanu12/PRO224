@@ -49,9 +49,7 @@
     padding: 5px;
     margin: 5px;
 }
-.sprawnosci-page button{
-    border:2px solid white;
-}
+
 .sprawnosci-filter{
     display: flex;
     flex-direction: row;

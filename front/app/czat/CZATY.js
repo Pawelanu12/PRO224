@@ -8,20 +8,24 @@ import NowyCzatDialog from "@/app/czat/NowyCzatDialog";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {Client} from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import {FaXmark} from "react-icons/fa6";
 //pokazuje wszystkich uzytkowników i gruppy
 // do których pisales wczestniej lub jestes zarejestrowany
 const getNazwa=(c,login)=>{
     if(c.nazwa)
         return c.nazwa;
-    return (c.uczestnicyIds.filter(item=>item!==login).toString());
+    return (c.uczestnicyLogins.filter(item=>item!==login).toString());
 }
 
 export default function Czaty(){
-    const {czaty,getCzaty,setCzat,setCzaty}=useContext(CzatContext)
+    const {czaty,getCzaty,setCzaty,setCzatId,removeFromCzat}=useContext(CzatContext)
+    // console.log(czaty)
+    const [mobileOpen, setMobileOpen] = useState(false);
+
     const {user}=useContext(GlobalContext)
     useEffect(() => {
         getCzaty()
-    }, [user]);
+    }, [user?.id]);
     useEffect(() => {
         if(!user)return
         const stompClient = new Client({
@@ -58,48 +62,146 @@ export default function Czaty(){
     if (!czaty) return <div>Nie ma czatów</div>
 
     return (
-        <div className="fixed left-0 top-0 h-screen w-[30vw] overflow-y-auto bg-[#4D644C]">
-
-            {/* Header */}
-            <div className="h-20 flex mt-12 items-center px-4">
-                <NowyCzatDialog />
-            </div>
-
-            {/* Lista czatów */}
-            {czaty.map(c => (
-                <div
-                    key={c.id}
-                    onClick={() => setCzat(c)}
-                    className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-[#405E3F]"
+        <div>
+            <div className="md:hidden fixed top-[50px] left-0 w-full bg-[#4D644C] z-40">
+                <button
+                    onClick={() => setMobileOpen(true)}
+                    className="w-full py-3 text-white font-semibold border-b border-black/20"
                 >
-                    {/* Avatar */}
-                    <img
-                        src={c.obraz}
-                        alt="avatar"
-                        className="w-12 h-12 rounded-full object-cover"
-                    />
+                    Czaty
+                </button>
+            </div>
+            {/* MOBILE OVERLAY */}
+            {mobileOpen && (
+                <div className="fixed inset-0 z-50 bg-[#4D644C] flex flex-col md:hidden">
 
-                    {/* Środek */}
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">
-                            {getNazwa(c, user.login)}
-                        </p>
-
-                        {c.wiadomosc && (
-                            <p className="text-sm text-gray-300 line-clamp-1">
-                                {c.wiadomosc.tresc}
-                            </p>
-                        )}
+                    {/* Header */}
+                    <div className="h-14 flex items-center justify-between px-4 border-b border-black/20">
+                        <p className="text-white font-semibold">Czaty</p>
+                        <button
+                            onClick={() => setMobileOpen(false)}
+                            className="text-white text-xl"
+                        >
+                            ✕
+                        </button>
                     </div>
 
-                    {/* Badge */}
-                    {c.nieprzeczytane_wiadomosci > 0 && (
-                        <div className="min-w-[24px] h-6 px-2 text-xs flex items-center justify-center rounded-full bg-red-600 text-white">
-                            {c.nieprzeczytane_wiadomosci}
-                        </div>
-                    )}
+                    {/* Nowy czat */}
+                    <div className="p-4">
+                        <NowyCzatDialog />
+                    </div>
+
+                    {/* Lista czatów */}
+                    <div className="flex-1 overflow-y-auto">
+                        {czaty.map(c => (
+                            <div
+                                key={c.id}
+                                className="flex items-center gap-3 px-3 py-2 hover:bg-[#405E3F]"
+                            >
+                                <div
+                                    onClick={() => {
+                                        setCzatId(c.id);
+                                        setMobileOpen(false);
+                                    }}
+                                    className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer"
+                                >
+                                    <img
+                                        src={c.obraz}
+                                        className="w-12 h-12 rounded-full flex-shrink-0"
+                                        alt=""
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-semibold text-white truncate">
+                                            {getNazwa(c, user?.login)}
+                                        </p>
+
+                                        {c.lastReadMessage && (
+                                            <p className="text-sm text-gray-300 line-clamp-1">
+                                                {c.lastReadMessage.tresc}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                </div>
+                                {c.nieprzeczytaneWiadomosci > 0 && (
+                                    <div
+                                        className="min-w-[24px] h-6 px-2 text-xs flex items-center justify-center
+                               rounded-full bg-red-600 text-white flex-shrink-0"
+                                    >
+                                        {c.nieprzeczytaneWiadomosci}
+                                    </div>
+                                )}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeFromCzat(c.id,user.id);
+                                    }}
+                                    className="text-white/70 hover:text-red-500 p-2 flex-shrink-0"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            ))}
+            )}
+
+            <div className="hidden md:block fixed left-0 top-0 h-screen w-[30vw] overflow-y-auto bg-[#4D644C]">
+
+                {/* Header */}
+                <div className="h-20 flex mt-12 items-center px-4">
+                    <NowyCzatDialog/>
+                </div>
+
+                {/* Lista czatów */}
+                {czaty.map(c => (
+                    <div
+                        key={c.id}
+                        onClick={() => setCzatId(c.id)}
+                        className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-[#405E3F]"
+                    >
+                        {/* Avatar */}
+                        <img
+                            src={c.obraz}
+                            alt="avatar"
+                            className="w-12 h-12 rounded-full object-cover"
+                        />
+
+                        {/* Środek */}
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-white truncate">
+                                {getNazwa(c, user?.login)}
+                            </p>
+
+                            {c.lastReadMessage && (
+                                <p className="text-sm text-gray-300 line-clamp-1">
+                                    {c.lastReadMessage.tresc}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Badge */}
+                        {c.nieprzeczytaneWiadomosci > 0 && (
+                            <div
+                                className="min-w-[24px] h-6 px-2 text-xs flex items-center justify-center rounded-full bg-red-600 text-white">
+                                {c.nieprzeczytaneWiadomosci}
+                            </div>
+                        )}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                removeFromCzat(c.id,user.id);
+                            }}
+                            className="text-white/70 hover:text-red-500 transition p-2"
+                            title="Wyjdź z czatu"
+                        >
+                            <FaXmark className="text-lg"/>
+                        </button>
+                    </div>
+
+
+                ))}
+            </div>
         </div>
     )
 }

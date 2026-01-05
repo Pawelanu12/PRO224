@@ -1,113 +1,121 @@
 'use client'
 
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import {useContext, useEffect, useRef} from "react";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
-import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
-import GoogleLoginButton from "@/app/login/GoogleLoginButton";
-import {signIn, useSession} from "next-auth/react";
-// import {GlobalContext} from "@/app/providers/GlobalProvider";
+import { useContext, useEffect, useRef } from "react";
+import { GlobalContext } from "@/app/providers/GlobalProvider";
+import { signIn, useSession } from "next-auth/react";
 
-export default function LogIn(){
-    const {replaceClick,logIn,googleLogin}=useContext(GlobalContext)
-
+export default function LogIn() {
+    const { replaceClick, logIn, googleLogin, user } = useContext(GlobalContext);
     const { data: session, status } = useSession();
     const sentRef = useRef(false);
 
     useEffect(() => {
+        if (!user) return;
+        replaceClick(null, "/forum");
+    }, [user]);
 
+    useEffect(() => {
         if (status === "authenticated" && !sentRef.current) {
-            if(!session||!session.googleIdToken) return
-            console.log(session.googleIdToken)
-            googleLogin(session.googleIdToken)
+            if (!session?.googleIdToken) return;
+            googleLogin(session.googleIdToken, session.expires);
             sentRef.current = true;
-
         }
-    }, [status,session]);
-    return(
-        <div style={{height:"100vh"}}>
-            <div style={{paddingTop:"50px",height:"100%"}}   className={"flexRow"}>
-                <div style={{flex: "198", height: "100%", minWidth: "300px"}}>
+    }, [status, session]);
 
+    return (
+        <div className="min-h-screen ">
+            <div className="flex h-full pt-[50px] flex-col md:flex-row">
+
+                {/* LEFT – LOGIN */}
+                <div className="flex-[2] min-w-[300px] flex justify-center items-center">
                     <Formik
-                        initialValues={{
-                            login: "",
-                            haslo: "",
-                        }}
+                        initialValues={{ login: "", haslo: "" }}
                         validationSchema={Yup.object({
-
-                            login: Yup.string()
-                                .required("Login jest wymagany"),
-                            haslo: Yup.string()
-                                .required("Haslo jest wymagane"),
-
-
+                            login: Yup.string().required("Login jest wymagany"),
+                            haslo: Yup.string().required("Hasło jest wymagane"),
                         })}
-                        onSubmit={(values, {resetForm}) => {
-
-
-                            console.log(values)
-                            logIn(values)
-                            resetForm()
+                        onSubmit={(values, { resetForm }) => {
+                            logIn(values);
+                            resetForm();
                         }}
-
                     >
-                        {({dirty, isValid}) => (
-                            <Form style={{
-                                alignItems: "center", display: "flex", flexDirection: "column",
-                                backgroundColor: "#405E3F", justifyContent: "center", margin: "10%"
-                            }}>
-                                <p>Login</p>
-                                <Field className={"field"} type="text" name="login" placeholder="napisz login"
+                        {({ dirty, isValid }) => (
+                            <Form className="w-[80%] max-w-md rounded-xl bg-[#405E3F] p-8 shadow-lg flex flex-col gap-3">
+                                <p className="text-white font-semibold">Login</p>
+                                <Field
+                                    name="login"
+                                    className="rounded-md px-3 py-2 outline-none"
+                                    placeholder="napisz login"
                                 />
-                                <ErrorMessage name="login" component="div"/>
-                                <br/>
-                                <p>Haslo</p>
-                                <Field className={"field"} type="password" name="haslo" placeholder="napisz haslo"
+                                <ErrorMessage name="login" component="div" className="text-red-400 text-sm"/>
+
+                                <p className="text-white font-semibold mt-2">Hasło</p>
+                                <Field
+                                    type="password"
+                                    name="haslo"
+                                    className="rounded-md px-3 py-2 outline-none"
+                                    placeholder="napisz hasło"
                                 />
-                                <ErrorMessage name="haslo" component="div"/>
-                                <br/>
-                                <div style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    width: "80%",
-                                    marginTop: "10px"
-                                }}>
-                                    <p onClick={(e) => replaceClick(e, "/rejestracja")}
-                                       className={"zarejestruj"}>Zarejestruj sie
-                                    </p>
-                                    <p onClick={(e) => replaceClick(e, "/password-change")}
-                                       className={"nie_pamietasz_haslo"}>nie pamiętasz hasla
-                                    </p>
+                                <ErrorMessage name="haslo" component="div" className="text-red-400 text-sm"/>
+
+                                <div className="flex justify-between text-sm text-gray-200 mt-2">
+                                    <button
+                                        type="button"
+                                        onClick={(e) => replaceClick(e, "/rejestracja")}
+                                        className="hover:underline"
+                                    >
+                                        Zarejestruj się
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => replaceClick(e, "/password-change")}
+                                        className="hover:underline"
+                                    >
+                                        Nie pamiętasz hasła?
+                                    </button>
                                 </div>
-                                <br/>
-                                <button style={{backgroundColor: "#354545", width: "80%"}} type="submit"
-                                        disabled={!dirty || !isValid}
-                                >Log In
+
+                                <button
+                                    type="submit"
+                                    disabled={!dirty || !isValid}
+                                    className="mt-4 rounded-md bg-[#354545] py-2 text-white
+                             disabled:opacity-50 disabled:cursor-not-allowed
+                             hover:bg-[#2d3e3e]"
+                                >
+                                    Log In
                                 </button>
-                                <br/>
-                            </Form>)}
 
-
+                                <button
+                                    type="button"
+                                    onClick={() => signIn("google")}
+                                    className="mt-2 rounded-md border border-white py-2 text-white
+                             hover:bg-white hover:text-black transition"
+                                >
+                                    Sign in with Google
+                                </button>
+                            </Form>
+                        )}
                     </Formik>
-                    <button onClick={() => signIn('google')}>Sign In with Google</button>
-
-                </div>
-                <div style={{flex: 1, height: "100%", borderLeft: "solid green 1px"}}>
-
                 </div>
 
-            <div style={{flex: 198, borderRadius: "5%",
-                backgroundColor:"#405E3F",
-                height:"90%",display:"flex",margin:"20px", flexDirection:"column",
-                justifyContent:"center",textAlign:"center"}}>
-                <p style={{paddingBottom:"10%"}}>1 Gdyńska gromada zuchów</p>
-                <img style={{width:"100%",paddingLeft:"10%",paddingRight:"10%",}} src={"/images/login_page.png"} alt={"image"}/>
-            </div>
+                {/* SEPARATOR */}
+                <div className="w-px bg-green-700 mx-2"/>
+
+                {/* RIGHT – IMAGE */}
+                <div className="flex-[2] m-5 rounded-2xl bg-[#405E3F]
+                        flex flex-col justify-center items-center text-white">
+                    <p className="mb-6 text-lg font-semibold">
+                        1 Gdyńska gromada zuchów
+                    </p>
+                    <img
+                        src="/images/login_page.png"
+                        alt="login"
+                        className="w-[80%] rounded-lg"
+                    />
+                </div>
             </div>
         </div>
-    )
-
-
+    );
 }
