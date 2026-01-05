@@ -151,15 +151,22 @@ public class PostService {
 
         post.setTresc(request.getTresc());
 
-        if (request.getPicturesToBeRemoved() != null) {
-            post.getZdjecia().removeIf(zdj -> {
-                if (request.getPicturesToBeRemoved().contains(zdj.getSciezka())) {
-                    removeFileFromDisk(zdj.getSciezka());
-                    return true;
-                }
-                return false;
-            });
+        if (!post.getZdjecia().isEmpty()) {
+            for (PostZdjecie zdj : post.getZdjecia()) {
+                removeFileFromDisk(zdj.getSciezka());
+            }
+            post.getZdjecia().clear();
         }
+
+//        if (request.getPicturesToBeRemoved() != null) {
+//            post.getZdjecia().removeIf(zdj -> {
+//                if (request.getPicturesToBeRemoved().contains(zdj.getSciezka())) {
+//                    removeFileFromDisk(zdj.getSciezka());
+//                    return true;
+//                }
+//                return false;
+//            });
+//        }
 
         if (request.getNewPictures() != null) {
             for (MultipartFile file : request.getNewPictures()) {
