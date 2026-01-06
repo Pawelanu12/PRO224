@@ -216,6 +216,14 @@ public class PostController {
 
         }
 
+
+
+    @PutMapping("/{id}/share")
+    public ResponseEntity<PostDto> sharePost(@PathVariable Long id,@RequestParam Long uzytkownikId) {
+        Post updated = postService.sharePost(id, uzytkownikId);
+        return ResponseEntity.ok(PostMapper.toDto(updated));
+    }
+
     @PutMapping("/{id}/like")
     public ResponseEntity<PostDto> changeLike(@PathVariable Long id,
                                               @RequestParam Long uzytkownikId) {

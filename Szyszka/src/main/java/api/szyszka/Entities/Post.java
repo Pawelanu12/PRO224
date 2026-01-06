@@ -20,6 +20,9 @@ public class Post {
     private String tresc;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post_udostepnienie> udostepnienia;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post_polubienia> polubienia;
 
     @ManyToOne

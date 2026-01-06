@@ -17,5 +17,6 @@ public class Sprawnosc {
 
     private String opisWymagan;
 
+
     private String ikona;
 }

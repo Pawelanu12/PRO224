@@ -2,10 +2,7 @@ package api.szyszka.Services;
 
 import api.szyszka.DTOs.CreatePostRequest;
 import api.szyszka.DTOs.UpdatePostRequest;
-import api.szyszka.Entities.Post;
-import api.szyszka.Entities.PostZdjecie;
-import api.szyszka.Entities.Post_polubienia;
-import api.szyszka.Entities.Uzytkownik;
+import api.szyszka.Entities.*;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Repositories.PostRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
@@ -181,6 +178,27 @@ public class PostService {
 
 
         return postRepository.save(post);
+    }
+
+    public Post sharePost(Long postId, Long uzytkownikId) {
+        Post post = getPostById(postId);
+        Uzytkownik uzytkownik = uzytkownikRepository.findById(uzytkownikId)
+                .orElseThrow(() -> new RuntimeException("Uzytkownik doesn't exist"));
+
+        Optional<Post_udostepnienie> existingUdostępnienie = post.getUdostepnienia().stream()
+                .filter(p -> p.getUzytkownik() != null)
+                .filter(p -> Objects.equals(p.getUzytkownik().getId(), uzytkownikId))
+                .findFirst();
+
+        if (!existingUdostępnienie.isPresent()) {
+            Post_udostepnienie udostepnienie = new Post_udostepnienie();
+            udostepnienie.setUzytkownik(uzytkownik);
+            udostepnienie.setPost(post);
+            post.getUdostepnienia().add(udostepnienie);
+        }
+
+        return postRepository.save(post);
+
     }
 
 
