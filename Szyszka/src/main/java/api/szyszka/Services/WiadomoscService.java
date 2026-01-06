@@ -94,15 +94,11 @@ public class WiadomoscService {
         return wiadomoscRepository.findAll();
     }
 
-    public void deleteWiadomoscById(long id) {zdjecieRepository.deleteById(id);}
+    public void deleteWiadomoscById(long id) {wiadomoscRepository.deleteById(id);}
 
-    public Wiadomosc modifyWiadomosc(long id, Wiadomosc updatedWiadomosc) {
+    public Wiadomosc modifyWiadomosc(long id, String tresc) {
         Wiadomosc oldWiadomosc = getWiadomoscById(id);
-
-        oldWiadomosc.setCzat(updatedWiadomosc.getCzat());
-        oldWiadomosc.setNadawca(updatedWiadomosc.getNadawca());
-        oldWiadomosc.setTresc(updatedWiadomosc.getTresc());
-        oldWiadomosc.setDataWyslania(updatedWiadomosc.getDataWyslania());
+        oldWiadomosc.setTresc(tresc);
 
         return wiadomoscRepository.save(oldWiadomosc);
     }

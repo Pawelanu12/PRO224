@@ -69,12 +69,15 @@ public class AuthController {
         String token = userService.loginWithGoogle(googleUser);
 //        System.out.println(token);
 
-        Cookie servletCookie = new Cookie("accessToken", token);
-        servletCookie.setHttpOnly(true);
-        servletCookie.setSecure(false); // dev
-        servletCookie.setPath("/");
-        servletCookie.setMaxAge(60 * 60); // 1 godzina
-        response.addCookie(servletCookie);
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(Duration.ofMinutes(60))
+                .build();
+        System.out.println(cookie);
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok().build();
     }

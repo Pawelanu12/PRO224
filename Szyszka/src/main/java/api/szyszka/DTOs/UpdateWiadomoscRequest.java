@@ -9,7 +9,5 @@ import java.time.LocalDateTime;
 @Setter
 public class UpdateWiadomoscRequest {
 
-    private Long wiadomoscId;   // ID wiadomości do edycji
     private String tresc;
-    private LocalDateTime dataWyslania;
 }

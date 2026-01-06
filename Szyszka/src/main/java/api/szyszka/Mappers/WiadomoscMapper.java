@@ -33,6 +33,5 @@ public class WiadomoscMapper {
     public static void updateEntity(Wiadomosc entity, UpdateWiadomoscRequest request) {
         if (request == null || entity == null)  return;
         entity.setTresc(request.getTresc());
-        entity.setDataWyslania(request.getDataWyslania());
     }
 }

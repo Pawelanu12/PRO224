@@ -59,10 +59,7 @@ public class WiadomoscController {
     @PutMapping("/{id}")
     public ResponseEntity<WiadomoscDto> updateWiadomosc(@PathVariable Long id,
                                                         @RequestBody UpdateWiadomoscRequest request) {
-        Wiadomosc oldWiadmosc = wiadomoscService.getWiadomoscById(id);
-
-        WiadomoscMapper.updateEntity(oldWiadmosc, request);
-        Wiadomosc update = wiadomoscService.modifyWiadomosc(id, oldWiadmosc);
+        Wiadomosc update = wiadomoscService.modifyWiadomosc(id, request.getTresc());
 
         return ResponseEntity.ok(WiadomoscMapper.toDto(update));
     }
