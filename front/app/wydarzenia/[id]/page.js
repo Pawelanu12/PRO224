@@ -23,8 +23,8 @@ export default function Wydarzenie({params}){
                 console.log(id)
                 await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
                     method:"GET",
-                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                        "Content-Type": "application/json"}
+                    headers: {"Content-Type": "application/json"},
+                    credentials:"include"
                 })
                     .then(res=>res.json())
                     .then(res=> {
@@ -40,10 +40,9 @@ export default function Wydarzenie({params}){
         }
         getWydarzenie(id)
     }, []);
+    console.log(wydarzenie)
     return(
         <div>
-            {user.login?<NavbarZarejestrowana/>:<NavbarNiezarejestrowana/>}
-
 
             {loading&&<div>Loading...</div>}
             {!loading&&!wydarzenie.id &&<div>Takie wydarzenie nie znalażone</div>}

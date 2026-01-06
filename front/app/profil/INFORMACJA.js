@@ -5,7 +5,7 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
 
 export default function Informacja() {
-        const {user,replaceClick}=useContext(GlobalContext)
+        const {user,pushClick}=useContext(GlobalContext)
     const {zdobyteSprawnosci,getZdobyteSprawnosci}=useContext(SprawnoscContext)
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function Informacja() {
                 <div className={"div1"}
                 >
                     <p>Zdobyte sprawnosci</p>
-                    <button onClick={(e)=>replaceClick(e,'/sprawnosci/zdobyte')}
+                    <button onClick={(e)=>pushClick(e,'/sprawnosci/zdobyte')}
                           >Węcej
                     </button>
                 </div>

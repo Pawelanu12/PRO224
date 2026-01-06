@@ -5,7 +5,7 @@ import { GlobalContext } from "@/app/providers/GlobalProvider";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 export default function Navigation() {
-    const { replaceClick } = useContext(GlobalContext);
+    const { pushClick } = useContext(GlobalContext);
     const [menuOpen, setMenuOpen] = useState(false);
 
 
@@ -39,7 +39,7 @@ export default function Navigation() {
                             <button
                                 key={idx}
                                 onClick={(e) => {
-                                    replaceClick(e, btn.path);
+                                    pushClick(e, btn.path);
                                     setMenuOpen(false); // zamykamy menu po kliknięciu
                                 }}
                                 className="bg-[#405E3F] text-white px-3 py-2 rounded shadow"
@@ -59,7 +59,7 @@ export default function Navigation() {
             {buttons.map((btn, idx) => (
                 <button
                     key={idx}
-                    onClick={(e) => replaceClick(e, btn.path)}
+                    onClick={(e) => pushClick(e, btn.path)}
                     className="forum-navigation-redirection mb-2 bg-[#405E3F] text-white px-3 py-2 rounded shadow"
                 >
                     {btn.label}

@@ -1,5 +1,5 @@
 {
-  "name": "nowa_edycja",
+  "name": "szyszka",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-google-maps/api": "^2.20.8",
     "@stomp/stompjs": "^7.2.1",
-    "@tanstack/react-virtual": "^3.13.13",
     "formik": "^2.4.6",
     "next": "15.3.0",
     "next-auth": "^4.24.13",

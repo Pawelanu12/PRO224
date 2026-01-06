@@ -16,14 +16,13 @@ import Pagination from "@/app/functions/Pagination";
 
 export default function Wydarzenia(){
     const {wydarzenia,nazwa,typ,data,getWydarzenia}=useContext(WydarzeniaContext)
-    const {replaceClick}=useContext(GlobalContext)
+
     const [elementWidth, setElementWidth] = useState(320);
     const[wydarzeniaSortowane,setWydarzeniaSortowane]=useState(wydarzenia);
     const [page,setPage]=useState(1)
     const wydarzeniaPerPage=12;
     const liczbaStron=Math.ceil(wydarzeniaSortowane.length/wydarzeniaPerPage)
     const inputRef=useRef(null);
-    console.log(page)
     useEffect(  ()=>{
         getWydarzenia()
         // const urlParams = new URLSearchParams(window.location.search);
@@ -47,7 +46,9 @@ export default function Wydarzenia(){
 
     useEffect(() => {
         const handleResize = () => {
-            setElementWidth((window.innerWidth-280)/Math.floor((window.innerWidth-280)/320))
+            if(window.innerWidth>640)
+                setElementWidth((window.innerWidth-280)/Math.floor((window.innerWidth-280)/320))
+            else setElementWidth(window.innerWidth-40)
         };
         handleResize()
         window.addEventListener("resize", handleResize);

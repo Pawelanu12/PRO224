@@ -7,19 +7,19 @@ import { GlobalContext } from "@/app/providers/GlobalProvider";
 import { signIn, useSession } from "next-auth/react";
 
 export default function LogIn() {
-    const { replaceClick, logIn, googleLogin, user } = useContext(GlobalContext);
+    const { pushClick, logIn, googleLogin, user } = useContext(GlobalContext);
     const { data: session, status } = useSession();
     const sentRef = useRef(false);
 
     useEffect(() => {
         if (!user) return;
-        replaceClick(null, "/forum");
+        pushClick(null, "/forum");
     }, [user]);
 
     useEffect(() => {
         if (status === "authenticated" && !sentRef.current) {
             if (!session?.googleIdToken) return;
-            googleLogin(session.googleIdToken, session.expires);
+            googleLogin(session.googleIdToken);
             sentRef.current = true;
         }
     }, [status, session]);
@@ -63,14 +63,14 @@ export default function LogIn() {
                                 <div className="flex justify-between text-sm text-gray-200 mt-2">
                                     <button
                                         type="button"
-                                        onClick={(e) => replaceClick(e, "/rejestracja")}
+                                        onClick={(e) => pushClick(e, "/rejestracja")}
                                         className="hover:underline"
                                     >
                                         Zarejestruj się
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={(e) => replaceClick(e, "/password-change")}
+                                        onClick={(e) => pushClick(e, "/password-change")}
                                         className="hover:underline"
                                     >
                                         Nie pamiętasz hasła?

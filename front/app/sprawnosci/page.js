@@ -1,17 +1,13 @@
 'use client'
 
 import {useContext, useEffect} from "react";
-import {SprawnoscContext} from "@/app/providers/SprawnoscProvider";
-import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
-import Sprawnosc from "@/app/sprawnosci/Sprawnosc";
 import Filter from "@/app/sprawnosci/Filter";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
 import WyswetlSprawnosci from "@/app/sprawnosci/WyswetlSprawnosci";
 
 export default function Sprawnosci(){
 
-    const {replaceClick}=useContext(GlobalContext)
+    const {pushClick}=useContext(GlobalContext)
 
 
         return(
@@ -19,7 +15,7 @@ export default function Sprawnosci(){
             <div  className={" border-[2px] border-solid border-white;"}>
                 <Filter/>
                 <button
-                        onClick={(e)=>replaceClick
+                        onClick={(e)=>pushClick
                         (e,"/admin/add/sprawnosc")}>Dodaj nowa sprawnosc</button>
            <WyswetlSprawnosci/>
             </div>

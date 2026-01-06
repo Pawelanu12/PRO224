@@ -20,12 +20,11 @@ export default function NowyCzatDialog() {
     const createCzat = () => {
         const array=inputUzytkownikow.trim().split(" ")
             .map(a=>Number(a)).filter(a=>(!isNaN(a)&&a>0))
-       const czatNazwa= nazwa&&nazwa.length>0?nazwa:array.toString()+","+user.id
+       const czatNazwa= nazwa&&nazwa.length>0?nazwa:null
 
         if(array.length>1) {
 
             dodajCzat({
-                nazwa: czatNazwa,
                 participantIds: array,
                 creatorId: user.id,
             }, "/group");

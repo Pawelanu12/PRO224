@@ -6,7 +6,7 @@ import EditPost from "@/app/forum/dialogs/EditPost";
 import {ForumContext} from "@/app/providers/ForumProvider";
 //menu opcji ktory uzytkownik moze robic z postem
 export default function Opcji({autor,post}){
-    const {user,replaceClick,setEdit}=useContext(GlobalContext);
+    const {user,pushClick,setEdit}=useContext(GlobalContext);
     const {deletePost}=useContext(ForumContext);
     return (
         <div
@@ -19,7 +19,7 @@ export default function Opcji({autor,post}){
             {user.login===autor&& <button onClick={()=>{deletePost(post.id)}}>delete post</button>}
             {/*{user.id===autor&&<button onClick={(e) => {*/}
             {/*    setEdit(post)*/}
-            {/*    replaceClick(e, `/forum/editPost/${post.id}`)*/}
+            {/*    pushClick(e, `/forum/editPost/${post.id}`)*/}
             {/*}}>edytuj post</button>}*/}
 
         </div>

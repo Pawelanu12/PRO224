@@ -34,13 +34,13 @@ async function fileFromUrl(url, fileName) {
 }
 export default function EditSprawnosc(){
     const {editSprawnosci,deleteSprawnosci}=useContext(AdminContext)
-    const {edit,setEdit,replaceClick}=useContext(GlobalContext)
+    const {edit,setEdit,pushClick}=useContext(GlobalContext)
     const [file,setFile]=useState(null)
     const imgRef=useRef(null)
 
     useEffect(() => {
         if(!edit||!edit.id)
-            replaceClick("","/sprawnosci")
+            pushClick("","/sprawnosci")
     }, []);
     useEffect(() => {
         const getImage=async ()=>{

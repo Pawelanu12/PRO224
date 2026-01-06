@@ -1,14 +1,14 @@
 'use client'
 
 
-import {createContext, useContext, useRef, useState} from "react";
+import {createContext, useContext, useEffect, useRef, useState} from "react";
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import {NextResponse as res} from "next/server";
 export const AdminContext = createContext();
 
 export default function AdminProvider({ children }) {
-    const {replaceClick}= useContext(GlobalContext);
+    const {pushClick}= useContext(GlobalContext);
+    const {user}=useContext(GlobalContext);
     const addSprawnosci = (values) => {
         const add=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/sprawnosc`,{
@@ -19,7 +19,7 @@ export default function AdminProvider({ children }) {
                 .then(res=> res.json())
                 .then(res=> {
                     console.log(res)
-                    replaceClick("","/sprawnosci")
+                    pushClick("","/sprawnosci")
                 })
                 .catch(err=>console.log(err))
         }
@@ -36,7 +36,7 @@ export default function AdminProvider({ children }) {
                 .then(res=> res.json())
                 .then(res=> {
                     console.log(res)
-                    replaceClick("","/sprawnosci")
+                    pushClick("","/sprawnosci")
                 })
                 .catch(err=>console.log(err))
         }
@@ -51,7 +51,7 @@ export default function AdminProvider({ children }) {
                 .then(res=>{
                     console.log(res)
                     if(res.ok)
-                        replaceClick("","/sprawnosci")
+                        pushClick("","/sprawnosci")
                 })
 
         }
@@ -69,7 +69,7 @@ export default function AdminProvider({ children }) {
                 .then(res=> res.json())
                 .then(res=> {
                     console.log(res)
-                    replaceClick("","/wydarzenia")
+                    pushClick("","/wydarzenia")
                 })
                 .catch(err=>console.log(err))
         }
@@ -88,7 +88,7 @@ export default function AdminProvider({ children }) {
                 .then(res=> res.json())
                 .then(res=> {
                     console.log(res)
-                    replaceClick("","/wydarzenia")
+                    pushClick("","/wydarzenia")
                 })
                 .catch(err=>console.log(err))
         }
@@ -96,6 +96,8 @@ export default function AdminProvider({ children }) {
     }
 
     const deleteWydarzenie = (id)=>{
+        // if(!user.typUzytkownika==="DRUZYNOWY")
+        //     return
         const usun=async (id)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`, {
                 method: "Delete",
@@ -104,12 +106,19 @@ export default function AdminProvider({ children }) {
                 .then(res=>{
                     console.log(res)
                     if(res.ok)
-                        replaceClick("","/wydarzenia")
+                        pushClick("","/wydarzenia")
                 })
 
         }
         usun(id)
     }
+
+    // useEffect(() => {
+    //     if(!user)return
+    //
+    //     if(user.typUzytkownika!=="DRUZYNOWY")
+    //         pushClick(null,"/gromada")
+    // }, [user]);
 
     return (
         <AdminContext.Provider value={{deleteWydarzenie,editWydarzenie,editSprawnosci,addSprawnosci,addWydarzenie,deleteSprawnosci}}>{children}</AdminContext.Provider>

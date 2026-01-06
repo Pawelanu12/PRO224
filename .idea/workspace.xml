@@ -5,15 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d1f2aca-83f6-40de-ac3a-a93e471e0697" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/czat/NAPISZWIADOMOSC.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/NAPISZWIADOMOSC.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/czat/ONECZAT.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/ONECZAT.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/login/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/login/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/profil/INFORMACJA.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/profil/INFORMACJA.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/profil/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/profil/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/czat/NowyCzatDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/NowyCzatDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/czat/websocket/Wiadomosc.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/websocket/Wiadomosc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/czat1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/czat2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/czaty.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/obraz_sprawnosci.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/posty.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/sprawnosci.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/data/wydarzenia.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/forum/PostInformacja.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/forum/PostInformacja.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/navbars/NavbarNiezarejestrowana.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/navbars/NavbarNiezarejestrowana.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/navbars/NavbarZarejestrowana.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/navbars/NavbarZarejestrowana.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/providers/AdminProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/AdminProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/providers/CzatProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/CzatProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/providers/ForumProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/ForumProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/providers/GlobalProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/GlobalProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/app/providers/SprawnoscProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/SprawnoscProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/providers/WydarzeniaProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/WydarzeniaProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/app/sprawnosci/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/sprawnosci/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/FILTER.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/FILTER.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/WydarzenieMale.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/WydarzenieMale.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/[id]/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/[id]/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/test/uwu" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +50,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Pawelanu12/PRO224.git",
-    "accountId": "7d4e2195-bd33-4046-b7a8-7fbd94a219ef"
+    "accountId": "87df535d-ad12-492f-a13b-d0af0bfb1668"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -50,7 +68,7 @@
     "git-widget-placeholder": "s27297",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/pro/PRO224",
+    "last_opened_file_path": "D:/pro/PRO224/front",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -62,8 +80,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
       </set>
     </attachedChunks>
   </component>
@@ -80,6 +97,7 @@
       <workItem from="1754476130141" duration="425000" />
       <workItem from="1755170521634" duration="20000" />
       <workItem from="1759134450611" duration="92000" />
+      <workItem from="1767650344179" duration="10000" />
     </task>
     <servers />
   </component>

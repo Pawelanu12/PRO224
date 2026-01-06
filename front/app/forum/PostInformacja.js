@@ -3,6 +3,7 @@
 import { useContext, useState } from "react";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 import Opcji from "@/app/forum/Opcji";
+import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 const compare_dates = (data_posta) => {
     const date1 = new Date(data_posta);
@@ -23,7 +24,7 @@ export default function PostInformacja({ post }) {
     const [index, setIndex] = useState(0);
 
     const images = post.zdjecia.map((z, i) => ({
-        src: `http://localhost:8080/uploads/posts/${z}`,
+        src: `${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/posts/${z}`,
         alt: z,
         id: i,
     }));

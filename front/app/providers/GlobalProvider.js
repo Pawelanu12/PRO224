@@ -12,18 +12,16 @@ export default function GlobalProvider({ children }) {
     const [edit,setEdit] = useState({})
     const router = useRouter()
 
-    const logOut = async (e) => {
-        console.log(user)
-        signOut({ redirect: false });
-
+    const logOut = async () => {
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/logout`, {
             method: "POST",
             credentials: "include",
         });
-        setUser(null);
-        replaceClick(e,"/login")
+        signOut({callbackUrl:"/login"});
+
+
     };
-    const replaceClick=(e,href)=>{
+    const pushClick=(e,href)=>{
         if(e)
             e.preventDefault()
         router.push(href)
@@ -39,13 +37,15 @@ export default function GlobalProvider({ children }) {
                     body:JSON.stringify(
                         values)
                 })
+                .then(res=>res.json())
+                .then(res=>{if(res.status===500)alert(res.message)})
                 .then(()=>{
                     get_me()
                 }
                 )
-                .then(()=>{router.replace("/forum")})
+                .then(()=>{if(user)router.replace("/forum")})
 
-                .catch(err=>console.log(err))
+                .catch(err=>alert("wystąpił błąd przy logowaniu"))
         }
         f(values)
         // router.replace("/czat")
@@ -93,17 +93,17 @@ export default function GlobalProvider({ children }) {
                 })
                 .then(res=>res.json())
                 .then(r=>{
-                    alert(r)
                     if(r.message==="User registered successfully"){
                         router.replace("/login")
+                        alert("konto stworzone poprawne")
                     }
                     else alert(r.message)
                 })
-                .catch(err=>alert(err))
+                .catch(err=>console.log(err))
         }
         f(values)
     }
-    const googleLogin = async (idToken,expires) => {
+    const googleLogin = async (idToken) => {
         try {
             await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/google`, {
                 method: "POST",
@@ -123,20 +123,22 @@ export default function GlobalProvider({ children }) {
 
 
     useEffect(()=>{
-        const init= async ()=>{
             get_me()
-
-        }
-        init()
     },[])
+
     useEffect(() => {
-     console.log(loading)
         if(loading)return
-        if(!user)router.replace("/login")
+        if(!user){
+            const path=window.location.pathname
+            console.log(path)
+            if(!(path==="/login"||path==="/register"||path==="/"||path==="/kontakt"
+                ||path.startsWith("/sprawnosci")||path.startsWith("/wydarzenia")))
+            router.replace("/login")
+        }
     }, [user,loading]);
 
     return (
         <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,get_me,
-            replaceClick,logIn,user,logOut,googleLogin}}>{children}</GlobalContext.Provider>
+            pushClick,logIn,user,logOut,googleLogin}}>{children}</GlobalContext.Provider>
     )
 };

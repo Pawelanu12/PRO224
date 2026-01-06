@@ -3,16 +3,14 @@
 
 import {createContext, useContext, useState} from "react";
 
-import pos from "/app/data/posty.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import {bool} from "yup";
 export const ForumContext = createContext();
 
 export default function ForumProvider({ children }) {
     const [posty, setPosty] = useState([]);
     const [loading, setLoading] = useState(false);
-    const {replaceClick}=useContext(GlobalContext);
+    const {pushClick}=useContext(GlobalContext);
 
     const [postForDialog,setPostForDialog] = useState(null);
     const getPosty = () => {
@@ -64,7 +62,7 @@ export default function ForumProvider({ children }) {
                 .then(res=> {
                     console.log(res)
                     if(!res.error)
-                        replaceClick("","/forum")
+                        pushClick("","/forum")
                     else
                         alert(res.error)
                 })

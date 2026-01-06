@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 
 export default function Sprawnosc({ sprawnosc }) {
-    const { setEdit, replaceClick } = useContext(GlobalContext);
+    const { setEdit, pushClick } = useContext(GlobalContext);
     const [show, setShow] = useState(false);
 
     return (
@@ -29,7 +29,7 @@ export default function Sprawnosc({ sprawnosc }) {
                         // onClick={(e) => {
                         //     e.stopPropagation();
                         //     setEdit(sprawnosc);
-                        //     replaceClick(e, "/admin/edit/sprawnosc");
+                        //     pushClick(e, "/admin/edit/sprawnosc");
                         // }}
                     />
 

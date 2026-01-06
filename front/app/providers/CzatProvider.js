@@ -3,9 +3,6 @@
 
 import {createContext, useContext, useState} from "react";
 
-import czats from  "@/app/data/czaty.json"
-import c from "@/app/data/czat1.json"
-import c2 from "@/app/data/czat2.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const CzatContext = createContext();
@@ -80,7 +77,7 @@ export default function CzatProvider({ children }) {
     //             .then(res=> {
     //                 console.log(values)
     //                 console.log(res)
-    //                 // replaceClick("","/wydarzenia")
+    //                 // pushClick("","/wydarzenia")
     //             })
     //             .catch(err=>console.log(err))
     //     }
@@ -131,10 +128,17 @@ export default function CzatProvider({ children }) {
         removeFromCzat(czatId,userId)
     }
 
+    const editWiadomosc=(id,tekst)=>{
+
+    }
+    const deleteWiadomosc=(id)=>{
+
+    }
+
 
     return (
         <CzatContext.Provider value={{setCzat,setCzaty,getCzat,addUserToCzat,
-            czaty,getCzaty,czat,loading,dodajCzat,czatId,setCzatId,
+            czaty,getCzaty,czat,loading,dodajCzat,czatId,setCzatId,editWiadomosc,deleteWiadomosc,
             removeFromCzat
         }}>{children}</CzatContext.Provider>
     )

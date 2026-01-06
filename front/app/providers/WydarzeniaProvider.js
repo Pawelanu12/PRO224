@@ -2,12 +2,9 @@
 
 
 import {createContext, useContext, useRef, useState} from "react";
-import w from "@/app/data/wydarzenia.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import {
-    validateGoogleFontFunctionCall
-} from "next/dist/compiled/@next/font/dist/google/validate-google-font-function-call";
+
 export const WydarzeniaContext = createContext();
 
 export default function WydarzeniaProvider({ children }) {

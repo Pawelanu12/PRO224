@@ -2,7 +2,6 @@
 
 
 import {createContext, useContext, useRef, useState} from "react";
-import s from "@/app/data/sprawnosci.json"
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const SprawnoscContext = createContext();
