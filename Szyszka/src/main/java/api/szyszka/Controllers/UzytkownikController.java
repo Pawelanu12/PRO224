@@ -1,6 +1,7 @@
 package api.szyszka.Controllers;
 
 import api.szyszka.DTOs.*;
+import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.UzytkownikMapper;
 import api.szyszka.Services.UzytkownikService;
@@ -9,9 +10,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,18 @@ public class UzytkownikController {
         Uzytkownik user = uzytkownikService.getUserById(id);
         return ResponseEntity.ok(UzytkownikMapper.toDto(user));
     }
+
+    @PutMapping("/{id}/type")
+    public ResponseEntity<UzytkownikDto> changeUserType(
+            @PathVariable Long id,
+            @RequestParam TypUzytkownika newType,
+            Principal principal) {
+
+        Uzytkownik updated = uzytkownikService.changeUserType(id, newType, principal);
+        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
+
+
 
     @GetMapping
     @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")

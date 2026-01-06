@@ -33,7 +33,10 @@ public class Uzytkownik {
     @JoinColumn(name = "rodzic_id2")
     private Uzytkownik rodzic2;
 
-    private String typUzytkownika;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typ_uzytkownika", nullable = false)
+    private TypUzytkownika typUzytkownika = TypUzytkownika.DEFAULT;
+
 
     @ManyToOne
     @JoinColumn(name = "szostka_id")

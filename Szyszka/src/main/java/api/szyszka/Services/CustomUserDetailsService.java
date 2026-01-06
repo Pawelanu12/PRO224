@@ -1,4 +1,5 @@
 package api.szyszka.Services;
+import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Repositories.UzytkownikRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +24,23 @@ public class CustomUserDetailsService implements UserDetailsService {
         Uzytkownik u = repo.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        String role = "ROLE_" + u.getTypUzytkownika().toUpperCase();
-    if(u.getHaslo() != null)
-        return new org.springframework.security.core.userdetails.User(
-                u.getLogin(),
-                u.getHaslo(),
-                List.of(new SimpleGrantedAuthority(role))
-        );
-    return new org.springframework.security.core.userdetails.User(
-            u.getLogin(),
-            "null",
-            List.of(new SimpleGrantedAuthority(role)));
+        String role = "ROLE_" + u.getTypUzytkownika().name();
+
+        if (u.getHaslo() != null) {
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(u.getLogin())
+                    .password(u.getHaslo())
+                    .authorities(role)
+                    .build();
+        } else {
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(u.getLogin())
+                    .password("null")
+                    .authorities(role)
+                    .build();
+        }
     }
+
+
 }
+

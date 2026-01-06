@@ -1,5 +1,6 @@
 package api.szyszka.DTOs;
 
+import api.szyszka.Entities.TypUzytkownika;
 import lombok.*;
 
 @Getter
@@ -13,5 +14,5 @@ public class UzytkownikDto {
     private String login;
     private String email;
     private String nrTelefonu;
-    private String typUzytkownika;
+    private TypUzytkownika typUzytkownika;
 }

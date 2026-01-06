@@ -1,6 +1,7 @@
 package api.szyszka.Mappers;
 
 import api.szyszka.DTOs.*;
+import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 
 public class UzytkownikMapper {
@@ -27,7 +28,12 @@ public class UzytkownikMapper {
         user.setHaslo(request.getHaslo());
         user.setEmail(request.getEmail());
         user.setNrTelefonu(request.getNrTelefonu());
-        user.setTypUzytkownika(request.getTypUzytkownika());
+        user.setTypUzytkownika(
+                request.getTypUzytkownika() != null
+                        ? TypUzytkownika.valueOf((request.getTypUzytkownika()))
+                        : TypUzytkownika.DEFAULT
+        );
+
         return user;
     }
 
@@ -37,6 +43,11 @@ public class UzytkownikMapper {
         entity.setNazwisko(request.getNazwisko());
         entity.setEmail(request.getEmail());
         entity.setNrTelefonu(request.getNrTelefonu());
-        entity.setTypUzytkownika(request.getTypUzytkownika());
+        entity.setTypUzytkownika(
+                request.getTypUzytkownika() != null
+                        ? TypUzytkownika.valueOf(request.getTypUzytkownika())
+                        : entity.getTypUzytkownika()
+        );
+
     }
 }

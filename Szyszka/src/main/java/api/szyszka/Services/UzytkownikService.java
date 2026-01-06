@@ -9,6 +9,7 @@ import api.szyszka.DTOs.Auth.RegisterRequest;
 import api.szyszka.DTOs.GoogleUserData;
 import api.szyszka.DTOs.UzytkownikDto;
 import api.szyszka.Entities.AuthProvider;
+import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Exceptions.*;
 import api.szyszka.Repositories.UzytkownikRepository;
@@ -37,6 +38,20 @@ public class UzytkownikService {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
+    @Transactional
+    public Uzytkownik changeUserType(Long targetUserId, TypUzytkownika newType, java.security.Principal principal) {
+        Uzytkownik admin = getUserByLogin(principal.getName());
+
+        if (admin.getTypUzytkownika() != TypUzytkownika.DRUZYNOWY) {
+            throw new SecurityException("Only DRUZYNOWY can change user types");
+        }
+        Uzytkownik targetUser = getUserById(targetUserId);
+
+        targetUser.setTypUzytkownika(newType);
+
+        return uzytkownikRepository.save(targetUser);
+    }
+
     public Uzytkownik createUser(Uzytkownik uzytkownik) {
         if (uzytkownikRepository.findByLogin(uzytkownik.getLogin()).isPresent()) {
             throw new DuplicateLoginException(uzytkownik.getLogin());
@@ -53,7 +68,7 @@ public class UzytkownikService {
         u.setHaslo(passwordEncoder.encode(req.getHaslo()));
         u.setImie(req.getImie());
         u.setNazwisko(req.getNazwisko());
-        u.setTypUzytkownika(req.getTypUzytkownika() != null ? req.getTypUzytkownika() : "ZUCH");
+        u.setTypUzytkownika(TypUzytkownika.DEFAULT);
         u.setEmail(req.getEmail());
         u.setDataUrodzenia(req.getDataUrodzenia());
         u.setDataDolaczeniaDoGromady(LocalDateTime.now());
@@ -213,7 +228,7 @@ public class UzytkownikService {
         u.setNazwisko(googleUser.getNazwisko());
         u.setGoogleId(googleUser.getGoogleId());
         u.setAuthProvider(AuthProvider.GOOGLE);
-        u.setTypUzytkownika("ZUCH");
+        u.setTypUzytkownika(TypUzytkownika.DEFAULT);
         u.setDataDolaczeniaDoGromady(LocalDateTime.now());
 
         uzytkownikRepository.save(u);
