@@ -36,10 +36,10 @@ public class SprawnoscService {
             throw new DuplicateNazwaSprawnosciException(updateSprawnosc.getNazwa());
         }
 
-        oldSprawnosc.setNazwa(updateSprawnosc.getNazwa());
-        oldSprawnosc.setOpis(updateSprawnosc.getOpis());
-        oldSprawnosc.setOpisWymagan(updateSprawnosc.getOpisWymagan());
-        oldSprawnosc.setIkona(updateSprawnosc.getIkona());
+//        oldSprawnosc.setNazwa(updateSprawnosc.getNazwa());
+//        oldSprawnosc.setOpis(updateSprawnosc.getOpis());
+//        oldSprawnosc.setOpisWymagan(updateSprawnosc.getOpisWymagan());
+//        oldSprawnosc.setIkona(updateSprawnosc.getIkona());
 
         return sprawnoscRepository.save(oldSprawnosc);
     }

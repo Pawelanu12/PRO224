@@ -131,12 +131,51 @@ public class SprawnoscController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SprawnoscDto> updateSprawnosc(@PathVariable Long id,
-                                                        @RequestBody UpdateSprawnoscRequest request) {
+                                                        @ModelAttribute UpdateSprawnoscRequest request) {
         Sprawnosc oldSprawnosc = sprawnoscService.getSprawnoscById(id);
 
-        SprawnoscMapper.updateEntity(oldSprawnosc, request);
+        String uploadDir = System.getProperty("user.dir") + "/uploads/";
+        String oldIcon = oldSprawnosc.getIkona();
+        String newIcon = oldIcon;
+
+        try {
+            if (request.getIkona() != null && !request.getIkona().isEmpty()) {
+                File folder = new File(uploadDir);
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
+
+                String time=System.currentTimeMillis()+"_";
+                String originalName = request.getIkona().getOriginalFilename();
+                File targetFile = new File(uploadDir + time + originalName);
+
+                request.getIkona().transferTo(targetFile);
+                newIcon = time + originalName;
+
+                if (oldIcon != null) {
+                    File oldFile = new File(uploadDir + oldIcon);
+                    if (oldFile.exists()) {
+                        oldFile.delete();
+                    }
+                }
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Mistake of Icon saving");
+        }
+
+        oldSprawnosc.setNazwa(request.getNazwa());
+        oldSprawnosc.setOpis(request.getOpis());
+        oldSprawnosc.setOpisWymagan(request.getOpisWymagan());
+        oldSprawnosc.setIkona(newIcon);
+
+//        if (!folder.exists()) {
+//            folder.mkdirs();
+//        }
+
+        //SprawnoscMapper.updateEntity(oldSprawnosc, request);
         Sprawnosc updated = sprawnoscService.modifySprawnoscById(id, oldSprawnosc);
 
         return ResponseEntity.ok(SprawnoscMapper.toDto(updated));
