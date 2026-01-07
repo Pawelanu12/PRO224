@@ -46,6 +46,6 @@ public class SprawnoscMapper {
         entity.setNazwa(request.getNazwa());
         entity.setOpis(request.getOpis());
         entity.setOpisWymagan(request.getOpisWymagan());
-        entity.setIkona(request.getIkona());
+        //entity.setIkona(request.getIkona());
     }
 }
