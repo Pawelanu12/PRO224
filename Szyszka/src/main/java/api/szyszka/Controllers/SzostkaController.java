@@ -1,6 +1,8 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.*;
+import api.szyszka.DTOs.Szostka.CreateSzostkaRequest;
+import api.szyszka.DTOs.Szostka.SzostkaDto;
+import api.szyszka.DTOs.Szostka.UpdateSzostkaRequest;
 import api.szyszka.Entities.Szostka;
 import api.szyszka.Mappers.SzostkaMapper;
 import api.szyszka.Services.SzostkaService;

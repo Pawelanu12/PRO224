@@ -1,8 +1,8 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreateWiadomoscRequest;
-import api.szyszka.DTOs.CzatUpdateDto;
-import api.szyszka.DTOs.WiadomoscDto;
+import api.szyszka.DTOs.Chat.CreateWiadomoscRequest;
+import api.szyszka.DTOs.Chat.CzatUpdateDto;
+import api.szyszka.DTOs.Chat.WiadomoscDto;
 import api.szyszka.Entities.*;
 import api.szyszka.Mappers.WiadomoscMapper;
 import api.szyszka.Repositories.*;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.NoSuchElementException;

@@ -1,8 +1,8 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreateWiadomoscRequest;
-import api.szyszka.DTOs.UpdateWiadomoscRequest;
-import api.szyszka.DTOs.WiadomoscDto;
+import api.szyszka.DTOs.Chat.CreateWiadomoscRequest;
+import api.szyszka.DTOs.Chat.UpdateWiadomoscRequest;
+import api.szyszka.DTOs.Chat.WiadomoscDto;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Mappers.WiadomoscMapper;
 import api.szyszka.Services.WiadomoscService;

@@ -1,7 +1,7 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreateUczestnictwoRequest;
-import api.szyszka.DTOs.UczestnictwoDto;
+import api.szyszka.DTOs.Event.CreateUczestnictwoRequest;
+import api.szyszka.DTOs.Event.UczestnictwoDto;
 import api.szyszka.Entities.Uczestnictwo;
 
 public class UczestnictwoMapper {

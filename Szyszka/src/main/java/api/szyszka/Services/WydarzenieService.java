@@ -1,7 +1,7 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreateWydarzenieRequest;
-import api.szyszka.DTOs.UpdateWydarzenieRequest;
+import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
+import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Entities.WydarzenieZdjecie;
@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service

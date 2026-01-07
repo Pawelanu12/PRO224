@@ -1,11 +1,9 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreateUczestnictwoRequest;
-import api.szyszka.DTOs.UczestnictwoDto;
-import api.szyszka.DTOs.UpdateUzytkownikRequest;
+import api.szyszka.DTOs.Event.CreateUczestnictwoRequest;
+import api.szyszka.DTOs.Event.UczestnictwoDto;
 import api.szyszka.Entities.Uczestnictwo;
 import api.szyszka.Mappers.UczestnictwoMapper;
-import api.szyszka.Mappers.ZdjecieMapper;
 import api.szyszka.Services.UczestnictwoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,14 +1,11 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CzatDto;
-import api.szyszka.DTOs.WiadomoscDto;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Exceptions.ResourceNotFoundException;
 import api.szyszka.Exceptions.UserNotFoundException;
-import api.szyszka.Mappers.CzatMapper;
 import api.szyszka.Repositories.CzatRepository;
 import api.szyszka.Repositories.CzatUzytkownikRepository;
 import api.szyszka.Repositories.UzytkownikRepository;

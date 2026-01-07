@@ -1,6 +1,6 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreateZdobytaSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.CreateZdobytaSprawnoscRequest;
 import api.szyszka.Entities.Sprawnosc;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.ZdobytaSprawnosc;

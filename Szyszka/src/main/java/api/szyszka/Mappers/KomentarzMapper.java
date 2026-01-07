@@ -1,8 +1,8 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreateKomentarzRequest;
-import api.szyszka.DTOs.KomentarzDto;
-import api.szyszka.DTOs.UpdateKomentarzRequest;
+import api.szyszka.DTOs.Post.CreateKomentarzRequest;
+import api.szyszka.DTOs.Post.KomentarzDto;
+import api.szyszka.DTOs.Post.UpdateKomentarzRequest;
 import api.szyszka.Entities.Komentarz;
 
 public class KomentarzMapper {

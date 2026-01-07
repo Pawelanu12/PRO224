@@ -1,15 +1,13 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreatePostRequest;
-import api.szyszka.DTOs.PostDto;
-import api.szyszka.DTOs.UpdatePostRequest;
+import api.szyszka.DTOs.Post.CreatePostRequest;
+import api.szyszka.DTOs.Post.PostDto;
+import api.szyszka.DTOs.Post.UpdatePostRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Entities.PostZdjecie;
-import api.szyszka.Entities.Zdjecie;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PostMapper {
 

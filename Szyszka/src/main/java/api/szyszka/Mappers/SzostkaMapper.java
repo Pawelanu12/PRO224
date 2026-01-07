@@ -1,9 +1,9 @@
 package api.szyszka.Mappers;
 
 
-import api.szyszka.DTOs.CreateSzostkaRequest;
-import api.szyszka.DTOs.SzostkaDto;
-import api.szyszka.DTOs.UpdateSzostkaRequest;
+import api.szyszka.DTOs.Szostka.CreateSzostkaRequest;
+import api.szyszka.DTOs.Szostka.SzostkaDto;
+import api.szyszka.DTOs.Szostka.UpdateSzostkaRequest;
 import api.szyszka.Entities.Szostka;
 
 import java.util.ArrayList;

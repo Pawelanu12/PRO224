@@ -1,6 +1,8 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.*;
+import api.szyszka.DTOs.User.CreateUzytkownikRequest;
+import api.szyszka.DTOs.User.UpdateUzytkownikRequest;
+import api.szyszka.DTOs.User.UzytkownikDto;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 

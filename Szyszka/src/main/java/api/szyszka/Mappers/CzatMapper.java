@@ -1,8 +1,8 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CzatDto;
-import api.szyszka.DTOs.CzatSummaryDto;
-import api.szyszka.DTOs.WiadomoscDto;
+import api.szyszka.DTOs.Chat.CzatDto;
+import api.szyszka.DTOs.Chat.CzatSummaryDto;
+import api.szyszka.DTOs.Chat.WiadomoscDto;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
 import api.szyszka.Entities.Uzytkownik;

@@ -1,6 +1,6 @@
 package api.szyszka.Security;
 
-import api.szyszka.DTOs.GoogleUserData;
+import api.szyszka.DTOs.User.GoogleUserData;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;

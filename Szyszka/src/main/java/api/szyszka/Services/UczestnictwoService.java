@@ -1,12 +1,9 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreateUczestnictwoRequest;
-import api.szyszka.DTOs.UczestnictwoDto;
-import api.szyszka.Entities.Szostka;
+import api.szyszka.DTOs.Event.CreateUczestnictwoRequest;
 import api.szyszka.Entities.Uczestnictwo;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wydarzenie;
-import api.szyszka.Exceptions.DuplicateUserUczestnictwoException;
 import api.szyszka.Mappers.UczestnictwoMapper;
 import api.szyszka.Repositories.UczestnictwoRepository;
 import api.szyszka.Repositories.UzytkownikRepository;

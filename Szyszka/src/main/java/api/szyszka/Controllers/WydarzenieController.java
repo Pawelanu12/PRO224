@@ -1,9 +1,8 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreateWydarzenieRequest;
-import api.szyszka.DTOs.UpdateWydarzenieRequest;
-import api.szyszka.DTOs.WydarzenieDto;
-import api.szyszka.Entities.Sprawnosc;
+import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
+import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
+import api.szyszka.DTOs.Event.WydarzenieDto;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Mappers.WydarzenieMapper;
 import api.szyszka.Services.WydarzenieService;
@@ -20,9 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

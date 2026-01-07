@@ -1,7 +1,7 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreatePostRequest;
-import api.szyszka.DTOs.UpdatePostRequest;
+import api.szyszka.DTOs.Post.CreatePostRequest;
+import api.szyszka.DTOs.Post.UpdatePostRequest;
 import api.szyszka.Entities.*;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Repositories.PostRepository;

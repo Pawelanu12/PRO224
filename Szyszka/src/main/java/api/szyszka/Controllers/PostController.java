@@ -1,21 +1,19 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreatePostRequest;
-import api.szyszka.DTOs.PostDto;
-import api.szyszka.DTOs.UpdatePostRequest;
+import api.szyszka.DTOs.Post.CreatePostRequest;
+import api.szyszka.DTOs.Post.PostDto;
+import api.szyszka.DTOs.Post.UpdatePostRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Mappers.PostMapper;
 import api.szyszka.Services.PostService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

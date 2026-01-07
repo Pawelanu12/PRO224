@@ -1,10 +1,9 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreateSprawnoscRequest;
-import api.szyszka.DTOs.SprawnoscDto;
-import api.szyszka.DTOs.UpdateSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.CreateSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.SprawnoscDto;
+import api.szyszka.DTOs.Sprawnosci.UpdateSprawnoscRequest;
 import api.szyszka.Entities.Sprawnosc;
-import api.szyszka.Entities.Szostka;
 
 public class SprawnoscMapper {
 

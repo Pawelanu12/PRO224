@@ -1,9 +1,8 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreateZdjecieRequest;
-import api.szyszka.DTOs.PostDto;
-import api.szyszka.DTOs.UpdateZdjecieRequest;
-import api.szyszka.DTOs.ZdjecieDto;
+import api.szyszka.DTOs.Images.CreateZdjecieRequest;
+import api.szyszka.DTOs.Images.UpdateZdjecieRequest;
+import api.szyszka.DTOs.Images.ZdjecieDto;
 import api.szyszka.Entities.Zdjecie;
 
 public class ZdjecieMapper {

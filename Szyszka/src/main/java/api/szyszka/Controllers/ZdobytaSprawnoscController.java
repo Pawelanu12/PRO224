@@ -1,8 +1,8 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreateZdobytaSprawnoscRequest;
-import api.szyszka.DTOs.UpdateZdobytaSprawnoscRequest;
-import api.szyszka.DTOs.ZdobytaSprawnoscDto;
+import api.szyszka.DTOs.Sprawnosci.CreateZdobytaSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.UpdateZdobytaSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.ZdobytaSprawnoscDto;
 import api.szyszka.Entities.ZdobytaSprawnosc;
 import api.szyszka.Mappers.ZdobytaSprawnoscMapper;
 import api.szyszka.Services.ZdobytaSprawnoscService;

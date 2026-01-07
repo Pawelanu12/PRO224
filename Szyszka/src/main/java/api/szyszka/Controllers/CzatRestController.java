@@ -1,19 +1,16 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.*;
+import api.szyszka.DTOs.Chat.*;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.CzatMapper;
 import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Services.CzatService;
-import api.szyszka.Services.UzytkownikService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

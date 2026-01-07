@@ -1,10 +1,9 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.Auth.AuthResponse;
 import api.szyszka.DTOs.Auth.GoogleAuthRequest;
 import api.szyszka.DTOs.Auth.LoginRequest;
 import api.szyszka.DTOs.Auth.RegisterRequest;
-import api.szyszka.DTOs.GoogleUserData;
+import api.szyszka.DTOs.User.GoogleUserData;
 import api.szyszka.Security.GoogleTokenVerifier;
 import api.szyszka.Services.UzytkownikService;
 import jakarta.servlet.http.Cookie;

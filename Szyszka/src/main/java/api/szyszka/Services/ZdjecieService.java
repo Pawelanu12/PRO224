@@ -1,6 +1,6 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreateZdjecieRequest;
+import api.szyszka.DTOs.Images.CreateZdjecieRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wydarzenie;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class ZdjecieService {

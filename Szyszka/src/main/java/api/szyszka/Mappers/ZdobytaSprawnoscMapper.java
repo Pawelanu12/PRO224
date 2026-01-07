@@ -1,9 +1,8 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreateZdobytaSprawnoscRequest;
-import api.szyszka.DTOs.UpdateWydarzenieRequest;
-import api.szyszka.DTOs.UpdateZdobytaSprawnoscRequest;
-import api.szyszka.DTOs.ZdobytaSprawnoscDto;
+import api.szyszka.DTOs.Sprawnosci.CreateZdobytaSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.UpdateZdobytaSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.ZdobytaSprawnoscDto;
 import api.szyszka.Entities.ZdobytaSprawnosc;
 
 public class ZdobytaSprawnoscMapper {

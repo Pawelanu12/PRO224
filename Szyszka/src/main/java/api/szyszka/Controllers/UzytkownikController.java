@@ -1,16 +1,16 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.*;
+import api.szyszka.DTOs.User.CreateUzytkownikRequest;
+import api.szyszka.DTOs.User.UpdateUzytkownikRequest;
+import api.szyszka.DTOs.User.UzytkownikDto;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.UzytkownikMapper;
 import api.szyszka.Services.UzytkownikService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;

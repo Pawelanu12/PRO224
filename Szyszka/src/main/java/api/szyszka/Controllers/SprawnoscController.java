@@ -1,12 +1,9 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreateSprawnoscRequest;
-import api.szyszka.DTOs.SprawnoscDto;
-import api.szyszka.DTOs.UpdateSprawnoscRequest;
+import api.szyszka.DTOs.Sprawnosci.SprawnoscDto;
+import api.szyszka.DTOs.Sprawnosci.UpdateSprawnoscRequest;
 import api.szyszka.Entities.Sprawnosc;
-import api.szyszka.Entities.Szostka;
 import api.szyszka.Mappers.SprawnoscMapper;
-import api.szyszka.Mappers.SzostkaMapper;
 import api.szyszka.Services.SprawnoscService;
 import api.szyszka.Services.SzostkaService;
 import org.springframework.core.io.FileSystemResource;

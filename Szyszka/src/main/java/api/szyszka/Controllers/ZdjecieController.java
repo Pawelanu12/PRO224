@@ -1,11 +1,9 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.CreateZdjecieRequest;
-import api.szyszka.DTOs.PostDto;
-import api.szyszka.DTOs.UpdateZdjecieRequest;
-import api.szyszka.DTOs.ZdjecieDto;
+import api.szyszka.DTOs.Images.CreateZdjecieRequest;
+import api.szyszka.DTOs.Images.UpdateZdjecieRequest;
+import api.szyszka.DTOs.Images.ZdjecieDto;
 import api.szyszka.Entities.Zdjecie;
-import api.szyszka.Mappers.SzostkaMapper;
 import api.szyszka.Mappers.ZdjecieMapper;
 import api.szyszka.Services.ZdjecieService;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package api.szyszka.Services;
 
-import api.szyszka.DTOs.CreateKomentarzRequest;
+import api.szyszka.DTOs.Post.CreateKomentarzRequest;
 import api.szyszka.Entities.Komentarz;
 import api.szyszka.Entities.Post;
 import api.szyszka.Entities.Uzytkownik;

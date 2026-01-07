@@ -1,13 +1,11 @@
 package api.szyszka.Mappers;
 
-import api.szyszka.DTOs.CreateWydarzenieRequest;
-import api.szyszka.DTOs.UczestnictwoDto;
-import api.szyszka.DTOs.UpdateWydarzenieRequest;
-import api.szyszka.DTOs.WydarzenieDto;
+import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
+import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
+import api.szyszka.DTOs.Event.WydarzenieDto;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Entities.WydarzenieZdjecie;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
