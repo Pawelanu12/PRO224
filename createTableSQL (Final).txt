@@ -16,9 +16,9 @@ CREATE TABLE uzytkownik (
     data_dolaczenia_do_gromady DATETIME,
     rodzic_id1 BIGINT,
     rodzic_id2 BIGINT,
-    typ_uzytkownika VARCHAR(255) NOT NULL,
+    typ_uzytkownika VARCHAR(50) NOT NULL,
     szostka_id BIGINT,
-    zdjecie VARCHAR(255), -- zdjęcie użytkownika
+    zdjecie VARCHAR(255),
 	google_id VARCHAR(255) UNIQUE,
 	auth_provider VARCHAR(20) DEFAULT 'LOCAL',
 
@@ -32,7 +32,8 @@ CREATE TABLE sprawnosc (
     nazwa VARCHAR(255) NOT NULL UNIQUE,
     opis TEXT,
     opis_wymagan TEXT,
-    ikona VARCHAR(255)  -- ścieżka do pliku
+    ikona VARCHAR(255),
+    typ_sprawnosci VARCHAR(50)
 );
 
 CREATE TABLE zdobyte_sprawnosci (
@@ -53,7 +54,8 @@ CREATE TABLE wydarzenie (
     data_zakonczenia DATETIME NOT NULL,
     opis TEXT,
     organizator_id BIGINT,
-    zdjecie VARCHAR(255),  -- zdjęcie wydarzenia
+    zdjecie VARCHAR(255),
+    typ_wydarzenia VARCHAR(50)
 
     FOREIGN KEY (organizator_id) REFERENCES uzytkownik(id) ON DELETE SET NULL
 );
@@ -74,7 +76,7 @@ CREATE TABLE post (
     data_stworzenia DATETIME NOT NULL,
     tresc TEXT NOT NULL,
     ilosc_polubien INT DEFAULT 0,
-    zdjecie VARCHAR(255), -- zdjęcie posta
+    zdjecie VARCHAR(255),
     
     FOREIGN KEY (autor_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
 );
@@ -131,7 +133,7 @@ CREATE TABLE wiadomosc (
 CREATE TABLE wydarzenie_zdjecie (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     wydarzenie_id BIGINT NOT NULL,
-    sciezka VARCHAR(255) NOT NULL, -- np. URL / nazwa pliku
+    sciezka VARCHAR(255) NOT NULL,
     data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (wydarzenie_id) REFERENCES wydarzenie(id) ON DELETE CASCADE
@@ -139,7 +141,7 @@ CREATE TABLE wydarzenie_zdjecie (
 CREATE TABLE post_zdjecie (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     post_id BIGINT NOT NULL,
-    sciezka VARCHAR(255) NOT NULL,  -- np. URL / nazwa pliku
+    sciezka VARCHAR(255) NOT NULL, 
     data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
@@ -154,4 +156,21 @@ CREATE TABLE post_udostepnienie (
 
     UNIQUE (uzytkownik_id, post_id)
 );
+
+--Indexy--
+CREATE INDEX idx_uzytkownik_login ON uzytkownik(login);
+CREATE INDEX idx_uzytkownik_email ON uzytkownik(email);
+CREATE INDEX idx_uzytkownik_typ ON uzytkownik(typ_uzytkownika);
+CREATE INDEX idx_post_autor ON post(autor_id);
+CREATE INDEX idx_post_data ON post(data_stworzenia);
+CREATE INDEX idx_komentarz_post ON komentarz(post_id);
+CREATE INDEX idx_wydarzenie_typ ON wydarzenie(typ_wydarzenia);
+CREATE INDEX idx_wydarzenie_data ON wydarzenie(data_wyjazdu);
+CREATE INDEX idx_sprawnosc_typ ON sprawnosc(typ_sprawnosci);
+CREATE INDEX idx_wiadomosc_czat ON wiadomosc(czat_id);
+CREATE INDEX idx_czat_uzytkownik_user ON czat_uzytkownik(uzytkownik_id);
+
+
+
+
 
