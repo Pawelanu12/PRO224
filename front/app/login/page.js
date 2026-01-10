@@ -63,7 +63,7 @@ export default function LogIn() {
                                 <div className="flex justify-between text-sm text-gray-200 mt-2">
                                     <button
                                         type="button"
-                                        onClick={(e) => pushClick(e, "/rejestracja")}
+                                        onClick={(e) => pushClick(e, "/registration")}
                                         className="hover:underline"
                                     >
                                         Zarejestruj się
@@ -81,7 +81,7 @@ export default function LogIn() {
                                     type="submit"
                                     disabled={!dirty || !isValid}
                                     className="mt-4 rounded-md bg-[#354545] py-2 text-white
-                             disabled:opacity-50 disabled:cursor-not-allowed
+                             {/*disabled:opacity-50 disabled:cursor-not-allowed*/}
                              hover:bg-[#2d3e3e]"
                                 >
                                     Log In

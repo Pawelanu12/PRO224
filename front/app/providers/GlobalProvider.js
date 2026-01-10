@@ -27,7 +27,6 @@ export default function GlobalProvider({ children }) {
         router.push(href)
     }
     const logIn=(values)=>{
-        console.log(values)
         const f=async (values)=>{
             await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/login`,
                 {
@@ -37,13 +36,10 @@ export default function GlobalProvider({ children }) {
                     body:JSON.stringify(
                         values)
                 })
-                .then(res=>res.json())
-                .then(res=>{if(res.status===500)alert(res.message)})
                 .then(()=>{
                     get_me()
                 }
                 )
-                .then(()=>{if(user)router.replace("/forum")})
 
                 .catch(err=>alert("wystąpił błąd przy logowaniu"))
         }
@@ -75,7 +71,6 @@ export default function GlobalProvider({ children }) {
         me()
     }
     const register=(values)=>{
-        alert(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/register`)
         const f=async (values)=>{
            const val={
                login:values.login,
@@ -97,7 +92,10 @@ export default function GlobalProvider({ children }) {
                         router.replace("/login")
                         alert("konto stworzone poprawne")
                     }
-                    else alert(r.message)
+                    else if(r.message.includes("Duplicate"))
+                        alert("email musi być unikatowy")
+                    else
+                        alert(r.message)
                 })
                 .catch(err=>console.log(err))
         }
@@ -122,6 +120,7 @@ export default function GlobalProvider({ children }) {
     };
 
 
+
     useEffect(()=>{
             get_me()
     },[])
@@ -131,7 +130,7 @@ export default function GlobalProvider({ children }) {
         if(!user){
             const path=window.location.pathname
             console.log(path)
-            if(!(path==="/login"||path==="/register"||path==="/"||path==="/kontakt"
+            if(!(path==="/login"||path==="/rejestracja"||path==="/"||path==="/kontakt"
                 ||path.startsWith("/sprawnosci")||path.startsWith("/wydarzenia")))
             router.replace("/login")
         }

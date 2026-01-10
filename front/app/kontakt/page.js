@@ -1,8 +1,8 @@
 'use client'
 
 
-import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
-import NavbarZarejestrowana from "@/app/navbars/NavbarZarejestrowana";
+import NavbarNiezarejestrowana from "@/app/navbar/NavbarNiezarejestrowana";
+import NavbarZarejestrowana from "@/app/navbar/NavbarZarejestrowana";
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 

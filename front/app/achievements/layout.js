@@ -1,12 +1,12 @@
 import "../globals.css";
+import "./sprawnosci.css"
 import AchievementProvider from "@/app/providers/AchievementProvider";
-import PasswordChangeProvider from "@/app/providers/PasswordChangeProvider";
 export default function RootLayout({ children }) {
     return (
 
-        <PasswordChangeProvider>
+        <AchievementProvider>
             {children}
-        </PasswordChangeProvider>
+        </AchievementProvider>
 
     );
 }

@@ -3,14 +3,14 @@
 import NavbarZarejestrowana from "@/app/navbar/NavbarZarejestrowana";
 import Navigation from "@/app/forum/Navigation";
 import Posts from "@/app/forum/Posts";
-import {useEffect, useState} from "react";
 
-export default function Forum(){
-
+export default function MOJEPOSTY()
+{
     return(
         <div>
-            <Navigation  />
-            <Posts/>
+            <Navigation/>
+            <Posts wszystkie={false}/>
+
         </div>
 
     )

@@ -11,7 +11,7 @@ export default function ForumProvider({ children }) {
     const [posty, setPosty] = useState([]);
     const [loading, setLoading] = useState(false);
     const {pushClick}=useContext(GlobalContext);
-
+    const [comments, setComments] = useState([]);
     const [postForDialog,setPostForDialog] = useState(null);
     const getPosty = () => {
         const get=async ()=>{
@@ -60,10 +60,7 @@ export default function ForumProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log(res)
-                    if(!res.error)
-                        pushClick("","/forum")
-                    else
+                    if(res.error)
                         alert(res.error)
                 })
                 .catch(err=>console.log(err))
@@ -113,16 +110,52 @@ export default function ForumProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log(res)
+                    console.log("koment+")
+                    setComments(prev=>[...prev,res])
                 })
                 .catch(err=>console.log(err))
                 // .finally(()=>getPosty())
         }
         send(body)
     }
+
+    const editComment=(id,body)=>{
+        console.log(id,body)
+        const send=async (id,body)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
+                method:"PUT",
+                headers: {"Content-Type": "application/json"},
+                credentials: "include",
+
+                body:JSON.stringify(body)
+            })
+                .catch(err=>console.log(err))
+            // .finally(()=>getPosty())
+        }
+        send(id,body)
+    }
+
+    const deleteComment=(id)=>{
+        const send=async (id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
+                method:"Delete",
+                credentials: "include",
+
+            })
+                .catch(err=>console.log(err))
+            // .finally(()=>getPosty())
+        }
+        send(id)
+    }
+
+
     return (
         <ForumContext.Provider value={{setPosty,postForDialog,setPostForDialog,
-            writeComment,posty,loading,getPosty,addPosty,editPost,deletePost,changeLike
+            writeComment,posty,loading,getPosty,addPosty,editPost,deletePost,changeLike,
+            deleteComment,
+            editComment,
+            comments,
+            setComments
         }}>{children}</ForumContext.Provider>
     )
 };

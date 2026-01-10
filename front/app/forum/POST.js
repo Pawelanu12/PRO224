@@ -2,10 +2,10 @@
 
 import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import Opcji from "@/app/forum/Opcji";
+import Options from "@/app/forum/Options";
 import PostDialog from "@/app/forum/dialogs/PostDialog";
 import {ForumContext} from "@/app/providers/ForumProvider";
-import PostInformacja from "@/app/forum/PostInformacja";
+import PostInformation from "@/app/forum/PostInformation";
 //pokazuje jeden post
 const compare_dates=(data_posta)=> {
     const date1 = new Date(data_posta);
@@ -21,12 +21,12 @@ const compare_dates=(data_posta)=> {
 }
 
 export default function Post({post,setShow}){
-    const {changeLike,setPostForDialog} = useContext(ForumContext);
+    const {changeLike} = useContext(ForumContext);
 const {user}=useContext(GlobalContext)
 
     return (
         <div className={"mb-8 bg-[#4D644C] max-w-[500px] rounded-lg min-w-[250px]"}>
-            <PostInformacja post={post} />
+            <PostInformation post={post} />
                 <div className={"flex flex-row flex-wrap justify-around mt-2 bg-[#3A4F39] rounded-lg"}>
                     <div>
                         <button onClick={(e) =>{e.preventDefault(); changeLike(post.id,user.id)}}>
@@ -36,7 +36,7 @@ const {user}=useContext(GlobalContext)
                        <PostDialog post={post}/>
                     </div>
                     <div>
-                        <button>ilosc udostepnien {post.udostepnienia}</button>
+                        <button>ilosc udostepnien {post.udostepnienia||0}</button>
                     </div>
                 </div>
             </div>

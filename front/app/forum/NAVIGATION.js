@@ -19,9 +19,8 @@ export default function Navigation() {
         return () => window.removeEventListener("resize", checkWidth);
     }, []);
     const buttons = [
-        { label: "Moje posty", path: "/forum/moje-posty" },
+        { label: "Moje posty", path: "/forum/my-posts" },
         { label: "Strona główna", path: "/forum" },
-        { label: "Obserwowani", path: "/forum/obserwowani" },
     ];
 
     // Widok mobilny - hamburger menu

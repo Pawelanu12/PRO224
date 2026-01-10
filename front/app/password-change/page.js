@@ -1,6 +1,6 @@
 'use client'
 
-import NavbarNiezarejestrowana from "@/app/navbars/NavbarNiezarejestrowana";
+import NavbarNiezarejestrowana from "@/app/navbar/NavbarNiezarejestrowana";
 import {useContext, useEffect, useState} from "react";
 import WysylanieKodu from "@/app/password-change/WysylanieKodu";
 import PotwierdzenieKodu from "@/app/password-change/PotwierdzenieKodu";

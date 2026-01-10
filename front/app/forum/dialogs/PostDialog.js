@@ -1,27 +1,20 @@
 'use state'
 
 import {useContext, useEffect, useRef, useState} from "react";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import * as Yup from "yup";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ForumContext} from "@/app/providers/ForumProvider";
-import {FaImage, FaImages} from "react-icons/fa";
 import {FaX} from "react-icons/fa6";
-import Opcji from "@/app/forum/Opcji";
-import PisanieKomentarza from "@/app/forum/dialogs/PisanieKomentarza";
+import WritingComment from "@/app/forum/dialogs/WritingComment";
 import {Virtuoso} from "react-virtuoso";
-import Wiadomosc from "@/app/czat/websocket/Wiadomosc";
-import Koment from "@/app/forum/Koment";
-import Post from "@/app/forum/Post";
-import PostInformacja from "@/app/forum/PostInformacja";
-import DodawaniaPostu from "@/app/forum/dialogs/DodawaniaPostu";
+import Comment from "@/app/forum/Comment";
+import PostInformation from "@/app/forum/PostInformation";
 
 
 export default function PostDialog({post}) {
     const {user}=useContext(GlobalContext);
     const {changeLike,setPosty}=useContext(ForumContext);
 
-    const [comments, setComments] = useState([]);
+    const {comments, setComments} = useContext(ForumContext);
     const dialog=useRef(null);
 
 
@@ -71,11 +64,11 @@ if(!post) return null;
                         <Virtuoso
                             data={comments}
                             followOutput="auto"
-                            className="h-full"
+                            className="h-full bg-[#4D644C]"
                             components={{
                                 Header: () => (
                                     <div className={" bg-[#4D644C]"}>
-                                        <PostInformacja post={post}/>
+                                        <PostInformation post={post}/>
                                         <div className="mt-2 flex flex-wrap justify-around bg-[#3A4F39]">
                                             <button onClick={() => changeLike(post.id, user.id)}>
                                                 ilość polubień {post.polubienia.length}
@@ -86,11 +79,11 @@ if(!post) return null;
                                     </div>
                                 ),
                             }}
-                            itemContent={(index, koment) => <Koment koment={koment}/>}
+                            itemContent={(index, koment) => <Comment setComments={setComments} koment={koment}/>}
                         />
                     </div>
 
-                    <PisanieKomentarza
+                    <WritingComment
                         id={post.id}
                         add={setComments}
                         className="flex-shrink-0"
