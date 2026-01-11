@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "user")
 public class Uzytkownik {
 
     @Id
@@ -39,7 +40,7 @@ public class Uzytkownik {
 
 
     @ManyToOne
-    @JoinColumn(name = "szostka_id")
+    @JoinColumn(name = "squad_id")
     private Szostka szostka;
 
     @Column(unique = true)

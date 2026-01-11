@@ -1,0 +1,89 @@
+-- =====================================
+-- SAMPLE DATA
+-- =====================================
+
+-- Squads
+INSERT INTO squad (nazwa, data_stworzenia)
+VALUES 
+('Czerwony Squad', '2024-01-01 10:00:00'),
+('Niebieski Squad', '2024-02-01 10:00:00');
+
+-- Users
+INSERT INTO user (imie, nazwisko, login, haslo, email, data_urodzenia, typ_uzytkownika, squad_id, data_dolaczenia_do_gromady)
+VALUES 
+('Jan','Kowalski','Druzynowy','$2a$10$9gW8jUoKmk/oi9haE6vedOSNsdmshCwYqUtT1E3gPH62fU.nksFBO','jan.kowalski@example.com','2010-05-15 00:00:00','DRUZYNOWY',1,'2026-01-11 20:59:30'),
+('Jan2','Kowalsk2i','Druzynowy2','$2a$10$0UI4FPh22qxdLRd9cblNqu7I0wsQHAAUCG8HirITgOZNXuTmUd9.y','jan.ko2walski@example.com','2010-05-15 00:00:00','DEFAULT',2,'2026-01-11 21:00:09');
+
+-- Badges
+INSERT INTO badge (nazwa, opis, opis_wymagan, ikona, typ_sprawnosci)
+VALUES 
+('Pierwsza Pomoc','Podstawowa umiejętność udzielania pierwszej pomocy','Uczestnictwo w kursie pierwszej pomocy','/icons/first_aid.png','UMIEJETNOSC'),
+('Ognisko','Rozpalanie ogniska','Znajomość zasad bezpieczeństwa przy ogniu','/icons/campfire.png','UMIEJETNOSC');
+
+-- User Badges
+INSERT INTO user_badge (user_id, badge_id, data_zdobycia_sprawnosci)
+VALUES 
+(1, 1, '2026-01-10 15:00:00'),
+(2, 2, '2026-01-09 12:00:00');
+
+-- Events
+INSERT INTO event (nazwa, data_wyjazdu, data_zakonczenia, opis, organizator_id, zdjecie, typ_wydarzenia)
+VALUES 
+('Obóz letni','2026-07-01 08:00:00','2026-07-07 18:00:00','Tygodniowy obóz letni',1,'/images/summer_camp.png','OBÓZ'),
+('Wycieczka weekendowa','2026-05-15 09:00:00','2026-05-17 17:00:00','Wycieczka w góry',2,'/images/weekend_hike.png','WYJAZD');
+
+-- Event Participation
+INSERT INTO event_participation (user_id, event_id, obecny)
+VALUES
+(1, 1, TRUE),
+(2, 1, TRUE);
+
+-- Posts
+INSERT INTO post (autor_id, data_stworzenia, tresc, ilosc_polubien, zdjecie)
+VALUES
+(1,'2026-01-11 10:00:00','Nie mogę się doczekać obozu letniego!',5,'/images/post1.png'),
+(2,'2026-01-11 11:00:00','Przygotowania do wycieczki',3,NULL);
+
+-- Post Likes
+INSERT INTO post_like (post_id, user_id)
+VALUES
+(1,2),(1,1),(2,1);
+
+-- Comments
+INSERT INTO comment (post_id, autor_id, data_stworzenia, tresc)
+VALUES
+(1,2,'2026-01-11 12:00:00','Ja też nie mogę się doczekać!'),
+(1,1,'2026-01-11 12:30:00','Super!');
+
+-- Chat
+INSERT INTO chat (nazwa, data_utworzenia, czy_grupowy)
+VALUES
+('Czat obozowy','2026-01-11 13:00:00',TRUE);
+
+-- Chat Users
+INSERT INTO chat_user (chat_id, user_id, nieprzeczytane_wiadomosci)
+VALUES
+(1,1,0),
+(1,2,0);
+
+-- Messages
+INSERT INTO message (chat_id, nadawca_id, tresc, data_wyslania)
+VALUES
+(1,1,'Cześć wszystkim!','2026-01-11 13:10:00'),
+(1,2,'Hej! Gotowi na obóz?','2026-01-11 13:12:00');
+
+-- Event Images
+INSERT INTO event_image (event_id, sciezka, data_dodania)
+VALUES
+(1,'/images/event1.png','2026-01-11 14:00:00'),
+(2,'/images/event2.png','2026-01-11 14:10:00');
+
+-- Post Images
+INSERT INTO post_image (post_id, sciezka, data_dodania)
+VALUES
+(1,'/images/post_image1.png','2026-01-11 15:00:00');
+
+-- Post Shares
+INSERT INTO post_share (user_id, post_id)
+VALUES
+(2,1);

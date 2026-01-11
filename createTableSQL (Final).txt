@@ -1,15 +1,15 @@
-CREATE TABLE szostka (
+CREATE TABLE squad (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nazwa VARCHAR(255) NOT NULL,
     data_stworzenia DATETIME NOT NULL
 );
 
-CREATE TABLE uzytkownik (
+CREATE TABLE user (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     imie VARCHAR(255) NOT NULL,
     nazwisko VARCHAR(255) NOT NULL,
     login VARCHAR(255) NOT NULL UNIQUE,
-    haslo VARCHAR(255) NULL,
+    haslo VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     data_urodzenia DATETIME,
     nr_telefonu VARCHAR(20),
@@ -17,17 +17,17 @@ CREATE TABLE uzytkownik (
     rodzic_id1 BIGINT,
     rodzic_id2 BIGINT,
     typ_uzytkownika VARCHAR(50) NOT NULL,
-    szostka_id BIGINT,
+    squad_id BIGINT,
     zdjecie VARCHAR(255),
-	google_id VARCHAR(255) UNIQUE,
-	auth_provider VARCHAR(20) DEFAULT 'LOCAL',
+    google_id VARCHAR(255) UNIQUE,
+    auth_provider VARCHAR(20) DEFAULT 'LOCAL',
 
-    FOREIGN KEY (rodzic_id1) REFERENCES uzytkownik(id) ON DELETE SET NULL,
-    FOREIGN KEY (rodzic_id2) REFERENCES uzytkownik(id) ON DELETE SET NULL,
-    FOREIGN KEY (szostka_id) REFERENCES szostka(id) ON DELETE SET NULL
+    FOREIGN KEY (rodzic_id1) REFERENCES user(id) ON DELETE SET NULL,
+    FOREIGN KEY (rodzic_id2) REFERENCES user(id) ON DELETE SET NULL,
+    FOREIGN KEY (squad_id) REFERENCES squad(id) ON DELETE SET NULL
 );
 
-CREATE TABLE sprawnosc (
+CREATE TABLE badge (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nazwa VARCHAR(255) NOT NULL UNIQUE,
     opis TEXT,
@@ -36,18 +36,18 @@ CREATE TABLE sprawnosc (
     typ_sprawnosci VARCHAR(50)
 );
 
-CREATE TABLE zdobyte_sprawnosci (
+CREATE TABLE user_badge (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    uzytkownik_id BIGINT NOT NULL,
-    sprawnosc_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    badge_id BIGINT NOT NULL,
     data_zdobycia_sprawnosci DATETIME NOT NULL,
 
-    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
-    FOREIGN KEY (sprawnosc_id) REFERENCES sprawnosc(id) ON DELETE CASCADE,
-    UNIQUE (uzytkownik_id, sprawnosc_id)
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (badge_id) REFERENCES badge(id) ON DELETE CASCADE,
+    UNIQUE (user_id, badge_id)
 );
 
-CREATE TABLE wydarzenie (
+CREATE TABLE event (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nazwa VARCHAR(255) NOT NULL,
     data_wyjazdu DATETIME NOT NULL,
@@ -55,19 +55,19 @@ CREATE TABLE wydarzenie (
     opis TEXT,
     organizator_id BIGINT,
     zdjecie VARCHAR(255),
-    typ_wydarzenia VARCHAR(50)
+    typ_wydarzenia VARCHAR(50),
 
-    FOREIGN KEY (organizator_id) REFERENCES uzytkownik(id) ON DELETE SET NULL
+    FOREIGN KEY (organizator_id) REFERENCES user(id) ON DELETE SET NULL
 );
 
-CREATE TABLE uczestnictwo (
+CREATE TABLE event_participation (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    uzytkownik_id BIGINT NOT NULL,
-    wydarzenie_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
     obecny BOOLEAN NOT NULL,
 
-    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
-    FOREIGN KEY (wydarzenie_id) REFERENCES wydarzenie(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
 );
 
 CREATE TABLE post (
@@ -77,19 +77,20 @@ CREATE TABLE post (
     tresc TEXT NOT NULL,
     ilosc_polubien INT DEFAULT 0,
     zdjecie VARCHAR(255),
-    
-    FOREIGN KEY (autor_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
+
+    FOREIGN KEY (autor_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE post_polubienia (
+CREATE TABLE post_like (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     post_id BIGINT NOT NULL,
-    uzytkownik_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
-    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE komentarz (
+CREATE TABLE comment (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     post_id BIGINT NOT NULL,
     autor_id BIGINT NOT NULL,
@@ -98,79 +99,77 @@ CREATE TABLE komentarz (
     tresc TEXT NOT NULL,
 
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
-    FOREIGN KEY (autor_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
-    FOREIGN KEY (komentarz_id) REFERENCES komentarz(id) ON DELETE CASCADE
+    FOREIGN KEY (autor_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (komentarz_id) REFERENCES comment(id) ON DELETE CASCADE
 );
 
-CREATE TABLE czat (
+CREATE TABLE chat (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nazwa VARCHAR(255),
     data_utworzenia DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     czy_grupowy BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE czat_uzytkownik (
+CREATE TABLE chat_user (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    czat_id BIGINT NOT NULL,
-    uzytkownik_id BIGINT NOT NULL,
+    chat_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
     last_read_message_id BIGINT,
     nieprzeczytane_wiadomosci INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (czat_id) REFERENCES czat(id) ON DELETE CASCADE,
-    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
-    UNIQUE (czat_id, uzytkownik_id)
+
+    FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    UNIQUE (chat_id, user_id)
 );
 
-CREATE TABLE wiadomosc (
+CREATE TABLE message (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    czat_id BIGINT NOT NULL,
+    chat_id BIGINT NOT NULL,
     nadawca_id BIGINT NOT NULL,
     tresc TEXT NOT NULL,
     data_wyslania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (czat_id) REFERENCES czat(id) ON DELETE CASCADE,
-    FOREIGN KEY (nadawca_id) REFERENCES uzytkownik(id) ON DELETE CASCADE
+    FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE,
+    FOREIGN KEY (nadawca_id) REFERENCES user(id) ON DELETE CASCADE
 );
-CREATE TABLE wydarzenie_zdjecie (
+
+CREATE TABLE event_image (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    wydarzenie_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
     sciezka VARCHAR(255) NOT NULL,
     data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (wydarzenie_id) REFERENCES wydarzenie(id) ON DELETE CASCADE
+    FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
 );
-CREATE TABLE post_zdjecie (
+
+CREATE TABLE post_image (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     post_id BIGINT NOT NULL,
-    sciezka VARCHAR(255) NOT NULL, 
+    sciezka VARCHAR(255) NOT NULL,
     data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
-CREATE TABLE post_udostepnienie (
+
+CREATE TABLE post_share (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    uzytkownik_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
     post_id BIGINT NOT NULL,
 
-    FOREIGN KEY (uzytkownik_id) REFERENCES uzytkownik(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
-
-    UNIQUE (uzytkownik_id, post_id)
+    UNIQUE (user_id, post_id)
 );
 
---Indexy--
-CREATE INDEX idx_uzytkownik_login ON uzytkownik(login);
-CREATE INDEX idx_uzytkownik_email ON uzytkownik(email);
-CREATE INDEX idx_uzytkownik_typ ON uzytkownik(typ_uzytkownika);
-CREATE INDEX idx_post_autor ON post(autor_id);
+CREATE INDEX idx_user_login ON user(login);
+CREATE INDEX idx_user_email ON user(email);
+CREATE INDEX idx_user_typ ON user(typ_uzytkownika);
+CREATE INDEXuser idx_post_autor ON post(autor_id);
 CREATE INDEX idx_post_data ON post(data_stworzenia);
-CREATE INDEX idx_komentarz_post ON komentarz(post_id);
-CREATE INDEX idx_wydarzenie_typ ON wydarzenie(typ_wydarzenia);
-CREATE INDEX idx_wydarzenie_data ON wydarzenie(data_wyjazdu);
-CREATE INDEX idx_sprawnosc_typ ON sprawnosc(typ_sprawnosci);
-CREATE INDEX idx_wiadomosc_czat ON wiadomosc(czat_id);
-CREATE INDEX idx_czat_uzytkownik_user ON czat_uzytkownik(uzytkownik_id);
-
-
-
-
-
+CREATE INDEX idx_comment_post ON comment(post_id);
+CREATE INDEX idx_event_typ ON event(typ_wydarzenia);
+CREATE INDEX idx_event_data ON event(data_wyjazdu);
+CREATE INDEX idx_badge_typ ON badge(typ_sprawnosci);
+CREATE INDEX idx_message_chat ON message(chat_id);
+CREATE INDEX idx_chat_user_user ON chat_user(user_id);
+user_badge

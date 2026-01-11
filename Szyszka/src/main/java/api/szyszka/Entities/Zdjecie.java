@@ -22,6 +22,6 @@ public class Zdjecie {
     private Wydarzenie wydarzenie;
 
     @ManyToOne
-    @JoinColumn(name = "uzytkownik_id")
+    @JoinColumn(name = "user_id")
     private Uzytkownik uzytkownik;
 }

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "post_like")
 public class Post_polubienia {
 
     @Id
@@ -17,6 +18,6 @@ public class Post_polubienia {
     private Post post;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "uzytkownik_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Uzytkownik uzytkownik;
 }

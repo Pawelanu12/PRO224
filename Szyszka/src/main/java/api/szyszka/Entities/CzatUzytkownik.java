@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "chat_user")
 public class CzatUzytkownik {
 
     @Id
@@ -15,11 +16,11 @@ public class CzatUzytkownik {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "czat_id", nullable = false)
+    @JoinColumn(name = "chat_id", nullable = false)
     private Czat czat;
 
     @ManyToOne
-    @JoinColumn(name = "uzytkownik_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Uzytkownik uzytkownik;
 
     @Column(name = "nieprzeczytane_wiadomosci", nullable = false)

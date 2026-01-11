@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "post_share")
 public class Post_udostepnienie {
 
     @Id
@@ -19,6 +20,6 @@ public class Post_udostepnienie {
     private Post post;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "uzytkownik_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Uzytkownik uzytkownik;
 }

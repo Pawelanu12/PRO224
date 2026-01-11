@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "event_participation")
 public class Uczestnictwo {
 
     @Id
@@ -14,10 +15,10 @@ public class Uczestnictwo {
     private boolean obecny;
 
     @ManyToOne
-    @JoinColumn(name = "uzytkownik_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Uzytkownik uzytkownik;
 
     @ManyToOne
-    @JoinColumn(name = "wydarzenie_id", nullable = false)
+    @JoinColumn(name = "event_id", nullable = false)
     private Wydarzenie wydarzenie;
 }

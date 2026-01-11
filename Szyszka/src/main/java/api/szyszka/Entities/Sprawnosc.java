@@ -5,6 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "badge")
 public class Sprawnosc {
 
     @Id

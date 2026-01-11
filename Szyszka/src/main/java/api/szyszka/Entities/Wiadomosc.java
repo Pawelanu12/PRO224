@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "message")
 public class Wiadomosc {
 
     @Id
@@ -16,7 +17,7 @@ public class Wiadomosc {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "czat_id", nullable = false)
+    @JoinColumn(name = "chat_id", nullable = false)
     private Czat czat;
 
     @ManyToOne

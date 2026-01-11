@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "event_image")
 public class WydarzenieZdjecie {
 
     @Id
@@ -16,6 +17,6 @@ public class WydarzenieZdjecie {
     private String sciezka;
 
     @ManyToOne
-    @JoinColumn(name = "wydarzenie_id")
+    @JoinColumn(name = "event_id")
     private Wydarzenie wydarzenie;
 }

@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor @AllArgsConstructor
+@Table(name = "squad")
 public class Szostka {
 
     @Id
