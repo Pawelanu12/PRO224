@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateUzytkownikRequest {
+    private String login;
     private String imie;
     private String nazwisko;
     private String email;

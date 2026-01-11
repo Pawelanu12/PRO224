@@ -41,15 +41,11 @@ public class UzytkownikMapper {
 
     public static void updateEntity(Uzytkownik entity, UpdateUzytkownikRequest request) {
         if (request == null || entity == null) return;
+        entity.setLogin(request.getLogin());
         entity.setImie(request.getImie());
         entity.setNazwisko(request.getNazwisko());
         entity.setEmail(request.getEmail());
         entity.setNrTelefonu(request.getNrTelefonu());
-        entity.setTypUzytkownika(
-                request.getTypUzytkownika() != null
-                        ? TypUzytkownika.valueOf(request.getTypUzytkownika())
-                        : entity.getTypUzytkownika()
-        );
 
     }
 }

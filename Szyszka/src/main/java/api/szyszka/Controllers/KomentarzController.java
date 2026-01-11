@@ -26,7 +26,7 @@ public class KomentarzController {
     @PostMapping
     public ResponseEntity<KomentarzDto> createKomentarz(@RequestBody CreateKomentarzRequest request) {
         Komentarz komentarz = komentarzService.CreateKomentarz(request);
-
+        System.out.println(komentarz.getAutor().getLogin());
         return ResponseEntity
                 .created(URI.create("/api/komentarz/" + komentarz.getId()))
                 .body(KomentarzMapper.toDto(komentarz));

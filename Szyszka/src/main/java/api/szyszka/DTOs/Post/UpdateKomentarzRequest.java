@@ -14,8 +14,5 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateKomentarzRequest {
-    private LocalDateTime dataStworzenia;
     private String tresc;
-    private Post post;
-    private Uzytkownik uzytkownik;
 }

@@ -126,7 +126,22 @@ public class UzytkownikController {
 
         return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
     }
+    @PutMapping("/{id}/changeTyp")
+    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
+    public ResponseEntity<UzytkownikDto> updateUserTyp(@PathVariable Long id,
+                                                    @RequestBody UpdateUzytkownikRequest request) {
+        Uzytkownik existing = uzytkownikService.getUserById(id);
+        if(request.getTypUzytkownika()==null)
+            return ResponseEntity.badRequest().build();
 
+        if( request.getTypUzytkownika().equals("DRUZYNOWY"))
+            return ResponseEntity.badRequest().build();
+
+        existing.setTypUzytkownika(TypUzytkownika.valueOf(request.getTypUzytkownika()));
+        Uzytkownik updated = uzytkownikService.updateUser(id, existing);
+
+        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
     @PreAuthorize("hasRole('DRUZYNOWY')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

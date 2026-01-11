@@ -69,10 +69,7 @@ public class KomentarzService {
     public Komentarz modifyKomentarz(Long id, Komentarz updateKomentarz) {
         Komentarz oldKomentarz = GetKomentarzById(id);
 
-        oldKomentarz.setDataStworzenia(updateKomentarz.getDataStworzenia());
         oldKomentarz.setTresc(updateKomentarz.getTresc());
-        oldKomentarz.setPost(updateKomentarz.getPost());
-        oldKomentarz.setAutor(updateKomentarz.getAutor());
 
         return komentarzRepository.save(oldKomentarz);
     }

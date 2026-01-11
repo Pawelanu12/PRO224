@@ -25,7 +25,6 @@ public class ZdobytaSprawnoscController {
     @PostMapping
     public ResponseEntity<ZdobytaSprawnoscDto> createZdobytaSprawnosc(@RequestBody CreateZdobytaSprawnoscRequest request) {
         ZdobytaSprawnosc saved = zdobytaSprawnoscService.createZdobytaSprawnosc(request);
-
         return ResponseEntity
                 .created(URI.create("/api/zdobytaSprawnosc/" + saved.getId()))
                 .body(ZdobytaSprawnoscMapper.toDto(saved));

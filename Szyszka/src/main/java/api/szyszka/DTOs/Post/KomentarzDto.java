@@ -16,5 +16,5 @@ public class KomentarzDto {
     private LocalDateTime dataStworzenia;
     private String tresc;
     private Long postId;
-    private Long autorId;
+    private String autorLogin;
 }

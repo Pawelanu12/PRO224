@@ -140,6 +140,7 @@ public class UzytkownikService {
         if (!uzytkownikRepository.existsById(id)) {
             throw new UserNotFoundException(id);
         }
+        
         uzytkownikRepository.deleteById(id);
     }
 

@@ -14,7 +14,7 @@ public class KomentarzMapper {
                 entity.getDataStworzenia(),
                 entity.getTresc(),
                 entity.getPost().getId(),
-                entity.getAutor().getId()
+                entity.getAutor().getLogin()
         );
     }
 
@@ -29,7 +29,6 @@ public class KomentarzMapper {
 
     public static void updateEntity( Komentarz entity, UpdateKomentarzRequest request){
         if(entity == null || request == null) return;
-        entity.setDataStworzenia(request.getDataStworzenia());
         entity.setTresc(request.getTresc());
     }
 }
