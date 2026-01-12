@@ -27,19 +27,20 @@ public class CustomUserDetailsService implements UserDetailsService {
         String role = "ROLE_" + u.getTypUzytkownika().name();
 
         if (u.getHaslo() != null) {
-            return org.springframework.security.core.userdetails.User.builder()
+            return User.builder()
                     .username(u.getLogin())
                     .password(u.getHaslo())
                     .authorities(role)
                     .build();
         } else {
-            return org.springframework.security.core.userdetails.User.builder()
+            return User.builder()
                     .username(u.getLogin())
                     .password("null")
                     .authorities(role)
                     .build();
         }
     }
+
 
 
 }

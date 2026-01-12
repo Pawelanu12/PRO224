@@ -1,6 +1,7 @@
 package api.szyszka.Repositories;
 
 
+import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
@@ -12,7 +13,7 @@ public interface UzytkownikRepository extends JpaRepository<Uzytkownik, Long> {
     List<Uzytkownik> findByRodzic1IdOrRodzic2Id(Long rodzicId1, Long rodzicId2);
     Optional<Uzytkownik> findByEmail(String email);
 
-    List<Uzytkownik> findByTypUzytkownika(String userType);
+    List<Uzytkownik> findByTypUzytkownika(TypUzytkownika userType);
 
     Optional<Uzytkownik> findByGoogleId(String googleId);
 

@@ -1,12 +1,15 @@
 package api.szyszka.Controllers;
 
-import api.szyszka.DTOs.User.CreateUzytkownikRequest;
-import api.szyszka.DTOs.User.UpdateUzytkownikRequest;
-import api.szyszka.DTOs.User.UzytkownikDto;
+import api.szyszka.DTOs.User.*;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Mappers.UzytkownikMapper;
+import api.szyszka.Services.JwtService;
 import api.szyszka.Services.UzytkownikService;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.security.Principal;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,13 +27,16 @@ import java.util.stream.Collectors;
 public class UzytkownikController {
 
     private final UzytkownikService uzytkownikService;
+    private final JwtService jwtService;
 
-    public UzytkownikController(UzytkownikService uzytkownikService) {
+
+    public UzytkownikController(UzytkownikService uzytkownikService, JwtService jwtService) {
         this.uzytkownikService = uzytkownikService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
+    @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH','DEFAULT')")
     public ResponseEntity<UzytkownikDto> me(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(uzytkownikService.getCurrentUser(user.getUsername()));
     }
@@ -50,19 +57,6 @@ public class UzytkownikController {
         Uzytkownik user = uzytkownikService.getUserById(id);
         return ResponseEntity.ok(UzytkownikMapper.toDto(user));
     }
-
-    @PutMapping("/{id}/type")
-    public ResponseEntity<UzytkownikDto> changeUserType(
-            @PathVariable Long id,
-            @RequestParam TypUzytkownika newType,
-            Principal principal) {
-
-        Uzytkownik updated = uzytkownikService.changeUserType(id, newType, principal);
-        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
-    }
-
-
-
     @GetMapping
     @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
     public ResponseEntity<List<UzytkownikDto>> getAllUsers() {
@@ -106,6 +100,7 @@ public class UzytkownikController {
         return ResponseEntity.ok(users);
     }
 
+
     @GetMapping("/szostka/{szostkaId}")
     @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH')")
     public ResponseEntity<List<UzytkownikDto>> getUsersBySzostka(@PathVariable Long szostkaId){
@@ -115,37 +110,69 @@ public class UzytkownikController {
                 .toList();
         return ResponseEntity.ok(users);
     }
-    @PutMapping("/{id}")
-    @PreAuthorize("@uzytkownikSecurity.canUpdateUser(#id, principal)")
-    public ResponseEntity<UzytkownikDto> updateUser(@PathVariable Long id,
-                                                    @RequestBody UpdateUzytkownikRequest request) {
-        Uzytkownik existing = uzytkownikService.getUserById(id);
 
-        UzytkownikMapper.updateEntity(existing, request);
-        Uzytkownik updated = uzytkownikService.updateUser(id, existing);
-
-        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
-    }
-    @PutMapping("/{id}/changeTyp")
-    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
-    public ResponseEntity<UzytkownikDto> updateUserTyp(@PathVariable Long id,
-                                                    @RequestBody UpdateUzytkownikRequest request) {
-        Uzytkownik existing = uzytkownikService.getUserById(id);
-        if(request.getTypUzytkownika()==null)
-            return ResponseEntity.badRequest().build();
-
-        if( request.getTypUzytkownika().equals("DRUZYNOWY"))
-            return ResponseEntity.badRequest().build();
-
-        existing.setTypUzytkownika(TypUzytkownika.valueOf(request.getTypUzytkownika()));
-        Uzytkownik updated = uzytkownikService.updateUser(id, existing);
-
-        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
-    }
     @PreAuthorize("hasRole('DRUZYNOWY')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         uzytkownikService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UzytkownikDto> updateMe(
+            @AuthenticationPrincipal User user,
+            @RequestBody UpdateMyProfileRequest req,
+            HttpServletResponse response) {
+
+        Uzytkownik updated = uzytkownikService.updateMyProfile(user.getUsername(), req);
+        if (!user.getUsername().equals(updated.getLogin())) {
+            String token = jwtService.generateToken(updated.getLogin());
+            ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                    .httpOnly(true)
+                    .secure(true)
+                    .path("/")
+                    .sameSite("None")
+                    .maxAge(Duration.ofMinutes(60))
+                    .build();
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        }
+
+        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
+    @PutMapping("/me/password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> changePassword(
+            @AuthenticationPrincipal User user,
+            @RequestBody ChangePasswordRequest req) {
+
+        uzytkownikService.changePassword(user.getUsername(), req);
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('DRUZYNOWY','PRZYBOCZNY')")
+    public ResponseEntity<UzytkownikDto> adminUpdateUser(
+            @PathVariable Long id,
+            @RequestBody UpdateUserByAdminRequest req) {
+
+        Uzytkownik u = uzytkownikService.adminUpdateUser(id, req);
+        return ResponseEntity.ok(UzytkownikMapper.toDto(u));
+    }
+    @PutMapping("/{id}/type")
+    @PreAuthorize("hasRole('DRUZYNOWY')")
+    public ResponseEntity<UzytkownikDto> changeUserType(
+            @PathVariable Long id,
+            @RequestParam TypUzytkownika newType,
+            Principal principal) {
+
+        Uzytkownik updated = uzytkownikService.changeUserType(id, newType, principal);
+        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
+
+
+
+
+
+
+
+
 }

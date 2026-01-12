@@ -6,11 +6,12 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateUzytkownikRequest {
-    private String login;
+public class UpdateUserByAdminRequest {
     private String imie;
     private String nazwisko;
     private String email;
     private String nrTelefonu;
-    private String typUzytkownika;
+    private Long squadId;
+    private Long rodzicId1;
+    private Long rodzicId2;
 }
