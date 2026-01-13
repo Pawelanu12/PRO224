@@ -7,5 +7,5 @@ import java.util.List;
 public interface ZdobytaSprawnoscRepository extends JpaRepository<ZdobytaSprawnosc, Long> {
     List<ZdobytaSprawnosc> findByUzytkownikId(Long uzytkownikId);
     List<ZdobytaSprawnosc> findBySprawnoscId(Long sprawnoscId);
-    List<ZdobytaSprawnosc> findByUzytkownikId(long uzytkownikId);
+    //List<ZdobytaSprawnosc> findByUzytkownikId(long uzytkownikId);
 }
