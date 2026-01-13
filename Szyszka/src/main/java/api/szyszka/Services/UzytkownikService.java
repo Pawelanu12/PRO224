@@ -5,18 +5,19 @@ package api.szyszka.Services;
 //import api.szyszka.DTOs.Auth.RegisterRequest;
 import api.szyszka.DTOs.Auth.LoginRequest;
 import api.szyszka.DTOs.Auth.RegisterRequest;
-import api.szyszka.DTOs.User.GoogleUserData;
-import api.szyszka.DTOs.User.UzytkownikDto;
+import api.szyszka.DTOs.User.*;
 import api.szyszka.Entities.AuthProvider;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Exceptions.*;
 import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +36,6 @@ public class UzytkownikService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
-    }
-    @Transactional
-    public Uzytkownik changeUserType(Long targetUserId, TypUzytkownika newType, java.security.Principal principal) {
-        Uzytkownik admin = getUserByLogin(principal.getName());
-
-        if (admin.getTypUzytkownika() != TypUzytkownika.DRUZYNOWY) {
-            throw new SecurityException("Only DRUZYNOWY can change user types");
-        }
-        Uzytkownik targetUser = getUserById(targetUserId);
-
-        targetUser.setTypUzytkownika(newType);
-
-        return uzytkownikRepository.save(targetUser);
     }
 
     public Uzytkownik createUser(Uzytkownik uzytkownik) {
@@ -90,7 +78,7 @@ public class UzytkownikService {
         dto.setId(u.getId());
         dto.setImie(u.getImie());
         dto.setNazwisko(u.getNazwisko());
-        dto.setTypUzytkownika(u.getTypUzytkownika());
+        dto.setTypUzytkownika(u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null);
         dto.setEmail(u.getEmail());
         return dto;
     }
@@ -183,13 +171,23 @@ public class UzytkownikService {
         }
         return parents;
     }
-    public List<Uzytkownik> getUsersByType(String typUzytkownika) {
-        List<Uzytkownik> users = uzytkownikRepository.findByTypUzytkownika(typUzytkownika);
+    public List<Uzytkownik> getUsersByType(String typ) {
+        TypUzytkownika enumTyp;
+        try {
+            enumTyp = TypUzytkownika.valueOf(typ.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new UserTypeNotFoundException(typ);
+        }
+        List<Uzytkownik> users = uzytkownikRepository.findByTypUzytkownika(enumTyp);
         if (users.isEmpty()) {
-            throw new UserTypeNotFoundException(typUzytkownika);
+            throw new UserTypeNotFoundException(typ);
         }
         return users;
     }
+
+
+
+
     public List<Uzytkownik> getUsersBySzostka(Long szostkaId){
         if (uzytkownikRepository.findBySzostkaId(szostkaId).isEmpty()){
             throw new SzostkaNotFoundException(szostkaId);
@@ -234,5 +232,63 @@ public class UzytkownikService {
 
         return jwtService.generateToken(u.getLogin());
     }
+    public Uzytkownik updateMyProfile(String login, UpdateMyProfileRequest req) {
+        Uzytkownik u = getUserByLogin(login);
+
+        if(req.getLogin()!=null && !req.getLogin().equals(u.getLogin())) {
+            if(uzytkownikRepository.findByLogin(req.getLogin()).isPresent())
+                throw new DuplicateLoginException(req.getLogin());
+            u.setLogin(req.getLogin());
+        }
+
+        u.setImie(req.getImie());
+        u.setNazwisko(req.getNazwisko());
+        u.setEmail(req.getEmail());
+        u.setNrTelefonu(req.getNrTelefonu());
+        u.setZdjecie(req.getZdjecie());
+
+        return uzytkownikRepository.save(u);
+    }
+    public void changePassword(String login, ChangePasswordRequest req) {
+        Uzytkownik u = getUserByLogin(login);
+
+        if(!passwordEncoder.matches(req.getOldPassword(), u.getHaslo()))
+            throw new BadCredentialsException("Wrong password");
+
+        u.setHaslo(passwordEncoder.encode(req.getNewPassword()));
+        uzytkownikRepository.save(u);
+    }
+    public Uzytkownik adminUpdateUser(Long id, UpdateUserByAdminRequest req) {
+        Uzytkownik u = getUserById(id);
+
+        u.setImie(req.getImie());
+        u.setNazwisko(req.getNazwisko());
+        u.setEmail(req.getEmail());
+        u.setNrTelefonu(req.getNrTelefonu());
+
+        return uzytkownikRepository.save(u);
+    }
+
+    public Uzytkownik changeUserType(Long targetUserId, TypUzytkownika newType, Principal principal) {
+
+        Uzytkownik admin = getUserByLogin(principal.getName());
+
+        if (admin.getTypUzytkownika() != TypUzytkownika.DRUZYNOWY) {
+            throw new SecurityException("tylko druzynowy moze zmieniac typ uzytkownika");
+        }
+
+        Uzytkownik target = getUserById(targetUserId);
+
+        if (admin.getId().equals(target.getId())) {
+            throw new IllegalArgumentException("nie mozesz zmienic swojej roli");
+        }
+
+        target.setTypUzytkownika(newType);
+        return uzytkownikRepository.save(target);
+    }
+
+
+
+
 
 }

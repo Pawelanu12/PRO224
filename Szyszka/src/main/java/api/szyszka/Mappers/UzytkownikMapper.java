@@ -1,51 +1,63 @@
 package api.szyszka.Mappers;
 
 import api.szyszka.DTOs.User.CreateUzytkownikRequest;
-import api.szyszka.DTOs.User.UpdateUzytkownikRequest;
+import api.szyszka.DTOs.User.UpdateMyProfileRequest;
+import api.szyszka.DTOs.User.UpdateUserByAdminRequest;
 import api.szyszka.DTOs.User.UzytkownikDto;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 
 public class UzytkownikMapper {
 
-    public static UzytkownikDto toDto(Uzytkownik entity) {
-        if (entity == null) return null;
+    public static UzytkownikDto toDto(Uzytkownik u) {
+        if (u == null) return null;
+
         return new UzytkownikDto(
-                entity.getId(),
-                entity.getImie(),
-                entity.getNazwisko(),
-                entity.getLogin(),
-                entity.getEmail(),
-                entity.getNrTelefonu(),
-                entity.getTypUzytkownika()
+                u.getId(),
+                u.getImie(),
+                u.getNazwisko(),
+                u.getLogin(),
+                u.getEmail(),
+                u.getNrTelefonu(),
+                u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null
         );
     }
+    public static Uzytkownik fromCreateRequest(CreateUzytkownikRequest r) {
+        if (r == null) return null;
 
-    public static Uzytkownik fromCreateRequest(CreateUzytkownikRequest request) {
-        if (request == null) return null;
-        Uzytkownik user = new Uzytkownik();
-        user.setImie(request.getImie());
-        user.setNazwisko(request.getNazwisko());
-        user.setLogin(request.getLogin());
-        user.setHaslo(request.getHaslo());
-        user.setEmail(request.getEmail());
-        user.setNrTelefonu(request.getNrTelefonu());
-        user.setTypUzytkownika(
-                request.getTypUzytkownika() != null
-                        ? TypUzytkownika.valueOf((request.getTypUzytkownika()))
+        Uzytkownik u = new Uzytkownik();
+        u.setImie(r.getImie());
+        u.setNazwisko(r.getNazwisko());
+        u.setLogin(r.getLogin());
+        u.setHaslo(r.getHaslo());
+        u.setEmail(r.getEmail());
+        u.setNrTelefonu(r.getNrTelefonu());
+
+        u.setTypUzytkownika(
+                r.getTypUzytkownika() != null
+                        ? TypUzytkownika.valueOf(r.getTypUzytkownika().toUpperCase())
                         : TypUzytkownika.DEFAULT
         );
 
-        return user;
+        return u;
     }
 
-    public static void updateEntity(Uzytkownik entity, UpdateUzytkownikRequest request) {
-        if (request == null || entity == null) return;
-        entity.setLogin(request.getLogin());
-        entity.setImie(request.getImie());
-        entity.setNazwisko(request.getNazwisko());
-        entity.setEmail(request.getEmail());
-        entity.setNrTelefonu(request.getNrTelefonu());
+    public static void updateMyProfile(Uzytkownik u, UpdateMyProfileRequest r) {
+        if (u == null || r == null) return;
 
+        if (r.getImie() != null) u.setImie(r.getImie());
+        if (r.getNazwisko() != null) u.setNazwisko(r.getNazwisko());
+        if (r.getEmail() != null) u.setEmail(r.getEmail());
+        if (r.getNrTelefonu() != null) u.setNrTelefonu(r.getNrTelefonu());
+        if (r.getLogin() != null) u.setLogin(r.getLogin());
+    }
+
+    public static void updateByAdmin(Uzytkownik u, UpdateUserByAdminRequest r) {
+        if (u == null || r == null) return;
+
+        if (r.getImie() != null) u.setImie(r.getImie());
+        if (r.getNazwisko() != null) u.setNazwisko(r.getNazwisko());
+        if (r.getEmail() != null) u.setEmail(r.getEmail());
+        if (r.getNrTelefonu() != null) u.setNrTelefonu(r.getNrTelefonu());
     }
 }

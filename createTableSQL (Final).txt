@@ -164,7 +164,7 @@ CREATE TABLE post_share (
 CREATE INDEX idx_user_login ON user(login);
 CREATE INDEX idx_user_email ON user(email);
 CREATE INDEX idx_user_typ ON user(typ_uzytkownika);
-CREATE INDEXuser idx_post_autor ON post(autor_id);
+CREATE INDEX idx_post_autor ON post(autor_id);
 CREATE INDEX idx_post_data ON post(data_stworzenia);
 CREATE INDEX idx_comment_post ON comment(post_id);
 CREATE INDEX idx_event_typ ON event(typ_wydarzenia);
@@ -172,4 +172,3 @@ CREATE INDEX idx_event_data ON event(data_wyjazdu);
 CREATE INDEX idx_badge_typ ON badge(typ_sprawnosci);
 CREATE INDEX idx_message_chat ON message(chat_id);
 CREATE INDEX idx_chat_user_user ON chat_user(user_id);
-user_badge

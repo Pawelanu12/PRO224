@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 🔑 POBRANIE JWT Z COOKIE
+        // POBRANIE JWT Z COOKIE
         String token = extractTokenFromCookie(request);
         if (token == null) {
             filterChain.doFilter(request, response);
