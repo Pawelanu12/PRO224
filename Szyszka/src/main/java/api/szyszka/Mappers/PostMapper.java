@@ -5,6 +5,8 @@ import api.szyszka.DTOs.Post.PostDto;
 import api.szyszka.DTOs.Post.UpdatePostRequest;
 import api.szyszka.Entities.Post;
 import api.szyszka.Entities.PostZdjecie;
+import api.szyszka.Entities.Post_udostepnienie;
+import api.szyszka.Entities.Uzytkownik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,13 @@ public class PostMapper {
                 entity.getTresc(),
                 entity.getPolubienia().stream().map(p->p.getUzytkownik().getId()).toList(),
                 entity.getAutor().getLogin(),
+                entity.getAutor().getId(),
                 entity.getKomentarze().stream().map(KomentarzMapper::toDto).toList(),
-                zdjeciaUrl
+                zdjeciaUrl,
+                entity.getUdostepnienia().stream()
+                        .map(Post_udostepnienie::getUzytkownik)
+                        .map(Uzytkownik::getId)
+                        .toList()
                 //entity.getZdjecia().stream()
                 //        .map(entity.getZdjecia()::mapToPublic)
                 //        .collect(Collectors.toList())

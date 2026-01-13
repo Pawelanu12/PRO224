@@ -216,6 +216,7 @@ public class PostController {
 
     @PutMapping("/{id}/share")
     public ResponseEntity<PostDto> sharePost(@PathVariable Long id,@RequestParam Long uzytkownikId) {
+        System.out.println("share");
         Post updated = postService.sharePost(id, uzytkownikId);
         return ResponseEntity.ok(PostMapper.toDto(updated));
     }

@@ -21,8 +21,11 @@ public class PostDto {
     private String tresc;
     private List<Long> polubienia;
     private String autorLogin;
+    private Long autorId;
     private List<KomentarzDto> komentarze;
     private List<String> zdjecia;
+    private List<Long> share;
+
 
     public static Post fromCreateRequest(CreatePostRequest request) {
         Post p = new Post();
