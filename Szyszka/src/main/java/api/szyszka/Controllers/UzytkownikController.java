@@ -38,6 +38,7 @@ public class UzytkownikController {
     @GetMapping("/me")
     @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH','DEFAULT')")
     public ResponseEntity<UzytkownikDto> me(@AuthenticationPrincipal User user) {
+        System.out.println(user.toString());
         return ResponseEntity.ok(uzytkownikService.getCurrentUser(user.getUsername()));
     }
     // CREATE
