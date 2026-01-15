@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/czaty")
 @RequiredArgsConstructor
-public class CzatRestController {
+public class CzatController {
 
     private final CzatService czatService;
     private final UzytkownikRepository uzytkownikRepository;
