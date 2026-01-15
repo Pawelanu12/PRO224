@@ -268,6 +268,36 @@ public class UzytkownikService {
 
         return uzytkownikRepository.save(u);
     }
+    public Uzytkownik changeParents(Long zuchId, Long parentId1, Long parentId2) {
+        Uzytkownik zuch = getUserById(zuchId);
+
+        if (zuch.getTypUzytkownika() != TypUzytkownika.ZUCH) {
+            throw new IllegalArgumentException("User must be ZUCH");
+        }
+
+        Uzytkownik parent1 = null;
+        Uzytkownik parent2 = null;
+
+        if (parentId1 != null) {
+            parent1 = getUserById(parentId1);
+            if (parent1.getTypUzytkownika() != TypUzytkownika.RODZIC) {
+                throw new IllegalArgumentException("Parent1 must be RODZIC");
+            }
+        }
+        if (parentId2 != null) {
+            parent2 = getUserById(parentId2);
+            if (parent2.getTypUzytkownika() != TypUzytkownika.RODZIC) {
+                throw new IllegalArgumentException("Parent2 must be RODZIC");
+            }
+        }
+        zuch.setRodzic1(parent1);
+        zuch.setRodzic2(parent2);
+
+        return uzytkownikRepository.save(zuch);
+    }
+
+
+
 
     public Uzytkownik changeUserType(Long targetUserId, TypUzytkownika newType, Principal principal) {
 
