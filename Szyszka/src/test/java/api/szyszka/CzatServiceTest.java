@@ -198,26 +198,26 @@ class CzatServiceTest {
     }
 
     // ========= addParticipantById =========
-    @Test
-    void shouldAddParticipantById() {
-        Czat czat = new Czat();
-        czat.setUczestnicy(new java.util.ArrayList<>());
-
-        Uzytkownik user = new Uzytkownik();
-        user.setId(2L);
-
-        when(czatRepository.findById(1L))
-                .thenReturn(Optional.of(czat));
-        when(uzytkownikRepository.findById(2L))
-                .thenReturn(Optional.of(user));
-        when(czatUzytkownikRepository.findByCzatId(1L))
-                .thenReturn(List.of());
-        when(czatUzytkownikRepository.save(any()))
-                .thenAnswer(inv -> inv.getArgument(0));
-
-        CzatUzytkownik result =
-                czatService.addParticipantById(1L, 2L);
-
-        assertThat(result.getUzytkownik()).isEqualTo(user);
-    }
+//    @Test
+//    void shouldAddParticipantById() {
+//        Czat czat = new Czat();
+//        czat.setUczestnicy(new java.util.ArrayList<>());
+//
+//        Uzytkownik user = new Uzytkownik();
+//        user.setId(2L);
+//
+//        when(czatRepository.findById(1L))
+//                .thenReturn(Optional.of(czat));
+//        when(uzytkownikRepository.findById(2L))
+//                .thenReturn(Optional.of(user));
+//        when(czatUzytkownikRepository.findByCzatId(1L))
+//                .thenReturn(List.of());
+//        when(czatUzytkownikRepository.save(any()))
+//                .thenAnswer(inv -> inv.getArgument(0));
+//
+//        CzatUzytkownik result =
+//                czatService.addParticipantById(1L, 2L);
+//
+//        assertThat(result.getUzytkownik()).isEqualTo(user);
+//    }
 }

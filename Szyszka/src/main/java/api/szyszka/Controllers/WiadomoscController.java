@@ -6,7 +6,6 @@ import api.szyszka.DTOs.Chat.WiadomoscDto;
 import api.szyszka.Entities.Wiadomosc;
 import api.szyszka.Mappers.WiadomoscMapper;
 import api.szyszka.Services.WiadomoscService;
-import api.szyszka.Services.ZdjecieService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +17,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/wiadomosc")
 public class WiadomoscController {
 
-    private final ZdjecieService zdjecieService;
     private WiadomoscService wiadomoscService;
 
-    public WiadomoscController(WiadomoscService wiadomoscService, ZdjecieService zdjecieService) {
+    public WiadomoscController(WiadomoscService wiadomoscService) {
         this.wiadomoscService = wiadomoscService;
-        this.zdjecieService = zdjecieService;
     }
 
     @PostMapping
