@@ -29,18 +29,21 @@ public class SprawnoscService {
 
     public void deleteSprawnosc(long id) {sprawnoscRepository.deleteById(id);}
 
-    public Sprawnosc modifySprawnoscById(long id, Sprawnosc updateSprawnosc) {
-        Sprawnosc oldSprawnosc = getSprawnoscById(id);
+    public Sprawnosc modifySprawnoscById(long id, Sprawnosc updated) {
+        Sprawnosc old = getSprawnoscById(id);
 
-        if (!oldSprawnosc.getNazwa().equals(updateSprawnosc.getNazwa())) {
-            throw new DuplicateNazwaSprawnosciException(updateSprawnosc.getNazwa());
+        if (!old.getNazwa().equals(updated.getNazwa())
+                && sprawnoscRepository.existsByNazwa(updated.getNazwa())) {
+            throw new DuplicateNazwaSprawnosciException(updated.getNazwa());
         }
 
-//        oldSprawnosc.setNazwa(updateSprawnosc.getNazwa());
-//        oldSprawnosc.setOpis(updateSprawnosc.getOpis());
-//        oldSprawnosc.setOpisWymagan(updateSprawnosc.getOpisWymagan());
-//        oldSprawnosc.setIkona(updateSprawnosc.getIkona());
+        old.setNazwa(updated.getNazwa());
+        old.setOpis(updated.getOpis());
+        old.setOpisWymagan(updated.getOpisWymagan());
+        old.setIkona(updated.getIkona());
+        old.setTyp(updated.getTyp());
 
-        return sprawnoscRepository.save(oldSprawnosc);
+        return sprawnoscRepository.save(old);
     }
+
 }

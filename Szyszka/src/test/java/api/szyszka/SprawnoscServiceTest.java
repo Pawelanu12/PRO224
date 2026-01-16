@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import api.szyszka.Entities.TypSprawnosci;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,7 @@ class SprawnoscServiceTest {
     void shouldCreateSprawnosc() {
         Sprawnosc sprawnosc = new Sprawnosc();
         sprawnosc.setNazwa("Test");
+        sprawnosc.setTyp(TypSprawnosci.CZERWONE);
 
         when(sprawnoscRepository.save(sprawnosc))
                 .thenReturn(sprawnosc);
@@ -41,8 +43,10 @@ class SprawnoscServiceTest {
         Sprawnosc result = sprawnoscService.createSprawnosc(sprawnosc);
 
         assertThat(result).isNotNull();
+        assertThat(result.getTyp()).isEqualTo(TypSprawnosci.CZERWONE);
         verify(sprawnoscRepository).save(sprawnosc);
     }
+
 
     // ========= getSprawnoscById =========
     @Test
@@ -83,9 +87,11 @@ class SprawnoscServiceTest {
         Sprawnosc oldSprawnosc = new Sprawnosc();
         oldSprawnosc.setId(1L);
         oldSprawnosc.setNazwa("Test");
+        oldSprawnosc.setTyp(TypSprawnosci.ZOLTE); // dodaj typ
 
         Sprawnosc update = new Sprawnosc();
         update.setNazwa("Test");
+        update.setTyp(TypSprawnosci.ZOLTE); // też typ
 
         when(sprawnoscRepository.findById(1L))
                 .thenReturn(Optional.of(oldSprawnosc));
@@ -95,8 +101,10 @@ class SprawnoscServiceTest {
         Sprawnosc result = sprawnoscService.modifySprawnoscById(1L, update);
 
         assertThat(result).isNotNull();
+        assertThat(result.getTyp()).isEqualTo(TypSprawnosci.ZOLTE); // sprawdzenie typu
         verify(sprawnoscRepository).save(oldSprawnosc);
     }
+
 
     @Test
     void shouldThrowDuplicateNazwaSprawnosciException() {
@@ -107,11 +115,13 @@ class SprawnoscServiceTest {
         Sprawnosc update = new Sprawnosc();
         update.setNazwa("NEW");
 
-        when(sprawnoscRepository.findById(1L))
-                .thenReturn(Optional.of(oldSprawnosc));
+        // mockowanie findById i existsByNazwa
+        when(sprawnoscRepository.findById(1L)).thenReturn(Optional.of(oldSprawnosc));
+        when(sprawnoscRepository.existsByNazwa("NEW")).thenReturn(true);
 
         assertThatThrownBy(() ->
                 sprawnoscService.modifySprawnoscById(1L, update)
         ).isInstanceOf(DuplicateNazwaSprawnosciException.class);
     }
+
 }

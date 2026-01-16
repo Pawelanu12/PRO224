@@ -1,5 +1,6 @@
 package api.szyszka.DTOs.Event;
 
+import api.szyszka.Entities.TypWydarzenia;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class    UpdateWydarzenieRequest {
     private LocalDateTime dataWyjazdu;
     private LocalDateTime dataZakonczenia;
     private String opis;
+    private TypWydarzenia typWydarzenia;
     private List<MultipartFile> noweZdjecia;
     private List<String> zdjeciaDoUsuniecia;//po nazwie
 }

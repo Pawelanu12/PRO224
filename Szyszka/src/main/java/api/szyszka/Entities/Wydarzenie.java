@@ -26,6 +26,11 @@ public class Wydarzenie {
     @Column(columnDefinition = "TEXT")
     private String opis;
 
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typ_wydarzenia", nullable = false)
+    private TypWydarzenia typ;
+
     @ManyToOne
     @JoinColumn(name = "organizator_id")
     private Uzytkownik organizator;

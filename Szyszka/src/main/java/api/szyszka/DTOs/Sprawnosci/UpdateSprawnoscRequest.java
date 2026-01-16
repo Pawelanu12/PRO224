@@ -1,5 +1,6 @@
 package api.szyszka.DTOs.Sprawnosci;
 
+import api.szyszka.Entities.TypSprawnosci;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,5 @@ public class UpdateSprawnoscRequest {
     private String opis;
     private String opisWymagan;
     private MultipartFile ikona;
+    private TypSprawnosci typSprawnosci;
 }

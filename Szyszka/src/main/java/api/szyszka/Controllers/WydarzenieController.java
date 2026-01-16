@@ -3,6 +3,7 @@ package api.szyszka.Controllers;
 import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
 import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
 import api.szyszka.DTOs.Event.WydarzenieDto;
+import api.szyszka.Entities.TypWydarzenia;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Mappers.WydarzenieMapper;
 import api.szyszka.Services.WydarzenieService;
@@ -40,6 +41,7 @@ public class WydarzenieController {
             @RequestParam("dataWyjazdu") LocalDateTime dataWyjazdu,
             @RequestParam("dataZakonczenia") LocalDateTime dataZakonczenia,
             @RequestParam("organizatorId") Long organizatorId,
+            @RequestParam("typ") TypWydarzenia typ,
             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
         CreateWydarzenieRequest request = new CreateWydarzenieRequest();
@@ -76,6 +78,7 @@ public class WydarzenieController {
         request.setDataWyjazdu(dataWyjazdu);
         request.setDataZakonczenia(dataZakonczenia);
         request.setOrganizatorId(organizatorId);
+        request.setTypWydarzenia(typ);
 
         Wydarzenie saved = wydarzenieService.createWydarzenieWithPhotos(request, files);
         return ResponseEntity.ok(WydarzenieMapper.toDto(saved));

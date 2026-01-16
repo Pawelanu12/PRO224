@@ -1,6 +1,7 @@
 package api.szyszka.DTOs.Sprawnosci;
 
 
+import api.szyszka.Entities.TypSprawnosci;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,5 @@ public class SprawnoscDto {
     private String opisWymagan;
     private String ikona;
     private String ikonaUrl;
+    private TypSprawnosci typSprawnosci;
 }
