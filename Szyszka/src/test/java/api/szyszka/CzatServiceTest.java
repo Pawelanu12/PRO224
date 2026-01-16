@@ -36,47 +36,62 @@ class CzatServiceTest {
     void shouldCreatePrivateChat() {
         Uzytkownik u1 = new Uzytkownik();
         u1.setId(1L);
+        u1.setLogin("user1");
+
         Uzytkownik u2 = new Uzytkownik();
         u2.setId(2L);
+        u2.setLogin("user2");
 
         Czat czat = new Czat();
         czat.setId(10L);
 
-        when(uzytkownikRepository.findById(1L)).thenReturn(Optional.of(u1));
-        when(uzytkownikRepository.findById(2L)).thenReturn(Optional.of(u2));
-        when(czatRepository.save(any())).thenReturn(czat);
+        when(uzytkownikRepository.findByLogin("user1"))
+                .thenReturn(Optional.of(u1));
+        when(uzytkownikRepository.findByLogin("user2"))
+                .thenReturn(Optional.of(u2));
+
+        when(czatRepository.save(any()))
+                .thenReturn(czat);
         when(czatUzytkownikRepository.save(any()))
                 .thenAnswer(inv -> inv.getArgument(0));
 
-        Czat result = czatService.createPrivateChat(1L, 2L);
+        Czat result = czatService.createPrivateChat("user1", "user2");
 
         assertThat(result).isNotNull();
         verify(czatRepository).save(any(Czat.class));
     }
+
 
     // ========= createGroupChat =========
     @Test
     void shouldCreateGroupChat() {
         Uzytkownik creator = new Uzytkownik();
         creator.setId(1L);
+        creator.setLogin("creator");
 
         Uzytkownik member = new Uzytkownik();
         member.setId(2L);
+        member.setLogin("member");
+
+        when(uzytkownikRepository.findByLogin("creator"))
+                .thenReturn(Optional.of(creator));
+        when(uzytkownikRepository.findByLogin("member"))
+                .thenReturn(Optional.of(member));
 
         when(czatRepository.save(any()))
                 .thenAnswer(inv -> inv.getArgument(0));
-
-        when(uzytkownikRepository.findById(2L))
-                .thenReturn(Optional.of(member));
-
         when(czatUzytkownikRepository.save(any()))
                 .thenAnswer(inv -> inv.getArgument(0));
 
         Czat result = czatService.createGroupChat(
-                "Grupa", creator, List.of(2L));
+                "Grupa",
+                "creator",
+                List.of("member")
+        );
 
         assertThat(result.isCzyGrupowy()).isTrue();
     }
+
     // ========= addParticipant =========
     @Test
     void shouldAddParticipant() {
@@ -196,28 +211,33 @@ class CzatServiceTest {
 
         assertThat(result.getNazwa()).isEqualTo("Nowa");
     }
+    // ========= addParticipantByLogin =========
+    @Test
+    void shouldAddParticipantByLogin() {
+        Czat czat = new Czat();
+        czat.setUczestnicy(new java.util.ArrayList<>());
 
-    // ========= addParticipantById =========
-//    @Test
-//    void shouldAddParticipantById() {
-//        Czat czat = new Czat();
-//        czat.setUczestnicy(new java.util.ArrayList<>());
-//
-//        Uzytkownik user = new Uzytkownik();
-//        user.setId(2L);
-//
-//        when(czatRepository.findById(1L))
-//                .thenReturn(Optional.of(czat));
-//        when(uzytkownikRepository.findById(2L))
-//                .thenReturn(Optional.of(user));
-//        when(czatUzytkownikRepository.findByCzatId(1L))
-//                .thenReturn(List.of());
-//        when(czatUzytkownikRepository.save(any()))
-//                .thenAnswer(inv -> inv.getArgument(0));
-//
-//        CzatUzytkownik result =
-//                czatService.addParticipantById(1L, 2L);
-//
-//        assertThat(result.getUzytkownik()).isEqualTo(user);
-//    }
+        Uzytkownik user = new Uzytkownik();
+        user.setLogin("janek");
+
+        when(czatRepository.findById(1L))
+                .thenReturn(Optional.of(czat));
+
+        when(uzytkownikRepository.findByLogin("janek"))
+                .thenReturn(Optional.of(user));
+
+        when(czatUzytkownikRepository.findByCzatId(1L))
+                .thenReturn(List.of());
+
+        when(czatUzytkownikRepository.save(any()))
+                .thenAnswer(inv -> inv.getArgument(0));
+
+        CzatUzytkownik result =
+                czatService.addParticipantByLogin(1L, "janek");
+
+        assertThat(result).isNotNull();
+        assertThat(result.getUzytkownik()).isEqualTo(user);
+        assertThat(czat.getUczestnicy()).hasSize(1);
+    }
+
 }
