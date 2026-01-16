@@ -9,8 +9,10 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {Client} from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import {FaXmark} from "react-icons/fa6";
+
 //pokazuje wszystkich uzytkowników i gruppy
 // do których pisales wczestniej lub jestes zarejestrowany
+
 const getNazwa=(c,login)=>{
     if(c.nazwa)
         return c.nazwa;
@@ -62,7 +64,7 @@ export default function Czats(){
 
     return (
         <div>
-            <div className="md:hidden fixed top-[50px] left-0 w-full bg-[#4D644C] z-40">
+            <div className="md:hidden fixed top-[50px] left-0 w-full  z-40">
                 <button
                     onClick={() => setMobileOpen(true)}
                     className="w-full py-3 text-white font-semibold border-b border-black/20"
@@ -91,11 +93,11 @@ export default function Czats(){
                     </div>
 
                     {/* Lista czatów */}
-                    <div className="flex-1 overflow-y-auto">
+                    <div className="flex-1 overflow-y-auto border-black border-t">
                         {czaty.map(c => (
                             <div
                                 key={c.id}
-                                className="flex items-center gap-3 px-3 py-2 hover:bg-[#405E3F]"
+                                className="flex items-center border-black  border-b gap-3 px-3 py-2 hover:bg-[#405E3F]"
                             >
                                 <div
                                     onClick={() => {
@@ -109,7 +111,7 @@ export default function Czats(){
                                         className="w-12 h-12 rounded-full flex-shrink-0"
                                         alt=""
                                     />
-                                    <div className="flex-1 min-w-0">
+                                    <div className="flex-1 min-w-0 ">
                                         <p className="text-sm font-semibold text-white truncate">
                                             {getNazwa(c, user?.login)}
                                         </p>
@@ -151,55 +153,56 @@ export default function Czats(){
                 <div className="h-20 flex mt-12 items-center px-4">
                     <NewChatDialog/>
                 </div>
-
+                <div className={"border-t border-black"}>
                 {/* Lista czatów */}
-                {czaty.map(c => (
-                    <div
-                        key={c.id}
-                        onClick={() => setCzatId(c.id)}
-                        className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-[#405E3F]"
-                    >
-                        {/* Avatar */}
-                        <img
-                            src={c.obraz}
-                            alt="avatar"
-                            className="w-12 h-12 rounded-full object-cover"
-                        />
+                    {czaty.map(c => (
+                        <div
+                            key={c.id}
+                            onClick={() => setCzatId(c.id)}
+                            className="flex items-center border-b border-black gap-3 px-3 py-2 cursor-pointer hover:bg-[#405E3F]"
+                        >
+                            {/* Avatar */}
+                            <img
+                                src={c.obraz}
+                                alt="avatar"
+                                className="w-12 h-12 rounded-full object-cover"
+                            />
 
-                        {/* Środek */}
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-white truncate">
-                                {getNazwa(c, user?.login)}
-                            </p>
-
-                            {c.lastReadMessage && (
-                                <p className="text-sm text-gray-300 line-clamp-1">
-                                    {c.lastReadMessage.tresc}
+                            {/* Środek */}
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold text-white truncate">
+                                    {getNazwa(c, user?.login)}
                                 </p>
+
+                                {c.lastReadMessage && (
+                                    <p className="text-sm text-gray-300 line-clamp-1">
+                                        {c.lastReadMessage.tresc}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Badge */}
+                            {c.nieprzeczytaneWiadomosci > 0 && (
+                                <div
+                                    className="min-w-[24px] h-6 px-2 text-xs flex items-center justify-center rounded-full bg-red-600 text-white">
+                                    {c.nieprzeczytaneWiadomosci}
+                                </div>
                             )}
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    removeFromCzat(c.id,user.id);
+                                }}
+                                className="text-white/70 hover:text-red-500 transition p-2"
+                                title="Wyjdź z czatu"
+                            >
+                                <FaXmark className="text-lg"/>
+                            </button>
                         </div>
 
-                        {/* Badge */}
-                        {c.nieprzeczytaneWiadomosci > 0 && (
-                            <div
-                                className="min-w-[24px] h-6 px-2 text-xs flex items-center justify-center rounded-full bg-red-600 text-white">
-                                {c.nieprzeczytaneWiadomosci}
-                            </div>
-                        )}
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                removeFromCzat(c.id,user.id);
-                            }}
-                            className="text-white/70 hover:text-red-500 transition p-2"
-                            title="Wyjdź z czatu"
-                        >
-                            <FaXmark className="text-lg"/>
-                        </button>
-                    </div>
 
-
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     )

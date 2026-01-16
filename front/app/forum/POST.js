@@ -2,26 +2,13 @@
 
 import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
-import Options from "@/app/forum/Options";
 import PostDialog from "@/app/forum/dialogs/PostDialog";
 import {ForumContext} from "@/app/providers/ForumProvider";
 import PostInformation from "@/app/forum/PostInformation";
 //pokazuje jeden post
-const compare_dates=(data_posta)=> {
-    const date1 = new Date(data_posta);
-    const date2 = new Date();
-    const millis=date2.getTime()-date1.getTime();
-    const dni=millis/(1000*60*60*24)|0;
-    const godziny=millis/(1000*60*60)|0;
-    if(dni>=1)
-        return dni+ ' dni temu'
-    if(dni===0&&godziny>0)
-        return godziny+ ' godzin temu'
-    return "mniej niż godzina temu"
-}
 
-export default function Post({post,setShow}){
-    const {changeLike} = useContext(ForumContext);
+export default function Post({post}){
+    const {changeLike,sharePost,setPosty} = useContext(ForumContext);
 const {user}=useContext(GlobalContext)
 
     return (
@@ -36,9 +23,17 @@ const {user}=useContext(GlobalContext)
                        <PostDialog post={post}/>
                     </div>
                     <div>
-                        <button>ilosc udostepnien {post.udostepnienia||0}</button>
+                        <button onClick={() => {
+                            if (!post.share.includes(user.id)) {
+                                sharePost(post.id, user.id)
+                                setPosty(prev => prev
+                                    .map(p => p.id !== post.id ? p
+                                        : {...post, share: [...post.share, user.id]}))
+                            }
+                        }}
+                        >ilosc udostepnien {post.share.length || 0}</button>
                     </div>
                 </div>
-            </div>
-                )
-            }
+        </div>
+    )
+}

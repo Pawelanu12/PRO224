@@ -1,133 +1,203 @@
 'use client'
 
-// import {ErrorMessage, Field, Form, Formik} from "formik";
-// import * as Yup from "yup";
-import {useContext, useRef, useState} from "react";
-import PoleWDodawaniu from "@/app/functions/PoleWDodawaniu";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import * as Yup from "yup";
-import {AdminContext} from "@/app/providers/AdminProvider";
-import NavbarZarejestrowana from "@/app/navbar/NavbarZarejestrowana";
-import NavbarNiezarejestrowana from "@/app/navbar/NavbarNiezarejestrowana";
+import { useContext, useRef, useState } from "react";
+import { AdminContext } from "@/app/providers/AdminProvider";
 
-export default function AddSprawnosc(){
-    const {addSprawnosci}=useContext(AdminContext)
-    const [file,setFile]=useState(null)
-    const onChange=(values)=>{
-        console.log(values)
-    }
+export default function AddAchievementPage() {
+    const { addSprawnosci } = useContext(AdminContext);
+
+    const TYPY_SPRAWNOSCI = [
+        { value: "RED", label: "CZERWONY" },
+        { value: "YELLOW", label: "ŻÓŁTY" },
+        { value: "GREEN", label: "ZIELONY" },
+        { value: "BLUE", label: "NIEBIESKI" },
+        { value: "PURPLE", label: "FIOLETOWY" },
+    ];
+    const [form, setForm] = useState({
+        nazwa: "",
+        opis: "",
+        opisWymagan: "",
+        typ: "RED",
+    });
+
+    const [image, setImage] = useState(null);
+    const fileInputRef = useRef(null);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log(name, value);
+        setForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setImage(file);
+    };
+
+    const handleSubmit = () => {
+        const formData = new FormData();
+
+        Object.entries(form).forEach(([k, v]) => {
+            formData.append(k, v);
+        });
+
+        if (image) {
+            formData.append("ikona", image);
+        }
+
+        addSprawnosci(formData);
+    };
 
     return (
-        <div>
+        <div className="min-h-[calc(100vh-50px)] flex justify-center p-4 bg-[#1A1919]">
 
-            <div className={"forma_dodawania"} style={{backgroundColor:"green",paddingTop:"50px"}}>
-                <Formik
+            {/* GŁÓWNY KONTENER */}
+            <div
+                className="relative max-w-4xl w-full bg-[#222822] rounded-xl shadow-lg p-6 flex flex-col sm:flex-row gap-6 flex-wrap">
 
-                   initialValues={{
+                {/* LEWA STRONA */}
+                <div className="flex-1 flex flex-col gap-4 sm:max-w-[50%] w-full">
 
-                       nazwa:"",
+                    {/* NAZWA */}
+                    <input
+                        autoComplete="off"
+                        name="nazwa"
+                        value={form.nazwa}
+                        onChange={handleChange}
+                        placeholder="Nazwa sprawności"
+                        className="
+                            w-full
+                            bg-[#1A1919]
+                            text-white
+                            text-2xl
+                            font-bold
+                            border-b border-gray-500
+                            outline-none
+                        "
+                    />
 
-                       opis: "",
+                    {/* OPIS */}
+                    <div className="bg-gray-100 p-3  rounded border border-gray-300">
+                        <h2 className="font-semibold text-gray-700 mb-1">
+                            Opis:
+                        </h2>
+                        <textarea
+                            name="opis"
+                            value={form.opis}
+                            onChange={handleChange}
+                            rows={4}
+                            placeholder="Opis dla użytkownika"
+                            className="
+                                w-full
+                                bg-white
+                                text-gray-700
+                                border border-gray-400
+                                rounded
+                                p-2
+                                resize-none
+                                outline-none
+                            "
+                        />
+                    </div>
 
-                       opisWymagan: "",
+                    {/* WYMAGANIA */}
+                    <div className="bg-gray-100 p-3 rounded border border-gray-300">
+                        <h2 className="font-semibold text-gray-700 mb-1">
+                            Wymagania:
+                        </h2>
+                        <textarea
+                            name="opisWymagan"
+                            value={form.opisWymagan}
+                            onChange={handleChange}
+                            rows={4}
+                            placeholder="Opis wymagań"
+                            className="
+                                w-full
+                                bg-white
+                                text-gray-700
+                                border border-gray-400
+                                rounded
+                                p-2
+                                resize-none
+                                outline-none
+                            "
+                        />
+                    </div>
 
-                       typ:"bajkowe",
-                       ikona:""
-                   }}
-                   validationSchema={Yup.object({
-                       nazwa: Yup.string()
-                           .required("to pole jest wymagane"),
-                       opis: Yup.string()
-                           .min(6, "musi miec co najmniej 6 znaków")
-                           .required("to pole jest wymagane"),
+                    {/* TYP */}
+                    <div className="bg-gray-100 p-3  rounded border border-gray-300">
+                        <h2 className="font-semibold text-gray-700 mb-1">
+                            Typ sprawności:
+                        </h2>
+                        <select name={"typ"} value={form.typ} onChange={handleChange} className={"text-black"}>
+                            {TYPY_SPRAWNOSCI.map((t) => (
+                                <option key={t.value} value={t.value}>
+                                    {t.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                       opisWymagan: Yup.string()
-                           .required("to pole jest wymagane"),
-                       typ: Yup.string()
-                           .required("to pole jest wymagane"),
-                       // ikona:Yup.mixed()
-                       //     .required("to pole jest wymagane"),
-                           // .min(6, "musi miec co najmniej 6 znaków")
-                           // .oneOf(["bajkowe","artystyczne"], "musi zgadzać z haslem")
+                </div>
 
-                   })}
-                   onSubmit={(values, {resetForm}) => {
+                {/* PRAWA STRONA – IKONA */}
+                <div className="flex-1 flex justify-center items-center">
+                    <div
+                        onClick={() => fileInputRef.current.click()}
+                        className="
+                            w-48 h-48 sm:w-64 sm:h-64
+                            rounded-lg
+                            overflow-hidden
+                            shadow-md
+                            flex justify-center items-center
+                            bg-[#1A1919]
+                            cursor-pointer
+                            ring-2 ring-blue-500
+                            hover:opacity-80
+                        "
+                    >
+                        {image ? (
+                            <img
+                                src={URL.createObjectURL(image)}
+                                alt="ikona"
+                                className="max-w-full max-h-full object-contain"
+                            />
+                        ) : (
+                            <span className="text-gray-400 text-sm text-center px-4">
+                                Kliknij aby dodać ikonę
+                            </span>
+                        )}
+                    </div>
 
-                        console.log(file)
-                       console.log(values)
-                       const formData = new FormData();
-                       formData.append("ikona", file);
-                       formData.append("typ", values.typ);
-                       formData.append("opis", values.opis);
-                       formData.append("opisWymagan", values.opisWymagan);
-                       formData.append("nazwa", values.nazwa);
-
-                       addSprawnosci(formData)
-                       // resetForm()
-                   }}
-
-               >
-                   {({dirty, isValid,errors,touched,handleChange,values}) => (
-                       <Form className={"formik"} encType="multipart/form-data">
-                           <div className={"flexRow"}>
-                              <div className={"dodaj-sprawnosci"}  >
-                                  <p>nazwa</p>
-                                   <Field
-                                       // className={touched.nazwa?`form-control ${errors.nazwa}? invalid:valid`:`form-control`}
-                                       className={"pole-formy-dodawnia"} type="text" name="nazwa" placeholder="napisz nazwe"
-                                   />
-                                   <ErrorMessage className={"error"} name="nazwa" component="div"/>
-                                   <br/>
-                                   <p> Typ sprawnosci</p>
-                                   <Field
-                                       // as="select"
-                                       className={"pole-formy-dodawnia"} type="text" name="typ">
-                                       {/*<option value="bajkowe" style={{color:"black"}}>Bajkowe</option>*/}
-                                       {/*<option value="artystyczne" style={{color:"black"}}>Artystyczne</option>*/}
-                                    </Field>
-                                    <ErrorMessage className={"error"} name="typ" component="div"/>
-                                    <br/>
-                                  <p>Ikona sprawnosci</p>
-                                   <label >Wyberz plik <input  type="file" accept="image/*" className={"pole-formy-dodawnia"}
-                                          onChange={(e)=>
-                                          {
-                                              // handleChange(e)
-                                              setFile(e.target.files[0])
-                                             // console.log( URL.createObjectURL(e.target.files[0]))
-                                             //  onChange(e.target.value)
-                                          }}
-                                                   style={{opacity:0}}
-                                          name="ikona" placeholder="wstaw ikone"
-                                    />
-                                   </label>
-                                    <ErrorMessage className={"error"}  name="ikona" component="div"/>
-                              </div>
-                               <div className={"dodaj-sprawnosci"}>
-                                   <p> Opis dla użytkownika</p>
-                                   <Field as="textarea"   className={"pole-formy-dodawnia"}  name="opis" placeholder="napisz opis"
-                                   />
-                                   <ErrorMessage className={"error"} name="opis" component="div"/>
-                                   <p> opis dla admina</p>
-                                   <Field as="textarea" className={"pole-formy-dodawnia"}  rows="4" cols="50" name="opisWymagan" placeholder="napisz opis wymagan"
-                                   />
-                                   <ErrorMessage className={"error"}  name="opisWymagan" component="div"/>
-                               </div>
-
-                           </div>
-                               <button type="submit" disabled={!dirty || !isValid}
-                               >dodaj sprawnosc
-                               </button>
-                       </Form>)}
-
-
-               </Formik>
-                <div>
-                    {file&& <img src={URL.createObjectURL(file)} alt={file.name}/>}
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={handleImageChange}
+                    />
+                </div>
+                <div className={"w-screen  flex"}>
+                    {/* ZAPIS */}
+                    <button
+                        disabled={!form.nazwa || !form.opis || !form.opisWymagan||!form.typ}
+                        onClick={handleSubmit}
+                        className="
+                            mt-2
+                            px-4 py-2
+                            bg-green-600
+                            text-white
+                            rounded
+                            hover:bg-green-700
+                            disabled:bg-green-300
+                        "
+                    >
+                        Dodaj sprawność
+                    </button>
                 </div>
             </div>
+
         </div>
-    )
+    );
 }
-// <PoleWDodawaniu nazwaPola={"typSprawnosci"} state={typSprawnosci} setState={setTypeSprawnosci}/>
-
-

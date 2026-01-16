@@ -1,6 +1,5 @@
 'use client'
 
-import {hidden} from "next/dist/lib/picocolors";
 
 export default function PoleWDodawaniu({nazwaPola,state,setState}) {
 

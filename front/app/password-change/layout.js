@@ -1,5 +1,3 @@
-import "../globals.css";
-import AchievementProvider from "@/app/providers/AchievementProvider";
 import PasswordChangeProvider from "@/app/providers/PasswordChangeProvider";
 export default function RootLayout({ children }) {
     return (

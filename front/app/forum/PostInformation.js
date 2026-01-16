@@ -3,7 +3,6 @@
 import { useContext, useState } from "react";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 import Options from "@/app/forum/Options";
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
 const compare_dates = (data_posta) => {
     const date1 = new Date(data_posta);
@@ -37,11 +36,15 @@ if(!user)return <div>jesteś nie zalogowany</div>
             {/* HEADER */}
             <div className="flex justify-between gap-4">
                 <div className="flex flex-1 gap-3">
-                    <img
+                    {post.ikona ? <img
                         src={post.ikona}
                         alt="ikona"
                         className="h-12 w-12 rounded-full object-cover"
-                    />
+                    /> : <img
+                        src={"/images/user_logo.png"}
+                        alt="ikona"
+                        className="h-12 w-12 rounded-full object-cover"
+                    />}
 
                     <div>
                         <div className="flex items-center gap-3">

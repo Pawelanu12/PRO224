@@ -10,13 +10,15 @@ export const ForumContext = createContext();
 export default function ForumProvider({ children }) {
     const [posty, setPosty] = useState([]);
     const [loading, setLoading] = useState(false);
-    const {pushClick}=useContext(GlobalContext);
+    const {fetchWithAuth}=useContext(GlobalContext);
     const [comments, setComments] = useState([]);
     const [postForDialog,setPostForDialog] = useState(null);
+
+
     const getPosty = () => {
         const get=async ()=>{
             setLoading(true)
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"GET",
                 credentials:"include"
             })
@@ -36,7 +38,7 @@ export default function ForumProvider({ children }) {
     const addPosty = (body) => {
         const add=async (body)=>{
             console.log(body)
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"POST",
                 credentials: "include",
                 body:body
@@ -53,7 +55,7 @@ export default function ForumProvider({ children }) {
     const editPost = (id,body) => {
         const edit=async (id,body)=>{
             console.log(id)
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`,{
                 method:"PUT",
                 credentials: "include",
                 body:body
@@ -71,7 +73,7 @@ export default function ForumProvider({ children }) {
 
     const deletePost = (id)=>{
         const usun=async (id)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`, {
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`, {
                 method: "Delete",
                 credentials: "include",
 
@@ -84,7 +86,7 @@ export default function ForumProvider({ children }) {
         }
     const changeLike=(id,uzytkownikId)=>{
         const change=async (id,uzytkownikId)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}/like?uzytkownikId=${uzytkownikId}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}/like?uzytkownikId=${uzytkownikId}`,{
                 method:"PUT",
                 credentials: "include",
             })
@@ -101,7 +103,7 @@ export default function ForumProvider({ children }) {
 
     const writeComment=(body)=>{
         const send=async (body)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz`,{
                 method:"POST",
                 headers: {"Content-Type": "application/json"},
                 credentials: "include",
@@ -122,7 +124,7 @@ export default function ForumProvider({ children }) {
     const editComment=(id,body)=>{
         console.log(id,body)
         const send=async (id,body)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
                 method:"PUT",
                 headers: {"Content-Type": "application/json"},
                 credentials: "include",
@@ -137,7 +139,7 @@ export default function ForumProvider({ children }) {
 
     const deleteComment=(id)=>{
         const send=async (id)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
                 method:"Delete",
                 credentials: "include",
 
@@ -148,14 +150,38 @@ export default function ForumProvider({ children }) {
         send(id)
     }
 
+    const sharePost=(id,userId)=>{
+        console.log(id,userId)
+        const send=async (id,userId)=>{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}/share?uzytkownikId=${userId}`,{
+                method:"PUT",
+                credentials: "include",
+
+            })
+                .catch(err=>console.log(err))
+            // .finally(()=>getPosty())
+        }
+        send(id,userId)
+    }
+
 
     return (
-        <ForumContext.Provider value={{setPosty,postForDialog,setPostForDialog,
-            writeComment,posty,loading,getPosty,addPosty,editPost,deletePost,changeLike,
+        <ForumContext.Provider value={{setPosty,
+            postForDialog,
+            setPostForDialog,
+            writeComment,
+            posty,
+            loading,
+            getPosty,
+            addPosty,
+            editPost,
+            deletePost,
+            changeLike,
             deleteComment,
             editComment,
             comments,
-            setComments
+            setComments,
+            sharePost
         }}>{children}</ForumContext.Provider>
     )
 };

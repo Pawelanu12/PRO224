@@ -4,7 +4,6 @@ import { FaTrash } from "react-icons/fa";
 import {useContext, useState} from "react";
 import {AdminContext} from "@/app/providers/AdminProvider";
 import TableField from "@/app/admin/gromada/TableField";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function UserData({ user}) {
     const {setUsers,updateUser,setOpen,setId,setAction}=useContext(AdminContext);

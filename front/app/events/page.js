@@ -26,14 +26,18 @@ export default function Wydarzenia(){
 
     useEffect( ()=>{
         const sort= ()=>{
-            setWydarzeniaSortowane(wydarzenia.filter(w=>
+            const newWydarzenia=
+            (wydarzenia.filter(w=>
                 w.nazwa.includes(nazwa)&&
                 (w.typ===typ||typ==="Typ wydarzenia")&&
                 (data===''||new Date(w.dataWyjazdu).getTime()>new Date(data).getTime())
             ))
+            if(data!=="")
+                newWydarzenia.sort((a,b)=>new Date(a.dataWyjazdu).getTime()-new Date(b.dataWyjazdu).getTime())
             setPage(1)
             if(inputRef.current)
                 inputRef.current.value=1
+            setWydarzeniaSortowane(newWydarzenia)
         }
          sort()
     },[wydarzenia, nazwa, typ, data])

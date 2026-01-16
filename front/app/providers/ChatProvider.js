@@ -3,20 +3,20 @@
 
 import {createContext, useContext, useState} from "react";
 
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const CzatContext = createContext();
 
 export default function ChatProvider({ children }) {
     const [czaty, setCzaty] = useState([]);
     const [czat, setCzat] = useState({});
-    const {user}=useContext(GlobalContext);
+    const {user,fetchWithAuth}=useContext(GlobalContext);
     const [czatId, setCzatId] = useState( null);
     const [loading,setLoading] = useState(false);
     const getCzaty=()=>{
+
         if(!user||!user.id)return
         const pobierz=async ()=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/my-czaty?userId=${user.id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/my-czaty?userId=${user.id}`,{
                 headers: {
                     "Content-Type": "application/json"},
                 credentials: "include",
@@ -38,7 +38,7 @@ export default function ChatProvider({ children }) {
 
     const getCzat=(id)=>{
         const pobierz=async (id)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${id}`,{
                 headers: {"Content-Type": "application/json"},
                 credentials: "include",
 
@@ -55,12 +55,14 @@ export default function ChatProvider({ children }) {
 
     const dodajCzat=(values,isGrupowy)=>{
         const add=async (values,isGrupowy)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty${isGrupowy}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty${isGrupowy}`,{
                 method:"Post",
                 headers: {"Content-Type": "application/json"},
                 credentials: "include",
                 body:JSON.stringify({...values})
             })
+                .then(res=> res.json())
+                .then(res=> {console.log(res)})
                 .then(()=>getCzaty())
                 .catch(err=>alert("wystąpił błąd podzas tworzenia czatu"))
         }
@@ -68,7 +70,7 @@ export default function ChatProvider({ children }) {
     }
     const removeFromCzat=(czatId,userId)=>{
         const removeFromCzat=async (czatId,userId)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/participants/${userId}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/participants/${userId}`,{
                 method:"DELETE",
                 credentials: "include",
             })
@@ -80,7 +82,7 @@ export default function ChatProvider({ children }) {
 
     const addUserToCzat=(czatId,userId)=>{
         const removeFromCzat=async (czatId,userId)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/participants/${userId}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/participants/${userId}`,{
                 method:"POST",
                 credentials: "include",
             })
@@ -92,7 +94,7 @@ export default function ChatProvider({ children }) {
 
     const editWiadomosc=(id,tekst)=>{
         const editW=async (id,tekst)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wiadomosc/${id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wiadomosc/${id}`,{
                 method:"PUT",
                 headers:{"Content-Type": "application/json"},
                 body:JSON.stringify({tresc:tekst}),
@@ -104,7 +106,7 @@ export default function ChatProvider({ children }) {
     }
     const deleteWiadomosc=(id)=>{
         const deleteW=async(id)=>{
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wiadomosc/${id}`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wiadomosc/${id}`,{
                 method:"Delete",
                 credentials: "include",
             })
@@ -116,8 +118,19 @@ export default function ChatProvider({ children }) {
 
 
     return (
-        <CzatContext.Provider value={{setCzat,setCzaty,getCzat,addUserToCzat,
-            czaty,getCzaty,czat,loading,dodajCzat,czatId,setCzatId,editWiadomosc,deleteWiadomosc,
+        <CzatContext.Provider value={{setCzat,
+            setCzaty,
+            getCzat,
+            addUserToCzat,
+            czaty,
+            getCzaty,
+            czat,
+            loading,
+            dodajCzat,
+            czatId,
+            setCzatId,
+            editWiadomosc,
+            deleteWiadomosc,
             removeFromCzat
         }}>{children}</CzatContext.Provider>
     )

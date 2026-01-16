@@ -1,22 +1,51 @@
-'use state'
+import { useRef } from "react";
 
-import { useRef} from "react";
+export default function DeleteDialog({ id, funkcjaDoUsunecia }) {
+    const dialog = useRef(null);
 
-export default function DeleteDialog({id,funkcjaDoUsunecia}) {
-    const dialog=useRef(null);
-    console.log(funkcjaDoUsunecia)
-    return(
+    return (
         <div>
-            <button style={{color:"red"}} onClick={()=>{dialog.current.showModal();
-                console.log(dialog.current.div)}}>delete</button>
-            <dialog style={{position:"fixed",left:"30vw",top:"30vh",height:"300px"}} ref={dialog}>
-                <p>Czy potwerdzasz usunięcie</p>
-                <div id="div" style={{display:"flex",justifyContent:"space-between",alignItems:'center'}}>
-                    <button onClick={()=>{dialog.current.close();funkcjaDoUsunecia(id)}}>tak</button>
-                    <button onClick={()=>dialog.current.close()}>nie</button>
+            {/* Przycisk otwierający modal */}
+            <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => dialog.current.showModal()}
+            >
+                Delete
+            </button>
+
+            {/* Modal */}
+            <dialog
+                ref={dialog}
+                className="p-6 rounded-lg shadow-lg border border-gray-300 w-96 max-w-full"
+                style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                }}
+            >
+                <p className="text-lg font-semibold mb-4">
+                    Czy potwierdzasz usunięcie?
+                </p>
+
+                <div className="flex justify-end gap-4">
+                    <button
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        onClick={() => {
+                            dialog.current.close();
+                            funkcjaDoUsunecia(id);
+                        }}
+                    >
+                        Tak
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                        onClick={() => dialog.current.close()}
+                    >
+                        Nie
+                    </button>
                 </div>
             </dialog>
-
         </div>
-    )
+    );
 }

@@ -12,6 +12,25 @@ export default function GlobalProvider({ children }) {
     const [edit,setEdit] = useState({})
     const router = useRouter()
 
+    async function fetchWithAuth(url, options = {}) {
+        const res = await fetch(url, {
+            ...options,
+            credentials: "include",
+            headers: {
+                ...options.headers,
+            },
+        })
+        if (res.status === 401 || res.status === 403) {
+            await logOut()
+            throw new Error("Token wygasł")
+        }
+
+        return res
+    }
+
+
+
+
     const logOut = async () => {
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/logout`, {
             method: "POST",
@@ -119,7 +138,27 @@ export default function GlobalProvider({ children }) {
         }
     };
 
-
+    const editUser=(id,values)=>{
+        const f=async (id,values)=>{
+            await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me`,
+                {
+                    method:"PUT",
+                    headers:{'Content-type':"application/json"},
+                    credentials: "include",
+                    body:JSON.stringify(
+                        values)
+                })
+                .then(res=>res.json())
+                .then(r=>{
+                    console.log(r)
+                    if(r.message&&r.message.includes("Duplicate"))
+                        alert('email musi byc unikatowy')
+                    if(r&&r.login)
+                        setUser(r);
+                })
+        }
+        f(id,values)
+    }
 
     useEffect(()=>{
             get_me()
@@ -137,7 +176,19 @@ export default function GlobalProvider({ children }) {
     }, [user,loading]);
 
     return (
-        <GlobalContext.Provider value={{router,register,loading,setLoading,edit,setEdit,get_me,
-            pushClick,logIn,user,logOut,googleLogin}}>{children}</GlobalContext.Provider>
+        <GlobalContext.Provider value={{router,
+            register,
+            loading,
+            setLoading,
+            edit,
+            setEdit,
+            get_me,
+            pushClick,
+            logIn,
+            user,
+            logOut,
+            googleLogin,
+            editUser,
+            fetchWithAuth}}>{children}</GlobalContext.Provider>
     )
 };

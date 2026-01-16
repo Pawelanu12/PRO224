@@ -1,3 +1,5 @@
+'use client'
+
 import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
@@ -22,9 +24,9 @@ export default function SmallEvent({wydarzenie,width}){
 
             <div className={"flex flex-row"}>
                 <div className={"ml-5 mr-2.5 w-7.5 -mt-8.25 " +
-                    "bg-white rounded-2 shadow-grey-10"}>{stringToDate(wydarzenie.dataWyjazdu)}</div>
+                    "bg-white rounded-lg shadow-grey-10"}>{stringToDate(wydarzenie.dataWyjazdu)}</div>
                 <div className={"ml-5 mr-2.5 w-7.5 -mt-8.25 " +
-                    "                    bg-white rounded-2 shadow-grey-10"}>{stringToDate(wydarzenie.dataZakonczenia)}</div>
+                    "                    bg-white rounded-lg shadow-grey-10"}>{stringToDate(wydarzenie.dataZakonczenia)}</div>
             </div>
             <p className={"h-20 p-1.25 text-white text-center"}>{wydarzenie.nazwa}</p>
 

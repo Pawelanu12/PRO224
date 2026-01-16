@@ -2,7 +2,6 @@
 
 import {useContext, useEffect, useState} from "react";
 import {AdminContext} from "@/app/providers/AdminProvider";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {SprawnoscContext} from "@/app/providers/AchievementProvider";
 

@@ -46,7 +46,7 @@ export default function Rejestracja() {
                         <Field
                             name="login"
                             placeholder="napisz login"
-                            className="w-[230px] rounded-md  py-2 mb-1 outline-none"
+                            className="w-[230px] rounded-md  py-2 mb-1 outline-none bg-white text-black"
                         />
                         <ErrorMessage
                             name="login"
@@ -60,7 +60,7 @@ export default function Rejestracja() {
                             name="email"
                             type="email"
                             placeholder="napisz email"
-                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none"
+                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none bg-white text-black"
                         />
                         <ErrorMessage
                             name="email"
@@ -74,7 +74,7 @@ export default function Rejestracja() {
                             name="haslo"
                             type="password"
                             placeholder="napisz hasło"
-                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none"
+                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none bg-white text-black"
                         />
                         <ErrorMessage
                             name="haslo"
@@ -88,7 +88,7 @@ export default function Rejestracja() {
                             name="powtorHasla"
                             type="password"
                             placeholder="powtórz hasło"
-                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none"
+                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none bg-white text-black"
                         />
                         <ErrorMessage
                             name="powtorHasla"

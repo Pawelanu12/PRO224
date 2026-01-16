@@ -4,12 +4,9 @@
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import {useContext, useEffect, useRef, useState} from "react";
-// import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {CzatContext} from "@/app/providers/ChatProvider";
 import {Virtuoso} from "react-virtuoso";
-import AddPost from "@/app/forum/dialogs/AddPost";
-import Post from "@/app/forum/Post";
 import Message from "@/app/chat/websocket/Message";
 import {FaPlus} from "react-icons/fa";
 import {FaX} from "react-icons/fa6";
@@ -30,7 +27,7 @@ export default function CzatWithWebSocket(){
     const [client, setClient] = useState(null);
     const {getCzat,czat,loading,setCzat,czatId,addUserToCzat}=useContext(CzatContext)
     const dialog=useRef(null);
-    const [newUser, setNewUser] = useState(0);
+    const [newUser, setNewUser] = useState("");
     const handleInput = (e) => {
         e.target.style.height = "auto";
         e.target.style.height = `${e.target.scrollHeight}px`;
@@ -38,9 +35,9 @@ export default function CzatWithWebSocket(){
 
     const handleAddUser = () => {
 
-        if (!newUser>0) return;
+        if (!newUser) return;
         addUserToCzat(czatId, newUser);
-        setNewUser(0);
+        setNewUser("");
     };
 
     useEffect(() => {
@@ -136,8 +133,8 @@ export default function CzatWithWebSocket(){
                         </div>
 
                         <input
-                            type="number"
-                            placeholder="id uzytkownika"
+                            type="text"
+                            placeholder="login uzytkownika"
                             value={newUser}
                             onKeyUp={e=>{
                                 if(e.key==="Enter"){

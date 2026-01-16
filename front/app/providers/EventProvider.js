@@ -11,13 +11,12 @@ export default function EventProvider({ children }) {
     const [nazwa, setNazwa] = useState("");
     const [data, setData] = useState("");
     const [typ, setTyp] = useState("Typ wydarzenia");
-    const {setLoading}=useContext(GlobalContext);
+    const {fetchWithAuth}=useContext(GlobalContext);
 
 
 
     const getWydarzenia = () => {
         const get=async ()=>{
-            setLoading(true)
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie`,{
                 method:"GET",
                 credentials: "include",
@@ -30,7 +29,6 @@ export default function EventProvider({ children }) {
                         setWydarzenia(res)
                 })
                 .catch(err=>console.log(err))
-                .finally(()=>{setLoading(false)})
         }
         get()
         // console.log("cat")
@@ -40,8 +38,7 @@ export default function EventProvider({ children }) {
         console.log(wydarzenieId)
         console.log(uzytkownikId)
         const add=async ()=>{
-            setLoading(true)
-            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uczestnictwo`,{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uczestnictwo`,{
                 method:"POST",
                 credentials: "include",
                 headers: {"Content-Type": "application/json"},
@@ -59,9 +56,31 @@ export default function EventProvider({ children }) {
         // console.log("cat")
     }
 
+    const editWydarzenie = (id,values) => {
+        const edit=async (values)=>{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
+                method:"PUT",
+                credentials: "include",
+                body:values
+            })
+                .catch(err=>console.log(err))
+        }
+        edit(values)
+    }
+
     return (
-        <WydarzeniaContext.Provider value={{getWydarzenia,dodajUczestnictwo,
-            wydarzenia,setWydarzenia,nazwa,data,typ,setTyp,setNazwa,setData
+        <WydarzeniaContext.Provider value={{
+            getWydarzenia,
+            dodajUczestnictwo,
+            wydarzenia,
+            setWydarzenia,
+            nazwa,
+            data,
+            typ,
+            setTyp,
+            setNazwa,
+            setData,
+            editWydarzenie
 
         }}>
 

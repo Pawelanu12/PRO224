@@ -19,20 +19,21 @@ export default function NewChatDialog() {
 
     const createCzat = () => {
         const array=inputUzytkownikow.trim().split(" ")
-            .map(a=>Number(a)).filter(a=>(!isNaN(a)&&a>0))
+            // .map(a=>Number(a)).filter(a=>(!isNaN(a)&&a>0))
        const czatNazwa= nazwa&&nazwa.length>0?nazwa:null
 
         if(array.length>1) {
 
             dodajCzat({
-                participantIds: array,
-                creatorId: user.id,
+                nazwa:czatNazwa,
+                participantLogins: array,
+                creatorLogin: user.login,
             }, "/group");
         }
         if(array.length===1) {
             dodajCzat({
-                user1Id: Number(inputUzytkownikow),
-                user2Id: user.id,
+                user1Login: inputUzytkownikow.trim(),
+                user2Login: user.login,
             },"");
         }
     };
@@ -61,13 +62,13 @@ export default function NewChatDialog() {
 
                     {/* Header */}
                     <h2 className="text-lg font-semibold text-center">
-                        Nowy czat prywatny
+                        Nowy czat
                     </h2>
 
                     {/* Input */}
                     <input
                         type="text"
-                        placeholder="Podaj ID użytkowników przez spacje"
+                        placeholder="Podaj loginy użytkowników przez spacje"
                         value={inputUzytkownikow}
                         onChange={(e) => setInputUzytkownikow(e.target.value)}
                         className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"

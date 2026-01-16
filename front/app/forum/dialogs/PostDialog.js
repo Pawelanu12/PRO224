@@ -12,7 +12,7 @@ import PostInformation from "@/app/forum/PostInformation";
 
 export default function PostDialog({post}) {
     const {user}=useContext(GlobalContext);
-    const {changeLike,setPosty}=useContext(ForumContext);
+    const {changeLike,setPosty,sharePost}=useContext(ForumContext);
 
     const {comments, setComments} = useContext(ForumContext);
     const dialog=useRef(null);
@@ -74,7 +74,16 @@ if(!post) return null;
                                                 ilość polubień {post.polubienia.length}
                                             </button>
                                             <button>Ilość komentarzy {comments.length}</button>
-                                            <button>udostępnienia {post.udostepnienia}</button>
+                                            <button onClick={()=>{
+                                                if(!post.share.includes(user.id))
+                                                {
+                                                    sharePost(post.id,user.id)
+                                                    setPosty(prev => prev
+                                                        .map(p => p.id !== post.id?p
+                                                            :{...post,share:[...post.share,user.id]}))
+                                                }
+                                            }}
+                                            >udostępnienia {post.share.length||0}</button>
                                         </div>
                                     </div>
                                 ),

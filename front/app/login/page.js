@@ -46,7 +46,7 @@ export default function LogIn() {
                                 <p className="text-white font-semibold">Login</p>
                                 <Field
                                     name="login"
-                                    className="rounded-md px-3 py-2 outline-none"
+                                    className="rounded-md px-3 py-2 outline-none bg-white text-black"
                                     placeholder="napisz login"
                                 />
                                 <ErrorMessage name="login" component="div" className="text-red-400 text-sm"/>
@@ -55,7 +55,7 @@ export default function LogIn() {
                                 <Field
                                     type="password"
                                     name="haslo"
-                                    className="rounded-md px-3 py-2 outline-none"
+                                    className="rounded-md px-3 py-2 outline-none bg-white text-black"
                                     placeholder="napisz hasło"
                                 />
                                 <ErrorMessage name="haslo" component="div" className="text-red-400 text-sm"/>

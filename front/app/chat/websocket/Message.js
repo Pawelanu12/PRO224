@@ -65,7 +65,7 @@ export default function Message({ wiadomosc, wiadomosc2 }) {
                     </div>
                 )}
 
-                {/* MESSAGE BUBBLE */}
+                {/* MESSAGE */}
                <div className="w-full justify-between bg-gray-700  rounded-2xl  text-sm text-white "
                 onMouseMove={()=>setShow(true)}
                 onMouseLeave={()=>setShow(false)}>

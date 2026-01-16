@@ -1,7 +1,5 @@
 'use client'
 
-import {useRef} from "react";
-import {hidden} from "next/dist/lib/picocolors";
 
 export default function Pagination ({liczbaStron,page,setPage,inputRef}){
 

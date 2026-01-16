@@ -1,152 +1,147 @@
 'use client'
 
-// import {ErrorMessage, Field, Form, Formik} from "formik";
-// import * as Yup from "yup";
-import {useContext, useRef, useState} from "react";
-import PoleWDodawaniu from "@/app/functions/PoleWDodawaniu";
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import { useContext, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {AdminContext} from "@/app/providers/AdminProvider";
-import NavbarNiezarejestrowana from "@/app/navbar/NavbarNiezarejestrowana";
-import NavbarZarejestrowana from "@/app/navbar/NavbarZarejestrowana";
-import {GlobalContext} from "@/app/providers/GlobalProvider";
+import { AdminContext } from "@/app/providers/AdminProvider";
+import { GlobalContext } from "@/app/providers/GlobalProvider";
 
-export default function AddWydarzenie(){
-    const {addWydarzenie}=useContext(AdminContext)
-    const {user}=useContext(GlobalContext)
-    const [files,setFiles]=useState([])
+export default function AddWydarzenie() {
+    const { addWydarzenie } = useContext(AdminContext);
+    const { user } = useContext(GlobalContext);
+    const [files, setFiles] = useState([]);
 
     return (
-        <div>
+        <div className=" pt-1 px-4">
 
-            <div className={"forma_dodawania"} style={{backgroundColor: "green", paddingTop: "50px"}}>
-                <Formik
+            <Formik
+                initialValues={{
+                    nazwa: "",
+                    opis: "",
+                    dataWyjazdu: "",
+                    dataZakonczenia: "",
+                }}
+                validationSchema={Yup.object({
+                    nazwa: Yup.string().required("Wymagana nazwa"),
+                    opis: Yup.string().min(6).required("Wymagany opis"),
+                    dataWyjazdu: Yup.date().required(),
+                    dataZakonczenia: Yup.date()
+                        .required()
+                        .test("is-after", "Data końca musi być po dacie wyjazdu", function (value) {
+                            const { dataWyjazdu } = this.parent;
+                            return value && dataWyjazdu && new Date(value) > new Date(dataWyjazdu);
+                        }),
+                })}
+                onSubmit={(values) => {
+                    const formData = new FormData();
 
-                    initialValues={{
+                    files.forEach(f => formData.append("files", f));
 
-                        nazwa: "",
-                        opis: "",
-                        dataWyjazdu: "",
-                        dataZakonczenia: "",
-                        typ: "",
-                        files: ""
-                    }}
-                    validationSchema={Yup.object({
-                        nazwa: Yup.string()
-                            .required("to pole jest wymagane"),
-                        opis: Yup.string()
-                            .min(6, "musi miec co najmniej 6 znaków")
-                            .required("to pole jest wymagane"),
+                    formData.append("nazwa", values.nazwa);
+                    formData.append("opis", values.opis);
+                    formData.append("dataWyjazdu", values.dataWyjazdu);
+                    formData.append("dataZakonczenia", values.dataZakonczenia);
+                    formData.append("organizatorId", user.id);
 
-                        dataWyjazdu: Yup.date()
-                            .required("to pole jest wymagane"),
-                        dataZakonczenia: Yup.string()
-                            .required("to pole jest wymagane")
-                            .test('is-after', 'End date must be after start date', function (value) {
-                                const {dataWyjazdu} = this.parent; // Access other fields in the schema
-                                return value && dataWyjazdu && new Date(value) > new Date(dataWyjazdu);
-                            }),
-                        // ikona:Yup.mixed()
-                        //     .required("to pole jest wymagane"),
-                        // .min(6, "musi miec co najmniej 6 znaków")
-                        // .oneOf(["bajkowe","artystyczne"], "musi zgadzać z haslem")
+                    addWydarzenie(formData);
+                }}
+            >
+                {({ dirty, isValid }) => (
+                    <Form>
 
-                    })}
-                    onSubmit={(values, {resetForm}) => {
-                        console.log(files)
-                        console.log(values)
-                        const formData = new FormData();
-                        if (files) {
-                            for (let i = 0; i < files.length; i++) {
-                                formData.append("files", files[i]);
-                            }
-                        }
+                        <div className="flex flex-col md:flex-row gap-6">
 
-                        formData.append("nazwa", values.nazwa);
-                        formData.append("opis", values.opis);
-                        formData.append("dataWyjazdu", values.dataWyjazdu);
-                        formData.append("dataZakonczenia", values.dataZakonczenia);
-                        formData.append("organizatorId", user.id);
+                            {/* LEWA KOLUMNA – DANE */}
+                            <div className="lg:w-[30%] bg-[#222822] p-6 rounded-xl text-white">
 
-                        addWydarzenie(formData)
-                        // resetForm()
+                                <h2 className="text-xl mb-4 text-center">Nowe wydarzenie</h2>
 
-                    }}
-
-                >
-                    {({dirty, isValid, errors, touched, handleChange, values}) => (
-                        <Form className={"formik"} encType="multipart/form-data">
-                            <div className={"flexRow"}>
-                                <div className={"dodaj-sprawnosci"}>
-                                    <p>nazwa</p>
+                                <label className="block mb-3">
+                                    Nazwa
                                     <Field
-                                        // className={touched.nazwa?`form-control ${errors.nazwa}? invalid:valid`:`form-control`}
-                                        className={"pole-formy-dodawnia"} type="text" name="nazwa"
-                                        placeholder="napisz nazwe"
+                                        name="nazwa"
+                                        className="w-full mt-1 p-2 rounded bg-[#1A1919]"
                                     />
-                                    <ErrorMessage className={"error"} name="nazwa" component="div"/>
-                                    <br/>
-                                    {/*<p> Typ Wydarzenia</p>*/}
-                                    {/*<Field*/}
-                                    {/*    className={"pole-formy-dodawnia"} type="text" name="typ">*/}
-                                    {/*</Field>*/}
-                                    {/*<ErrorMessage className={"error"} name="typ" component="div"/>*/}
-                                    <br/>
-                                    Files
-                                    <label>Wyberz plik <input type="file" accept="image/*" multiple={true}
-                                                              className={"pole-formy-dodawnia"}
-                                                              onChange={(e) => {
-                                                                  // handleChange(e)
-                                                                  setFiles(prev => [...prev, ...Array.from(e.target.files)]);
-                                                                  console.log(e.target.files)
-                                                                  // console.log( URL.createObjectURL(e.target.files[0]))
-                                                                  //  onChange(e.target.value)
-                                                              }}
-                                                              style={{opacity: 0}}
-                                                              name="ikona" placeholder="wstaw ikone"
-                                    />
-                                    </label>
-                                    <ErrorMessage className={"error"} name="ikona" component="div"/>
-                                </div>
-                                <div className={"dodaj-sprawnosci"}>
-                                    <p> Opis </p>
-                                    <Field as="textarea" className={"pole-formy-dodawnia"} name="opis"
-                                           placeholder="napisz opis"
-                                    />
-                                    <ErrorMessage className={"error"} name="opis" component="div"/>
-                                    <p>Data wyjazdu </p>
-                                    <Field type="datetime-local" className={"pole-formy-dodawnia"} name="dataWyjazdu"
-                                           placeholder="napisz date wyjazdu"
-                                    />
-                                    <ErrorMessage className={"error"} name="dataWyjazdu" component="div"/>
-                                    <p>Data wyjazdu </p>
-                                    <Field type="datetime-local" className={"pole-formy-dodawnia"}
-                                           name="dataZakonczenia"
-                                           placeholder="napisz date zakonczenia"
-                                    />
-                                    <ErrorMessage className={"error"} name="dataZakonczenia" component="div"/>
+                                    <ErrorMessage name="nazwa" component="div" className="text-red-400 text-sm" />
+                                </label>
 
-                                </div>
+                                <label className="block mb-3">
+                                    Opis
+                                    <Field
+                                        as="textarea"
+                                        name="opis"
+                                        className="w-full mt-1 p-2 rounded bg-[#1A1919] resize-none"
+                                    />
+                                    <ErrorMessage name="opis" component="div" className="text-red-400 text-sm" />
+                                </label>
 
+                                <label className="block mb-3">
+                                    Data wyjazdu
+                                    <Field
+                                        type="datetime-local"
+                                        name="dataWyjazdu"
+                                        className="w-full mt-1 p-2 rounded bg-[#1A1919]"
+                                    />
+                                </label>
+
+                                <label className="block mb-3">
+                                    Data zakończenia
+                                    <Field
+                                        type="datetime-local"
+                                        name="dataZakonczenia"
+                                        className="w-full mt-1 p-2 rounded bg-[#1A1919]"
+                                    />
+                                </label>
+
+                                <label className="block mb-4 cursor-pointer">
+                                    Zdjęcia
+                                    <input
+                                        type="file"
+                                        multiple
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) =>
+                                            setFiles(prev => [...prev, ...Array.from(e.target.files)])
+                                        }
+                                    />
+                                    <div className="mt-2 p-2 bg-[#3A4F39] rounded text-center">
+                                        Dodaj zdjęcia
+                                    </div>
+                                </label>
+
+                                <button
+                                    type="submit"
+                                    disabled={!dirty || !isValid}
+                                    className="w-full bg-green-600 py-2 rounded disabled:opacity-50"
+                                >
+                                    Dodaj wydarzenie
+                                </button>
                             </div>
-                            <button type="submit" disabled={!dirty || !isValid}
-                            >dodaj wydarzenie
-                            </button>
-                        </Form>)}
 
+                            {/* PRAWA KOLUMNA – GALERIA */}
+                            <div className="lg:w-[70%] bg-[#1A1919] p-6 rounded-xl text-white">
+                                <h2 className="text-lg mb-4">Galeria zdjęć</h2>
 
-                </Formik>
-            </div>
-            <div
-                style={{display: "flex", flexDirection: "row", alignItems: "center", flexWrap: "wrap"}}>
-                {files&&files.length>0&&files.map((file, i) => (
-                    <div style={{margin: "10px", width: "20vw"}} key={i}>
-                        <img key={i} src={URL.createObjectURL(file)} alt={file.name}/>
-                    </div>
-                ))}</div>
+                                {files.length === 0 && (
+                                    <p className="text-gray-400">Brak dodanych zdjęć</p>
+                                )}
+
+                                <div className="flex flex-wrap gap-4">
+                                    {files.map((file, i) => (
+                                        <img
+                                            key={i}
+                                            src={URL.createObjectURL(file)}
+                                            alt=""
+                                            className="max-w-[180px] rounded-lg"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+                    </Form>
+                )}
+            </Formik>
         </div>
-    )
+    );
 }
-// <PoleWDodawaniu nazwaPola={"typSprawnosci"} state={typSprawnosci} setState={setTypeSprawnosci}/>
-
-
