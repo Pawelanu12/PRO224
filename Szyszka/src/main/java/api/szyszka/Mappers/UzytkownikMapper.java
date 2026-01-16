@@ -11,6 +11,8 @@ public class UzytkownikMapper {
 
     public static UzytkownikDto toDto(Uzytkownik u) {
         if (u == null) return null;
+        Long rodzic1Id = u.getRodzic1() != null ? u.getRodzic1().getId() : null;
+        Long rodzic2Id = u.getRodzic2() != null ? u.getRodzic2().getId() : null;
 
         return new UzytkownikDto(
                 u.getId(),
@@ -19,7 +21,10 @@ public class UzytkownikMapper {
                 u.getLogin(),
                 u.getEmail(),
                 u.getNrTelefonu(),
+                rodzic1Id,
+                rodzic2Id,
                 u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null
+
         );
     }
     public static Uzytkownik fromCreateRequest(CreateUzytkownikRequest r) {

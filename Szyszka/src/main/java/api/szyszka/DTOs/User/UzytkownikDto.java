@@ -14,5 +14,7 @@ public class UzytkownikDto {
     private String login;
     private String email;
     private String nrTelefonu;
+    private Long rodzicId1;
+    private Long rodzicId2;
     private String typUzytkownika;
 }

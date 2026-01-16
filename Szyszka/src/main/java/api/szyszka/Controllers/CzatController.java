@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/czaty")
 @RequiredArgsConstructor
-public class CzatRestController {
+public class CzatController {
 
     private final CzatService czatService;
     private final UzytkownikRepository uzytkownikRepository;
@@ -73,20 +73,20 @@ public class CzatRestController {
         czatService.updateCzatName(czatId, request.getNazwa());
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/{czatId}/participants/{userId}")
+    @PostMapping("/{czatId}/participants/{userLogin}")
     public ResponseEntity<Void> addParticipant(
             @PathVariable Long czatId,
-            @PathVariable Long userId
+            @PathVariable String userLogin
     ) {
-        czatService.addParticipantById(czatId, userId);
+        czatService.addParticipantByLogin(czatId, userLogin);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    @DeleteMapping("/{czatId}/participants/{userId}")
+    @DeleteMapping("/{czatId}/participants/{userLogin}")
     public ResponseEntity<Void> removeParticipant(
             @PathVariable Long czatId,
-            @PathVariable Long userId
+            @PathVariable Long userLogin
     ) {
-        czatService.removeParticipant(czatId, userId);
+        czatService.removeParticipant(czatId, userLogin);
         return ResponseEntity.noContent().build();
     }
 }

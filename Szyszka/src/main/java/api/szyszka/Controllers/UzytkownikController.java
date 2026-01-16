@@ -168,6 +168,17 @@ public class UzytkownikController {
         Uzytkownik updated = uzytkownikService.changeUserType(id, newType, principal);
         return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
     }
+    @PutMapping("/{id}/parents")
+    @PreAuthorize("hasRole('DRUZYNOWY')")
+    public ResponseEntity<UzytkownikDto> changeParents(
+            @PathVariable Long id,
+            @RequestBody ChangeParentsRequest req) {
+
+        Uzytkownik updated = uzytkownikService.changeParents(id, req.getParentId1(), req.getParentId2());
+        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
+
+
 
 
 

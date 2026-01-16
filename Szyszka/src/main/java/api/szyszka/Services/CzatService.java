@@ -4,6 +4,7 @@ import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wiadomosc;
+import api.szyszka.Exceptions.LoginNotFoundException;
 import api.szyszka.Exceptions.ResourceNotFoundException;
 import api.szyszka.Exceptions.UserNotFoundException;
 import api.szyszka.Repositories.CzatRepository;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CzatService {
+public class    CzatService {
 
     private final CzatRepository czatRepository;
     private final CzatUzytkownikRepository czatUzytkownikRepository;
@@ -201,15 +202,15 @@ public class CzatService {
 
 
     @Transactional
-    public CzatUzytkownik addParticipantById(Long czatId, Long uzytkownikId) {
+    public CzatUzytkownik addParticipantByLogin(Long czatId, String uzytkownikLogin) {
         Czat czat = czatRepository.findById(czatId)
                 .orElseThrow(() -> new ResourceNotFoundException(czatId));
 
-        Uzytkownik user = uzytkownikRepository.findById(uzytkownikId)
-                .orElseThrow(() -> new UserNotFoundException(uzytkownikId));
+        Uzytkownik user = uzytkownikRepository.findByLogin(uzytkownikLogin)
+                .orElseThrow(() -> new LoginNotFoundException(uzytkownikLogin));
 
         boolean alreadyParticipant = czatUzytkownikRepository.findByCzatId(czatId).stream()
-                .anyMatch(cu -> cu.getUzytkownik().getId().equals(uzytkownikId));
+                .anyMatch(cu -> cu.getUzytkownik().getLogin().equals(uzytkownikLogin));
 
         if (alreadyParticipant) {
             throw new IllegalStateException("Uzytkownik jest już uczestnikiem czatu");
