@@ -22,6 +22,7 @@ public class PostDto {
     private List<Long> polubienia;
     private String autorLogin;
     private Long autorId;
+    private String ikona;
     private List<KomentarzDto> komentarze;
     private List<String> zdjecia;
     private List<Long> share;
