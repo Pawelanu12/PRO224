@@ -35,7 +35,7 @@ class SprawnoscServiceTest {
     void shouldCreateSprawnosc() {
         Sprawnosc sprawnosc = new Sprawnosc();
         sprawnosc.setNazwa("Test");
-        sprawnosc.setTyp(TypSprawnosci.CZERWONE);
+        sprawnosc.setTyp(TypSprawnosci.RED);
 
         when(sprawnoscRepository.save(sprawnosc))
                 .thenReturn(sprawnosc);
@@ -43,7 +43,7 @@ class SprawnoscServiceTest {
         Sprawnosc result = sprawnoscService.createSprawnosc(sprawnosc);
 
         assertThat(result).isNotNull();
-        assertThat(result.getTyp()).isEqualTo(TypSprawnosci.CZERWONE);
+        assertThat(result.getTyp()).isEqualTo(TypSprawnosci.RED);
         verify(sprawnoscRepository).save(sprawnosc);
     }
 
@@ -87,11 +87,11 @@ class SprawnoscServiceTest {
         Sprawnosc oldSprawnosc = new Sprawnosc();
         oldSprawnosc.setId(1L);
         oldSprawnosc.setNazwa("Test");
-        oldSprawnosc.setTyp(TypSprawnosci.ZOLTE); // dodaj typ
+        oldSprawnosc.setTyp(TypSprawnosci.RED); // dodaj typ
 
         Sprawnosc update = new Sprawnosc();
         update.setNazwa("Test");
-        update.setTyp(TypSprawnosci.ZOLTE); // też typ
+        update.setTyp(TypSprawnosci.YELLOW); // też typ
 
         when(sprawnoscRepository.findById(1L))
                 .thenReturn(Optional.of(oldSprawnosc));
@@ -101,7 +101,7 @@ class SprawnoscServiceTest {
         Sprawnosc result = sprawnoscService.modifySprawnoscById(1L, update);
 
         assertThat(result).isNotNull();
-        assertThat(result.getTyp()).isEqualTo(TypSprawnosci.ZOLTE); // sprawdzenie typu
+        assertThat(result.getTyp()).isEqualTo(TypSprawnosci.YELLOW); // sprawdzenie typu
         verify(sprawnoscRepository).save(oldSprawnosc);
     }
 

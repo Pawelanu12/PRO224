@@ -52,11 +52,11 @@ public class UzytkownikService {
         Uzytkownik u = new Uzytkownik();
         u.setLogin(req.getLogin());
         u.setHaslo(passwordEncoder.encode(req.getHaslo()));
-        u.setImie(req.getImie());
-        u.setNazwisko(req.getNazwisko());
+//        u.setImie(req.getImie());
+//        u.setNazwisko(req.getNazwisko());
         u.setTypUzytkownika(TypUzytkownika.DEFAULT);
         u.setEmail(req.getEmail());
-        u.setDataUrodzenia(req.getDataUrodzenia());
+//        u.setDataUrodzenia(req.getDataUrodzenia());
         u.setDataDolaczeniaDoGromady(LocalDateTime.now());
 
         uzytkownikRepository.save(u);
@@ -71,16 +71,10 @@ public class UzytkownikService {
        return jwtService.generateToken(req.getLogin());
     }
 
-    public UzytkownikDto getCurrentUser(String login) {
+    public Uzytkownik getCurrentUser(String login) {
         Uzytkownik u = uzytkownikRepository.findByLogin(login).orElseThrow();
-        UzytkownikDto dto = new UzytkownikDto();
-        dto.setLogin(u.getLogin());
-        dto.setId(u.getId());
-        dto.setImie(u.getImie());
-        dto.setNazwisko(u.getNazwisko());
-        dto.setTypUzytkownika(u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null);
-        dto.setEmail(u.getEmail());
-        return dto;
+
+        return u;
     }
 
     public Uzytkownik getUserById(Long id) {
@@ -245,8 +239,9 @@ public class UzytkownikService {
         u.setNazwisko(req.getNazwisko());
         u.setEmail(req.getEmail());
         u.setNrTelefonu(req.getNrTelefonu());
-        u.setZdjecie(req.getZdjecie());
-
+        u.setDataUrodzenia(req.getDataUrodzenia());
+//        u.setZdjecie(req.getZdjecie());
+        System.out.println(req.getDataUrodzenia().toString());
         return uzytkownikRepository.save(u);
     }
     public void changePassword(String login, ChangePasswordRequest req) {

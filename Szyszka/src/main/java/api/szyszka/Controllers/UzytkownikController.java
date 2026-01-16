@@ -39,7 +39,7 @@ public class UzytkownikController {
     @PreAuthorize("hasAnyRole('RODZIC','DRUZYNOWY','PRZYBOCZNY', 'ZUCH','DEFAULT')")
     public ResponseEntity<UzytkownikDto> me(@AuthenticationPrincipal User user) {
         System.out.println(user.toString());
-        return ResponseEntity.ok(uzytkownikService.getCurrentUser(user.getUsername()));
+        return ResponseEntity.ok(UzytkownikMapper.toDto(uzytkownikService.getCurrentUser(user.getUsername())));
     }
     // CREATE
     @PreAuthorize("hasAnyRole('DRUZYNOWY')")
@@ -122,21 +122,9 @@ public class UzytkownikController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UzytkownikDto> updateMe(
             @AuthenticationPrincipal User user,
-            @RequestBody UpdateMyProfileRequest req,
-            HttpServletResponse response) {
+            @RequestBody UpdateMyProfileRequest req) {
 
         Uzytkownik updated = uzytkownikService.updateMyProfile(user.getUsername(), req);
-        if (!user.getUsername().equals(updated.getLogin())) {
-            String token = jwtService.generateToken(updated.getLogin());
-            ResponseCookie cookie = ResponseCookie.from("accessToken", token)
-                    .httpOnly(true)
-                    .secure(true)
-                    .path("/")
-                    .sameSite("None")
-                    .maxAge(Duration.ofMinutes(60))
-                    .build();
-            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        }
 
         return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
     }

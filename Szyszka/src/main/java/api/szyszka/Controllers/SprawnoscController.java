@@ -69,6 +69,7 @@ public class SprawnoscController {
             @RequestParam(value = "ikona", required = false) MultipartFile ikona,
             @RequestParam("typ") TypSprawnosci typ
     ) {
+
         String iconFileName = null;
         System.out.println("cat");
         try {
