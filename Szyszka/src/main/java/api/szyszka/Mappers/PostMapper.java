@@ -32,6 +32,7 @@ public class PostMapper {
                 entity.getPolubienia().stream().map(p->p.getUzytkownik().getId()).toList(),
                 entity.getAutor().getLogin(),
                 entity.getAutor().getId(),
+                entity.getAutor().getZdjecie(),
                 entity.getKomentarze().stream().map(KomentarzMapper::toDto).toList(),
                 zdjeciaUrl,
                 entity.getUdostepnienia().stream()
