@@ -2,8 +2,7 @@ package api.szyszka;
 
 import api.szyszka.DTOs.Auth.LoginRequest;
 import api.szyszka.DTOs.Auth.RegisterRequest;
-import api.szyszka.DTOs.User.GoogleUserData;
-import api.szyszka.DTOs.User.UzytkownikDto;
+import api.szyszka.DTOs.User.*;
 import api.szyszka.Entities.AuthProvider;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
@@ -17,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.Principal;
@@ -42,7 +42,8 @@ class UzytkownikServiceTest {
     @InjectMocks
     private UzytkownikService service;
 
-    // ========= createUser =========
+    /* ================= createUser ================= */
+
     @Test
     void shouldCreateUser() {
         Uzytkownik u = new Uzytkownik();
@@ -71,7 +72,8 @@ class UzytkownikServiceTest {
                 .isInstanceOf(DuplicateLoginException.class);
     }
 
-    // ========= register =========
+    /* ================= register ================= */
+
     @Test
     void shouldRegisterUser() {
         RegisterRequest req = new RegisterRequest();
@@ -88,13 +90,16 @@ class UzytkownikServiceTest {
         verify(uzytkownikRepository).save(any(Uzytkownik.class));
     }
 
-    // ========= login =========
+    /* ================= login ================= */
+
     @Test
     void shouldLoginAndReturnJwt() {
         LoginRequest req = new LoginRequest();
         req.setLogin("login");
         req.setHaslo("pass");
 
+        when(authenticationManager.authenticate(any()))
+                .thenReturn(null);
         when(jwtService.generateToken("login"))
                 .thenReturn("jwt");
 
@@ -103,7 +108,8 @@ class UzytkownikServiceTest {
         assertThat(token).isEqualTo("jwt");
     }
 
-    // ========= getCurrentUser =========
+    /* ================= getCurrentUser ================= */
+
     @Test
     void shouldReturnCurrentUserDto() {
         Uzytkownik u = new Uzytkownik();
@@ -116,9 +122,11 @@ class UzytkownikServiceTest {
         UzytkownikDto dto = service.getCurrentUser("login");
 
         assertThat(dto.getLogin()).isEqualTo("login");
+        assertThat(dto.getId()).isEqualTo(1L);
     }
 
-    // ========= getUserById =========
+    /* ================= getUserById ================= */
+
     @Test
     void shouldReturnUserById() {
         Uzytkownik u = new Uzytkownik();
@@ -139,27 +147,47 @@ class UzytkownikServiceTest {
                 .isInstanceOf(UserNotFoundException.class);
     }
 
-    // ========= updateUser =========
+    /* ================= updateUser ================= */
+
     @Test
     void shouldUpdateUser() {
-        Uzytkownik oldU = new Uzytkownik();
-        oldU.setId(1L);
-        oldU.setLogin("old");
+        Uzytkownik existing = new Uzytkownik();
+        existing.setId(1L);
+        existing.setLogin("old");
 
-        Uzytkownik newU = new Uzytkownik();
-        newU.setLogin("old");
+        Uzytkownik updated = new Uzytkownik();
+        updated.setLogin("old");
 
         when(uzytkownikRepository.findById(1L))
-                .thenReturn(Optional.of(oldU));
-        when(uzytkownikRepository.save(any()))
-                .thenReturn(oldU);
+                .thenReturn(Optional.of(existing));
+        when(uzytkownikRepository.save(existing))
+                .thenReturn(existing);
 
-        service.updateUser(1L, newU);
+        service.updateUser(1L, updated);
 
-        verify(uzytkownikRepository).save(oldU);
+        verify(uzytkownikRepository).save(existing);
     }
 
-    // ========= deleteUser =========
+    @Test
+    void shouldThrowDuplicateLoginExceptionOnUpdate() {
+        Uzytkownik existing = new Uzytkownik();
+        existing.setId(1L);
+        existing.setLogin("old");
+
+        Uzytkownik updated = new Uzytkownik();
+        updated.setLogin("new");
+
+        when(uzytkownikRepository.findById(1L))
+                .thenReturn(Optional.of(existing));
+        when(uzytkownikRepository.findByLogin("new"))
+                .thenReturn(Optional.of(new Uzytkownik()));
+
+        assertThatThrownBy(() -> service.updateUser(1L, updated))
+                .isInstanceOf(DuplicateLoginException.class);
+    }
+
+    /* ================= deleteUser ================= */
+
     @Test
     void shouldDeleteUser() {
         when(uzytkownikRepository.existsById(1L))
@@ -170,11 +198,20 @@ class UzytkownikServiceTest {
         verify(uzytkownikRepository).deleteById(1L);
     }
 
-    // ========= changeUserType =========
+    @Test
+    void shouldThrowUserNotFoundOnDelete() {
+        when(uzytkownikRepository.existsById(99L))
+                .thenReturn(false);
+
+        assertThatThrownBy(() -> service.deleteUser(99L))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    /* ================= changeUserType ================= */
+
     @Test
     void shouldChangeUserType() {
         Uzytkownik admin = new Uzytkownik();
-        admin.setTypUzytkownika(TypUzytkownika.DRUZYNOWY);
         admin.setId(1L);
         admin.setTypUzytkownika(TypUzytkownika.DRUZYNOWY);
 
@@ -187,9 +224,8 @@ class UzytkownikServiceTest {
                 .thenReturn(Optional.of(admin));
         when(uzytkownikRepository.findById(2L))
                 .thenReturn(Optional.of(target));
-        when(uzytkownikRepository.save(any()))
+        when(uzytkownikRepository.save(target))
                 .thenReturn(target);
-
 
         service.changeUserType(2L, TypUzytkownika.PRZYBOCZNY, principal);
 
@@ -197,14 +233,26 @@ class UzytkownikServiceTest {
                 .isEqualTo(TypUzytkownika.PRZYBOCZNY);
     }
 
-    // ========= loginWithGoogle =========
+    @Test
+    void shouldThrowWhenAdminNotDruzynowy() {
+        Uzytkownik admin = new Uzytkownik();
+        admin.setTypUzytkownika(TypUzytkownika.RODZIC);
+
+        Principal principal = () -> "admin";
+
+        when(uzytkownikRepository.findByLogin("admin"))
+                .thenReturn(Optional.of(admin));
+
+        assertThatThrownBy(() ->
+                service.changeUserType(2L, TypUzytkownika.ZUCH, principal))
+                .isInstanceOf(SecurityException.class);
+    }
+
+    /* ================= loginWithGoogle ================= */
+
     @Test
     void shouldLoginWithGoogleExistingUser() {
-        GoogleUserData google = new GoogleUserData("gid",
-                "test@email.com",
-                "Jan",
-                "Kowalski");
-        google.setGoogleId("gid");
+        GoogleUserData google = new GoogleUserData("gid", "mail@test.com", "Jan", "Kowalski");
 
         Uzytkownik u = new Uzytkownik();
         u.setLogin("login");
@@ -219,12 +267,32 @@ class UzytkownikServiceTest {
         assertThat(token).isEqualTo("jwt");
     }
 
-    // ========= getChildren =========
+    @Test
+    void shouldAttachGoogleIdToExistingEmailUser() {
+        GoogleUserData google = new GoogleUserData("gid", "mail@test.com", "Jan", "Kowalski");
+
+        Uzytkownik existing = new Uzytkownik();
+        existing.setLogin("login");
+
+        when(uzytkownikRepository.findByGoogleId("gid"))
+                .thenReturn(Optional.empty());
+        when(uzytkownikRepository.findByEmail("mail@test.com"))
+                .thenReturn(Optional.of(existing));
+        when(jwtService.generateToken("login"))
+                .thenReturn("jwt");
+
+        String token = service.loginWithGoogle(google);
+
+        assertThat(token).isEqualTo("jwt");
+        verify(uzytkownikRepository).save(existing);
+    }
+
+    /* ================= getChildren ================= */
+
     @Test
     void shouldReturnChildren() {
         when(uzytkownikRepository.existsById(1L))
                 .thenReturn(true);
-
         when(uzytkownikRepository.findByRodzic1IdOrRodzic2Id(1L, 1L))
                 .thenReturn(List.of(new Uzytkownik()));
 
@@ -233,7 +301,14 @@ class UzytkownikServiceTest {
         assertThat(children).hasSize(1);
     }
 
-    // ========= getParents =========
+    @Test
+    void shouldThrowWhenNoParentIdsProvided() {
+        assertThatThrownBy(() -> service.getChildren(null, null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /* ================= getParents ================= */
+
     @Test
     void shouldReturnParents() {
         Uzytkownik child = new Uzytkownik();
@@ -247,7 +322,8 @@ class UzytkownikServiceTest {
         assertThat(parents).hasSize(1);
     }
 
-    // ========= getUsersByType =========
+    /* ================= getUsersByType ================= */
+
     @Test
     void shouldReturnUsersByType() {
         when(uzytkownikRepository.findByTypUzytkownika(TypUzytkownika.DEFAULT))
@@ -258,7 +334,14 @@ class UzytkownikServiceTest {
         assertThat(users).isNotEmpty();
     }
 
-    // ========= getUsersBySzostka =========
+    @Test
+    void shouldThrowUserTypeNotFoundException() {
+        assertThatThrownBy(() -> service.getUsersByType("XYZ"))
+                .isInstanceOf(UserTypeNotFoundException.class);
+    }
+
+    /* ================= getUsersBySzostka ================= */
+
     @Test
     void shouldReturnUsersBySzostka() {
         when(uzytkownikRepository.findBySzostkaId(1L))
@@ -267,5 +350,25 @@ class UzytkownikServiceTest {
         List<Uzytkownik> users = service.getUsersBySzostka(1L);
 
         assertThat(users).hasSize(1);
+    }
+
+    /* ================= changePassword ================= */
+
+    @Test
+    void shouldThrowWhenOldPasswordIncorrect() {
+        Uzytkownik u = new Uzytkownik();
+        u.setHaslo("encoded");
+
+        when(uzytkownikRepository.findByLogin("login"))
+                .thenReturn(Optional.of(u));
+        when(passwordEncoder.matches("wrong", "encoded"))
+                .thenReturn(false);
+
+        ChangePasswordRequest req =
+                new ChangePasswordRequest("wrong", "new");
+
+        assertThatThrownBy(() ->
+                service.changePassword("login", req))
+                .isInstanceOf(BadCredentialsException.class);
     }
 }

@@ -4,6 +4,7 @@ import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
 import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wydarzenie;
+import api.szyszka.Entities.WydarzenieZdjecie;
 import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Repositories.WydarzenieRepository;
 import api.szyszka.Services.WydarzenieService;
@@ -11,10 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -31,10 +35,12 @@ class WydarzenieServiceTest {
     @Mock
     private UzytkownikRepository uzytkownikRepository;
 
+    @Spy
     @InjectMocks
     private WydarzenieService wydarzenieService;
 
     // ========= createWydarzenieWithPhotos =========
+
     @Test
     void shouldCreateWydarzenieWithoutPhotos() {
         CreateWydarzenieRequest req = new CreateWydarzenieRequest();
@@ -55,6 +61,7 @@ class WydarzenieServiceTest {
 
         assertThat(result.getOrganizator()).isEqualTo(organizator);
         assertThat(result.getNazwa()).isEqualTo("Biwy");
+        assertThat(result.getZdjecia()).isEmpty();
     }
 
     @Test
@@ -71,6 +78,7 @@ class WydarzenieServiceTest {
     }
 
     // ========= getAllWydarzenia =========
+
     @Test
     void shouldReturnAllWydarzenia() {
         when(wydarzenieRepository.findAll())
@@ -82,6 +90,7 @@ class WydarzenieServiceTest {
     }
 
     // ========= getWydarzenieById =========
+
     @Test
     void shouldReturnWydarzenieById() {
         Wydarzenie w = new Wydarzenie();
@@ -96,6 +105,7 @@ class WydarzenieServiceTest {
     }
 
     // ========= deleteWydarzenie =========
+
     @Test
     void shouldDeleteWydarzenie() {
         wydarzenieService.deleteWydarzenie(1L);
@@ -104,6 +114,7 @@ class WydarzenieServiceTest {
     }
 
     // ========= modifyWydarzenie =========
+
     @Test
     void shouldModifyWydarzenie() {
         Wydarzenie old = new Wydarzenie();
@@ -111,12 +122,12 @@ class WydarzenieServiceTest {
         old.setNazwa("Stare");
 
         UpdateWydarzenieRequest req = new UpdateWydarzenieRequest(
-                "Nowe",                     // nazwa
-                LocalDateTime.now(),         // dataWyjazdu
-                null,                        // dataZakonczenia
-                "Opis",                      // opis
-                null,                        // noweZdjecia
-                null                         // zdjeciaDoUsuniecia
+                "Nowe",
+                LocalDateTime.now(),
+                null,
+                "Opis",
+                null,
+                null
         );
 
         when(wydarzenieRepository.findById(1L))
@@ -132,6 +143,7 @@ class WydarzenieServiceTest {
     }
 
     // ========= getWydarzenieByNazwa =========
+
     @Test
     void shouldReturnWydarzenieByNazwa() {
         Wydarzenie w = new Wydarzenie();
