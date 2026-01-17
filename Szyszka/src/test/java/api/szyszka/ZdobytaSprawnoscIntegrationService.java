@@ -1,10 +1,7 @@
 package api.szyszka;
 
 import api.szyszka.DTOs.Sprawnosci.CreateZdobytaSprawnoscRequest;
-import api.szyszka.Entities.Sprawnosc;
-import api.szyszka.Entities.TypUzytkownika;
-import api.szyszka.Entities.Uzytkownik;
-import api.szyszka.Entities.ZdobytaSprawnosc;
+import api.szyszka.Entities.*;
 import api.szyszka.Repositories.SprawnoscRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Repositories.ZdobytaSprawnoscRepository;
@@ -14,14 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static api.szyszka.Entities.TypUzytkownika.DRUZYNOWY;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class ZdobytaSprawnoscIntegrationTest {
+class ZdobytaSprawnoscServiceIntegrationTest {
 
     @Autowired
     private ZdobytaSprawnoscService zdobytaSprawnoscService;
@@ -35,46 +35,47 @@ class ZdobytaSprawnoscIntegrationTest {
     @Autowired
     private SprawnoscRepository sprawnoscRepository;
 
-    // ========= HELPERY =========
-
-    private ZdobytaSprawnosc createZdobytaSprawnosc(
-            Uzytkownik user,
-            Sprawnosc sprawnosc
-    ) {
-        ZdobytaSprawnosc zs = new ZdobytaSprawnosc();
-        zs.setUzytkownik(user);
-        zs.setSprawnosc(sprawnosc);
-        zs.setDataZdobyciaSprawnosci(LocalDateTime.now());
-        return zdobytaSprawnoscRepository.saveAndFlush(zs);
-    }
+    // ===================== helpers =====================
 
     private Uzytkownik createUser() {
         Uzytkownik u = new Uzytkownik();
-        u.setLogin("test_login");
         u.setImie("Jan");
         u.setNazwisko("Kowalski");
-        u.setEmail("jan@test.pl");
-        u.setTypUzytkownika(TypUzytkownika.ZUCH);
-        return uzytkownikRepository.saveAndFlush(u);
+        u.setLogin("user_" + UUID.randomUUID());
+        u.setTypUzytkownika(DRUZYNOWY);
+        return uzytkownikRepository.save(u);
     }
 
-    private Sprawnosc createSprawnosc() {
+    private Sprawnosc createSprawnosc(String nazwa) {
         Sprawnosc s = new Sprawnosc();
-        s.setNazwa("Pierwsza pomoc");
-        return sprawnoscRepository.saveAndFlush(s);
+        s.setNazwa(nazwa);
+        s.setOpis("Opis");
+        s.setOpisWymagan("Wymagania");
+        s.setIkona("ikona.png");
+        s.setTyp(TypSprawnosci.YELLOW);
+        return sprawnoscRepository.save(s);
     }
 
-    // ========= createZdobytaSprawnosc =========
+    private CreateZdobytaSprawnoscRequest validRequest(
+            Long userId,
+            Long sprawnoscId
+    ) {
+        CreateZdobytaSprawnoscRequest req = new CreateZdobytaSprawnoscRequest();
+        req.setUzytkownikId(userId);
+        req.setSprawnoscId(sprawnoscId);
+        req.setDataZdobyciaSprawnosci(LocalDateTime.now());
+        return req;
+    }
+
+    // ===================== tests =====================
 
     @Test
     void shouldCreateZdobytaSprawnosc() {
         Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
+        Sprawnosc sprawnosc = createSprawnosc("Pierwsza pomoc");
 
-        CreateZdobytaSprawnoscRequest req = new CreateZdobytaSprawnoscRequest();
-        req.setUzytkownikId(user.getId());
-        req.setSprawnoscId(sprawnosc.getId());
-        req.setDataZdobyciaSprawnosci(LocalDateTime.now());
+        CreateZdobytaSprawnoscRequest req =
+                validRequest(user.getId(), sprawnosc.getId());
 
         ZdobytaSprawnosc result =
                 zdobytaSprawnoscService.createZdobytaSprawnosc(req);
@@ -84,110 +85,93 @@ class ZdobytaSprawnoscIntegrationTest {
         assertThat(result.getSprawnosc().getId()).isEqualTo(sprawnosc.getId());
     }
 
-    // ========= getAllZdobytaSprawnosc =========
-
     @Test
     void shouldReturnAllZdobyteSprawnosci() {
         Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
+        Sprawnosc s1 = createSprawnosc("A");
+        Sprawnosc s2 = createSprawnosc("B");
 
-        ZdobytaSprawnosc zs = createZdobytaSprawnosc(user, sprawnosc);
+        zdobytaSprawnoscService.createZdobytaSprawnosc(
+                validRequest(user.getId(), s1.getId())
+        );
+        zdobytaSprawnoscService.createZdobytaSprawnosc(
+                validRequest(user.getId(), s2.getId())
+        );
 
-        zdobytaSprawnoscRepository.saveAndFlush(zs);
-
-        List<ZdobytaSprawnosc> result =
+        List<ZdobytaSprawnosc> list =
                 zdobytaSprawnoscService.getAllZdobytaSprawnosc();
 
-        assertThat(result).isNotEmpty();
+        assertThat(list).hasSizeGreaterThanOrEqualTo(2);
     }
-
-    // ========= getAllZdobytaSprawnoscByUzytkownikId =========
 
     @Test
     void shouldReturnZdobyteSprawnosciByUzytkownikId() {
         Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
+        Sprawnosc sprawnosc = createSprawnosc("Survival");
 
-        ZdobytaSprawnosc zs = createZdobytaSprawnosc(user, sprawnosc);
+        zdobytaSprawnoscService.createZdobytaSprawnosc(
+                validRequest(user.getId(), sprawnosc.getId())
+        );
 
-        zdobytaSprawnoscRepository.saveAndFlush(zs);
-
-        List<ZdobytaSprawnosc> result =
+        List<ZdobytaSprawnosc> list =
                 zdobytaSprawnoscService.getAllZdobytaSprawnoscByUzytkownikId(user.getId());
 
-        assertThat(result).hasSize(1);
+        assertThat(list).hasSize(1);
+        assertThat(list.get(0).getUzytkownik().getId()).isEqualTo(user.getId());
     }
-
-    // ========= getAllZdobytaSprawnoscBySprawnoscId =========
 
     @Test
     void shouldReturnZdobyteSprawnosciBySprawnoscId() {
         Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
+        Sprawnosc sprawnosc = createSprawnosc("Topografia");
 
-        ZdobytaSprawnosc zs = createZdobytaSprawnosc(user, sprawnosc);
+        zdobytaSprawnoscService.createZdobytaSprawnosc(
+                validRequest(user.getId(), sprawnosc.getId())
+        );
 
-        zdobytaSprawnoscRepository.saveAndFlush(zs);
-
-        List<ZdobytaSprawnosc> result =
+        List<ZdobytaSprawnosc> list =
                 zdobytaSprawnoscService.getAllZdobytaSprawnoscBySprawnoscId(sprawnosc.getId());
 
-        assertThat(result).hasSize(1);
+        assertThat(list).hasSize(1);
+        assertThat(list.get(0).getSprawnosc().getId()).isEqualTo(sprawnosc.getId());
     }
-
-    // ========= getZdobytaSprawnoscById =========
-
-    @Test
-    void shouldReturnZdobytaSprawnoscById() {
-        Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
-
-        ZdobytaSprawnosc zs = createZdobytaSprawnosc(user, sprawnosc);
-
-        zs = zdobytaSprawnoscRepository.saveAndFlush(zs);
-
-        ZdobytaSprawnosc result =
-                zdobytaSprawnoscService.getZdobytaSprawnoscById(zs.getId());
-
-        assertThat(result.getId()).isEqualTo(zs.getId());
-    }
-
-    // ========= modifyZdobytaSprawnosc =========
 
     @Test
     void shouldModifyZdobytaSprawnosc() {
         Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
+        Sprawnosc s1 = createSprawnosc("Stara");
+        Sprawnosc s2 = createSprawnosc("Nowa");
 
-        ZdobytaSprawnosc zs = createZdobytaSprawnosc(user, sprawnosc);
-
-        zs = zdobytaSprawnoscRepository.saveAndFlush(zs);
+        ZdobytaSprawnosc saved =
+                zdobytaSprawnoscService.createZdobytaSprawnosc(
+                        validRequest(user.getId(), s1.getId())
+                );
 
         ZdobytaSprawnosc update = new ZdobytaSprawnosc();
+        update.setDataZdobyciaSprawnosci(LocalDateTime.now().minusDays(5));
         update.setUzytkownik(user);
-        update.setSprawnosc(sprawnosc);
-        update.setDataZdobyciaSprawnosci(LocalDateTime.now());
+        update.setSprawnosc(s2);
 
-        ZdobytaSprawnosc result =
-                zdobytaSprawnoscService.modifyZdobytaSprawnosc(zs.getId(), update);
+        ZdobytaSprawnosc modified =
+                zdobytaSprawnoscService.modifyZdobytaSprawnosc(saved.getId(), update);
 
-        assertThat(result.getDataZdobyciaSprawnosci()).isNotNull();
+        assertThat(modified.getSprawnosc().getId()).isEqualTo(s2.getId());
     }
-
-    // ========= deleteZdobytaSprawnoscById =========
 
     @Test
     void shouldDeleteZdobytaSprawnosc() {
         Uzytkownik user = createUser();
-        Sprawnosc sprawnosc = createSprawnosc();
+        Sprawnosc sprawnosc = createSprawnosc("Do usuniecia");
 
-        ZdobytaSprawnosc zs = createZdobytaSprawnosc(user, sprawnosc);
+        ZdobytaSprawnosc saved =
+                zdobytaSprawnoscService.createZdobytaSprawnosc(
+                        validRequest(user.getId(), sprawnosc.getId())
+                );
 
-        zs = zdobytaSprawnoscRepository.saveAndFlush(zs);
+        zdobytaSprawnoscService.deleteZdobytaSprawnoscById(saved.getId());
 
-        zdobytaSprawnoscService.deleteZdobytaSprawnoscById(zs.getId());
-
-        assertThat(zdobytaSprawnoscRepository.findById(zs.getId()))
-                .isEmpty();
+        assertThat(
+                zdobytaSprawnoscRepository.findById(saved.getId())
+        ).isEmpty();
     }
 }
