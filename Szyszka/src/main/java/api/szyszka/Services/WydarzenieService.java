@@ -78,6 +78,7 @@ public class WydarzenieService {
         return wydarzenieRepository.save(wydarzenie);
     }
 
+    @Transactional
     public Wydarzenie addZdjecieToEvent(Long wydarzenieId, MultipartFile file) {
         Wydarzenie wydarzenie = wydarzenieRepository.findById(wydarzenieId)
                 .orElseThrow(() -> new NoSuchElementException("Wydarzenie nie znalezione"));
