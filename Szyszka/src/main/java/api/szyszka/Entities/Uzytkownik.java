@@ -2,6 +2,8 @@ package api.szyszka.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class Uzytkownik {
 
     private String haslo;
     private String email;
-    private LocalDateTime dataUrodzenia;
+    private LocalDate dataUrodzenia;
     private String nrTelefonu;
     private LocalDateTime dataDolaczeniaDoGromady;
     private String zdjecie;

@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,5 +18,5 @@ public class UpdateMyProfileRequest {
     private String login;
     private String email;
     private String nrTelefonu;
-    private String zdjecie;
+    private LocalDate dataUrodzenia;
 }

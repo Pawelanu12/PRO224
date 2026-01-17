@@ -7,6 +7,7 @@ import api.szyszka.Entities.AuthProvider;
 import api.szyszka.Entities.TypUzytkownika;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Exceptions.*;
+import api.szyszka.Mappers.UzytkownikMapper;
 import api.szyszka.Repositories.UzytkownikRepository;
 import api.szyszka.Services.JwtService;
 import api.szyszka.Services.UzytkownikService;
@@ -119,7 +120,7 @@ class UzytkownikServiceTest {
         when(uzytkownikRepository.findByLogin("login"))
                 .thenReturn(Optional.of(u));
 
-        UzytkownikDto dto = service.getCurrentUser("login");
+        UzytkownikDto dto = UzytkownikMapper.toDto( service.getCurrentUser("login"));
 
         assertThat(dto.getLogin()).isEqualTo("login");
         assertThat(dto.getId()).isEqualTo(1L);

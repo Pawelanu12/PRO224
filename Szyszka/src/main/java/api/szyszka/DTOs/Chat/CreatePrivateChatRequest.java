@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class CreatePrivateChatRequest {
 
-    private Long user1Id;
-    private Long user2Id;
+    private String user1Login;
+    private String user2Login;
 }

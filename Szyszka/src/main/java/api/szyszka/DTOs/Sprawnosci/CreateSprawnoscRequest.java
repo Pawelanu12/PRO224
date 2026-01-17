@@ -1,5 +1,6 @@
 package api.szyszka.DTOs.Sprawnosci;
 
+import api.szyszka.Entities.TypSprawnosci;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class CreateSprawnoscRequest {
     private String opis;
     private String opisWymagan;
     private String ikona;
+    private TypSprawnosci typ;
 }

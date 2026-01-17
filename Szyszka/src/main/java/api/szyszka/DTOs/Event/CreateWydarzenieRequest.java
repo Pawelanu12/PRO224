@@ -1,5 +1,6 @@
 package api.szyszka.DTOs.Event;
 
+import api.szyszka.Entities.TypWydarzenia;
 import api.szyszka.Entities.Uczestnictwo;
 import api.szyszka.Entities.Zdjecie;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,6 @@ public class CreateWydarzenieRequest {
     private LocalDateTime dataZakonczenia;
     private String opis;
     private Long organizatorId;
+    private TypWydarzenia typWydarzenia;
     private List<String> zdjecia= new ArrayList<>();;
 }

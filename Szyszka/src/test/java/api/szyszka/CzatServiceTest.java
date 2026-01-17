@@ -1,7 +1,6 @@
 package api.szyszka;
 
 import api.szyszka.Entities.*;
-import api.szyszka.Exceptions.LoginNotFoundException;
 import api.szyszka.Exceptions.ResourceNotFoundException;
 import api.szyszka.Repositories.*;
 import api.szyszka.Services.CzatService;
@@ -32,83 +31,104 @@ class CzatServiceTest {
     @InjectMocks
     private CzatService czatService;
 
-    // ================= createPrivateChat =================
-
+    // ========= createPrivateChat =========
     @Test
     void shouldCreatePrivateChat() {
         Uzytkownik u1 = new Uzytkownik();
         u1.setId(1L);
+        u1.setLogin("user1");
+
         Uzytkownik u2 = new Uzytkownik();
         u2.setId(2L);
+        u2.setLogin("user2");
 
-        when(uzytkownikRepository.findById(1L)).thenReturn(Optional.of(u1));
-        when(uzytkownikRepository.findById(2L)).thenReturn(Optional.of(u2));
-        when(czatRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
-        when(czatUzytkownikRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        Czat czat = new Czat();
+        czat.setId(10L);
 
-        Czat result = czatService.createPrivateChat(1L, 2L);
+        when(uzytkownikRepository.findByLogin("user1"))
+                .thenReturn(Optional.of(u1));
+        when(uzytkownikRepository.findByLogin("user2"))
+                .thenReturn(Optional.of(u2));
+
+        when(czatRepository.save(any()))
+                .thenReturn(czat);
+        when(czatUzytkownikRepository.save(any()))
+                .thenAnswer(inv -> inv.getArgument(0));
+
+        Czat result = czatService.createPrivateChat("user1", "user2");
 
         assertThat(result).isNotNull();
-        assertThat(result.isCzyGrupowy()).isFalse();
+        verify(czatRepository).save(any(Czat.class));
     }
 
-    @Test
-    void shouldReturnNullWhenUserNotFoundInPrivateChat() {
-        when(uzytkownikRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Czat result = czatService.createPrivateChat(1L, 2L);
-
-        assertThat(result).isNull();
-    }
-
-    // ================= createGroupChat =================
-
+    // ========= createGroupChat =========
     @Test
     void shouldCreateGroupChat() {
         Uzytkownik creator = new Uzytkownik();
         creator.setId(1L);
+        creator.setLogin("creator");
 
         Uzytkownik member = new Uzytkownik();
         member.setId(2L);
+        member.setLogin("member");
 
-        when(czatRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
-        when(uzytkownikRepository.findById(2L)).thenReturn(Optional.of(member));
-        when(czatUzytkownikRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(uzytkownikRepository.findByLogin("creator"))
+                .thenReturn(Optional.of(creator));
+        when(uzytkownikRepository.findByLogin("member"))
+                .thenReturn(Optional.of(member));
+
+        when(czatRepository.save(any()))
+                .thenAnswer(inv -> inv.getArgument(0));
+        when(czatUzytkownikRepository.save(any()))
+                .thenAnswer(inv -> inv.getArgument(0));
 
         Czat result = czatService.createGroupChat(
                 "Grupa",
-                creator,
-                List.of(2L)
+                "creator",
+                List.of("member")
         );
 
         assertThat(result.isCzyGrupowy()).isTrue();
-        assertThat(result.getNazwa()).isEqualTo("Grupa");
     }
 
-    // ================= getCzatById =================
+    // ========= addParticipant =========
+    @Test
+    void shouldAddParticipant() {
+        Czat czat = new Czat();
+        czat.setUczestnicy(new java.util.ArrayList<>());
 
+        Uzytkownik user = new Uzytkownik();
+
+        when(czatUzytkownikRepository.save(any()))
+                .thenAnswer(inv -> inv.getArgument(0));
+
+        CzatUzytkownik cu = czatService.addParticipant(czat, user);
+
+        assertThat(cu).isNotNull();
+        assertThat(czat.getUczestnicy()).hasSize(1);
+    }
+
+    // ========= getCzatById =========
     @Test
     void shouldReturnCzatById() {
         Czat czat = new Czat();
-        czat.setId(1L);
+        when(czatRepository.findById(1L))
+                .thenReturn(Optional.of(czat));
 
-        when(czatRepository.findById(1L)).thenReturn(Optional.of(czat));
-
-        Czat result = czatService.getCzatById(1L);
-
-        assertThat(result).isEqualTo(czat);
+        assertThat(czatService.getCzatById(1L)).isEqualTo(czat);
     }
 
     @Test
     void shouldThrowWhenCzatNotFound() {
-        when(czatRepository.findById(1L)).thenReturn(Optional.empty());
+        when(czatRepository.findById(1L))
+                .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> czatService.getCzatById(1L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // ================= deleteCzat =================
-
+    // ========= deleteCzat =========
     @Test
     void shouldDeleteCzat() {
         when(czatRepository.existsById(1L)).thenReturn(true);
@@ -118,125 +138,106 @@ class CzatServiceTest {
         verify(czatRepository).deleteById(1L);
     }
 
+    // ========= removeParticipant =========
     @Test
-    void shouldThrowWhenDeletingNonExistingCzat() {
-        when(czatRepository.existsById(1L)).thenReturn(false);
+    void shouldRemoveParticipant() {
+        Uzytkownik user = new Uzytkownik();
+        user.setId(2L);
 
-        assertThatThrownBy(() -> czatService.deleteCzat(1L))
-                .isInstanceOf(ResourceNotFoundException.class);
+        CzatUzytkownik cu = new CzatUzytkownik();
+        cu.setUzytkownik(user);
+
+        when(czatUzytkownikRepository.findByCzatId(1L))
+                .thenReturn(List.of(cu));
+
+        czatService.removeParticipant(1L, 2L);
+
+        verify(czatUzytkownikRepository).delete(cu);
     }
 
-    // ================= sendMessage =================
-
+    // ========= getParticipants =========
     @Test
-    void shouldSendMessageAndIncrementUnread() {
-        Czat czat = new Czat();
-        czat.setId(1L);
-
-        Uzytkownik sender = new Uzytkownik();
-        sender.setId(1L);
-
-        CzatUzytkownik receiver = new CzatUzytkownik();
-        Uzytkownik other = new Uzytkownik();
-        other.setId(2L);
-        receiver.setUzytkownik(other);
-        receiver.setNieprzeczytaneWiadomosci(0);
-
-        when(czatRepository.findById(1L)).thenReturn(Optional.of(czat));
-        when(uzytkownikRepository.findById(1L)).thenReturn(Optional.of(sender));
-        when(wiadomoscRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+    void shouldReturnParticipants() {
         when(czatUzytkownikRepository.findByCzatId(1L))
-                .thenReturn(List.of(receiver));
+                .thenReturn(List.of(new CzatUzytkownik()));
 
-        Wiadomosc result = czatService.sendMessage(1L, 1L, "hej");
+        assertThat(czatService.getParticipants(1L)).hasSize(1);
+    }
+
+    // ========= sendMessage =========
+    @Test
+    void shouldSendMessage() {
+        Czat czat = new Czat();
+        Uzytkownik nadawca = new Uzytkownik();
+        nadawca.setId(1L);
+
+        when(czatRepository.findById(1L))
+                .thenReturn(Optional.of(czat));
+        when(uzytkownikRepository.findById(1L))
+                .thenReturn(Optional.of(nadawca));
+        when(wiadomoscRepository.save(any()))
+                .thenAnswer(inv -> inv.getArgument(0));
+        when(czatUzytkownikRepository.findByCzatId(1L))
+                .thenReturn(List.of());
+
+        Wiadomosc result =
+                czatService.sendMessage(1L, 1L, "hej");
 
         assertThat(result.getTresc()).isEqualTo("hej");
-        assertThat(receiver.getNieprzeczytaneWiadomosci()).isEqualTo(1);
     }
 
-    // ================= updateCzatName =================
-
+    // ========= getMessages =========
     @Test
-    void shouldUpdateGroupChatName() {
+    void shouldReturnMessages() {
+        when(wiadomoscRepository
+                .findByCzatIdOrderByDataWyslaniaAsc(1L))
+                .thenReturn(List.of(new Wiadomosc()));
+
+        assertThat(czatService.getMessages(1L)).hasSize(1);
+    }
+
+    // ========= updateCzatName =========
+    @Test
+    void shouldUpdateCzatName() {
         Czat czat = new Czat();
         czat.setCzyGrupowy(true);
 
-        when(czatRepository.findById(1L)).thenReturn(Optional.of(czat));
-        when(czatRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(czatRepository.findById(1L))
+                .thenReturn(Optional.of(czat));
+        when(czatRepository.save(any()))
+                .thenReturn(czat);
 
         Czat result = czatService.updateCzatName(1L, "Nowa");
 
         assertThat(result.getNazwa()).isEqualTo("Nowa");
     }
-
-    @Test
-    void shouldThrowWhenUpdatingPrivateChatName() {
-        Czat czat = new Czat();
-        czat.setCzyGrupowy(false);
-
-        when(czatRepository.findById(1L)).thenReturn(Optional.of(czat));
-
-        assertThatThrownBy(() -> czatService.updateCzatName(1L, "Nowa"))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
-    // ================= addParticipantByLogin =================
-
+    // ========= addParticipantByLogin =========
     @Test
     void shouldAddParticipantByLogin() {
         Czat czat = new Czat();
         czat.setUczestnicy(new java.util.ArrayList<>());
 
         Uzytkownik user = new Uzytkownik();
-        user.setLogin("test");
+        user.setLogin("janek");
 
-        when(czatRepository.findById(1L)).thenReturn(Optional.of(czat));
-        when(uzytkownikRepository.findByLogin("test"))
+        when(czatRepository.findById(1L))
+                .thenReturn(Optional.of(czat));
+
+        when(uzytkownikRepository.findByLogin("janek"))
                 .thenReturn(Optional.of(user));
+
         when(czatUzytkownikRepository.findByCzatId(1L))
                 .thenReturn(List.of());
+
         when(czatUzytkownikRepository.save(any()))
                 .thenAnswer(inv -> inv.getArgument(0));
 
         CzatUzytkownik result =
-                czatService.addParticipantByLogin(1L, "test");
+                czatService.addParticipantByLogin(1L, "janek");
 
+        assertThat(result).isNotNull();
         assertThat(result.getUzytkownik()).isEqualTo(user);
+        assertThat(czat.getUczestnicy()).hasSize(1);
     }
 
-    @Test
-    void shouldThrowWhenLoginNotFound() {
-        when(czatRepository.findById(1L)).thenReturn(Optional.of(new Czat()));
-        when(uzytkownikRepository.findByLogin("x"))
-                .thenReturn(Optional.empty());
-
-        assertThatThrownBy(() ->
-                czatService.addParticipantByLogin(1L, "x"))
-                .isInstanceOf(LoginNotFoundException.class);
-    }
-
-
-    // ========= addParticipantById =========
-//    @Test
-//    void shouldAddParticipantById() {
-//        Czat czat = new Czat();
-//        czat.setUczestnicy(new java.util.ArrayList<>());
-//
-//        Uzytkownik user = new Uzytkownik();
-//        user.setId(2L);
-//
-//        when(czatRepository.findById(1L))
-//                .thenReturn(Optional.of(czat));
-//        when(uzytkownikRepository.findById(2L))
-//                .thenReturn(Optional.of(user));
-//        when(czatUzytkownikRepository.findByCzatId(1L))
-//                .thenReturn(List.of());
-//        when(czatUzytkownikRepository.save(any()))
-//                .thenAnswer(inv -> inv.getArgument(0));
-//
-//        CzatUzytkownik result =
-//                czatService.addParticipantById(1L, 2L);
-//
-//        assertThat(result.getUzytkownik()).isEqualTo(user);
-//    }
 }

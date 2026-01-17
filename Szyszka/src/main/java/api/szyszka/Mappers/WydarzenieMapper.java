@@ -28,6 +28,7 @@ public class WydarzenieMapper {
                 entity.getDataZakonczenia(),
                 entity.getOpis(),
                 entity.getOrganizator() != null ? entity.getOrganizator().getId() : null,
+                entity.getTyp(),
                 entity.getUczestnictwa().stream().map(UczestnictwoMapper::toDto).toList(),
                 zdjeciaSciezki
         );

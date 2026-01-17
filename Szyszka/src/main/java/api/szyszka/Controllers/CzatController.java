@@ -46,19 +46,22 @@ public class CzatController {
         return ResponseEntity.ok(CzatMapper.toDto(czat));
     }
     @PostMapping()
-    public ResponseEntity<CzatDto>createPrivateCzat(@RequestBody CreatePrivateChatRequest czatDto) {
-      Czat czat=czatService.createPrivateChat(czatDto.getUser1Id(),czatDto.getUser2Id());
+    public ResponseEntity<CzatDto>createPrivateCzat(@RequestBody CreatePrivateChatRequest req) {
+      Czat czat=czatService.createPrivateChat(
+              req.getUser1Login(),
+              req.getUser2Login()
+      );
         return ResponseEntity.ok(CzatMapper.toDto(czat));
     }
     @PostMapping("/group")
     public ResponseEntity<CzatDto> createGroupChat(@RequestBody CreateGroupChatRequest request) {
         System.out.println("cat");
-        Uzytkownik creator = uzytkownikRepository.findById(request.getCreatorId())
+        Uzytkownik creator = uzytkownikRepository.findByLogin(request.getCreatorLogin())
                 .orElseThrow(() -> new RuntimeException("Creator not found"));
         Czat czat = czatService.createGroupChat(
                 request.getNazwa(),
-                creator,
-                request.getParticipantIds()
+                request.getCreatorLogin(),
+                request.getParticipantLogins()
         );
 
         return ResponseEntity.status(HttpStatus.CREATED)

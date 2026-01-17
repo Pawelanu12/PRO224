@@ -139,6 +139,10 @@ public class WydarzenieService {
             );
         }
         wydarzenie.setOpis(request.getOpis());
+        // Ustawienie typu wydarzenia
+        if (request.getTypWydarzenia() != null) {
+            wydarzenie.setTyp(request.getTypWydarzenia());
+        }
 
         //ZABEZPIECZENIE LISTY ZDJĘĆ
         if (wydarzenie.getZdjecia() == null) {

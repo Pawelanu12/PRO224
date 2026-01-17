@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateGroupChatRequest {
     private String nazwa;
-    private Long creatorId;
-    private List<Long> participantIds;
+    private String creatorLogin;
+    private List<String> participantLogins;
 }

@@ -3,6 +3,7 @@ package api.szyszka.Controllers;
 import api.szyszka.DTOs.Sprawnosci.SprawnoscDto;
 import api.szyszka.DTOs.Sprawnosci.UpdateSprawnoscRequest;
 import api.szyszka.Entities.Sprawnosc;
+import api.szyszka.Entities.TypSprawnosci;
 import api.szyszka.Mappers.SprawnoscMapper;
 import api.szyszka.Services.SprawnoscService;
 import api.szyszka.Services.SzostkaService;
@@ -66,8 +67,9 @@ public class SprawnoscController {
             @RequestParam("opis") String opis,
             @RequestParam("opisWymagan") String opisWymagan,
             @RequestParam(value = "ikona", required = false) MultipartFile ikona,
-            @RequestParam("typ") String typ
+            @RequestParam("typ") TypSprawnosci typ
     ) {
+
         String iconFileName = null;
         System.out.println("cat");
         try {
@@ -96,6 +98,7 @@ public class SprawnoscController {
         sprawnosc.setOpis(opis);
         sprawnosc.setOpisWymagan(opisWymagan);
         sprawnosc.setIkona(iconFileName);
+        sprawnosc.setTyp(typ);
 
         Sprawnosc saved = sprawnoscService.createSprawnosc(sprawnosc);
 
@@ -167,6 +170,9 @@ public class SprawnoscController {
         oldSprawnosc.setOpis(request.getOpis());
         oldSprawnosc.setOpisWymagan(request.getOpisWymagan());
         oldSprawnosc.setIkona(newIcon);
+        if (request.getTypSprawnosci() != null) {
+            oldSprawnosc.setTyp(request.getTypSprawnosci());
+        }
 
 //        if (!folder.exists()) {
 //            folder.mkdirs();

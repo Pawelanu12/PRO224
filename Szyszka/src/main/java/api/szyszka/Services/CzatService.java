@@ -29,25 +29,12 @@ public class    CzatService {
     private final WiadomoscRepository wiadomoscRepository;
     private final UzytkownikRepository uzytkownikRepository;
 
-    @Transactional
-    public Czat createPrivateChat(Long user1Id, Long user2Id) {
-        Optional<Uzytkownik>  u1= uzytkownikRepository.findById(user1Id);
-        Optional<Uzytkownik>  u2= uzytkownikRepository.findById(user2Id);
-        if(u1.isPresent()&&u2.isPresent()){
-            Uzytkownik user1=u1.get();
-            Uzytkownik user2=u2.get();
-//        List<CzatUzytkownik> existing = czatUzytkownikRepository.findAll();
-//        for (CzatUzytkownik cu : existing) {
-//            Czat czat = cu.getCzat();
-//            if (!czat.isCzyGrupowy()) {
-//                List<Long> participantIds = czat.getUczestnicy() != null
-//                        ? czat.getUczestnicy().stream().map(p -> p.getUzytkownik().getId()).toList()
-//                        : List.of();
-//                if (participantIds.contains(user1.getId()) && participantIds.contains(user2.getId())) {
-//                    return CzatMapper.toDto(czat);
-//                }
-//            }
-//        }
+    public Czat createPrivateChat(String user1Login, String user2Login) {
+        Uzytkownik  u1= uzytkownikRepository.findByLogin(user1Login).
+                orElseThrow(() -> new LoginNotFoundException(user1Login));
+
+        Uzytkownik u2 = uzytkownikRepository.findByLogin(user2Login)
+                .orElseThrow(() -> new LoginNotFoundException(user2Login));
 
         Czat czat = new Czat();
         czat.setCzyGrupowy(false);
@@ -55,19 +42,20 @@ public class    CzatService {
         czat.setNazwa(null);
         Czat savedCzat = czatRepository.save(czat);
 
-        CzatUzytkownik cu1 = addParticipant(savedCzat, user1);
+        CzatUzytkownik cu1 = addParticipant(savedCzat, u1);
         cu1.setNieprzeczytaneWiadomosci(0);
-        CzatUzytkownik cu2 = addParticipant(savedCzat, user2);
+        CzatUzytkownik cu2 = addParticipant(savedCzat, u2);
         cu2.setNieprzeczytaneWiadomosci(0);
 
         savedCzat.setUczestnicy(List.of(cu1, cu2));
 
         return savedCzat;
-        }
-        return null;
     }
 
-    public Czat createGroupChat(String nazwa, Uzytkownik creator, List<Long> participantIds) {
+    public Czat createGroupChat(String nazwa, String creatorLogin, List<String> participantLogins) {
+        Uzytkownik creator = uzytkownikRepository.findByLogin(creatorLogin)
+                .orElseThrow(() -> new LoginNotFoundException(creatorLogin));
+
         Czat czat = new Czat();
         czat.setCzyGrupowy(true);
         czat.setNazwa(nazwa);
@@ -75,23 +63,12 @@ public class    CzatService {
 
         Czat saved = czatRepository.save(czat);
 
-        CzatUzytkownik creatorEntry = new CzatUzytkownik();
-        creatorEntry.setCzat(saved);
-        creatorEntry.setUzytkownik(creator);
-        creatorEntry.setNieprzeczytaneWiadomosci(0);
-        czatUzytkownikRepository.save(creatorEntry);
-        saved.getUczestnicy().add(creatorEntry);
+        addParticipant(saved, creator);
 
-        for (Long id : participantIds) {
-            Uzytkownik user = uzytkownikRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("User not found: " + id));
-
-            CzatUzytkownik cu = new CzatUzytkownik();
-            cu.setCzat(saved);
-            cu.setUzytkownik(user);
-            cu.setNieprzeczytaneWiadomosci(0);
-            czatUzytkownikRepository.save(cu);
-            saved.getUczestnicy().add(cu);
+        for (String login : participantLogins) {
+            Uzytkownik user = uzytkownikRepository.findByLogin(login)
+                    .orElseThrow(() -> new LoginNotFoundException(login));
+            addParticipant(saved, user);
         }
 
         return saved;
@@ -158,7 +135,6 @@ public class    CzatService {
         return czatUzytkownikRepository.findByCzatId(czatId);
     }
 
-    @Transactional
     public Wiadomosc sendMessage(Long czatId, Long nadawcaId, String tresc) {
         Czat czat = getCzatById(czatId);
         Uzytkownik nadawca = uzytkownikRepository.findById(nadawcaId)
@@ -201,7 +177,6 @@ public class    CzatService {
     }
 
 
-    @Transactional
     public CzatUzytkownik addParticipantByLogin(Long czatId, String uzytkownikLogin) {
         Czat czat = czatRepository.findById(czatId)
                 .orElseThrow(() -> new ResourceNotFoundException(czatId));

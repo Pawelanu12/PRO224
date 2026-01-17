@@ -2,6 +2,7 @@ package api.szyszka;
 
 import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
 import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
+import api.szyszka.Entities.TypWydarzenia;
 import api.szyszka.Entities.Uzytkownik;
 import api.szyszka.Entities.Wydarzenie;
 import api.szyszka.Entities.WydarzenieZdjecie;
@@ -120,14 +121,16 @@ class WydarzenieServiceTest {
         Wydarzenie old = new Wydarzenie();
         old.setId(1L);
         old.setNazwa("Stare");
+        old.setTyp(TypWydarzenia.BIWAK); // stary typ
 
         UpdateWydarzenieRequest req = new UpdateWydarzenieRequest(
                 "Nowe",
                 LocalDateTime.now(),
                 null,
                 "Opis",
-                null,
-                null
+                TypWydarzenia.ZIMOWISKO, // nowy typ
+                null, // zdjecia do usunięcia
+                null  // nowe zdjecia
         );
 
         when(wydarzenieRepository.findById(1L))
@@ -135,12 +138,13 @@ class WydarzenieServiceTest {
         when(wydarzenieRepository.save(any()))
                 .thenAnswer(inv -> inv.getArgument(0));
 
-        Wydarzenie result =
-                wydarzenieService.modifyWydarzenie(1L, req);
+        Wydarzenie result = wydarzenieService.modifyWydarzenie(1L, req);
 
         assertThat(result.getNazwa()).isEqualTo("Nowe");
         assertThat(result.getOpis()).isEqualTo("Opis");
+        assertThat(result.getTyp()).isEqualTo(TypWydarzenia.ZIMOWISKO); // sprawdzenie typu
     }
+
 
     // ========= getWydarzenieByNazwa =========
 

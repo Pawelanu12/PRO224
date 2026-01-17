@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 public class RegisterRequest {
     private String login;
     private String haslo;
-    private String imie;
-    private String nazwisko;
-    private String typUzytkownika;
+//    private String imie;
+//    private String nazwisko;
+//    private String typUzytkownika;
     private String email;
-    private LocalDateTime dataUrodzenia;
-    private String nrTelefonu;
+//    private LocalDateTime dataUrodzenia;
+//    private String nrTelefonu;
 }
 
 

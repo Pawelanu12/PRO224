@@ -23,7 +23,10 @@ public class UzytkownikMapper {
                 u.getNrTelefonu(),
                 rodzic1Id,
                 rodzic2Id,
-                u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null
+                u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null,
+                u.getDataUrodzenia(),
+                u.getDataDolaczeniaDoGromady(),
+                u.getSzostka()!=null? u.getSzostka().getNazwa():null
 
         );
     }
