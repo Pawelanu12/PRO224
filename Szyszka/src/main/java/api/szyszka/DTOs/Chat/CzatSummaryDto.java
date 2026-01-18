@@ -18,4 +18,6 @@ public class CzatSummaryDto {
     private List<String> uczestnicyLogins;
     private Integer nieprzeczytaneWiadomosci;
     private WiadomoscDto lastReadMessage;
+    private LocalDateTime lastMessageTime;
+
 }

@@ -92,4 +92,13 @@ public class CzatController {
         czatService.removeParticipant(czatId, userLogin);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{czatId}/to-zero/{userId}")
+    public ResponseEntity<Void> setWiadomosciTo0(
+            @PathVariable Long czatId,
+            @PathVariable Long userId
+    ) {
+        czatService.setCzatUzytkownikTo0(czatId, userId);
+        return ResponseEntity.noContent().build();
+    }
 }
