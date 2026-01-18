@@ -122,10 +122,21 @@ public class UzytkownikController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UzytkownikDto> updateMe(
             @AuthenticationPrincipal User user,
-            @RequestBody UpdateMyProfileRequest req) {
+            @RequestBody UpdateMyProfileRequest req,
+            HttpServletResponse response) {
 
         Uzytkownik updated = uzytkownikService.updateMyProfile(user.getUsername(), req);
-
+        if (!user.getUsername().equals(updated.getLogin())) {
+            String token = jwtService.generateToken(updated.getLogin());
+            ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                    .httpOnly(true)
+                    .secure(true)
+                    .path("/")
+                    .sameSite("None")
+                    .maxAge(Duration.ofMinutes(60))
+                    .build();
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        }
         return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
     }
     @PutMapping("/me/password")

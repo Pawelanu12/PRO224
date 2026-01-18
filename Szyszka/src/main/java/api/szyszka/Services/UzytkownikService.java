@@ -234,14 +234,17 @@ public class UzytkownikService {
                 throw new DuplicateLoginException(req.getLogin());
             u.setLogin(req.getLogin());
         }
-
-        u.setImie(req.getImie());
-        u.setNazwisko(req.getNazwisko());
-        u.setEmail(req.getEmail());
-        u.setNrTelefonu(req.getNrTelefonu());
-        u.setDataUrodzenia(req.getDataUrodzenia());
+        if(req.getImie()!=null)
+            u.setImie(req.getImie());
+        if(req.getNazwisko()!=null)
+            u.setNazwisko(req.getNazwisko());
+        if(req.getEmail()!=null)
+            u.setEmail(req.getEmail());
+        if(req.getNrTelefonu()!=null)
+            u.setNrTelefonu(req.getNrTelefonu());
+        if(req.getDataUrodzenia()!=null)
+            u.setDataUrodzenia(req.getDataUrodzenia());
 //        u.setZdjecie(req.getZdjecie());
-        System.out.println(req.getDataUrodzenia().toString());
         return uzytkownikRepository.save(u);
     }
     public void changePassword(String login, ChangePasswordRequest req) {
