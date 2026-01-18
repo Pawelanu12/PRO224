@@ -206,6 +206,13 @@ public class    CzatService {
         return saved;
     }
 
+    public void setCzatUzytkownikTo0(Long czatId,Long userId){
+        CzatUzytkownik cu=czatUzytkownikRepository.findByCzatIdAndUzytkownikId(czatId,userId)
+                .orElseThrow(() -> new ResourceNotFoundException(czatId+userId));
+        cu.setNieprzeczytaneWiadomosci(0);
+        czatUzytkownikRepository.save(cu);
+    }
+
 
 
 }

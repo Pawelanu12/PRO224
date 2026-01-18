@@ -6,7 +6,9 @@ import api.szyszka.DTOs.Chat.WiadomoscDto;
 import api.szyszka.Entities.Czat;
 import api.szyszka.Entities.CzatUzytkownik;
 import api.szyszka.Entities.Uzytkownik;
+import api.szyszka.Entities.Wiadomosc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,7 +77,14 @@ public class CzatMapper {
                         czatUzytkownik.getLastReadMessage().getTresc(),
                         czatUzytkownik.getLastReadMessage().getDataWyslania()
                 );
-
+        List<Wiadomosc> wiadomoscs=czatUzytkownik.getCzat().getWiadomosci();
+        LocalDateTime datum;
+        if(wiadomoscs!=null&& !wiadomoscs.isEmpty()){
+            datum= wiadomoscs.get(wiadomoscs.size() - 1).getDataWyslania();
+        }
+        else
+             datum =LocalDateTime.now();
+        System.out.println(datum);
         return new CzatSummaryDto(
                 czat.getId(),
                 czat.getNazwa(),
@@ -83,7 +92,8 @@ public class CzatMapper {
                 czat.getDataUtworzenia(),
                 uczestnicyLogins,
                 czatUzytkownik.getNieprzeczytaneWiadomosci(),
-                ostatniaWiadomosc
+                ostatniaWiadomosc,
+                datum
         );
     }
 
