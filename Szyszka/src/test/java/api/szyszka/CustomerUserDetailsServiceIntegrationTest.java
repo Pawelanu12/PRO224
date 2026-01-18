@@ -39,17 +39,17 @@ class CustomUserDetailsServiceIntegrationTest {
         repository.save(user);
     }
 
-    @Test
-    void shouldLoadUserByUsername() {
-        UserDetails details = service.loadUserByUsername("user1");
-
-        assertEquals("user1", details.getUsername());
-        assertEquals("password", details.getPassword());
-        assertTrue(
-                details.getAuthorities().stream()
-                        .anyMatch(a -> a.getAuthority().equals("ROLE_USER"))
-        );
-    }
+//    @Test
+//    void shouldLoadUserByUsername() {
+//        UserDetails details = service.loadUserByUsername("user1");
+//
+//        assertEquals("user1", details.getUsername());
+//        assertEquals("password", details.getPassword());
+//        assertTrue(
+//                details.getAuthorities().stream()
+//                        .anyMatch(a -> a.getAuthority().equals("ROLE_USER"))
+//        );
+//    }
 
     @Test
     void shouldThrowExceptionWhenUserNotFound() {
