@@ -41,10 +41,10 @@ export default function Czats(){
                     const data = JSON.parse(msg.body);
                     console.log(data)
                     setCzaty(
-                        prev=>prev.map(c=>c.id===data.czat_id?{
+                        prev=>prev.map(c=>c.id===data.czatId?{
                             ...c,
-                            nieprzeczytane_wiadomosci:data.nieprzeczytane_wiadomosci,
-                            wiadomosc:data.wiadomosc
+                            nieprzeczytaneWiadomosci:data.nieprzeczytaneWiadomosci,
+                            lastMessageTime:data.wiadomosc.dataWyslania
                         }:c
                     ))
                 });
@@ -56,7 +56,6 @@ export default function Czats(){
         });
 
         stompClient.activate();
-
         return () => stompClient.deactivate();
     }, [user]);
 
@@ -91,10 +90,11 @@ export default function Czats(){
                     <div className="p-4">
                         <NewChatDialog />
                     </div>
-
                     {/* Lista czatów */}
                     <div className="flex-1 overflow-y-auto border-black border-t">
-                        {czaty.map(c => (
+                        {[...czaty].sort((a,b)=>{
+                           return  new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
+                        }).map(c => (
                             <div
                                 key={c.id}
                                 className="flex items-center border-black  border-b gap-3 px-3 py-2 hover:bg-[#405E3F]"
@@ -107,7 +107,7 @@ export default function Czats(){
                                     className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer"
                                 >
                                     <img
-                                        src={c.obraz}
+                                        src={c.obraz||"/images/user_logo.png"}
                                         className="w-12 h-12 rounded-full flex-shrink-0"
                                         alt=""
                                     />
@@ -155,7 +155,9 @@ export default function Czats(){
                 </div>
                 <div className={"border-t border-black"}>
                 {/* Lista czatów */}
-                    {czaty.map(c => (
+                    {[...czaty].sort((a,b)=>{
+                        return  new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
+                    }).map(c => (
                         <div
                             key={c.id}
                             onClick={() => setCzatId(c.id)}
@@ -163,7 +165,7 @@ export default function Czats(){
                         >
                             {/* Avatar */}
                             <img
-                                src={c.obraz}
+                                src={c.obraz||"/images/user_logo.png"}
                                 alt="avatar"
                                 className="w-12 h-12 rounded-full object-cover"
                             />

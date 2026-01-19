@@ -10,8 +10,8 @@ export default function GlobalProvider({ children }) {
     const [loading,setLoading] = useState(true);
     const [user, setUser] = useState(null)
     const [edit,setEdit] = useState({})
+    const [dzieci,setDzieci] = useState(null);
     const router = useRouter()
-
     async function fetchWithAuth(url, options = {}) {
         const res = await fetch(url, {
             ...options,
@@ -27,10 +27,6 @@ export default function GlobalProvider({ children }) {
 
         return res
     }
-
-
-
-
     const logOut = async () => {
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/logout`, {
             method: "POST",
@@ -94,9 +90,6 @@ export default function GlobalProvider({ children }) {
            const val={
                login:values.login,
                haslo:values.haslo,
-               imie:"q",
-               data_dolaczenia_do_gromada:new Date(),
-               nazwisko:"q",
                email:values.email,
            }
             await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/register`,
@@ -137,7 +130,6 @@ export default function GlobalProvider({ children }) {
             console.log(err);
         }
     };
-
     const editUser=(id,values)=>{
         const f=async (id,values)=>{
             await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me`,
@@ -159,6 +151,19 @@ export default function GlobalProvider({ children }) {
         }
         f(id,values)
     }
+    const changePassword=(values)=>{
+        const f=async (values)=>{
+            await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/me/password`,
+                {
+                    method:"PUT",
+                    headers:{'Content-type':"application/json"},
+                    credentials: "include",
+                    body:JSON.stringify(
+                        values)
+                })
+        }
+        f(values)
+    }
 
     useEffect(()=>{
             get_me()
@@ -173,8 +178,27 @@ export default function GlobalProvider({ children }) {
                 ||path.startsWith("/sprawnosci")||path.startsWith("/wydarzenia")))
             router.replace("/login")
         }
+        if(user?.typUzytkownika==="DEFAULT")
+            alert("poczekaj kiedy Drużynowy przydzieli ciebie typ")
     }, [user,loading]);
 
+
+    const getDzieci=() => {
+        const getUsers=async ()=>{
+            await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/children?parentId1=${user.id}`,
+                {
+                    method:"GET",
+                    credentials: "include",
+                })
+                .then(res=>res.json())
+                .then(r=>{
+                    console.log(r)
+                    if(Array.isArray(r))
+                        setDzieci(r)
+                })
+        }
+        getUsers()
+    }
     return (
         <GlobalContext.Provider value={{router,
             register,
@@ -189,6 +213,9 @@ export default function GlobalProvider({ children }) {
             logOut,
             googleLogin,
             editUser,
-            fetchWithAuth}}>{children}</GlobalContext.Provider>
+            fetchWithAuth,
+            changePassword,
+            getDzieci,
+        dzieci}}>{children}</GlobalContext.Provider>
     )
 };

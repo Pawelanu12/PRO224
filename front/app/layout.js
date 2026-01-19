@@ -2,7 +2,6 @@
 import "./globals.css";
 import GlobalProvider from "@/app/providers/GlobalProvider";
 import Navbar from "@/app/navbar/Navbar";
-import {SessionProvider} from "next-auth/react";
 
 export default function RootLayout({ children }) {
   return (

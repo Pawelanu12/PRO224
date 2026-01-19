@@ -11,6 +11,12 @@ export default function AddWydarzenie() {
     const { user } = useContext(GlobalContext);
     const [files, setFiles] = useState([]);
 
+    const typyWydarzen=[
+        "ZIMOWISKO",
+        "BIWAK",
+        "OBOZ",
+        "KOLONIA"
+    ]
     return (
         <div className=" pt-1 px-4">
 
@@ -20,11 +26,13 @@ export default function AddWydarzenie() {
                     opis: "",
                     dataWyjazdu: "",
                     dataZakonczenia: "",
+                    typ: "",
                 }}
                 validationSchema={Yup.object({
                     nazwa: Yup.string().required("Wymagana nazwa"),
                     opis: Yup.string().min(6).required("Wymagany opis"),
                     dataWyjazdu: Yup.date().required(),
+                    typ: Yup.string().required(),
                     dataZakonczenia: Yup.date()
                         .required()
                         .test("is-after", "Data końca musi być po dacie wyjazdu", function (value) {
@@ -34,13 +42,14 @@ export default function AddWydarzenie() {
                 })}
                 onSubmit={(values) => {
                     const formData = new FormData();
-
+    console.log(values)
                     files.forEach(f => formData.append("files", f));
 
                     formData.append("nazwa", values.nazwa);
                     formData.append("opis", values.opis);
                     formData.append("dataWyjazdu", values.dataWyjazdu);
                     formData.append("dataZakonczenia", values.dataZakonczenia);
+                    formData.append("typ", values.typ);
                     formData.append("organizatorId", user.id);
 
                     addWydarzenie(formData);
@@ -62,7 +71,7 @@ export default function AddWydarzenie() {
                                         name="nazwa"
                                         className="w-full mt-1 p-2 rounded bg-[#1A1919]"
                                     />
-                                    <ErrorMessage name="nazwa" component="div" className="text-red-400 text-sm" />
+                                    <ErrorMessage name="nazwa" component="div" className="text-red-400 text-sm"/>
                                 </label>
 
                                 <label className="block mb-3">
@@ -72,11 +81,34 @@ export default function AddWydarzenie() {
                                         name="opis"
                                         className="w-full mt-1 p-2 rounded bg-[#1A1919] resize-none"
                                     />
-                                    <ErrorMessage name="opis" component="div" className="text-red-400 text-sm" />
+                                    <ErrorMessage name="opis" component="div" className="text-red-400 text-sm"/>
                                 </label>
 
                                 <label className="block mb-3">
-                                    Data wyjazdu
+                                    Typ wydarzenia
+                                    <Field
+                                        as="select"
+                                        name="typ"
+                                        className="
+                                          w-full mt-1 p-2 rounded
+                                          bg-[#1A1919] text-white
+                                          border border-gray-600
+                                          focus:outline-none focus:ring-2 focus:ring-green-600
+                                        "
+                                    >
+                                        <option value={""}>
+                                            Wyberz typ wydarzenia
+                                        </option>
+                                        {typyWydarzen.map((typ) => (
+                                            <option key={typ} value={typ}>
+                                                {typ}
+                                            </option>
+                                        ))}
+                                    </Field>
+                                </label>
+
+                                <label className="block mb-3">
+                                Data wyjazdu
                                     <Field
                                         type="datetime-local"
                                         name="dataWyjazdu"
@@ -127,7 +159,7 @@ export default function AddWydarzenie() {
                                 )}
 
                                 <div className="flex flex-wrap gap-4">
-                                    {files.map((file, i) => (
+                                {files.map((file, i) => (
                                         <img
                                             key={i}
                                             src={URL.createObjectURL(file)}

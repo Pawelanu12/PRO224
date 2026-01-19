@@ -13,7 +13,7 @@ export default function LogIn() {
 
     useEffect(() => {
         if (!user) return;
-        pushClick(null, "/forum");
+        pushClick(null, "/profile");
     }, [user]);
 
     useEffect(() => {
@@ -68,13 +68,13 @@ export default function LogIn() {
                                     >
                                         Zarejestruj się
                                     </button>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => pushClick(e, "/password-change")}
-                                        className="hover:underline"
-                                    >
-                                        Nie pamiętasz hasła?
-                                    </button>
+                                    {/*<button*/}
+                                    {/*    type="button"*/}
+                                    {/*    onClick={(e) => pushClick(e, "/password-change")}*/}
+                                    {/*    className="hover:underline"*/}
+                                    {/*>*/}
+                                    {/*    Nie pamiętasz hasła?*/}
+                                    {/*</button>*/}
                                 </div>
 
                                 <button

@@ -46,7 +46,7 @@ export default function Rejestracja() {
                         <Field
                             name="login"
                             placeholder="napisz login"
-                            className="w-[230px] rounded-md  py-2 mb-1 outline-none bg-white text-black"
+                            className="w-[230px] rounded-md px-3 py-2 mb-1 outline-none bg-white text-black"
                         />
                         <ErrorMessage
                             name="login"

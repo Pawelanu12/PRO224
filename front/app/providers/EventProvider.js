@@ -57,7 +57,7 @@ export default function EventProvider({ children }) {
     }
 
     const editWydarzenie = (id,values) => {
-        const edit=async (values)=>{
+        const edit=async (id,values)=>{
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
                 method:"PUT",
                 credentials: "include",
@@ -65,7 +65,19 @@ export default function EventProvider({ children }) {
             })
                 .catch(err=>console.log(err))
         }
-        edit(values)
+        edit(id,values)
+    }
+
+    const deleteWydarzenie = (id) => {
+      console.log(id)
+        const d=async (id)=>{
+            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
+                method:"DELETE",
+                credentials: "include",
+            })
+                .catch(err=>console.log(err))
+        }
+        d(id)
     }
 
     return (
@@ -80,8 +92,8 @@ export default function EventProvider({ children }) {
             setTyp,
             setNazwa,
             setData,
-            editWydarzenie
-
+            editWydarzenie,
+            deleteWydarzenie
         }}>
 
             {children}</WydarzeniaContext.Provider>

@@ -41,7 +41,7 @@ export default function AdminProvider({ children }) {
                 .then(res=> res.json())
                 .then(res=> {
                     console.log(res)
-                    // pushClick("","/events")
+                    pushClick("","/events")
                 })
                 .catch(err=>console.log(err))
         }
@@ -73,9 +73,9 @@ export default function AdminProvider({ children }) {
             pushClick(null,"/")
     }, [user]);
 
-    const updateUser=(id,values)=>{
+    const updateTyp=(id,values)=>{
         const f=async (id,values)=>{
-            await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/${id}/changeTyp`,
+            await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/${id}/type?newType=${values}`,
                 {
                     method:"PUT",
                     credentials: "include",
@@ -95,7 +95,6 @@ export default function AdminProvider({ children }) {
                 {
                     method:"DELETE",
                     credentials: "include",
-                    headers:{'Content-type':"application/json"},
                 })
                 .then(res=>res.status)
                 .then(res=>{if(res===400)alert("wystapil blad")})
@@ -104,21 +103,76 @@ export default function AdminProvider({ children }) {
         f(id)
     }
 
+    const changeParrents=(id,values)=>{
+        console.log(JSON.stringify(values))
+        const f=async (id,values)=>{
+            await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/${id}/parents`,
+                {
+                    method:"PUT",
+                    credentials: "include",
+                    headers:{'Content-type':"application/json"},
+                    body:JSON.stringify(values)
+                })
+                .then(res=>res.json)
+                .then(res=>{
+                    if(res.login)
+                        setUsers(prev=>prev.map(u=>u.id!==id?u:{...u,...res}))
+                })
+                .catch(err=>alert("wystapil blad"))
+        }
+        f(id,values)
+    }
 
+    const getUsers=()=>{
+        const f=async ()=> {
+            await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy`,
+                {
+                    credentials: "include",
+                })
+                .then(res =>
+                    res.json())
+                .then(res => {
 
+                        setUsers(res)
+                    }
+                )
+                .catch()
+        }
+        f()
+    }
+
+    // const editUserByAdmin=(id,values)=>{
+    //     const f=async (id,values)=>{
+    //         await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/${id}`,
+    //             {
+    //                 method:"PUT",
+    //                 headers:{'Content-type':"application/json"},
+    //                 credentials: "include",
+    //                 body:JSON.stringify(
+    //                     values)
+    //             })
+    //             .then(res=>res.json())
+    //             .then(res=>console.log(res))
+    //     }
+    //     f(id,values)
+    // }
     return (
         <AdminContext.Provider value={{
             deleteWydarzenie,
             addSprawnosci,
             addWydarzenie,
             users,
-            updateUser,
+            getUsers,
+            updateTyp,
             deleteUser,
             setUsers,
-        open,
-        setOpen,
-        id,
-        setId,
-        setAction,action}}>{children}</AdminContext.Provider>
+            open,
+            setOpen,
+            id,
+            setId,
+            setAction,
+            action,
+            changeParrents,
+            }}>{children}</AdminContext.Provider>
     )
 };

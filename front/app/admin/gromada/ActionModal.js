@@ -11,6 +11,7 @@ export default function ActionModal() {
             zdobyteSprawnosci,gainAchievement,deleteAchievement}=useContext(SprawnoscContext)
     const [loading,setLoading]=useState(false)
     const [gainedIds,setGainedIds]=useState([])
+    const [search,setSearch]=useState('')
     const onConfirmDelete=()=>{
         setOpen(false)
         deleteUser(id)
@@ -32,6 +33,13 @@ export default function ActionModal() {
         getSprawnosci()
         setLoading(false)
     },[])
+
+    useEffect(() => {
+        if(open)
+            document.body.style.overflow = "hidden";
+        else
+            document.body.style.overflow = "auto";
+        }, [open]);
     if (!open) return null;
     if(!action) return null;
     if(loading) return <div className="fixed inset-0 z-50 flex items-center justify-center">loading</div>;
@@ -87,27 +95,36 @@ export default function ActionModal() {
                 {/* Modal */}
                 <div className="relative z-10 w-full max-w-2xl rounded-2xl bg-white shadow-xl">
                     {/* Header */}
-                    <div className="border-b px-6 py-4">
-                        <h2 className="text-xl font-semibold text-gray-800">
+                    <div className="border-b px-6 pt-4">
+                        <h2 className="text-xl font-semibold text-gray-800 text-center">
                             Zarządzanie sprawnościami
                         </h2>
                     </div>
 
                     {/* Content */}
-                    <div className="max-h-[60vh] overflow-y-auto px-6 py-4">
+                    <div className="max-h-[60vh] overflow-y-auto px-6 py-2">
+                       <label className={"text-black"}> {"Wyszukaj sprawność: "}
+                           <input value={search}
+                                  onChange={(e)=>setSearch(e.target.value)}
+                                  className={"border border-black rounded-lg"}/></label>
+                        <p className={"text-black"}>bezkolorowe to sprawnosci nie posiadane przez zucha</p>
+                        <p className={"bg-green-600"}>zielone to sprawnosci posiadane przez zucha</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            {sprawnosci?.map((s, i) => (
-                                <div  key={i}>
-                                    {!gainedIds.includes(s.id)&&<div
-                                        onClick={()=>
-                                        {
-                                            gainAchievement({uzytkownikId:id,sprawnoscId:s.id,dataZdobyciaSprawnosci:new Date()})
+                            {sprawnosci?.filter(s=>s.nazwa.toUpperCase().startsWith(search.toUpperCase())).map((s, i) => (
+                                <div key={i}>
+                                    {!gainedIds.includes(s.id) && <div
+                                        onClick={() => {
+                                            gainAchievement({
+                                                uzytkownikId: id,
+                                                sprawnoscId: s.id,
+                                                dataZdobyciaSprawnosci: new Date()
+                                            })
 
                                         }}
                                         className="group flex flex-col items-center rounded-lg border
                                              border-gray-200 bg-gray-50 p-3 text-center
-                                             hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer"
-                                        >
+                                             hover:border-green-400 hover:bg-green-100 transition cursor-pointer"
+                                    >
                                         <img
                                             className="h-12 w-12 object-contain mb-2"
                                             src={`${process.env.NEXT_PUBLIC_BACKEND_PORT}${s.ikonaUrl}`}
@@ -115,20 +132,19 @@ export default function ActionModal() {
                                         />
 
                                         <span className="text-sm font-medium text-gray-700
-                                            group-hover:text-blue-600">
+                                            group-hover:text-green-600">
                                             {s.nazwa}
                                         </span>
                                     </div>}
 
-                                    {gainedIds.includes(s.id)&&<div
-                                        onClick={()=>
-                                        {
+                                    {gainedIds.includes(s.id) && <div
+                                        onClick={() => {
 
-                                            deleteAchievement(zdobyteSprawnosci.filter(z => z.sprawnoscId===s.id&&z.uzytkownikId===id)[0].id)
+                                            deleteAchievement(zdobyteSprawnosci.filter(z => z.sprawnoscId === s.id && z.uzytkownikId === id)[0].id)
                                         }}
                                         className="group flex flex-col items-center rounded-lg border
-                                             border-gray-200  p-3 text-center bg-[blue]
-                                             hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer"
+                                             border-green-200  p-3 text-center bg-green-600
+                                             hover:border-red-600 hover:bg-red-400 transition cursor-pointer"
                                     >
                                         <img
                                             className="h-12 w-12 object-contain mb-2"

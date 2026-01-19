@@ -63,12 +63,12 @@ if(!user)return <div>jesteś nie zalogowany</div>
 
                 <div className="relative">
                     {show && <Options autor={post.autorLogin} post={post} />}
-                    <button
+                    {(user.typUzytkownika==="DRUZYNOWY"||user.login===post.autorLogin)&&<button
                         onClick={() => setShow(!show)}
                         className="text-3xl text-gray-300 hover:text-white"
                     >
                         …
-                    </button>
+                    </button>}
                 </div>
             </div>
 

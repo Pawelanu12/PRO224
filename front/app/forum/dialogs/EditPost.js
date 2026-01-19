@@ -39,7 +39,7 @@ export default function EditPost({ post }) {
         <div>
             {/* Przycisk otwierający dialog */}
             <button
-                className="text-red-600 z-20 px-4 py-2 rounded-lg border border-red-600 hover:bg-red-100"
+                className="text-black z-20 px-4 py-2 rounded-lg border border-green-600 bg-gray-400 hover:bg-gray-100"
                 onClick={() => {
                     dialog.current.showModal();
                     document.body.style.overflow = "hidden";

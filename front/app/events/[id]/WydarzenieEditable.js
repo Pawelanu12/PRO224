@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 import { FaPencilAlt, FaTrash, FaPlus } from "react-icons/fa";
 import {WydarzeniaContext} from "@/app/providers/EventProvider";
+import DeleteDialog from "@/app/functions/DeleteDialog";
 
 const showDate=(date)=>{
     console.log(date.getMonth()+1);
@@ -19,7 +20,7 @@ const showDate=(date)=>{
 }
 
 export default function WydarzenieEditable({ wydarzenie }) {
-    const { editWydarzenie } = useContext(WydarzeniaContext);
+    const { editWydarzenie,deleteWydarzenie } = useContext(WydarzeniaContext);
     const { user } = useContext(GlobalContext);
 
     const [isEdit, setIsEdit] = useState(false);
@@ -46,16 +47,20 @@ export default function WydarzenieEditable({ wydarzenie }) {
         <div className="pt-16 px-4">
 
             {/* HEADER */}
-            {(user.typUzytkownika==="DRUZYNOWY"||user.typUzytkownika==="PRZYBOCZNY")&&<div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl">Wydarzenie</h1>
+            {(user.typUzytkownika==="DRUZYNOWY"||user.typUzytkownika==="PRZYBOCZNY")&&
+                <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-xl">Wydarzenie</h1>
+                    <div className={"flex flex-row"}>
+                        <button
+                            onClick={() => setIsEdit(prev => !prev)}
+                            className="flex items-center gap-2 px-3 py-1 bg-[#3A4F39] rounded mr-2"
+                        >
+                            <FaPencilAlt/> {isEdit ? "Anuluj" : "Edytuj"}
+                        </button>
+                       <DeleteDialog id={wydarzenie.id} funkcjaDoUsunecia={deleteWydarzenie}/>
+                    </div>
 
-                <button
-                    onClick={() => setIsEdit(prev => !prev)}
-                    className="flex items-center gap-2 px-3 py-1 bg-[#3A4F39] rounded"
-                >
-                    <FaPencilAlt/> {isEdit ? "Anuluj" : "Edytuj"}
-                </button>
-            </div>}
+                </div>}
 
             <div className="flex flex-col md:flex-row gap-6">
                 {/* LEWA KOLUMNA */}
@@ -122,12 +127,14 @@ export default function WydarzenieEditable({ wydarzenie }) {
                         />
                     )}
                     {isEdit&&
+
                         <button
                             className="w-full bg-green-600 py-2 rounded disabled:opacity-50"
                             onClick={save}
                         >
                             Potwerdż zmiany
                         </button>
+
                     }
                 </div>
 

@@ -1,6 +1,6 @@
 'use client'
 
-import {FaPencil} from "react-icons/fa6";
+import {FaMessage, FaPencil} from "react-icons/fa6";
 import {FaTrash} from "react-icons/fa";
 import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
@@ -12,12 +12,11 @@ export default function Message({ wiadomosc, wiadomosc2 }) {
     const [edit, setEdit] = useState(false);
     const [value,setValue] = useState("");
     const tekst=useRef(null)
-    const {editWiadomosc,deleteWiadomosc,setCzat}=useContext(CzatContext)
+    const {editWiadomosc,deleteWiadomosc,setCzat,openCzat}=useContext(CzatContext)
     const date=new Date(wiadomosc.dataWyslania);
     const showHeader =
         !wiadomosc2 || wiadomosc2.nadawca !== wiadomosc.nadawca||
     new Date(wiadomosc2.dataWyslania).getDate()!==date.getDate();
-
     useEffect(() => {
         if (tekst.current) {
             tekst.current.focus();
@@ -42,7 +41,7 @@ export default function Message({ wiadomosc, wiadomosc2 }) {
             {/* AVATAR */}
             {showHeader ? (
                 <img
-                    src={wiadomosc.avatar || "/images/ikona.png"}
+                    src={wiadomosc.avatar || "/images/user_logo.png"}
                     alt="avatar"
                     className="h-10 w-10 shrink-0 rounded-full object-cover"
                 />
@@ -69,7 +68,19 @@ export default function Message({ wiadomosc, wiadomosc2 }) {
                <div className="w-full justify-between bg-gray-700  rounded-2xl  text-sm text-white "
                 onMouseMove={()=>setShow(true)}
                 onMouseLeave={()=>setShow(false)}>
-                    {!edit&&show&&user&&user.login===wiadomosc.nadawca&&
+                   {!edit&&show&&user&&user.login!==wiadomosc.nadawca&&
+                       <div
+                           className={"-mt-[10px] right-10  absolute flex flex-row "}>
+                           <div onClick={()=>{
+                               openCzat(wiadomosc.nadawca)
+                           }}
+                                className={"cursor-pointer  border-[1px] border-[#000000] border-solid p-1"}>
+                               <FaMessage/>
+                           </div>
+                       </div>
+                   }
+
+                   {!edit&&show&&user&&user.login===wiadomosc.nadawca&&
                         <div
                             className={"-mt-[10px] right-10  absolute flex flex-row "}>
                             <div className={"cursor-pointer  border-[1px] border-[#000000] border-solid p-1"}

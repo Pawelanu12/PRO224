@@ -62,8 +62,8 @@ export default function ChatProvider({ children }) {
                 body:JSON.stringify({...values})
             })
                 .then(res=> res.json())
-                .then(res=> {console.log(res)})
-                .then(()=>getCzaty())
+                .then(res=> {getCzaty();return res})
+                .then(res=> {setCzatId(res.id)})
                 .catch(err=>alert("wystąpił błąd podzas tworzenia czatu"))
         }
         add(values,isGrupowy)
@@ -116,6 +116,36 @@ export default function ChatProvider({ children }) {
 
         }
 
+        const wyzerujNieprzeczytane=(czatId)=>{
+            const f=async(czatId)=>{
+                await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/czaty/${czatId}/to-zero/${user.id}`,{
+                    method:"PUT",
+                    credentials: "include",
+                })
+                    .then(()=>setCzaty(prev=>prev.map(c=>c.id!==czatId?c:{...c,nieprzeczytaneWiadomosci:0})))
+                    // .catch(err=>"wystąpił błąd podzas zerowania wiadomości")
+            }
+            f(czatId)
+        }
+
+
+    const openCzat=(userLogin)=>{
+    console.log(userLogin)
+
+        const czatyWithUser=czaty.filter(f=>f.uczestnicyLogins.length===2&&f.uczestnicyLogins.includes(userLogin))
+        console.log(czatyWithUser)
+        if(czatyWithUser?.length>0){
+            setCzatId(czatyWithUser[0].id)
+        }
+        else {
+            dodajCzat({
+                user1Login: userLogin,
+                user2Login: user.login,
+            },"");
+        }
+
+
+    }
 
     return (
         <CzatContext.Provider value={{setCzat,
@@ -131,7 +161,9 @@ export default function ChatProvider({ children }) {
             setCzatId,
             editWiadomosc,
             deleteWiadomosc,
-            removeFromCzat
+            removeFromCzat,
+            wyzerujNieprzeczytane,
+            openCzat
         }}>{children}</CzatContext.Provider>
     )
 };

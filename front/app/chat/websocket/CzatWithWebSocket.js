@@ -25,7 +25,7 @@ export default function CzatWithWebSocket(){
     // const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [client, setClient] = useState(null);
-    const {getCzat,czat,loading,setCzat,czatId,addUserToCzat}=useContext(CzatContext)
+    const {getCzat,czat,loading,setCzat,czatId,addUserToCzat,wyzerujNieprzeczytane}=useContext(CzatContext)
     const dialog=useRef(null);
     const [newUser, setNewUser] = useState("");
     const handleInput = (e) => {
@@ -39,7 +39,11 @@ export default function CzatWithWebSocket(){
         addUserToCzat(czatId, newUser);
         setNewUser("");
     };
+    useEffect(()=>{
+        if(!czatId)return
+            wyzerujNieprzeczytane(czatId)
 
+    },[czatId])
     useEffect(() => {
         if(!czatId)return
         getCzat(czatId)
@@ -92,7 +96,7 @@ export default function CzatWithWebSocket(){
         <div className="mt-[100px] md:mt-0 md:ml-[30vw] flex h-[calc(100vh-100px)] md:h-[calc(100vh-50px)] md:w-[70vw] flex-col">
             {/*header*/}
             <div className="flex h-20 items-center justify-center gap-4 border-b border-black/20">
-                <img className="ikona" src={czat.ikona} alt="ikona"/>
+                <img className="rounded-full w-10 h-10"   src={czat.ikona||"/images/user_logo.png"} alt="ikona"/>
                 <div className="min-w-[50%] max-w-[100%] px-2">
                     <p className="w-full text-center font-semibold line-clamp-1">
                         {user && getNazwa(czat, user.login)}
