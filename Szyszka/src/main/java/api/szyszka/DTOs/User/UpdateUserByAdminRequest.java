@@ -11,7 +11,7 @@ public class UpdateUserByAdminRequest {
     private String nazwisko;
     private String email;
     private String nrTelefonu;
-    private Long squadId;
+    private String squadName;
     private Long rodzicId1;
     private Long rodzicId2;
 }

@@ -64,6 +64,24 @@ public class SzostkaController {
 
     }
 
+    @PostMapping("/{id}/user")
+    public ResponseEntity<SzostkaDto>  addUserToSzostka(@PathVariable Long id,
+                                                     @RequestParam String login) {
+
+        Szostka updated = szostkaService.addUserToSzostka(id, login);
+        return ResponseEntity.ok(SzostkaMapper.toDto(updated));
+
+    }
+
+    @DeleteMapping("/{id}/user")
+    public ResponseEntity<SzostkaDto>  deleteUserFromSzostka(@PathVariable Long id) {
+
+        szostkaService.deleteUserFromSzostka(id);
+        return ResponseEntity.noContent().build();
+
+
+    }
+
 
 
 }

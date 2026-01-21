@@ -1,5 +1,6 @@
 package api.szyszka.DTOs.Szostka;
 
+import api.szyszka.DTOs.User.UzytkownikDto;
 import api.szyszka.Entities.Szostka;
 import api.szyszka.Entities.Uzytkownik;
 import jakarta.persistence.GeneratedValue;
@@ -21,5 +22,5 @@ public class SzostkaDto {
     private Long id;
     private String nazwa;
     private LocalDateTime dataStworzenia;
-    private List<Uzytkownik> uzytkownicy;
+    private List<UzytkownikDto> uzytkownicy;
 }

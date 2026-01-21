@@ -5,6 +5,7 @@ import api.szyszka.DTOs.Szostka.CreateSzostkaRequest;
 import api.szyszka.DTOs.Szostka.SzostkaDto;
 import api.szyszka.DTOs.Szostka.UpdateSzostkaRequest;
 import api.szyszka.Entities.Szostka;
+import api.szyszka.Entities.Uzytkownik;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class SzostkaMapper {
 
                 entity.getUzytkownicy() != null
                         ? entity.getUzytkownicy().stream()
-                            .map(UzytkownikShortcutMapper::mapToPublic)
+                            .map(UzytkownikMapper::toDto)
                             .collect(Collectors.toList())
                         : new ArrayList<>()
 
@@ -33,7 +34,7 @@ public class SzostkaMapper {
         Szostka szostka = new Szostka();
         szostka.setNazwa(request.getNazwa());
         szostka.setDataStworzenia(request.getDataStworzenia());
-        szostka.setUzytkownicy(request.getUzytkonicy());
+//        szostka.setUzytkownicy(request.getUzytkonicy());
         //szostka.setUzytkownicy(
         //       request.getUzytkonicy() != null ? request.getUzytkonicy() : new ArrayList<>()
         //);
@@ -43,8 +44,6 @@ public class SzostkaMapper {
     public static void updateEntity(Szostka entity, UpdateSzostkaRequest request){
         if (request == null || entity == null) return;
         entity.setNazwa(request.getNazwa());
-        entity.setDataStworzenia(request.getDataStworzenia());
-        entity.setUzytkownicy(request.getUzytkonicy());
         //entity.setUzytkownicy(
         //        request.getUzytkonicy() != null ? request.getUzytkonicy() : new ArrayList<>()
         //);

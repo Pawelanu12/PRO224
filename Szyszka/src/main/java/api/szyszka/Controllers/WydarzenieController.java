@@ -44,6 +44,7 @@ public class WydarzenieController {
             @RequestParam("typ") TypWydarzenia typ,
             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
+        System.out.println(typ);
         CreateWydarzenieRequest request = new CreateWydarzenieRequest();
         try {
             if (files != null && !files.isEmpty()) {

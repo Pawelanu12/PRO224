@@ -2,21 +2,24 @@ package api.szyszka.Services;
 
 import api.szyszka.Entities.Szostka;
 import api.szyszka.Entities.Uzytkownik;
-import api.szyszka.Exceptions.DuplicateLoginException;
 import api.szyszka.Exceptions.DuplicateSzostkaException;
+import api.szyszka.Exceptions.SzostkaNotFoundException;
+import api.szyszka.Exceptions.UserNotFoundException;
 import api.szyszka.Repositories.SzostkaRepository;
 import api.szyszka.Repositories.UzytkownikRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class SzostkaService {
     private final SzostkaRepository szostkaRepository;
-    public SzostkaService(SzostkaRepository szostkaRepository) {
+    private final UzytkownikRepository uzytkownikRepository;
+    public SzostkaService(SzostkaRepository szostkaRepository, UzytkownikRepository uzytkownikRepository) {
         this.szostkaRepository = szostkaRepository;
+        this.uzytkownikRepository = uzytkownikRepository;
     }
 
     public Szostka create(Szostka szostka) {return szostkaRepository.save(szostka);}
@@ -36,11 +39,50 @@ public class SzostkaService {
         }
 
         oldSzostka.setNazwa(updateSzostka.getNazwa());
-        oldSzostka.setDataStworzenia(updateSzostka.getDataStworzenia());
-        oldSzostka.setUzytkownicy(updateSzostka.getUzytkownicy());
+//        oldSzostka.setDataStworzenia(updateSzostka.getDataStworzenia());
+//        oldSzostka.setUzytkownicy(updateSzostka.getUzytkownicy());
 
         return szostkaRepository.save(oldSzostka);
     }
+
+    public Szostka addUserToSzostka(Long id,String login) {
+        Optional<Szostka> szostka = szostkaRepository.findById(id);
+        if (szostka.isEmpty()) {
+            throw new SzostkaNotFoundException(id);
+        }
+        Optional<Uzytkownik> user = uzytkownikRepository.findByLogin(login);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+        if(user.get().getTypUzytkownika().name().equals("ZUCH"))
+        {
+            Uzytkownik uzytkownik = user.get();
+            uzytkownik.setSzostka(szostka.get());
+            uzytkownikRepository.save(uzytkownik);
+        }
+
+        return getSzostkaById(id);
+
+    }
+
+
+    public void deleteUserFromSzostka(Long id) {
+        Optional<Uzytkownik> user = uzytkownikRepository.findById(id);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+        if(user.get().getSzostka()!=null)
+        {
+            Uzytkownik uzytkownik = user.get();
+            uzytkownik.setSzostka(null);
+            uzytkownikRepository.save(uzytkownik);
+        }
+
+
+    }
+
 
 //    public Optional<Szostka> getSzostkaByUzytkonik(Uzytkownik uzytkownik) {
 //        return UzytkownikRepository.findById(uzytkownik.getId())

@@ -1,5 +1,6 @@
 package api.szyszka.DTOs.Szostka;
 
+import api.szyszka.DTOs.User.UzytkownikDto;
 import api.szyszka.Entities.Szostka;
 import api.szyszka.Entities.Uzytkownik;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateSzostkaRequest {
     private String nazwa;
-    private LocalDateTime dataStworzenia;
-    private List<Uzytkownik> uzytkonicy;
+//    private LocalDateTime dataStworzenia;
+//    private List<Long> uzytkonicyIds;
 }

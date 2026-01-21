@@ -22,7 +22,7 @@ public class WydarzenieDto {
     private String opis;
     private Long organizatorId;
     private TypWydarzenia typWydarzenia;
-    private List<UczestnictwoDto> uczestnictwa;
+//    private List<UczestnictwoDto> uczestnictwa;
     private List<String> zdjecia;
 
     public static Wydarzenie fromCreateRequest(CreateWydarzenieRequest request) {

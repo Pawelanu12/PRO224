@@ -29,7 +29,7 @@ public class WydarzenieMapper {
                 entity.getOpis(),
                 entity.getOrganizator() != null ? entity.getOrganizator().getId() : null,
                 entity.getTyp(),
-                entity.getUczestnictwa().stream().map(UczestnictwoMapper::toDto).toList(),
+//                entity.getUczestnictwa().stream().map(UczestnictwoMapper::toDto).toList(),
                 zdjeciaSciezki
         );
     }
@@ -40,13 +40,7 @@ public class WydarzenieMapper {
     public static Wydarzenie fromCreateRequest(CreateWydarzenieRequest request) {
         if (request == null) return null;
 
-        Wydarzenie wydarzenie = new Wydarzenie();
-        wydarzenie.setNazwa(request.getNazwa());
-        wydarzenie.setDataWyjazdu(request.getDataWyjazdu());
-        wydarzenie.setDataZakonczenia(request.getDataZakonczenia());
-        wydarzenie.setOpis(request.getOpis());
-
-        return wydarzenie;
+        return WydarzenieDto.fromCreateRequest(request);
     }
     public static void updateEntity(Wydarzenie entity, UpdateWydarzenieRequest request) {
         if (entity == null || request == null) return;

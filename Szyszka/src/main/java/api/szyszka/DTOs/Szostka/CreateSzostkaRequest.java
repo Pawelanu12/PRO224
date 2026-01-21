@@ -16,5 +16,5 @@ import java.util.List;
 public class CreateSzostkaRequest {
     private String nazwa;
     private LocalDateTime dataStworzenia;
-    private List<Uzytkownik> uzytkonicy;
+//    private List<Uzytkownik> uzytkonicy;
 }

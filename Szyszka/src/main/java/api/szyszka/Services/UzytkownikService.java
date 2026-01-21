@@ -263,6 +263,7 @@ public class UzytkownikService {
         u.setNazwisko(req.getNazwisko());
         u.setEmail(req.getEmail());
         u.setNrTelefonu(req.getNrTelefonu());
+//        u.setSzostka(req.get());
 
         return uzytkownikRepository.save(u);
     }
