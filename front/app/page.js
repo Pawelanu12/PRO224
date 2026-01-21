@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
 
-export default function Gromada() {
+export default function MainPage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselInner = useRef(null);
 

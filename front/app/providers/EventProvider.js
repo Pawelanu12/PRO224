@@ -11,7 +11,7 @@ export default function EventProvider({ children }) {
     const [nazwa, setNazwa] = useState("");
     const [data, setData] = useState("");
     const [typ, setTyp] = useState("Typ wydarzenia");
-    const {fetchWithAuth}=useContext(GlobalContext);
+    const {fetchWithAuth,pushClick}=useContext(GlobalContext);
 
 
 
@@ -75,6 +75,7 @@ export default function EventProvider({ children }) {
                 method:"DELETE",
                 credentials: "include",
             })
+                .then(()=>pushClick("","/events"))
                 .catch(err=>console.log(err))
         }
         d(id)

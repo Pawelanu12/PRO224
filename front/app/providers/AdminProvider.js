@@ -11,6 +11,7 @@ export default function AdminProvider({ children }) {
     const [users,setUsers] = useState([]);
     const [action,setAction] = useState(null);
     const [open,setOpen]=useState(false)
+    const [szostki,setSzostki] = useState([]);
 
     const [id,setId]=useState()
     const addSprawnosci = (values) => {
@@ -132,7 +133,7 @@ export default function AdminProvider({ children }) {
                 .then(res =>
                     res.json())
                 .then(res => {
-
+                    if(Array.isArray(res))
                         setUsers(res)
                     }
                 )
@@ -140,6 +141,110 @@ export default function AdminProvider({ children }) {
         }
         f()
     }
+    const getSzostki=()=>{
+        const f=async ()=> {
+            await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka`,
+                {
+                    credentials: "include",
+                })
+                .then(res =>
+                    res.json())
+                .then(res => {
+                        if(Array.isArray(res))
+                            setSzostki(res)
+                    }
+                )
+                .catch()
+        }
+        f()
+    }
+
+    const addSzostka = (nazwa,id=null) => {
+        console.log(nazwa)
+        const add=async (values)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka`,{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                credentials: "include",
+                body:JSON.stringify({nazwa:values,dataStworzenia:new Date()}),
+            })
+                .then(res=> res.json())
+                .then(res=> {
+                    console.log(res)
+                    if(res.id)
+                        setSzostki([...szostki,res])
+                })
+                .catch(err=>console.log(err))
+        }
+        add(nazwa)
+    }
+
+    const addSzostkaUser = (login,id) => {
+        const add=async (login,id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka/${id}/user?login=${login}`,{
+                method:"POST",
+                credentials: "include",
+            })
+                .then(res=> res.json())
+                .then(res=> {
+                    console.log(res)
+                    if(res.id)
+                        setSzostki(prev=>prev.map(s=>s.id!==id?
+                            s.uzytkownicy.map(u=>u.login).includes(login)?{...s,uzytkownicy:s.uzytkownicy.filter(u=>u.login!==login)}:s:res))
+                })
+                .catch(err=>console.log(err))
+        }
+        add(login,id)
+    }
+    const deleteSzostkaUser = (id) => {
+        const delet=async (id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka/${id}/user`,{
+                method:"Delete",
+                credentials: "include",
+            })
+                .then(res=> {
+                        setSzostki(prev=>prev.map(s=>!s.uzytkownicy.map(u=>u.id).includes(id)?s:
+                            {...s,uzytkownicy:s.uzytkownicy.filter(u=>u.id!==id)}))
+                })
+                .catch(err=>console.log(err))
+        }
+        delet(id)
+    }
+
+    const editSzostkaName = (id,values) => {
+        const edit=async (values,id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka/${id}`,{
+                method:"PUT",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(values),
+                credentials: "include",
+            })
+                .then(res=> res.json())
+                .then(res=> {
+                    console.log(res)
+                    if(res.nazwa)
+                    setSzostki(prev=>prev.map(s=>s.id!==id?s:
+                        res))
+                })
+                .catch(err=>console.log(err))
+        }
+        edit(values,id)
+    }
+    const deleteSzostka = (id) => {
+        const delet=async (id)=>{
+            await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka/${id}`,{
+                method:"Delete",
+                credentials: "include",
+            })
+                .then(res=> {
+                    setSzostki(prev=>prev.filter(s=>s.id!==id))
+                })
+                .catch(err=>console.log(err))
+        }
+        delet(id)
+    }
+
+
 
     // const editUserByAdmin=(id,values)=>{
     //     const f=async (id,values)=>{
@@ -173,6 +278,13 @@ export default function AdminProvider({ children }) {
             setAction,
             action,
             changeParrents,
+            getSzostki,
+            szostki,
+            addSzostka,
+            addSzostkaUser,
+            deleteSzostkaUser,
+            editSzostkaName,
+            deleteSzostka
             }}>{children}</AdminContext.Provider>
     )
 };

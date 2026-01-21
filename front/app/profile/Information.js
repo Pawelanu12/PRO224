@@ -48,11 +48,11 @@ export default function Information({uzytkownik}) {
                         {isEdit ? "Anuluj" : "Edytuj"}
                     </button>}
                     {!isEdit && <div>
-                        <p><span>email: </span>
-                            <span>{uzytkownik.email}</span></p>
 
                         <p className={"mt-0.5"}><span>numer telefonu: </span>
                             <span>{uzytkownik.nrTelefonu}</span></p>
+                        <p><span>email: </span>
+                            <span>{uzytkownik.email}</span></p>
 
                         <p className={"mt-0.5"}>
                             <span> data urodzenia: </span>
@@ -60,7 +60,7 @@ export default function Information({uzytkownik}) {
                     </div>}
 
 
-                    {isEdit&&user.id===uzytkownik.id && (
+                    {isEdit && user.id === uzytkownik.id && (
                         <Formik
                             initialValues={{
                                 email: uzytkownik.email || "",
@@ -88,6 +88,19 @@ export default function Information({uzytkownik}) {
                             {({resetForm, isValid, handleSubmit}) => (
                                 <form onSubmit={handleSubmit}>
                                     <p>
+                                        numer telefonu:
+                                        <Field
+                                            name="nrTelefonu"
+                                            type="text"
+                                            className="border-1 rounded-sm block"
+                                        />
+                                        <ErrorMessage
+                                            name="nrTelefonu"
+                                            component="span"
+                                            className="text-red-600 text-sm"
+                                        />
+                                    </p>
+                                    <p>
                                         email:
                                         <Field
                                             name="email"
@@ -101,19 +114,6 @@ export default function Information({uzytkownik}) {
                                         />
                                     </p>
 
-                                    <p>
-                                        numer telefonu:
-                                        <Field
-                                            name="nrTelefonu"
-                                            type="text"
-                                            className="border-1 rounded-sm block"
-                                        />
-                                        <ErrorMessage
-                                            name="nrTelefonu"
-                                            component="span"
-                                            className="text-red-600 text-sm"
-                                        />
-                                    </p>
 
                                     <p>
                                         data urodzenia:
@@ -150,7 +150,7 @@ export default function Information({uzytkownik}) {
                     )}
 
                     <p className={"mt-0.5"}>typ: {uzytkownik.typUzytkownika}</p>
-                    {/*{user.typUzytkownika==="ZUCH"&&<p className={"mt-0.5"}>nazwa szóstki: {user.szostka}</p>}*/}
+                    {user.nazwaSzostki && <p className={"mt-0.5"}>nazwa szóstki: {user.nazwaSzostki}</p>}
                     <p className={"mt-0.5"}>data dołączenia: {uzytkownik.dataDolaczenia}</p>
                 </div>
             </div>

@@ -21,7 +21,7 @@ export default function UserData({ user,id}) {
     return (
 
         <tr className="hover:bg-gray-50 transition">
-            <td className="w-[100px] px-4 py-3 text-gray-800" 
+            <td className="w-[100px] px-4 py-3 text-gray-800 cursor-pointer"
                 onClick={(e)=>pushClick(e,`/profile/user/${user.id}`)}>{user.id}</td>
 
             <TableField data={user.login}/>

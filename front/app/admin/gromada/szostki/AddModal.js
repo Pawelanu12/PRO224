@@ -1,22 +1,17 @@
-import { useRef } from "react";
-import {FaTrash} from "react-icons/fa";
+import {useRef, useState} from "react";
 
-export default function DeleteDialog({ id, funkcjaDoUsunecia,isTrash=false }) {
+export default function AddModal({  funkcjaDoDodania,typ="szostka",id=null }) {
     const dialog = useRef(null);
-
+    const [input, setInput] = useState("");
     return (
-        <div>
+        <div className={"m-1"}>
             {/* Przycisk otwierający modal */}
-            {!isTrash&&<button
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            <button
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 w-full p-1 my-1"
                 onClick={() => dialog.current.showModal()}
             >
-                Delete
-            </button>}
-            {isTrash&&<button
-                onClick={() => dialog.current.showModal()}
-                className="hover:text-red-500 mt-2"
-            ><FaTrash/></button>}
+                {typ==="szostka"?"Dodaj nową szóstkę":"Dodaj zucha do szóstki"}
+            </button>
 
             {/* Modal */}
             <dialog
@@ -30,24 +25,26 @@ export default function DeleteDialog({ id, funkcjaDoUsunecia,isTrash=false }) {
                 }}
             >
                 <p className="text-lg font-semibold mb-4">
-                    Czy potwierdzasz usunięcie?
+                    {typ==="szostka"?"Dodawanie szóstki":"Dodawanie zucha do szóstki"}
                 </p>
-
+                <input className={"w-full px-2 border-black border mb-2 rounded-sm"}
+                       value={input}
+                onInput={e=>setInput(e.target.value)}/>
                 <div className="flex justify-end gap-4">
                     <button
-                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                         onClick={() => {
                             dialog.current.close();
-                            funkcjaDoUsunecia(id);
+                            funkcjaDoDodania(input,id);
                         }}
                     >
-                        Tak
+                        Dodaj
                     </button>
                     <button
                         className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                         onClick={() => dialog.current.close()}
                     >
-                        Nie
+                        Anuluj
                     </button>
                 </div>
             </dialog>
