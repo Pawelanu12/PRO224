@@ -16,11 +16,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -314,6 +321,43 @@ public class UzytkownikService {
 
         target.setTypUzytkownika(newType);
         return uzytkownikRepository.save(target);
+    }
+
+    public Uzytkownik changeProfilePicture(
+            Long userId,
+            ChangeProfilePictureRequest request
+    ) {
+        Uzytkownik user = uzytkownikRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        MultipartFile file = request.getProfilePicture();
+
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Plik jest wymagany");
+        }
+
+        try {
+            String uploadDir = "uploads/ProfilePictures/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path path = Paths.get(uploadDir, fileName);
+
+            Files.write(path, file.getBytes());
+
+            // usuń stare zdjęcie
+            if (user.getZdjecie() != null) {
+                Files.deleteIfExists(
+                        Paths.get(uploadDir, user.getZdjecie())
+                );
+            }
+
+            user.setZdjecie(fileName);
+            return uzytkownikRepository.save(user);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Błąd zapisu zdjęcia", e);
+        }
     }
 
 

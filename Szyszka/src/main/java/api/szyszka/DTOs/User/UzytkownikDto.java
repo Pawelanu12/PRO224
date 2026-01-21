@@ -23,4 +23,5 @@ public class UzytkownikDto {
     private LocalDate dataUrodzenia;
     private LocalDateTime dataDolaczenia;
     private String nazwaSzostki;
+    private String profilePicture;
 }

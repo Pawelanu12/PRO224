@@ -7,8 +7,10 @@ import api.szyszka.Mappers.UzytkownikMapper;
 import api.szyszka.Services.JwtService;
 import api.szyszka.Services.UzytkownikService;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +18,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.security.Principal;
 import java.time.Duration;
 import java.util.List;
@@ -175,6 +180,29 @@ public class UzytkownikController {
 
         Uzytkownik updated = uzytkownikService.changeParents(id, req.getParentId1(), req.getParentId2());
         return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
+
+    @PutMapping(value ="/{id}/profilePicture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('DRUZYNOWY', 'PRZYBOCZNY', 'ZUCH', 'RODZIC', 'DEFAULT')")
+    public ResponseEntity<UzytkownikDto> changeProfilePicture(
+            @PathVariable Long id,
+            @ModelAttribute ChangeProfilePictureRequest req){
+        Uzytkownik updated = uzytkownikService.changeProfilePicture(id, req);
+
+        return ResponseEntity.ok(UzytkownikMapper.toDto(updated));
+    }
+    @GetMapping("/ProfilePicture/{fileName}")
+    public ResponseEntity<Resource> getAvatar(@PathVariable String fileName) throws IOException {
+        File file = new File("uploads/ProfilePictures/" + fileName);
+        if (!file.exists()) return ResponseEntity.notFound().build();
+
+        Resource resource = new FileSystemResource(file);
+        String contentType = Files.probeContentType(file.toPath());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(
+                        contentType != null ? contentType : "application/octet-stream"))
+                .body(resource);
     }
 
 
