@@ -26,8 +26,8 @@ public class UzytkownikMapper {
                 u.getTypUzytkownika() != null ? u.getTypUzytkownika().name() : null,
                 u.getDataUrodzenia(),
                 u.getDataDolaczeniaDoGromady(),
-                u.getSzostka()!=null? u.getSzostka().getNazwa():null
-
+                u.getSzostka()!=null? u.getSzostka().getNazwa():null,
+                u.getZdjecie()
         );
     }
     public static Uzytkownik fromCreateRequest(CreateUzytkownikRequest r) {
