@@ -13,6 +13,7 @@ public class WiadomoscDto {
     private Long id;
     private Long czatId;
     private String nadawca;
+    private String ikona;
     private String tresc;
     private LocalDateTime dataWyslania;
 }

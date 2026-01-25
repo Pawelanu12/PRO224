@@ -40,6 +40,7 @@ public class CzatMapper {
                                 w.getId(),
                                 w.getCzat() != null ? w.getCzat().getId() : null,
                                 w.getNadawca() != null ? w.getNadawca().getLogin() : null,
+                                w.getNadawca() != null ? w.getNadawca().getZdjecie() : null,
                                 w.getTresc(),
                                 w.getDataWyslania()
                         ))
@@ -74,6 +75,7 @@ public class CzatMapper {
                         czatUzytkownik.getLastReadMessage().getId(),
                         czat.getId(),
                         czatUzytkownik.getLastReadMessage().getNadawca() != null ? czatUzytkownik.getLastReadMessage().getNadawca().getLogin() : null,
+                        czatUzytkownik.getLastReadMessage().getNadawca() != null ? czatUzytkownik.getLastReadMessage().getNadawca().getZdjecie() : null,
                         czatUzytkownik.getLastReadMessage().getTresc(),
                         czatUzytkownik.getLastReadMessage().getDataWyslania()
                 );

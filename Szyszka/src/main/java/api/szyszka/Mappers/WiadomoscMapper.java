@@ -15,6 +15,7 @@ public class WiadomoscMapper {
                 wiadomosc.getId(),
                 wiadomosc.getCzat().getId(),
                 wiadomosc.getNadawca().getLogin(),
+                wiadomosc.getNadawca().getZdjecie(),
                 wiadomosc.getTresc(),
                 wiadomosc.getDataWyslania()
         );
