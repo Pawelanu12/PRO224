@@ -2,7 +2,6 @@
 
 import {useContext, useEffect, useState} from "react";
 import { SprawnoscContext } from "@/app/providers/AchievementProvider";
-import Achievement from "@/app/achievements/Achievement";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 import Achievements from "@/app/achievements/Achivements";
 
@@ -11,7 +10,6 @@ export default function ShowAchievements() {
         useContext(SprawnoscContext);
     const { user } = useContext(GlobalContext);
     const [loading, setLoading] = useState(true);
-    console.log(sprawnosciPosortowane)
     useEffect(() => {
         setLoading(true);
         getSprawnosci();

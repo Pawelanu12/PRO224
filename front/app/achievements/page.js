@@ -1,6 +1,6 @@
 'use client'
 
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import Filter from "@/app/achievements/Filter";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import ShowAchievements from "@/app/achievements/ShowAchievements";

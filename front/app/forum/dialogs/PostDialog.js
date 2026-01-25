@@ -1,6 +1,6 @@
 'use state'
 
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useRef} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ForumContext} from "@/app/providers/ForumProvider";
 import {FaX} from "react-icons/fa6";

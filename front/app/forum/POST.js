@@ -1,6 +1,6 @@
 'use client'
 
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import PostDialog from "@/app/forum/dialogs/PostDialog";
 import {ForumContext} from "@/app/providers/ForumProvider";

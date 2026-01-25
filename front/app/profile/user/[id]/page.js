@@ -23,7 +23,6 @@ export default function ProfilUzytkownika({params}){
                     })
                     .then(res=>res.json())
                     .then(r=>{
-                        console.log(r)
                         if(r&&r.login)
                             setUzytkownik(r);
                     })

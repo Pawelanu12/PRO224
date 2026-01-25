@@ -32,7 +32,6 @@ export default function CzatWithWebSocket(){
         e.target.style.height = "auto";
         e.target.style.height = `${e.target.scrollHeight}px`;
     };
-
     const handleAddUser = () => {
 
         if (!newUser) return;

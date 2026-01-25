@@ -1,9 +1,6 @@
 'use client'
 
-import { useContext, useEffect } from "react";
-import { SprawnoscContext } from "@/app/providers/AchievementProvider";
 import Achievement from "@/app/achievements/Achievement";
-import { GlobalContext } from "@/app/providers/GlobalProvider";
 
 export default function Achievements({sprawnosciPosortowane}) {
 

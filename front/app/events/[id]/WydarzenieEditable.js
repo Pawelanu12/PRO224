@@ -7,7 +7,6 @@ import {WydarzeniaContext} from "@/app/providers/EventProvider";
 import DeleteDialog from "@/app/functions/DeleteDialog";
 
 const showDate=(date)=>{
-    console.log(date.getMonth()+1);
     return String(date.getDate()).padStart(2, '0')
         +"."
         +String(date.getMonth()+1).padStart(2, '0')
@@ -27,24 +26,22 @@ export default function WydarzenieEditable({ wydarzenie }) {
     const [form, setForm] = useState({ ...wydarzenie });
     const [newFiles, setNewFiles] = useState([]);
     const [removePhotos, setRemovePhotos] = useState([]);
-
+console.log(wydarzenie)
     const save = () => {
         const formData = new FormData();
 
         Object.entries(form).forEach(([k, v]) => {
             if (k !== "zdjecia") formData.append(k, v);
-            console.log("k "+k)
-            console.log("v "+v)
         });
 
-        newFiles.forEach(f =>{ formData.append("noweZdjecia", f);console.log(f)});
-        removePhotos.forEach(z => {formData.append("zdjeciaDoUsuniecia", z);console.log(z)});
+        newFiles.forEach(f =>{ formData.append("noweZdjecia", f)});
+        removePhotos.forEach(z => {formData.append("zdjeciaDoUsuniecia", z)});
 
         editWydarzenie(wydarzenie.id, formData);
         setIsEdit(false);
     };
     return (
-        <div className="pt-16 px-4">
+        <div className="pt-2 px-4">
 
             {/* HEADER */}
             {(user.typUzytkownika==="DRUZYNOWY"||user.typUzytkownika==="PRZYBOCZNY")&&
@@ -77,7 +74,7 @@ export default function WydarzenieEditable({ wydarzenie }) {
                         <input
                             className="w-full mb-4 px-3 py-2 bg-[white] text-[black] rounded"
                             value={form.nazwa}
-                            onChange={e => setForm({ ...form, nazwa: e.target.value })}
+                            onChange={e => setForm({...form, nazwa: e.target.value})}
                         />
                     )}
 
@@ -92,22 +89,41 @@ export default function WydarzenieEditable({ wydarzenie }) {
                         <textarea
                             className="w-full mb-4 px-3 py-2 bg-[white] text-[black] rounded resize-none"
                             value={form.opis}
-                            onChange={e => setForm({ ...form, opis: e.target.value })}
+                            onChange={e => setForm({...form, opis: e.target.value})}
                         />
                     )}
+                    <p className="text-sm text-gray-400 mb-1">Typ</p>
+
+                    {!isEdit ? (
+                        <div className="mb-4 px-3 py-2 bg-[#1A1919] rounded whitespace-pre-wrap">
+                            {form.typWydarzenia}
+                        </div>
+                    ) : (
+                        <select
+                            className="w-full mb-4 px-3 py-2 bg-[white] text-[black] rounded resize-none"
+                            value={form.typWydarzenia}
+                            onChange={e => setForm({...form, typWydarzenia: e.target.value})}
+                        >
+                            <option value={"BIWAK"}>BIWAK</option>
+                            <option value={"ZIMOWISKO"}>ZIMOWISKO</option>
+                            <option value={"OBOZ"}>OBOZ</option>
+                            <option value={"KOLONIA"}>KOLONIA</option>
+                        </select>
+                    )}
+
 
                     <p className="text-sm text-gray-400 mb-1">Data wyjazdu</p>
 
                     {!isEdit ? (
                         <div className="mb-3 px-3 py-2 bg-[#1A1919] rounded">
-                            {showDate(new Date(form.dataWyjazdu)) }
+                            {showDate(new Date(form.dataWyjazdu))}
                         </div>
                     ) : (
                         <input
                             type="datetime-local"
                             className="w-full mb-3 px-3 py-2 bg-[white] text-[black] rounded"
                             value={form.dataWyjazdu}
-                            onChange={e => setForm({ ...form, dataWyjazdu: e.target.value })}
+                            onChange={e => setForm({...form, dataWyjazdu: e.target.value})}
                         />
                     )}
 
@@ -115,7 +131,7 @@ export default function WydarzenieEditable({ wydarzenie }) {
 
                     {!isEdit ? (
                         <div className="mb-3 px-3 py-2 bg-[#1A1919]  rounded">
-                            {showDate(new Date(form.dataZakonczenia)) }
+                            {showDate(new Date(form.dataZakonczenia))}
 
                         </div>
                     ) : (
@@ -123,10 +139,10 @@ export default function WydarzenieEditable({ wydarzenie }) {
                             type="datetime-local"
                             className="w-full mb-3 px-3 py-2 bg-[white] text-[black] rounded"
                             value={form.dataZakonczenia}
-                            onChange={e => setForm({ ...form, dataZakonczenia: e.target.value })}
+                            onChange={e => setForm({...form, dataZakonczenia: e.target.value})}
                         />
                     )}
-                    {isEdit&&
+                    {isEdit &&
 
                         <button
                             className="w-full bg-green-600 py-2 rounded disabled:opacity-50"

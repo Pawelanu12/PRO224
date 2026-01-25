@@ -109,7 +109,6 @@ export default function AchievementProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=>{
-                    console.log(res)
                     if(!res.error)
                         setSprawnosc(res)
                 })
@@ -125,7 +124,6 @@ export default function AchievementProvider({ children }) {
                 credentials: "include"
             })
                 .then(res=>{
-                    console.log(res)
                     if(res.ok)
                         pushClick("","/achievements")
                 })

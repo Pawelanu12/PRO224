@@ -10,7 +10,6 @@ export default function Filter() {
     const {pushClick,user}=useContext(GlobalContext)
     const [show,setShow]=useState(false)
     const changeNazwa=(e)=>{
-        console.log(e.target.value);
         if(!e.target.value||e.target.value.length<1){
             setHidden(true);
         }
@@ -21,13 +20,11 @@ export default function Filter() {
 
     }
     const changeTyp=(e)=>{
-        console.log(e.target.value);
         setTyp(e.target.value)
 
 
     }
     const changeData=(e)=>{
-        console.log(e.target.value);
         setData(e.target.value)
     }
     return (

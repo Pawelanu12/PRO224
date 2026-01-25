@@ -1,6 +1,6 @@
 'use client'
 
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import WysylanieKodu from "@/app/password-change/WysylanieKodu";
 import PotwierdzenieKodu from "@/app/password-change/PotwierdzenieKodu";
 import ZmianaHasla from "@/app/password-change/ZmianaHasla";

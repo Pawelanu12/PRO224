@@ -2,7 +2,7 @@
 
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import  {PasswordChangeContext} from "@/app/providers/PasswordChangeProvider";
 
 export default function WysylanieKodu(){
@@ -28,9 +28,6 @@ export default function WysylanieKodu(){
 
             })}
             onSubmit={(values, {resetForm}) => {
-
-
-                console.log(values)
                 wyslij()
                 resetForm()
             }}

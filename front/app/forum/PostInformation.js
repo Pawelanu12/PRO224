@@ -36,15 +36,9 @@ if(!user)return <div>jesteś nie zalogowany</div>
             {/* HEADER */}
             <div className="flex justify-between gap-4">
                 <div className="flex flex-1 gap-3">
-                    {post.ikona ? <img
-                        src={post.ikona}
-                        alt="ikona"
-                        className="h-12 w-12 rounded-full object-cover"
-                    /> : <img
-                        src={"/images/user_logo.png"}
-                        alt="ikona"
-                        className="h-12 w-12 rounded-full object-cover"
-                    />}
+                    <img src={post.ikona
+                        ? `${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/ProfilePictures/${post.ikona}`
+                        : "/images/user_logo.png"} alt="logo" className="h-14 w-14 mr-5 rounded-full object-cover" />
 
                     <div>
                         <div className="flex items-center gap-3">

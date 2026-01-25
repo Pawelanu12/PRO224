@@ -6,7 +6,6 @@ import { GlobalContext } from "@/app/providers/GlobalProvider";
 export default function Achievement({ sprawnosc }) {
     const { setEdit, pushClick } = useContext(GlobalContext);
     const [show, setShow] = useState(false);
-console.log(sprawnosc);
     return (
         <div>
             <div className={"hidden md:block"} onMouseMove={() => setShow(true)}

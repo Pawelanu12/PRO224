@@ -36,9 +36,6 @@ export default function ZmianaHasla(){
 
             })}
             onSubmit={(values, {resetForm}) => {
-
-
-                console.log(values)
                 zmien_haslo(values.haslo)
                 resetForm()
             }}

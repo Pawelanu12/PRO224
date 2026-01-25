@@ -1,7 +1,7 @@
 'use client'
 
 import { FaTrash } from "react-icons/fa";
-import {useContext, useRef, useState} from "react";
+import {useContext, useRef} from "react";
 import {AdminContext} from "@/app/providers/AdminProvider";
 import TableField from "@/app/admin/gromada/TableField";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
@@ -11,9 +11,7 @@ export default function UserData({ user,id}) {
     const {pushClick}=useContext(GlobalContext)
 
     const inputRef = useRef(null)
-    const szostkaRef = useRef(null)
     const handleChange = (e) => {
-        console.log(e.target.value);
             setUsers(prev => prev.map(u => u.id === user.id ? {...user, typUzytkownika: e.target.value} : u))
             updateTyp(user.id, e.target.value)
     };
@@ -21,7 +19,7 @@ export default function UserData({ user,id}) {
     return (
 
         <tr className="hover:bg-gray-50 transition">
-            <td className="w-[100px] px-4 py-3 text-gray-800 cursor-pointer"
+            <td className="w-[100px] px-4 py-3 text-gray-800 cursor-pointer hover:underline"
                 onClick={(e)=>pushClick(e,`/profile/user/${user.id}`)}>{user.id}</td>
 
             <TableField data={user.login}/>
@@ -78,7 +76,6 @@ export default function UserData({ user,id}) {
                             const parrents=inputRef?.current.value;
                             if(parrents.length>0) {
                                 const p=parrents.trim().split(",").map(a=>Number(a))
-                                console.log(p)
                                 if(p.length===1&&p[0]) {
 
                                     changeParrents(user.id,{parentId1:p[0]});
@@ -102,44 +99,6 @@ export default function UserData({ user,id}) {
                     </button>
             </div>
             </td> : <td></td>}
-
-            {/*{user.typUzytkownika==="ZUCH"?<td> <div className="w-[200px] px-4 py-3 text-gray-800">*/}
-
-            {/*    <input ref={szostkaRef}*/}
-            {/*           placeholder={"nazwa szostki"}*/}
-            {/*           defaultValue={user?.nazwaSzostki}*/}
-            {/*           className="*/}
-            {/*                w-[100px]*/}
-            {/*                rounded-md*/}
-            {/*                border border-gray-300*/}
-            {/*                bg-white*/}
-            {/*                 py-1 px-1*/}
-            {/*                text-sm text-gray-800*/}
-            {/*                placeholder-gray-400*/}
-            {/*                focus:border-blue-500*/}
-            {/*                focus:outline-none*/}
-            {/*                focus:ring-1 focus:ring-blue-500"*/}
-            {/*    />*/}
-            {/*    <button*/}
-            {/*        onClick={() => {*/}
-            {/*            const szostka=szostkaRef?.current.value;*/}
-            {/*            console.log(szostka)*/}
-            {/*            editUserByAdmin(user.id,{nazwaSzostki:szostka})*/}
-            {/*        }}*/}
-            {/*        className="*/}
-            {/*                rounded-md*/}
-            {/*                bg-blue-500*/}
-            {/*                px-1*/}
-            {/*                w-[30px]*/}
-            {/*                text-sm*/}
-            {/*                text-white*/}
-            {/*                hover:bg-blue-600*/}
-            {/*                transition"*/}
-            {/*    >*/}
-            {/*        ➤*/}
-            {/*    </button>*/}
-            {/*</div>*/}
-            {/*</td> : <td></td>}*/}
 
             <td className="w-[150px] px-4 py-3 text-gray-800">
                 <div className={"flex flex-row"}>

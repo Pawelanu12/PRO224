@@ -1,7 +1,6 @@
 'use client'
 
 import AddModal from "@/app/admin/gromada/szostki/AddModal";
-import {Virtuoso} from "react-virtuoso";
 import Szostka from "@/app/admin/gromada/szostki/Szostka";
 import {useContext, useEffect, useState} from "react";
 import {AdminContext} from "@/app/providers/AdminProvider";
@@ -12,7 +11,6 @@ export default function Szostki(){
     useEffect(()=>{
         getSzostki()
     },[])
-    console.log(szostki)
     return(
         <div>
             <AddModal funkcjaDoDodania={addSzostka}/>

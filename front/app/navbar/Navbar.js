@@ -1,31 +1,13 @@
 'use client'
 
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 import {FaSignOutAlt, FaBars, FaTimes, FaAddressCard, FaSignInAlt} from "react-icons/fa";
 import {FaMessage, FaPerson} from "react-icons/fa6";
 
 export default function Navbar() {
     const { pushClick, logOut,user } = useContext(GlobalContext);
-    const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-
-    console.log(user)
-    // Sprawdzanie wysokości okna
-    // useEffect(() => {
-    //     const checkWidth = () => {
-    //         setIsMobile(window.innerWidth < 550);
-    //     };
-    //
-    //     // Initial check
-    //     checkWidth();
-    //
-    //     // Listen to resize
-    //     window.addEventListener("resize", checkWidth);
-    //
-    //     // Cleanup
-    //     return () => window.removeEventListener("resize", checkWidth);
-    // }, []);
 
     const buttons = [
         { label: "sprawności", img: "/images/navbar/sprawnosci_logo.png", path: "/achievements" },

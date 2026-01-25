@@ -1,6 +1,6 @@
 'use client'
 
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import Information from "@/app/profile/Information";
 import MainInformation from "@/app/profile/MainInformation";
 import {GlobalContext} from "@/app/providers/GlobalProvider";

@@ -3,13 +3,14 @@
 import {useContext, useState} from "react";
 import AddModal from "@/app/admin/gromada/szostki/AddModal";
 import { AdminContext } from "@/app/providers/AdminProvider";
-import {FaCheck, FaPencilAlt, FaTimes, FaTrash} from "react-icons/fa";
+import {FaCheck, FaPencilAlt, FaTimes} from "react-icons/fa";
 import DeleteDialog from "@/app/functions/DeleteDialog";
+import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Szostka({ szostka }) {
     const { addSzostkaUser,deleteSzostka,
         editSzostkaName,deleteSzostkaUser } = useContext(AdminContext);
-
+    const {pushClick}=useContext(GlobalContext)
     const [isEdit, setIsEdit] = useState(false);
     const [name, setName] = useState(szostka?.nazwa || "");
 
@@ -68,7 +69,7 @@ export default function Szostka({ szostka }) {
                     )}
                     <div className="flex gap-2 text-white">
                         {!isEdit ? (
-                            <>
+                            <div>
                             <button
                                 onClick={() => setIsEdit(true)}
                                 className="hover:text-blue-400"
@@ -78,9 +79,9 @@ export default function Szostka({ szostka }) {
                             </button>
 
                                 <DeleteDialog id={szostka.id} funkcjaDoUsunecia={deleteSzostka} isTrash={true} />
-                            </>
+                            </div>
                         ) : (
-                            <>
+                            <div>
                             <button
                                 onClick={saveEdit}
                                 className="hover:text-green-400"
@@ -95,51 +96,53 @@ export default function Szostka({ szostka }) {
                             >
                                 <FaTimes />
                             </button>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
 
-                            {/* LISTA UŻYTKOWNIKÓW */}
-                            <div className="flex flex-col gap-1">
-                                {szostka?.uzytkownicy?.length > 0 ? (
-                                    szostka.uzytkownicy.map((u, i) => (
+                {/* LISTA UŻYTKOWNIKÓW */}
+                <div className="flex flex-col gap-1">
+                    {szostka?.uzytkownicy?.length > 0 ? (
+                        szostka.uzytkownicy.map((u, i) => (
 
-                                        <div key={i} className={"flex flex-row flex-wrap "}>
-                                            <div
+                            <div key={i} className={"flex flex-row flex-wrap"}>
+                                <div
 
-                                            className="
-                                                bg-[#D9D9D9]
-                                                text-black
-                                                rounded
-                                                px-2
-                                                py-1
-                                                text-sm
-                                                flex-100
-                                            "
-                                        >
-                                            {u.login}
-                                            </div>
-                                            <DeleteDialog id={u.id} funkcjaDoUsunecia={deleteSzostkaUser} isTrash={true} />
+                                className="
+                                    bg-[#D9D9D9]
+                                    text-black
+                                    rounded
+                                    px-2
+                                    py-1
+                                    text-sm
+                                    flex-100
+                                "
+                            >
+                                    <span
+                                        onClick={()=>pushClick("",`/profile/user/${u.id}`)}
+                                        className={" hover:underline cursor-pointer hover:text-blue-600"}>{u.login}</span>
+                                </div>
+                                <DeleteDialog id={u.id} funkcjaDoUsunecia={deleteSzostkaUser} isTrash={true} />
 
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-400 text-sm italic text-center">
-                                        Brak użytkowników
-                                    </p>
-                                )}
                             </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-400 text-sm italic text-center">
+                            Brak użytkowników
+                        </p>
+                    )}
+                </div>
 
-                            {/* PRZYCISK / MODAL */}
-                            <div className="mt-auto pt-3 border-t border-black/20">
-                                <AddModal
-                                    funkcjaDoDodania={addSzostkaUser}
-                                    id={szostka?.id}
-                                    typ="user"
-                                />
-                            </div>
-                            </div>
-                            </div>
-                            );
-                        }
+                {/* PRZYCISK / MODAL */}
+                <div className="mt-auto pt-3 border-t border-black/20">
+                    <AddModal
+                        funkcjaDoDodania={addSzostkaUser}
+                        id={szostka?.id}
+                        typ="user"
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}

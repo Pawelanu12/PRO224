@@ -29,9 +29,6 @@ export default function PotwierdzenieKodu(){
 
             })}
             onSubmit={(values, {resetForm}) => {
-
-
-                console.log(values)
                 sprawdz(values.kod)
                 resetForm()
             }}

@@ -42,7 +42,6 @@ export default function AddWydarzenie() {
                 })}
                 onSubmit={(values) => {
                     const formData = new FormData();
-    console.log(values)
                     files.forEach(f => formData.append("files", f));
 
                     formData.append("nazwa", values.nazwa);
@@ -123,6 +122,7 @@ export default function AddWydarzenie() {
                                         name="dataZakonczenia"
                                         className="w-full mt-1 p-2 rounded bg-[#1A1919]"
                                     />
+                                    <ErrorMessage name="dataZakonczenia" component="div" className="text-red-400 text-sm"/>
                                 </label>
 
                                 <label className="block mb-4 cursor-pointer">

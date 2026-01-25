@@ -1,7 +1,7 @@
 'use client'
 
 
-import {createContext, useEffect, useRef, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {signOut} from "next-auth/react";
 export const GlobalContext = createContext();
@@ -31,7 +31,10 @@ export default function GlobalProvider({ children }) {
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/auth/logout`, {
             method: "POST",
             credentials: "include",
-        });
+        })
+            .catch(err=>console.log(err))
+
+
         signOut({callbackUrl:"/login"});
 
 
@@ -111,6 +114,8 @@ export default function GlobalProvider({ children }) {
                         alert(r.message)
                 })
                 .catch(err=>console.log(err))
+
+
         }
         f(values)
     }
@@ -124,11 +129,13 @@ export default function GlobalProvider({ children }) {
             })
                 .then(()=>{
                     get_me()  // fetch user info z cookie
-                });
+                })
+                .catch(err=>console.log(err))
+
+
 
 
         } catch (err) {
-            console.log(err);
         }
     };
     const editUser=(id,values)=>{
@@ -143,12 +150,14 @@ export default function GlobalProvider({ children }) {
                 })
                 .then(res=>res.json())
                 .then(r=>{
-                    console.log(r)
+
                     if(r.message&&r.message.includes("Duplicate"))
                         alert('email musi byc unikatowy')
                     if(r&&r.login)
                         setUser(r);
                 })
+                .catch(err=>console.log(err))
+
         }
         f(id,values)
     }
@@ -162,27 +171,12 @@ export default function GlobalProvider({ children }) {
                     body:JSON.stringify(
                         values)
                 })
+                .then(()=>pushClick("","/profile"))
+                .catch(err=>console.log(err))
+
         }
         f(values)
     }
-
-    useEffect(()=>{
-            get_me()
-    },[])
-
-    useEffect(() => {
-        if(loading)return
-        if(!user){
-            const path=window.location.pathname
-            console.log(path)
-            if(!(path==="/login"||path==="/rejestracja"||path==="/"||path==="/kontakt"
-                ||path.startsWith("/sprawnosci")||path.startsWith("/wydarzenia")))
-            router.replace("/login")
-        }
-        if(user?.typUzytkownika==="DEFAULT")
-            alert("poczekaj kiedy Drużynowy przydzieli ciebie typ")
-    }, [user,loading]);
-
 
     const getDzieci=() => {
         const getUsers=async ()=>{
@@ -193,13 +187,53 @@ export default function GlobalProvider({ children }) {
                 })
                 .then(res=>res.json())
                 .then(r=>{
-                    console.log(r)
+
                     if(Array.isArray(r))
                         setDzieci(r)
                 })
+                .catch(err=>console.log(err))
+
         }
         getUsers()
     }
+
+    const changeImage=(id,values)=>{
+        const f=async (id,values)=>{
+            await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/${id}/profilePicture`,
+                {
+                    method:"PUT",
+                    credentials: "include",
+                    body: values
+                })
+                .then(res=>res.json())
+                .then(res=>{
+                    if(res.id)
+                        setUser(res)
+                })
+                .catch(err=>console.log(err))
+
+        }
+        f(id,values)
+    }
+
+    useEffect(()=>{
+            get_me()
+    },[])
+
+    useEffect(() => {
+        if(loading)return
+        if(!user){
+            const path=window.location.pathname
+            if(!(path==="/login"||path==="/rejestracja"||path==="/"||path==="/kontakt"
+                ||path.startsWith("/sprawnosci")||path.startsWith("/wydarzenia")))
+            router.replace("/login")
+        }
+        if(user?.typUzytkownika==="DEFAULT")
+            alert("poczekaj kiedy Drużynowy przydzieli ciebie typ")
+    }, [user,loading]);
+
+
+
     return (
         <GlobalContext.Provider value={{router,
             register,
@@ -217,6 +251,7 @@ export default function GlobalProvider({ children }) {
             fetchWithAuth,
             changePassword,
             getDzieci,
+            changeImage,
         dzieci}}>{children}</GlobalContext.Provider>
     )
 };

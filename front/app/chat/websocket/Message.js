@@ -40,13 +40,12 @@ export default function Message({ wiadomosc, wiadomosc2 }) {
         <div className="flex gap-3 px-4 py-1">
             {/* AVATAR */}
             {showHeader ? (
-                <img
-                    src={wiadomosc.avatar || "/images/user_logo.png"}
-                    alt="avatar"
-                    className="h-10 w-10 shrink-0 rounded-full object-cover"
-                />
+                <img src={wiadomosc.ikona
+                    ? `${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/ProfilePictures/${wiadomosc.ikona}`
+                    : "/images/user_logo.png"} alt="logo" className="h-10 w-10 rounded-full object-cover"/>
+
             ) : (
-                <div className="w-10 shrink-0" />
+                <div className="w-10 shrink-0"/>
             )}
 
             {/* CONTENT */}

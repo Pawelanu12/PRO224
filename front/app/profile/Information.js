@@ -80,7 +80,6 @@ export default function Information({uzytkownik}) {
                                     .notRequired(),
                             })}
                             onSubmit={(values) => {
-                                // console.log(values)
                                 editUser(uzytkownik.id, {...values})
                                 setEdit(false)
                             }}

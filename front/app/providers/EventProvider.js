@@ -1,7 +1,7 @@
 'use client'
 
 
-import {createContext, useContext, useRef, useState} from "react";
+import {createContext, useContext, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export const WydarzeniaContext = createContext();
@@ -24,37 +24,29 @@ export default function EventProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log(res)
                     if(Array.isArray(res))
                         setWydarzenia(res)
                 })
                 .catch(err=>console.log(err))
         }
         get()
-        // console.log("cat")
     }
 
-    const dodajUczestnictwo = (wydarzenieId,uzytkownikId) => {
-        console.log(wydarzenieId)
-        console.log(uzytkownikId)
-        const add=async ()=>{
-            await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uczestnictwo`,{
-                method:"POST",
-                credentials: "include",
-                headers: {"Content-Type": "application/json"},
-                body:JSON.stringify(
-                    {uzytkownikId:uzytkownikId,wydarzenieId:wydarzenieId,uczestnictwo:false})
-
-            })
-                .then(res=>res.json())
-                .then(res=> {
-                 console.log(res)
-                })
-                .catch(err=>console.log(err))
-        }
-        add()
-        // console.log("cat")
-    }
+    // const dodajUczestnictwo = (wydarzenieId,uzytkownikId) => {
+    //     const add=async ()=>{
+    //         await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uczestnictwo`,{
+    //             method:"POST",
+    //             credentials: "include",
+    //             headers: {"Content-Type": "application/json"},
+    //             body:JSON.stringify(
+    //                 {uzytkownikId:uzytkownikId,wydarzenieId:wydarzenieId,uczestnictwo:false})
+    //
+    //         })
+    //             .catch(err=>console.log(err))
+    //
+    //     }
+    //     add()
+    // }
 
     const editWydarzenie = (id,values) => {
         const edit=async (id,values)=>{
@@ -69,7 +61,6 @@ export default function EventProvider({ children }) {
     }
 
     const deleteWydarzenie = (id) => {
-      console.log(id)
         const d=async (id)=>{
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`,{
                 method:"DELETE",
@@ -77,6 +68,7 @@ export default function EventProvider({ children }) {
             })
                 .then(()=>pushClick("","/events"))
                 .catch(err=>console.log(err))
+
         }
         d(id)
     }
@@ -84,7 +76,7 @@ export default function EventProvider({ children }) {
     return (
         <WydarzeniaContext.Provider value={{
             getWydarzenia,
-            dodajUczestnictwo,
+            // dodajUczestnictwo,
             wydarzenia,
             setWydarzenia,
             nazwa,

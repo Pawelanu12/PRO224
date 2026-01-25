@@ -36,7 +36,9 @@ export default function AddPost() {
         <div >
             {/* Nagłówek i przycisk */}
             <div className="bg-[#4D644C] flex items-center px-4 py-3 mb-8 rounded-md">
-                <img src="/images/user_logo.png" alt="logo" className="h-14 mr-5 rounded-full" />
+                <img src={user?.profilePicture
+                    ? `${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/ProfilePictures/${user.profilePicture}`
+                    : "/images/user_logo.png"} alt="logo" className="h-14 w-14 mr-5 rounded-full object-cover" />
                 <button
                     className="text-red-600 z-20 px-4 py-2 rounded-full bg-[#336250] hover:bg-[#2b5140]"
                     onClick={() => {

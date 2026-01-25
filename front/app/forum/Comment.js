@@ -1,6 +1,6 @@
 'use client'
 
-import {FaEdit, FaTrash} from "react-icons/fa";
+import { FaTrash} from "react-icons/fa";
 import {useContext, useEffect, useRef, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import {ForumContext} from "@/app/providers/ForumProvider";

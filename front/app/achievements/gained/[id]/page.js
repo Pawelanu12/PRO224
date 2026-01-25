@@ -2,8 +2,6 @@
 
 import React, {useContext, useEffect, useState} from "react";
 import {SprawnoscContext} from "@/app/providers/AchievementProvider";
-import Achievement from "@/app/achievements/Achievement";
-import Filter from "@/app/achievements/Filter";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 import Achievements from "@/app/achievements/Achivements";
 

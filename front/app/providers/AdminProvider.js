@@ -1,7 +1,7 @@
 'use client'
 
 
-import {createContext, useContext, useEffect, useRef, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {GlobalContext} from "@/app/providers/GlobalProvider";
 export const AdminContext = createContext();
 
@@ -23,7 +23,6 @@ export default function AdminProvider({ children }) {
             })
                 .then(res=> res.json())
                 .then(res=> {
-                    console.log(res)
                     pushClick("","/achievements")
                 })
                 .catch(err=>console.log(err))
@@ -31,7 +30,6 @@ export default function AdminProvider({ children }) {
         add(values)
     }
     const addWydarzenie = (values) => {
-        console.log(values)
        const add=async (values)=>{
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie`,{
                 method:"POST",
@@ -41,7 +39,6 @@ export default function AdminProvider({ children }) {
             })
                 .then(res=> res.json())
                 .then(res=> {
-                    console.log(res)
                     pushClick("","/events")
                 })
                 .catch(err=>console.log(err))
@@ -51,15 +48,12 @@ export default function AdminProvider({ children }) {
 
 
     const deleteWydarzenie = (id)=>{
-        // if(!user.typUzytkownika==="DRUZYNOWY")
-        //     return
         const usun=async (id)=>{
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/wydarzenie/${id}`, {
                 method: "Delete",
                 credentials: "include"
             })
                 .then(res=>{
-                    console.log(res)
                     if(res.ok)
                         pushClick("","/events")
                 })
@@ -105,7 +99,6 @@ export default function AdminProvider({ children }) {
     }
 
     const changeParrents=(id,values)=>{
-        console.log(JSON.stringify(values))
         const f=async (id,values)=>{
             await fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/uzytkownicy/${id}/parents`,
                 {
@@ -154,13 +147,13 @@ export default function AdminProvider({ children }) {
                             setSzostki(res)
                     }
                 )
-                .catch()
+                .catch(err=>console.log(err))
+
         }
         f()
     }
 
     const addSzostka = (nazwa,id=null) => {
-        console.log(nazwa)
         const add=async (values)=>{
             await fetch( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/szostka`,{
                 method:"POST",
@@ -170,7 +163,6 @@ export default function AdminProvider({ children }) {
             })
                 .then(res=> res.json())
                 .then(res=> {
-                    console.log(res)
                     if(res.id)
                         setSzostki([...szostki,res])
                 })
@@ -187,7 +179,6 @@ export default function AdminProvider({ children }) {
             })
                 .then(res=> res.json())
                 .then(res=> {
-                    console.log(res)
                     if(res.id)
                         setSzostki(prev=>prev.map(s=>s.id!==id?
                             s.uzytkownicy.map(u=>u.login).includes(login)?{...s,uzytkownicy:s.uzytkownicy.filter(u=>u.login!==login)}:s:res))
@@ -221,7 +212,6 @@ export default function AdminProvider({ children }) {
             })
                 .then(res=> res.json())
                 .then(res=> {
-                    console.log(res)
                     if(res.nazwa)
                     setSzostki(prev=>prev.map(s=>s.id!==id?s:
                         res))

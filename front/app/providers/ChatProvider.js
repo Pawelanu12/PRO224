@@ -130,10 +130,7 @@ export default function ChatProvider({ children }) {
 
 
     const openCzat=(userLogin)=>{
-    console.log(userLogin)
-
         const czatyWithUser=czaty.filter(f=>f.uczestnicyLogins.length===2&&f.uczestnicyLogins.includes(userLogin))
-        console.log(czatyWithUser)
         if(czatyWithUser?.length>0){
             setCzatId(czatyWithUser[0].id)
         }

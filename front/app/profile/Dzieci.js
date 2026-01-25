@@ -6,8 +6,6 @@ import {GlobalContext} from "@/app/providers/GlobalProvider";
 
 export default function Dzieci(){
     const {dzieci,getDzieci,user,pushClick}=useContext(GlobalContext)
-    console.log(dzieci)
-    console.log("cat")
     useEffect(() => {
         if(!user)return
         getDzieci()

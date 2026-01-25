@@ -14,14 +14,10 @@ export default function Options({autor,post}){
             style={{position: "absolute", translate: "-230px",width:"230px",
                 backgroundColor:"white",color:"black",paddingLeft:"5px"}}
         >
-            {/*{user.login!==autor&&<button>zgloś post</button>}*/}
-            {/*{user.login!==autor&&<button>ukryj posty tego użytkownika</button>}*/}
             {user.login===autor&&<EditPost post={post}/>}
             {(user.login===autor||user.typUzytkownika==="DRUZYNOWY")&& <DeleteDialog funkcjaDoUsunecia={deletePost} id={post.id}/>}
-            {/*{user.id===autor&&<button onClick={(e) => {*/}
-            {/*    setEdit(post)*/}
-            {/*    pushClick(e, `/forum/editPost/${post.id}`)*/}
-            {/*}}>edytuj post</button>}*/}
+            {/*{user.login!==autor&&<button>zgloś post</button>}*/}
+            {/*{user.login!==autor&&<button>ukryj posty tego użytkownika</button>}*/}
 
         </div>
     )

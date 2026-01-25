@@ -24,11 +24,11 @@ export default function ForumProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log(res)
                     if(Array.isArray(res))
                         setPosty(res)
                 })
                 .catch(err=>console.log(err))
+
                 .finally(()=>setLoading(false))
         }
         get()
@@ -37,7 +37,6 @@ export default function ForumProvider({ children }) {
 
     const addPosty = (body) => {
         const add=async (body)=>{
-            console.log(body)
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty`,{
                 method:"POST",
                 credentials: "include",
@@ -45,16 +44,15 @@ export default function ForumProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log(res)
                     getPosty()
                 })
                 .catch(err=>console.log(err))
+
         }
         add(body)
     }
     const editPost = (id,body) => {
         const edit=async (id,body)=>{
-            console.log(id)
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}`,{
                 method:"PUT",
                 credentials: "include",
@@ -78,7 +76,7 @@ export default function ForumProvider({ children }) {
                 credentials: "include",
 
             })
-                .catch((err)=>console.log(err))
+                .catch(err=>console.log(err))
                 .finally(()=>getPosty())
 
         }
@@ -92,7 +90,6 @@ export default function ForumProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log(res)
                     setPosty(prev=>prev.map(p=>p.id===id?res:p))
                 })
                 .catch(err=>console.log(err))
@@ -112,17 +109,14 @@ export default function ForumProvider({ children }) {
             })
                 .then(res=>res.json())
                 .then(res=> {
-                    console.log("koment+")
                     setComments(prev=>[...prev,res])
                 })
                 .catch(err=>console.log(err))
-                // .finally(()=>getPosty())
         }
         send(body)
     }
 
     const editComment=(id,body)=>{
-        console.log(id,body)
         const send=async (id,body)=>{
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
                 method:"PUT",
@@ -132,6 +126,7 @@ export default function ForumProvider({ children }) {
                 body:JSON.stringify(body)
             })
                 .catch(err=>console.log(err))
+
             // .finally(()=>getPosty())
         }
         send(id,body)
@@ -142,16 +137,15 @@ export default function ForumProvider({ children }) {
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/komentarz/${id}`,{
                 method:"Delete",
                 credentials: "include",
-
             })
                 .catch(err=>console.log(err))
+
             // .finally(()=>getPosty())
         }
         send(id)
     }
 
     const sharePost=(id,userId)=>{
-        console.log(id,userId)
         const send=async (id,userId)=>{
             await fetchWithAuth( `${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/posty/${id}/share?uzytkownikId=${userId}`,{
                 method:"PUT",
@@ -159,6 +153,7 @@ export default function ForumProvider({ children }) {
 
             })
                 .catch(err=>console.log(err))
+
             // .finally(()=>getPosty())
         }
         send(id,userId)

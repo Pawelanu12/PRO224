@@ -34,12 +34,8 @@ export default function Czats(){
                 new SockJS(`${process.env.NEXT_PUBLIC_BACKEND_PORT}/ws`),
 
             onConnect: () => {
-                // console.log(`${user.id}/queue/chat-updates`)
-                // stompClient.subscribe(`/user/queue/chat-updates`, (msg) => {
                 stompClient.subscribe(`/topic/uzytkownik/${user.id.toString()}`, (msg) => {
-                   console.log(msg)
                     const data = JSON.parse(msg.body);
-                    console.log(data)
                     setCzaty(
                         prev=>prev.map(c=>c.id===data.czatId?{
                             ...c,

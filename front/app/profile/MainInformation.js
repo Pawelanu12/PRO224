@@ -1,20 +1,29 @@
-import {useContext, useState} from "react";
+import {useContext, useRef, useState} from "react";
 import { GlobalContext } from "@/app/providers/GlobalProvider";
 import {FaPencil} from "react-icons/fa6";
 
 export default function MainInformation({ item, setItem,uzytkownik }) {
-    const {editUser,pushClick,user}= useContext(GlobalContext);
+    const {editUser,pushClick,user,changeImage}= useContext(GlobalContext);
     const [form,setForm] = useState({
         login:uzytkownik.login,
         imie:uzytkownik.imie,
         nazwisko:uzytkownik.nazwisko,
     })
-    const [file, setFile] = useState();
+    const fileInputRef = useRef(null);
+    const [file, setFile] = useState(null);
     const [edit,setEdit] = useState(false)
-
+    const handleChange = (e) => {
+        const picked = e.target.files[0];
+        if (!picked) return;
+        const formData = new FormData();
+        formData.append("profilePicture", picked);
+        changeImage(user.id,formData);
+    };
+    const src=uzytkownik.profilePicture
+        ? `${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/ProfilePictures/${uzytkownik.profilePicture}`
+        : "/images/user_logo.png";
    const onSend=()=>{
-        console.log(form)
-       editUser(uzytkownik.id,form)
+        editUser(uzytkownik.id,form)
         setEdit(false)
     }
     return (
@@ -23,25 +32,36 @@ export default function MainInformation({ item, setItem,uzytkownik }) {
             {/* GÓRA */}
             <div className={"flex flex-wrap items-end flex-row"}>
                 <img
-                    src={uzytkownik.ikona || "/images/user_logo.png"}
+                    src={src}
                     alt="ikona"
+                    onClick={() => {
+                        fileInputRef.current?.click()
+                    }}
                     className="w-16 h-16 m-2.5 rounded-full object-cover"
                 />
-                {!edit&&<p className="pb-2">
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    disabled={uzytkownik.id!==user.id}
+                    onChange={handleChange}
+                />
+                {!edit && <p className="pb-2">
                     <span>{uzytkownik.login}</span>
                     <span>({uzytkownik.imie}</span>
                     <span> {uzytkownik.nazwisko})</span>
                 </p>}
-                {edit&&user.id===uzytkownik.id&& <div className="pl-2 flex flex-col">
+                {edit && user.id === uzytkownik.id && <div className="pl-2 flex flex-col">
                     <label>Login:<input
-                            onChange={(e)=>setForm({...form,login:e.target.value})}
-                                        className={"bg-white text-black m-1"} defaultValue={uzytkownik.login}/> </label>
+                        onChange={(e) => setForm({...form, login: e.target.value})}
+                        className={"bg-white text-black m-1"} defaultValue={uzytkownik.login}/> </label>
                     <label>Imię: <input
-                        onChange={(e)=>setForm({...form,imie:e.target.value})}
-                                        className={"bg-white text-black m-1"} defaultValue={uzytkownik.imie}/></label>
+                        onChange={(e) => setForm({...form, imie: e.target.value})}
+                        className={"bg-white text-black m-1"} defaultValue={uzytkownik.imie}/></label>
                     <label>Nazwisko: <input
-                        onChange={(e)=>setForm({...form,nazwisko:e.target.value})}
-                                            className={"bg-white text-black m-1"} defaultValue={uzytkownik.nazwisko}/></label>
+                        onChange={(e) => setForm({...form, nazwisko: e.target.value})}
+                        className={"bg-white text-black m-1"} defaultValue={uzytkownik.nazwisko}/></label>
                     <div>
                         <button onClick={() => setEdit(!edit)}
                                 className=" bg-red-800 py-2 mr-2 px-1 rounded disabled:opacity-50 hover:bg-red-600">
@@ -54,8 +74,8 @@ export default function MainInformation({ item, setItem,uzytkownik }) {
                         </button>
                     </div>
                 </div>}
-                {!edit&&user.id===uzytkownik.id && <button onClick={() => setEdit(!edit)}
-                                  className={"mb-6 ml-2"}><FaPencil/></button>}
+                {!edit && user.id === uzytkownik.id && <button onClick={() => setEdit(!edit)}
+                                                               className={"mb-6 ml-2"}><FaPencil/></button>}
             </div>
 
             <div className="border-t border-black my-2"/>

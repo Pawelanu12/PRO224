@@ -1,6 +1,6 @@
 'use client'
 
-import {useContext, useRef} from "react";
+import {useContext} from "react";
 import {SprawnoscContext} from "@/app/providers/AchievementProvider";
 
 export default function Filter(){
