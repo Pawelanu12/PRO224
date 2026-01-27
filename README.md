@@ -76,6 +76,7 @@ lub za pomocą IntelIj wlączyć classe SzyszkaApplication
 
 
 --------------------Baza Dannych------------
+
 1)tworzenie bazy
 stworz scheme i wstaw do niej dane z pliku 
 createTableSQL (Final).txt
