@@ -1,0 +1,174 @@
+CREATE TABLE squad (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_stworzenia DATETIME NOT NULL
+);
+
+CREATE TABLE user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(255) NOT NULL,
+    nazwisko VARCHAR(255) NOT NULL,
+    login VARCHAR(255) NOT NULL UNIQUE,
+    haslo VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    data_urodzenia DATETIME,
+    nr_telefonu VARCHAR(20),
+    data_dolaczenia_do_gromady DATETIME,
+    rodzic_id1 BIGINT,
+    rodzic_id2 BIGINT,
+    typ_uzytkownika VARCHAR(50) NOT NULL,
+    squad_id BIGINT,
+    zdjecie VARCHAR(255),
+    google_id VARCHAR(255) UNIQUE,
+    auth_provider VARCHAR(20) DEFAULT 'LOCAL',
+
+    FOREIGN KEY (rodzic_id1) REFERENCES user(id) ON DELETE SET NULL,
+    FOREIGN KEY (rodzic_id2) REFERENCES user(id) ON DELETE SET NULL,
+    FOREIGN KEY (squad_id) REFERENCES squad(id) ON DELETE SET NULL
+);
+
+CREATE TABLE badge (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL UNIQUE,
+    opis TEXT,
+    opis_wymagan TEXT,
+    ikona VARCHAR(255),
+    typ_sprawnosci VARCHAR(50)
+);
+
+CREATE TABLE user_badge (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    badge_id BIGINT NOT NULL,
+    data_zdobycia_sprawnosci DATETIME NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (badge_id) REFERENCES badge(id) ON DELETE CASCADE,
+    UNIQUE (user_id, badge_id)
+);
+
+CREATE TABLE event (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255) NOT NULL,
+    data_wyjazdu DATETIME NOT NULL,
+    data_zakonczenia DATETIME NOT NULL,
+    opis TEXT,
+    organizator_id BIGINT,
+    zdjecie VARCHAR(255),
+    typ_wydarzenia VARCHAR(50),
+
+    FOREIGN KEY (organizator_id) REFERENCES user(id) ON DELETE SET NULL
+);
+
+CREATE TABLE event_participation (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
+    obecny BOOLEAN NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    autor_id BIGINT NOT NULL,
+    data_stworzenia DATETIME NOT NULL,
+    tresc TEXT NOT NULL,
+    ilosc_polubien INT DEFAULT 0,
+    zdjecie VARCHAR(255),
+
+    FOREIGN KEY (autor_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_like (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE comment (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT NOT NULL,
+    autor_id BIGINT NOT NULL,
+    komentarz_id BIGINT,
+    data_stworzenia DATETIME NOT NULL,
+    tresc TEXT NOT NULL,
+
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+    FOREIGN KEY (autor_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (komentarz_id) REFERENCES comment(id) ON DELETE CASCADE
+);
+
+CREATE TABLE chat (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nazwa VARCHAR(255),
+    data_utworzenia DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    czy_grupowy BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE chat_user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    chat_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    last_read_message_id BIGINT,
+    nieprzeczytane_wiadomosci INT NOT NULL DEFAULT 0,
+
+    FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    UNIQUE (chat_id, user_id)
+);
+
+CREATE TABLE message (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    chat_id BIGINT NOT NULL,
+    nadawca_id BIGINT NOT NULL,
+    tresc TEXT NOT NULL,
+    data_wyslania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE,
+    FOREIGN KEY (nadawca_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE event_image (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    event_id BIGINT NOT NULL,
+    sciezka VARCHAR(255) NOT NULL,
+    data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_image (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT NOT NULL,
+    sciezka VARCHAR(255) NOT NULL,
+    data_dodania DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
+);
+
+CREATE TABLE post_share (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    post_id BIGINT NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+    UNIQUE (user_id, post_id)
+);
+
+CREATE INDEX idx_user_login ON user(login);
+CREATE INDEX idx_user_email ON user(email);
+CREATE INDEX idx_user_typ ON user(typ_uzytkownika);
+CREATE INDEX idx_post_autor ON post(autor_id);
+CREATE INDEX idx_post_data ON post(data_stworzenia);
+CREATE INDEX idx_comment_post ON comment(post_id);
+CREATE INDEX idx_event_typ ON event(typ_wydarzenia);
+CREATE INDEX idx_event_data ON event(data_wyjazdu);
+CREATE INDEX idx_badge_typ ON badge(typ_sprawnosci);
+CREATE INDEX idx_message_chat ON message(chat_id);
+CREATE INDEX idx_chat_user_user ON chat_user(user_id);

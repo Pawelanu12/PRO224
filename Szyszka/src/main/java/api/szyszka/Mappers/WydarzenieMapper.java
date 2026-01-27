@@ -1,0 +1,64 @@
+package api.szyszka.Mappers;
+
+import api.szyszka.DTOs.Event.CreateWydarzenieRequest;
+import api.szyszka.DTOs.Event.UpdateWydarzenieRequest;
+import api.szyszka.DTOs.Event.WydarzenieDto;
+import api.szyszka.Entities.Wydarzenie;
+import api.szyszka.Entities.WydarzenieZdjecie;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class WydarzenieMapper {
+
+    public static WydarzenieDto toDto(Wydarzenie entity) {
+        if (entity == null) return null;
+
+        List<String> zdjeciaSciezki = new ArrayList<>();
+        if (entity.getZdjecia() != null) {
+            for (WydarzenieZdjecie zdj : entity.getZdjecia()) {
+                zdjeciaSciezki.add(zdj.getSciezka());
+            }
+        }
+
+        return new WydarzenieDto(
+                entity.getId(),
+                entity.getNazwa(),
+                entity.getDataWyjazdu(),
+                entity.getDataZakonczenia(),
+                entity.getOpis(),
+                entity.getOrganizator() != null ? entity.getOrganizator().getId() : null,
+                entity.getTyp(),
+//                entity.getUczestnictwa().stream().map(UczestnictwoMapper::toDto).toList(),
+                zdjeciaSciezki
+        );
+    }
+
+    // =======================
+    // CREATE REQUEST -> ENTITY
+    // =======================
+    public static Wydarzenie fromCreateRequest(CreateWydarzenieRequest request) {
+        if (request == null) return null;
+
+        return WydarzenieDto.fromCreateRequest(request);
+    }
+    public static void updateEntity(Wydarzenie entity, UpdateWydarzenieRequest request) {
+        if (entity == null || request == null) return;
+
+        entity.setNazwa(request.getNazwa());
+
+        if (request.getDataWyjazdu() != null) {
+            entity.setDataWyjazdu(
+                    request.getDataWyjazdu()
+            );
+        }
+
+        if (request.getDataZakonczenia() != null) {
+            entity.setDataZakonczenia(
+                    request.getDataZakonczenia()
+            );
+        }
+
+        entity.setOpis(request.getOpis());
+    }
+}
