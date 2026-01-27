@@ -51,7 +51,7 @@ google.client-id:
 
 krótka instrukcja pobierania i wlaczenia frontendu:
 Pierwsze 3 kroki trzeba wykonać tylko przy instalacji projektu.
-Pukt 4 trzeba wykonywać żeby uruchomić projekt za każdym razem
+Punkt 4 trzeba wykonywać żeby uruchomić projekt za każdym razem
 
 
 *1. Tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)*
@@ -91,12 +91,12 @@ GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
 > npm run dev
 
   wejsc w przeglądarce na strone
-  http://localhost:3000
-
+  http://localhost:3000  
+  
   
 
 
-***Nadawanie stworzonemu użytkownikowi uprawnień drużynowego***
+***Nadawanie stworzonemu użytkownikowi uprawnień drużynowego***  
 
 *1. Zarejestruj użytkownika w aplikacji.*
 
