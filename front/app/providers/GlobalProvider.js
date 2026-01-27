@@ -224,8 +224,8 @@ export default function GlobalProvider({ children }) {
         if(loading)return
         if(!user){
             const path=window.location.pathname
-            if(!(path==="/login"||path==="/rejestracja"||path==="/"||path==="/kontakt"
-                ||path.startsWith("/sprawnosci")||path.startsWith("/wydarzenia")))
+            if(!(path==="/login"||path==="/registration"||path==="/"||path==="/kontakt"
+                ||path.startsWith("/achievements")||path.startsWith("/events"))||path.startsWith("/achievements/gained"))
             router.replace("/login")
         }
         if(user?.typUzytkownika==="DEFAULT")

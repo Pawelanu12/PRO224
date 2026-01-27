@@ -5,33 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d1f2aca-83f6-40de-ac3a-a93e471e0697" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/front/app/czat/NowyCzatDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/NowyCzatDialog.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/czat/websocket/Wiadomosc.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/czat/websocket/Wiadomosc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/czat1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/czat2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/czaty.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/obraz_sprawnosci.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/posty.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/sprawnosci.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/data/wydarzenia.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/forum/PostInformacja.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/forum/PostInformacja.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/navbars/NavbarNiezarejestrowana.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/navbars/NavbarNiezarejestrowana.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/navbars/NavbarZarejestrowana.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/navbars/NavbarZarejestrowana.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/providers/AdminProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/AdminProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/providers/CzatProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/CzatProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/providers/ForumProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/ForumProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/events/[id]/WydarzenieEditable.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/events/[id]/WydarzenieEditable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/app/profile/change-password/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/profile/change-password/page.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/app/providers/GlobalProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/GlobalProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/providers/SprawnoscProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/SprawnoscProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/providers/WydarzeniaProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/providers/WydarzeniaProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/sprawnosci/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/sprawnosci/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/FILTER.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/FILTER.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/WydarzenieMale.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/WydarzenieMale.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/[id]/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/[id]/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/app/wydarzenia/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/front/app/wydarzenia/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/test/uwu" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +24,12 @@
     &quot;assignee&quot;: &quot;s27297&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Pawelanu12/PRO224.git",
-    "accountId": "87df535d-ad12-492f-a13b-d0af0bfb1668"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Pawelanu12/PRO224.git&quot;,
+    &quot;accountId&quot;: &quot;87df535d-ad12-492f-a13b-d0af0bfb1668&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -61,22 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "s27297",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/pro/PRO224/front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;s27297&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/pro/PRO224&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -98,6 +75,8 @@
       <workItem from="1755170521634" duration="20000" />
       <workItem from="1759134450611" duration="92000" />
       <workItem from="1767650344179" duration="10000" />
+      <workItem from="1769356016747" duration="91000" />
+      <workItem from="1769515248596" duration="1386000" />
     </task>
     <servers />
   </component>

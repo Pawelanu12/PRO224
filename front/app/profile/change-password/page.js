@@ -28,8 +28,8 @@ export default function ChangePassword() {
                         powtorHasla: Yup.string()
                             .oneOf([Yup.ref("newPassword")], "Hasła muszą być takie same")
                             .required("To pole jest wymagane"),
-                        oldPassword: Yup.string()
-                            .required("To pole jest wymagane"),
+                        // oldPassword: Yup.string()
+                        //     .required("To pole jest wymagane"),
                     })}
                     onSubmit={(values, { resetForm }) => {
                         changePassword(values)

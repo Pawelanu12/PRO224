@@ -44,7 +44,7 @@ console.log(wydarzenie)
         <div className="pt-2 px-4">
 
             {/* HEADER */}
-            {(user.typUzytkownika==="DRUZYNOWY"||user.typUzytkownika==="PRZYBOCZNY")&&
+            {(user?.typUzytkownika==="DRUZYNOWY"||user?.typUzytkownika==="PRZYBOCZNY")&&
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-xl">Wydarzenie</h1>
                     <div className={"flex flex-row"}>
