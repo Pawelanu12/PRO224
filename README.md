@@ -1,54 +1,23 @@
----------------------------POBRANIE REPO---------------------------
+***POBRANIE REPO***
 
   w git bash lub cmd
 >   git clone   https://github.com/Pawelanu12/PRO224.git
 
 >   cd pro224
 
----------------------------FRONTEND---------------------------------------------------
-
-krótka instrukcja pobierania i wlaczenia frontendu:
-Pierwsze 4 kroki trzeba wykonać tylko przy instalacji projektu.
-Pukt 5 trzeba wykonywać żeby wlączyć projekt za każdym razem
-1)wejscie do plików frontendu
-
->   cd "pliki projektowe"
->   cd front
-
-2)tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)
-
-  otweranie webstorm
-  
-  File->New->Project
-
-  w lewej czesci wybrać Next.js
-  w Location wybrać path w którym znajduje się folder front z pobranego repositorium)
-  interpreter i create-next-app domyslne(jeżeli puste to kliknąć na strzalke i wybrać pierwszy
-
-  kliknąć create, a potem wybrać from existing sources
 
 
-3)instalacja bibliotek 
-  otworzyć terminal webstorma i wpisać
->   npm install
+***Baza Dannych***
 
-4)plik tajny .env.local
-w pliku .env.local trzeba ustawić id clienta Google i jego klucz tajny
- /*tu wstaw id clienta*/
-GOOGLE_CLIENT_ID=       
-GOOGLE_CLIENT_SECRET=    /*tu wstaw secret clienta*/
+1)tworzenie bazy
+W MySQL Workbench
+stworz nową scheme i wstaw do niej dane z pliku - "createTableSQL (Final).txt"
 
-
-5)wlączenie projektu
-  w terminalu wpisać 
-> npm run dev
-
-  wejsc w przeglądarce na strone
-  http://localhost:3000
-
----------------------------Backend------------------------------
+***Backend***
 
 1)plik appliction.properties
+należy wpisać nazwę lokalnej bazy danych, detasource.username oraz hasło. 
+uzupełnić google.client-id
 ```
 spring.application.name=Szyszka
 #wstaw nazwę swojej bazy
@@ -72,19 +41,66 @@ w folderze /PRO224/"pliki projektowe"/SZYSZKA
 
 > ./mvnw spring-boot:run
 
-lub za pomocą IntelIj wlączyć classe SzyszkaApplication
+lub za pomocą IntelIj uruchomić SzyszkaApplication
+
+***FRONTEND***
+
+krótka instrukcja pobierania i wlaczenia frontendu:
+Pierwsze 4 kroki trzeba wykonać tylko przy instalacji projektu.
+Pukt 5 trzeba wykonywać żeby wlączyć projekt za każdym razem
+1)wejscie do plików frontendu
+
+>   cd "pliki projektowe"
+>   cd front
+
+2)tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)
+
+  otweranie webstorm
+  
+  File->New->Project
+
+  po lewej stronie należy wybrać Next.js
+  w Location wybrać path w którym znajduje się folder front z pobranego repositorium)
+  interpreter i create-next-app domyslne(jeżeli puste to kliknąć na strzalke i wybrać pierwszy
+
+  kliknąć create, a potem wybrać from existing sources
 
 
---------------------Baza Dannych------------
+3)instalacja bibliotek 
+  otworzyć terminal webstorma i wpisać
+>   npm install
 
-1)tworzenie bazy
-stworz scheme i wstaw do niej dane z pliku 
-createTableSQL (Final).txt
+4)plik tajny .env.local
+w pliku .env.local trzeba ustawić id clienta Google i jego klucz tajny
+```
+NEXT_PUBLIC_BACKEND_PORT2='http://192.168.1.240:8080'
+NEXT_PUBLIC_BACKEND_PORT='http://localhost:8080'
+BACKEND_PORT='http://localhost:8080'
 
-2)tworzenie drużynowego 
-po tworzeniu użytkownika poprzez aplikacje wykonuj ten kod sql w bazie danych wstawiająć login użytkonwika zamiast napisu Twój login
+NEXTAUTH_SECRET=secret
+NEXTAUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=            /*wstaw tutaj Google client id */
+GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
+```
+
+5)wlączenie projektu
+  w terminalu wpisać 
+> npm run dev
+
+  wejsc w przeglądarce na strone
+  http://localhost:3000
+
+  
+
+
+**nadawanie stworzonemu użytkownikowi uprawnień drużynowego**
+*1.* Zarejestruj użytkownika w aplikacji.
+*2.*W MySQL Workbench pod paskiem nawigacyjnym wybrać "Create new SQL tab for executing queries"
+wykonaj poniższe zapytanie SQL aby zmienić typ utworzonego użytkownika na Druzynowego aby miał wszystkie uprawnienia, wstawiająć login użytkonwika zamiast napisu Twój login
+
 ```
 UPDATE user
 SET typ_uzytkownika = 'DRUZYNOWY'
 WHERE login = 'Twój login';
 ```
+
