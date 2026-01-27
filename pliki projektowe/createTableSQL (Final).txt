@@ -6,8 +6,8 @@ CREATE TABLE squad (
 
 CREATE TABLE user (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    imie VARCHAR(255) NOT NULL,
-    nazwisko VARCHAR(255) NOT NULL,
+    imie VARCHAR(255),
+    nazwisko VARCHAR(255),
     login VARCHAR(255) NOT NULL UNIQUE,
     haslo VARCHAR(255),
     email VARCHAR(255) UNIQUE,
