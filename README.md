@@ -9,13 +9,15 @@
 
 ***Baza Dannych***
 
-1)tworzenie bazy
+*1. tworzenie bazy*
+
 W MySQL Workbench
 stworz nową scheme i wstaw do niej dane z pliku - "createTableSQL (Final).txt"
 
 ***Backend***
 
-1)plik appliction.properties
+*1. plik appliction.properties*
+
 należy wpisać nazwę lokalnej bazy danych, detasource.username oraz hasło. 
 uzupełnić google.client-id
 ```
@@ -36,7 +38,7 @@ spring.servlet.multipart.max-request-size=15MB
 google.client-id:                                            
 ```
 
-2)wlacznie applikacji
+*2. uruchomienie applikacji*
 w folderze /PRO224/"pliki projektowe"/SZYSZKA
 
 > ./mvnw spring-boot:run
@@ -53,7 +55,7 @@ Pukt 5 trzeba wykonywać żeby wlączyć projekt za każdym razem
 >   cd "pliki projektowe"
 >   cd front
 
-2)tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)
+*3. tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)*
 
   otweranie webstorm
   
@@ -66,11 +68,13 @@ Pukt 5 trzeba wykonywać żeby wlączyć projekt za każdym razem
   kliknąć create, a potem wybrać from existing sources
 
 
-3)instalacja bibliotek 
+*4. instalacja bibliotek*
+
   otworzyć terminal webstorma i wpisać
 >   npm install
 
-4)plik tajny .env.local
+*5. plik tajny .env.local*
+
 w pliku .env.local trzeba ustawić id clienta Google i jego klucz tajny
 ```
 NEXT_PUBLIC_BACKEND_PORT2='http://192.168.1.240:8080'
@@ -93,9 +97,15 @@ GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
   
 
 
-**nadawanie stworzonemu użytkownikowi uprawnień drużynowego**
-*1.* Zarejestruj użytkownika w aplikacji.
-*2.*W MySQL Workbench pod paskiem nawigacyjnym wybrać "Create new SQL tab for executing queries"
+***Nadawanie stworzonemu użytkownikowi uprawnień drużynowego***
+
+*1. Zarejestruj użytkownika w aplikacji.*
+
+Wybierz "Zarejestruj się" i wypełnij formularz. Opcjonalnie skorzystaj z logowania przez Google.
+
+*2. Nadawanie uprawnień* 
+
+W MySQL Workbench pod paskiem nawigacyjnym wybrać "Create new SQL tab for executing queries"
 wykonaj poniższe zapytanie SQL aby zmienić typ utworzonego użytkownika na Druzynowego aby miał wszystkie uprawnienia, wstawiająć login użytkonwika zamiast napisu Twój login
 
 ```
