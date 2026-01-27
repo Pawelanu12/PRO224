@@ -256,7 +256,12 @@ public class UzytkownikService {
     }
     public void changePassword(String login, ChangePasswordRequest req) {
         Uzytkownik u = getUserByLogin(login);
-
+        if(u.getHaslo() == null || u.getHaslo().isEmpty()) {
+            u.setHaslo(passwordEncoder.encode(req.getNewPassword()));
+            uzytkownikRepository.save(u);
+            return;
+        }
+        System.out.println("tar");
         if(!passwordEncoder.matches(req.getOldPassword(), u.getHaslo()))
             throw new BadCredentialsException("Wrong password");
 
