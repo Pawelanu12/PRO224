@@ -49,14 +49,14 @@ google.client-id:
 
 ***FRONTEND***
 
-krótka instrukcja pobierania i wlaczenia frontendu:
+krótka instrukcja pobierania i włączenia frontendu:
 Pierwsze 3 kroki trzeba wykonać tylko przy instalacji projektu.
 Punkt 4 trzeba wykonywać żeby uruchomić projekt za każdym razem
 
 
 *1. Tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)*
 
-  otweranie webstorm
+  otwieranie webstorm
   
   File->New->Project
 
@@ -90,8 +90,7 @@ GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
   w terminalu wpisać 
 > npm run dev
 
-  wejsc w przeglądarce na strone
-  http://localhost:3000  
+  w przeglądarce wejść na strone: http://localhost:3000  
   
   
 
@@ -105,7 +104,7 @@ GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
 *2. Nadawanie uprawnień* 
 
   W MySQL Workbench pod paskiem nawigacyjnym wybrać "Create new SQL tab for executing queries"
-  wykonaj poniższe zapytanie SQL aby zmienić typ utworzonego użytkownika na Druzynowego aby miał wszystkie uprawnienia, wstawiająć login użytkonwika zamiast   napisu Twój login
+  wykonaj poniższe zapytanie SQL aby zmienić typ utworzonego użytkownika na Drużynowego aby miał wszystkie uprawnienia, wstawiająć login użytkownika zamiast   napisu Twój login
 
 ```
 UPDATE user
