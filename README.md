@@ -1,6 +1,6 @@
 ***POBRANIE REPO***
 
-  w git bash lub cmd
+  W git bash lub cmd
 >   git clone   https://github.com/Pawelanu12/PRO224.git
 
 >   cd pro224
@@ -9,17 +9,18 @@
 
 ***Baza Dannych***
 
-*1. tworzenie bazy*
+*1. Tworzenie bazy*
 
-W MySQL Workbench
-stworz nową scheme i wstaw do niej dane z pliku - "createTableSQL (Final).txt"
+  W MySQL Workbench
+  stworz nową scheme i wstaw do niej dane z pliku - "createTableSQL (Final).txt"
 
 ***Backend***
 
-*1. plik appliction.properties*
+*1. Plik appliction.properties*
 
-należy wpisać nazwę lokalnej bazy danych, detasource.username oraz hasło. 
-uzupełnić google.client-id
+  ścieżka \Szyszka\src\main\resources\application.properties
+  należy wpisać nazwę lokalnej bazy danych, detasource.username oraz hasło. 
+  uzupełnić google.client-id
 ```
 spring.application.name=Szyszka
 #wstaw nazwę swojej bazy
@@ -38,24 +39,22 @@ spring.servlet.multipart.max-request-size=15MB
 google.client-id:                                            
 ```
 
-*2. uruchomienie applikacji*
-w folderze /PRO224/"pliki projektowe"/SZYSZKA
+*2. Uruchomienie applikacji*
 
-> ./mvnw spring-boot:run
-
-lub za pomocą IntelIj uruchomić SzyszkaApplication
+  w folderze /PRO224/"pliki projektowe"/SZYSZKA
+  
+  > ./mvnw spring-boot:run
+  
+  lub za pomocą IntelIj uruchomić SzyszkaApplication
 
 ***FRONTEND***
 
 krótka instrukcja pobierania i wlaczenia frontendu:
-Pierwsze 4 kroki trzeba wykonać tylko przy instalacji projektu.
-Pukt 5 trzeba wykonywać żeby wlączyć projekt za każdym razem
-1)wejscie do plików frontendu
+Pierwsze 3 kroki trzeba wykonać tylko przy instalacji projektu.
+Pukt 4 trzeba wykonywać żeby uruchomić projekt za każdym razem
 
->   cd "pliki projektowe"
->   cd front
 
-*3. tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)*
+*1. Tworzenie projektu w webstorme (nie jest obowiązkowe jeżeli masz pobrany npm)*
 
   otweranie webstorm
   
@@ -68,14 +67,14 @@ Pukt 5 trzeba wykonywać żeby wlączyć projekt za każdym razem
   kliknąć create, a potem wybrać from existing sources
 
 
-*4. instalacja bibliotek*
+*2. Instalacja bibliotek*
 
   otworzyć terminal webstorma i wpisać
 >   npm install
 
-*5. plik tajny .env.local*
+*3. Plik tajny .env.local*
 
-w pliku .env.local trzeba ustawić id clienta Google i jego klucz tajny
+  w pliku .env.local trzeba ustawić id clienta Google i jego klucz tajny
 ```
 NEXT_PUBLIC_BACKEND_PORT2='http://192.168.1.240:8080'
 NEXT_PUBLIC_BACKEND_PORT='http://localhost:8080'
@@ -87,7 +86,7 @@ GOOGLE_CLIENT_ID=            /*wstaw tutaj Google client id */
 GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
 ```
 
-5)wlączenie projektu
+*4. Uruchomienie projektu*
   w terminalu wpisać 
 > npm run dev
 
@@ -101,12 +100,12 @@ GOOGLE_CLIENT_SECRET=        /*wstaw tutaj Google client secret */
 
 *1. Zarejestruj użytkownika w aplikacji.*
 
-Wybierz "Zarejestruj się" i wypełnij formularz. Opcjonalnie skorzystaj z logowania przez Google.
+  Wybierz "Zarejestruj się" i wypełnij formularz. Opcjonalnie skorzystaj z logowania przez Google.
 
 *2. Nadawanie uprawnień* 
 
-W MySQL Workbench pod paskiem nawigacyjnym wybrać "Create new SQL tab for executing queries"
-wykonaj poniższe zapytanie SQL aby zmienić typ utworzonego użytkownika na Druzynowego aby miał wszystkie uprawnienia, wstawiająć login użytkonwika zamiast napisu Twój login
+  W MySQL Workbench pod paskiem nawigacyjnym wybrać "Create new SQL tab for executing queries"
+  wykonaj poniższe zapytanie SQL aby zmienić typ utworzonego użytkownika na Druzynowego aby miał wszystkie uprawnienia, wstawiająć login użytkonwika zamiast   napisu Twój login
 
 ```
 UPDATE user
