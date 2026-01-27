@@ -19,7 +19,7 @@
 *1. Plik appliction.properties*
 
   ścieżka \Szyszka\src\main\resources\application.properties
-  należy wpisać nazwę lokalnej bazy danych, detasource.username oraz hasło. 
+  należy wpisać nazwę lokalnej bazy danych, datasource.username oraz hasło. 
   uzupełnić google.client-id
 ```
 spring.application.name=Szyszka
