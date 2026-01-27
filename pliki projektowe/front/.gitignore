@@ -5,5 +5,5 @@
 /.next
 /Szyszka/src/main/resources/application.properties
 /Szyszka/src/main/java/api/szyszka/Services/CzatService.java
-.env.local
+
 
