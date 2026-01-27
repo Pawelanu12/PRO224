@@ -42,6 +42,7 @@ export default function AddWydarzenie() {
                 })}
                 onSubmit={(values) => {
                     const formData = new FormData();
+                    console.log(values);
                     files.forEach(f => formData.append("files", f));
 
                     formData.append("nazwa", values.nazwa);

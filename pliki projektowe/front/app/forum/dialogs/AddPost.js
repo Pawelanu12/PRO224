@@ -40,7 +40,7 @@ export default function AddPost() {
                     ? `${process.env.NEXT_PUBLIC_BACKEND_PORT}/uploads/ProfilePictures/${user.profilePicture}`
                     : "/images/user_logo.png"} alt="logo" className="h-14 w-14 mr-5 rounded-full object-cover" />
                 <button
-                    className="text-red-600 z-20 px-4 py-2 rounded-full bg-[#336250] hover:bg-[#2b5140]"
+                    className="text-white z-20 px-4 py-2 rounded-full bg-[#336250] hover:bg-[#2b5140]"
                     onClick={() => {
                         dialog.current.showModal();
                         document.body.style.overflow = "hidden";
